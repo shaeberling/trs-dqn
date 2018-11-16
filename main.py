@@ -1,9 +1,23 @@
-
 from __future__ import print_function
 
 from trs import TRS
 from trs import Key
 from trs import Screenshot
+
+from datetime import datetime
+
+# Coordinate shutdown of training thread when user interrupts the program.
+stop_execution = False
+
+# Class to help measure time spent throughout the program.
+class TimeLogger():
+    def __init__(self, tag):
+        self.tag = tag
+        self.start = dt = datetime.now();
+    def end(self):
+        diff = datetime.now() - self.start
+        print("[%s] Took %d ms" % (self.tag, (diff.microseconds / 1000)))
+
 
 class RewardCosmicFighter():
 
@@ -24,8 +38,8 @@ class RewardCosmicFighter():
         if 0x20 not in b:
             # Score not shown right now
             #if 0xbf in b:
-                # Evil eye appears to be attacking
-                #return (-0.2, False)
+            # Evil eye appears to be attacking
+            #return (-0.2, False)
             return RewardCosmicFighter.default_reward
         # Get score
         try:
@@ -137,7 +151,9 @@ class Game():
         tstates = self.step - self.delta_tstates
         self.delta_tstates = self.trs.run_for_tstates(tstates)
         reward, terminal = self.reward.compute()
+        time_log_frame_step = TimeLogger("screenshot")
         screenshot = self.screenshot.screenshot()
+        time_log_frame_step.end()
         if terminal:
             self.reward.reset()
             self.trs.boot()
@@ -173,7 +189,7 @@ import tensorflow as tf
 CONFIG = 'nothreshold'
 ACTIONS = len(config["actions"])  # number of valid actions
 GAMMA = 0.99  # decay rate of past observations
-OBSERVATION = 5000.  # timesteps to observe before training
+OBSERVATION = 500.  # timesteps to observe before training
 EXPLORE = 1000000.  # frames over which to anneal epsilon
 FINAL_EPSILON = 0.1  # final value of epsilon
 INITIAL_EPSILON = 1  # starting value of epsilon
@@ -249,7 +265,7 @@ class PersistentReplayMemory():
 def buildmodel():
     model = Sequential()
     model.add(Conv2D(32, (8, 8), strides=(4, 4), padding='same',
-                            input_shape=(img_rows, img_cols, img_channels)))  # 80*80*4
+                     input_shape=(img_rows, img_cols, img_channels)))  # 80*80*4
     model.add(Activation('relu'))
     model.add(Conv2D(64, (4, 4), strides=(2, 2), padding='same'))
     model.add(Activation('relu'))
@@ -266,9 +282,11 @@ def buildmodel():
 
 
 def trainNetwork(trs, model, args):
+    global stop_execution
+
     # Target model
     target_model = clone_model(model)
-    
+
     # open up a game state to communicate with emulator
     game_state = Game(trs)
 
@@ -286,7 +304,7 @@ def trainNetwork(trs, model, args):
     x_t = skimage.exposure.rescale_intensity(x_t, out_range=(0, 255))
 
     x_t = x_t / 255.0
-    
+
     s_t = np.stack((x_t, x_t, x_t, x_t), axis=2)
 
     # In Keras, need to reshape
@@ -306,12 +324,14 @@ def trainNetwork(trs, model, args):
             meta = json.load(infile)
             OBSERVE = meta["timestep"]
             epsilon = meta["epsilon"]
-        
+
     if args['mode'] == 'Run':
         OBSERVE = 999999999  # We keep observe, never train
         epsilon = -1
 
-    while (True):
+    # Loop while stop was not requested.
+    while (not stop_execution):
+        time_log_loop = TimeLogger("train_loop")
         loss = 0
         Q_sa = 0
         action_index = 0
@@ -327,27 +347,32 @@ def trainNetwork(trs, model, args):
         a_t = np.zeros([ACTIONS])
         a_t[action_index] = 1
         # run the selected action and observed next state and reward
+        time_log_frame_steps = TimeLogger("frame_steps")
         for i in range(FRAME_PER_ACTION):
             x_t1_colored, r_t, terminal = game_state.frame_step(a_t)
+        time_log_frame_steps.end()
 
         # We reduced the epsilon gradually
         if epsilon > FINAL_EPSILON and t > OBSERVE:
             epsilon -= (INITIAL_EPSILON - FINAL_EPSILON) / EXPLORE
 
+        time_log_skimage = TimeLogger("skimage")
         x_t1 = skimage.color.rgb2gray(x_t1_colored)
         x_t1 = skimage.transform.resize(x_t1, (80, 80))
         x_t1 = skimage.exposure.rescale_intensity(x_t1, out_range=(0, 255))
 
         x_t1 = x_t1 / 255.0
-        
+
         x_t1 = x_t1.reshape(1, x_t1.shape[0], x_t1.shape[1], 1)  # 1x80x80x1
         s_t1 = np.append(x_t1, s_t[:, :, :, :3], axis=3)
+        time_log_skimage.end()
 
         # store the transition in D
         D.add_transition((s_t, action_index, r_t, s_t1, terminal))
 
         # only train if done observing
         if t > OBSERVE:
+            time_log_experience_replay = TimeLogger("experience_replay")
             # sample a minibatch to train on
             minibatch = D.get_mini_batch(BATCH)
 
@@ -358,7 +383,12 @@ def trainNetwork(trs, model, args):
             targets = target_model.predict(state_t)
             Q_sa = target_model.predict(state_t1)
             targets[range(BATCH), action_t] = reward_t + GAMMA * np.max(Q_sa, axis=1) * np.invert(terminal)
+            time_log_experience_replay.end()
+
+
+            time_log_train_on_batch = TimeLogger("train_on_batch")
             loss += model.train_on_batch(state_t, targets)
+            time_log_train_on_batch.end()
 
         s_t = s_t1
         t = t + 1
@@ -382,6 +412,9 @@ def trainNetwork(trs, model, args):
         print("TIMESTEP", t, "/ STATE", state, \
               "/ EPSILON", epsilon, "/ ACTION", action_index, "/ REWARD", r_t, \
               "/ Q_MAX ", np.max(Q_sa), "/ Loss ", loss)
+
+        # Log timing for the whole loop.
+        time_log_loop.end()
 
     print("Episode finished!")
     print("************************")
@@ -407,9 +440,9 @@ def single_step():
     thread = Thread(target=step_thread)
     thread.start()
     trs.mainloop()
-    
+
 def main():
-    global config
+    global config, stop_execution
     parser = argparse.ArgumentParser(description='TRS DeepQ Network')
     parser.add_argument('-m', '--mode', help='Train/Run/Play', required=True)
     parser.add_argument('--no-ui', help='Do not show UI during training', action='store_true')
@@ -432,6 +465,7 @@ def main():
     def training_thread():
         conf = tf.ConfigProto()
         conf.gpu_options.allow_growth = True
+        conf.log_device_placement=True
         sess = tf.Session(config=conf)
         from keras import backend as K
         K.set_session(sess)
@@ -440,8 +474,12 @@ def main():
 
     thread = Thread(target=training_thread)
     thread.start()
-    trs.mainloop()
 
+    try:
+        trs.mainloop()
+    except KeyboardInterrupt:
+        # Trigger shutdown of training thread.
+        stop_execution = True
 
 if __name__ == "__main__":
     main()
