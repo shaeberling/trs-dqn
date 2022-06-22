@@ -8,7 +8,7 @@ Work-in-progress.
 Compiling
 ---------
 
-Requires Python 2 and gcc installation.
+Requires Python 3 and gcc installation.
 
 Make sure you have a development version of freeglut installed
 E.g.: `sudo apt install freeglut3-dev`.
@@ -46,7 +46,7 @@ python main.py -m Train [--no-ui]
 Play a game by using the trained network:
 
 ```
-python main.py -m Run
+python main.py -m Run --model=<model-file.h5>
 
 ```
 
@@ -54,4 +54,5 @@ python main.py -m Run
 Credits
 -------
 
-Based on <https://github.com/yanpanlau/Keras-FlappyBird>
+Based on <https://keras.io/examples/rl/deep_q_network_breakout/>
+
