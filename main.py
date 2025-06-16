@@ -12,7 +12,7 @@ from threading import Thread
 
 class RewardCosmicFighter():
 
-    default_reward = (-0.2, False)
+    default_reward = (0.0, False)
 
     def __init__(self, ram):
         self.ram = ram
@@ -271,7 +271,7 @@ def train_network(env):
     epsilon_greedy_frames = 1000000.0
     # Maximum replay length
     # Note: The Deepmind paper suggests 1000000 however this causes memory issues
-    max_memory_length = 100000
+    max_memory_length = 300000
     # Train the model after 4 actions
     update_after_actions = 4
     # How often to update the target network
