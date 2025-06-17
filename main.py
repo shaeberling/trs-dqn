@@ -26,7 +26,7 @@ import sys
 
 class RewardCosmicFighter:
 
-    default_reward = (-0.2, False)
+    default_reward = (0.0, False)
 
     def __init__(self, ram):
         self.ram = ram
@@ -200,7 +200,7 @@ class Game:
         self.steps = self.config.get("step", None)
         self.breakpoints = self.config.get("breakpoints", None)
         self.actions = self.config["actions"]
-        self.action_repeat = 1  # Repeat the same action N times (DeepMind uses 4)
+        self.action_repeat = 4  # Repeat the same action N times (DeepMind uses 4)
         viewport = self.config["viewport"]
         self.screenshot = Screenshot(trs.ram, viewport)
         self.steps_survived = 0
@@ -218,7 +218,7 @@ class Game:
 
         x_t, r_0, terminal, _ = self.frame_step(0)
         #x_t = skimage.transform.resize(x_t, (84, 84))
-        self.state = np.stack((x_t, x_t), axis=2)
+        self.state = np.stack((x_t, x_t, x_t, x_t), axis=2)
         return self.state
 
     def frame_step(self, action):
@@ -266,7 +266,7 @@ class Game:
 
         #x_t1 = skimage.transform.resize(screenshot, (84, 84))
         x_t1 = screenshot.reshape(screenshot.shape[0], screenshot.shape[1], 1)
-        self.state = np.append(x_t1, self.state[:, :, :1], axis=2)
+        self.state = np.append(self.state[:, :, 1:], x_t1, axis=2)
 
         return self.state, reward, terminal, game_over
 # ------------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ class Game:
 
 
 def create_q_model():
-    inputs = keras.Input(shape=(48, 128, 2))  # height, width, channels
+    inputs = keras.Input(shape=(48, 128, 4))  # height, width, channels
 
     x = layers.Conv2D(32, kernel_size=(8, 4), strides=(4, 2), activation="relu")(inputs)
     x = layers.Conv2D(64, kernel_size=(4, 4), strides=(2, 2), activation="relu")(x)
@@ -330,11 +330,11 @@ def train_network(env):
     epsilon_greedy_frames = 750000.0
     # Maximum replay length
     # Note: The Deepmind paper suggests 1000000 however this causes memory issues
-    max_memory_length = 20000
+    max_memory_length = 100000
     # Train the model after n actions
-    update_after_actions = 1
+    update_after_actions = 4
     # How often to update the target network
-    update_target_network = 1000
+    update_target_network = 10000
     # Using huber loss for stability
     loss_function = keras.losses.Huber()
 
