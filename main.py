@@ -200,7 +200,7 @@ class Game:
         self.steps = self.config.get("step", None)
         self.breakpoints = self.config.get("breakpoints", None)
         self.actions = self.config["actions"]
-        self.action_repeat = 4  # Repeat the same action N times (DeepMind uses 4)
+        self.action_repeat = 1  # Repeat the same action N times (DeepMind uses 4)
         viewport = self.config["viewport"]
         self.screenshot = Screenshot(trs.ram, viewport)
         self.steps_survived = 0
