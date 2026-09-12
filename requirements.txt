@@ -1,0 +1,5 @@
+# Python 3.12. These cover the emulator and its window UI only — add whatever
+# your own work needs on top.
+numpy==1.26.4
+Pillow==10.4.0
+pyglet==2.0.7
