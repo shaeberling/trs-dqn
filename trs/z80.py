@@ -1,7 +1,7 @@
 
 import ctypes
 
-wrapper = ctypes.CDLL('libtrs.so')
+from .native import wrapper
 
 ram = None
 

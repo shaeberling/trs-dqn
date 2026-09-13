@@ -5,6 +5,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <errno.h>
+#include <string.h>
 
 // Model I specs
 #define TIMER_HZ_1 40
@@ -26,6 +27,22 @@ static volatile int z80_is_running = 1;
 static Z80Context ctx;
 
 volatile unsigned char ram[64 * 1024];
+
+/* Optional debugger stop on visible screen text. Stops before a held key can
+ * dismiss an episode-ending message. Disabled for ordinary interactive play. */
+static ushort video_stop_address = 0;
+static unsigned char video_stop_text[64];
+static int video_stop_length = 0;
+
+void z80_set_video_stop(ushort address, const unsigned char *text, int length)
+{
+    video_stop_length = 0;
+    if (length <= 0 || length > 64 || address < 0x3c00 ||
+        (int)address + length > 0x4000) return;
+    video_stop_address = address;
+    memcpy(video_stop_text, text, length);
+    video_stop_length = length;
+}
 
 float screenshot[(2 * 64) * (3 * 16)];
 
@@ -179,6 +196,10 @@ int z80_run_for_tstates(int tstates, int original_speed)
     int threshold_tstates = ctx.tstates + tstates;
     while (ctx.tstates <= threshold_tstates) {
         Z80Execute(&ctx);
+        if (video_stop_length &&
+            ram[video_stop_address] == video_stop_text[0] &&
+            memcmp((const void *)(ram + video_stop_address),
+                   video_stop_text, video_stop_length) == 0) break;
         if (original_speed && (ctx.tstates >= CYCLES_PER_TIMER)) {
             sync_time_with_host();
             ctx.tstates -=  CYCLES_PER_TIMER;

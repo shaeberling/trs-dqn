@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breakdown — learned policy replay</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #111820; color: #e5eff5; }
+  body { max-width: 900px; margin: 36px auto; padding: 0 20px; }
+  h1 { font-size: 25px; font-weight: 600; margin-bottom: 8px; }
+  p { color: #a8bdca; line-height: 1.6; }
+  canvas { background: #000; width: 100%; image-rendering: pixelated; border: 1px solid #3d4e59; border-radius: 6px; }
+  .controls { display: flex; align-items: center; gap: 12px; margin: 16px 0; flex-wrap: wrap; }
+  button, select { padding: 8px 14px; border-radius: 5px; border: 1px solid #546b7a; background: #233441; color: inherit; }
+  input { flex: 1; min-width: 140px; accent-color: #66dec7; }
+  #position { font-variant-numeric: tabular-nums; }
+  details { margin: 24px 0; color: #a8bdca; }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+</style>
+<h1>Breakdown · a learned policy</h1>
+<p id="result"></p>
+<canvas id="screen" width="512" height="416" aria-label="Recorded TRS-80 game screen"></canvas>
+<div class="controls">
+  <button id="play">Pause</button>
+  <button id="restart">Restart</button>
+  <input id="seek" type="range" min="0" value="0" aria-label="Replay position">
+  <select id="speed" aria-label="Playback speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select>
+  <span id="position"></span>
+</div>
+<p id="action"></p>
+<p>Every gameplay action in this recording was chosen by the trained neural network from recent screen contents. Its training reward was the game's score.</p>
+<details><summary>Recording details</summary><pre id="metadata"></pre></details>
+<script>
+const metadata = __METADATA__;
+const actions = __ACTIONS__;
+const data = Uint8Array.from(atob('__FRAMES__'), c => c.charCodeAt(0));
+const atlas = new Image(); atlas.src = 'data:image/png;base64,__ATLAS__';
+const frames = [data.slice(0, 1024)];
+let cursor = 1024;
+while (cursor < data.length) {
+  const frame = frames[frames.length - 1].slice();
+  const count = data[cursor] | (data[cursor + 1] << 8); cursor += 2;
+  for (let i = 0; i < count; i++) {
+    const index = data[cursor] | (data[cursor + 1] << 8);
+    frame[index] = data[cursor + 2]; cursor += 3;
+  }
+  frames.push(frame);
+}
+const screen = document.querySelector('#screen'), ctx = screen.getContext('2d');
+const seek = document.querySelector('#seek'), play = document.querySelector('#play');
+seek.max = frames.length - 1;
+document.querySelector('#result').textContent = `${metadata.terminated ? 'Complete game' : 'Truncated recording'} · Score ${metadata.score} · Highest level ${metadata.level} · Seed ${metadata.seed}`;
+document.querySelector('#metadata').textContent = JSON.stringify(metadata, null, 2);
+let current = 0, playing = true, last = 0, accumulator = 0;
+const names = ['release keys', 'left', 'right', 'space', 'left + space', 'right + space'];
+function draw() {
+  const frame = frames[current];
+  for (let i = 0; i < 1024; i++) {
+    const c = frame[i];
+    ctx.drawImage(atlas, (c % 16) * 8, Math.floor(c / 16) * 26, 8, 26,
+                  (i % 64) * 8, Math.floor(i / 64) * 26, 8, 26);
+  }
+  seek.value = current;
+  document.querySelector('#position').textContent = `${(current * metadata.tstates / 1774080).toFixed(1)} s`;
+  document.querySelector('#action').textContent = current < actions.length ? `Model action: ${names[actions[current]]}` : 'Game over';
+}
+play.onclick = () => { playing = !playing; play.textContent = playing ? 'Pause' : 'Play'; };
+document.querySelector('#restart').onclick = () => { current = 0; accumulator = 0; playing = true; play.textContent = 'Pause'; draw(); };
+seek.oninput = () => { current = Number(seek.value); accumulator = 0; draw(); };
+function tick(now) {
+  if (last && playing) {
+    accumulator += Math.min(now - last, 200) * Number(document.querySelector('#speed').value);
+    const duration = metadata.tstates / 1774.08;
+    let changed = false;
+    while (accumulator >= duration && current < frames.length - 1) { current++; accumulator -= duration; changed = true; }
+    if (changed) draw();
+    if (current === frames.length - 1) { playing = false; play.textContent = 'Play'; }
+  }
+  last = now; requestAnimationFrame(tick);
+}
+atlas.onload = () => { draw(); requestAnimationFrame(tick); };
+</script>
+</html>

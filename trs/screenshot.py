@@ -3,7 +3,7 @@ import numpy
 from PIL import ImageFont, ImageDraw, Image
 import ctypes
 
-wrapper = ctypes.CDLL('libtrs.so')
+from .native import wrapper
 
 
 class Screenshot():

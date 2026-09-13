@@ -1,9 +1,10 @@
 
+.PHONY: all clean
+
+# native/trs.c includes the Z80 core directly. Its generated opcode sources
+# are already tracked in the submodule; a separate libz80.so is unnecessary.
 all:
-	cd libz80;make
-	cd native;make
+	$(MAKE) -C native
 
 clean:
-	rm -f *.so
-	cd libz80;make clean
-
+	$(RM) libtrs.so

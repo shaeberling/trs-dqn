@@ -5,6 +5,15 @@ classic games, drivable both interactively and programmatically.
 
 **Your assignment lives in [GOALS.md](GOALS.md).** Read it first.
 
+The reinforcement-learning implementation, training/evaluation commands, and
+watch mode are documented in [TRAINING.md](TRAINING.md).
+
+The trained screen-only agent now reaches level 2. Across 50 complete held-out
+games: mean score **44.3**, median **45.5**, best **88**, and **3 level-1 clears**.
+Watch its [88-point replay online](https://breakdown-learned-replay.saschah.chatgpt.site)
+([standalone HTML](results/replay.html)), or see the
+[saved model](models/breakdown/README.md) and [evaluation records](results/trained.json).
+
 ## Setup
 
 > **NOTE**: Use Python 3.12. Check out the repository recursively — the Z80
@@ -21,13 +30,12 @@ python3.12 -m venv venv
 . venv/bin/activate
 pip install -r requirements.txt
 
-export LD_LIBRARY_PATH=$(pwd)
 make
 ```
 
-`make` builds `libtrs.so` (the emulator core) into the repo root; the Python
-bindings load it from the current working directory, so run everything from
-the repo root.
+`make` compiles the existing emulator core into `libtrs.so` in the repo root.
+The Python bindings resolve this library by its repository path on macOS and
+Linux. Run commands from the repo root so the game and font assets are found.
 
 ## Playing a game yourself
 

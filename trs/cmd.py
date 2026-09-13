@@ -16,8 +16,8 @@ class CMD():
     def load(self, cmd_file):
         self.cmd = array('B')
         statinfo = os.stat(cmd_file)
-        f = open(cmd_file, 'rb')
-        self.cmd.fromfile(f, statinfo.st_size)
+        with open(cmd_file, 'rb') as f:
+            self.cmd.fromfile(f, statinfo.st_size)
         self.i = 0
         while True:
             b = self.next()
@@ -38,4 +38,3 @@ class CMD():
                     self.next()
             else:
                 raise "Bad CMD file format"
-

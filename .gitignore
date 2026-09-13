@@ -4,3 +4,5 @@ __pycache__
 runs/
 logs.csv
 runs-*.out
+# Separate checkout used to publish the replay through Sites.
+replay-site/
