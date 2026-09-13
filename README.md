@@ -8,11 +8,16 @@ classic games, drivable both interactively and programmatically.
 The reinforcement-learning implementation, training/evaluation commands, and
 watch mode are documented in [TRAINING.md](TRAINING.md).
 
-The trained screen-only agent now reaches level 2. Across 50 complete held-out
-games: mean score **44.3**, median **45.5**, best **88**, and **3 level-1 clears**.
-Watch its [88-point replay online](https://breakdown-learned-replay.saschah.chatgpt.site)
-([standalone HTML](results/replay.html)), or see the
-[saved model](models/breakdown/README.md) and [evaluation records](results/trained.json).
+The trained screen-only agent has reached **level 5** in a complete validation
+game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh
+complete test games**, mean score was **83.32**, median **72.5**, best **167**,
+and highest level **3**; none reached level 5. This is a first-reach milestone,
+not reliable level-5 play. See the [frozen model](models/breakdown-level5/README.md),
+[test records](results/level5/trained.json), and [experiment notes](LEVEL5.md).
+
+The original level-2 model and
+[88-point public replay](https://breakdown-learned-replay.saschah.chatgpt.site)
+remain unchanged. The new level-5 replay is a separate standalone HTML file.
 
 ## Setup
 

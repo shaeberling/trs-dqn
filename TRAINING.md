@@ -1,6 +1,36 @@
 # Learning Breakdown
 
-## Result
+## Level-5 first-reach result
+
+The continuation reached displayed **level 5** (cleared levels 1–4) in a complete
+frozen-policy validation game: **278 points**, seed 10016. Training stopped at
+17,502,208 PPO actions along the selected lineage, plus 500,000 earlier DQN
+actions. The checkpoint was frozen before the reserved final test.
+
+| Policy on seeds 30000–30099 | Complete | Mean | Median | Best | Highest level | Reached level 2 |
+|---|---:|---:|---:|---:|---:|---:|
+| Frozen level-5-capable PPO | 100/100 | 83.32 | 72.5 | 167 | 3 | 50/100 |
+| Uniform random | 100/100 | 1.54 | 1 | 4 | 1 | 0/100 |
+
+**None of the 100 fresh test games reached level 4 or 5**; one reached level 3.
+The 278-point replay is a reproducible **validation** showcase, not a held-out
+test result or evidence of reliable level-5 play. No further model selection or
+training used this final test. Both the test and recording ran without action
+limits, using the sampled neural policy without gameplay overrides.
+
+- [Frozen model, validation, test, and checksums](models/breakdown-level5/README.md)
+- [Watch the level-5 validation game](results/level5/replay.html)
+- [Full 100-game test](results/level5/trained.json) and [matched random baseline](results/level5/random.json)
+- [Experiment history and reproduction commands](LEVEL5.md), [curve](results/level5/training-curve.png), and [archived logs](results/level5/logs/)
+
+The existing emulator was retained. A visible GAME OVER parsing mismatch was
+repaired, then controlled continuations compared learning rate and exploration
+strength. The selected settings were MLX PPO, 32 environments, learning rate
+0.0001 and entropy coefficient 0.003. Learning inputs, score rewards and all
+network-selected controls stayed within GOALS.md. The original model and
+published replay below remain unchanged.
+
+## Original first-clear result
 
 The saved model **clears level 1**. Final evaluation used 50 fixed, complete
 held-out games (seeds 20000–20049), with no action limit, no gameplay overrides,
@@ -38,7 +68,7 @@ Both use Adam and gradient clipping. The only reward is the change in the on-scr
 ends the game. `--life-terminal` optionally ends each training return on a lost
 ball (standard episodic-life DQN); it does not reset the game or choose a serve.
 The two reserve-ball icons are read from the screen to detect these boundaries.
-Evaluation always plays the full three-ball game. Time-limit truncations bootstrap
+Evaluation always plays the full game until GAME OVER. Time-limit truncations bootstrap
 from their final observation and are reported separately from complete games.
 
 ## Setup on Apple Silicon
@@ -90,6 +120,23 @@ The final command has no time or action limit and periodically validates until
 at least one of five complete games clears level 1. The default without
 `--target-clears 1` is the stronger three-of-five target. It can be interrupted and resumed.
 To try PPO with no pretraining instead, omit `--initialize`.
+
+To continue your own from-scratch checkpoint toward level 5 using the final
+continuation settings:
+
+```sh
+caffeinate -i venv/bin/python -m rl.ppo --run runs/repro-level5 \
+  --resume runs/repro-ppo/latest --learning-rate 0.0001 --entropy 0.003 \
+  --target-level 5 --target-clears 1 --eval-games 20 --eval-seed 10000 \
+  --eval-every 250000 --eval-max-steps 40000
+```
+
+This has no wall-clock or total-action limit. It stops only after a complete
+validation suite contains a level-5 game, or on interruption. A truncated suite
+cannot qualify. [LEVEL5.md](LEVEL5.md) records the actual multi-stage comparisons
+and checkpoint choices; this shorter recipe reproduces the method, not its
+exact historical trajectories. Reserve a new test set before future selection;
+seeds 30000–30099 are now published test data.
 
 ## Train and inspect progress
 
@@ -207,7 +254,10 @@ reset, terminal detection with SPACE held, n-step terminal versus truncation
 returns, replay sampling, exclusion of incomplete evaluation scores,
 gradient-based learning, frozen targets, GAE boundaries, and seeded policy /
 saved-weight round trips. The learning tests need Metal GPU access.
-All ten Python tests passed. The packaged checkpoint resumed successfully for
+The original first-clear milestone passed ten Python tests. The current level-5
+release passes **25 tests**, including frozen-artifact checksums, complete seed
+sets, independently recomputed statistics, and original-artifact preservation.
+The original packaged checkpoint resumed successfully for
 one separately saved rollout, and rebuilding the existing emulator reproduced
 the 88-point test game exactly. Replay codec and play/pause/seek/restart/speed
 logic were checked with a mocked DOM/canvas; this is not a full browser visual

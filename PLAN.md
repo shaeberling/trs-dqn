@@ -40,4 +40,30 @@ evaluation games must run to GAME OVER (at least ten).
 The final evaluation was expanded from the minimum ten games to 50 before
 running it. Training stopped cleanly after the requested first-clear milestone;
 the trainer's default, stronger automatic stop of three clears in five validation
-games was not required for this milestone. No training is left running.
+games was not required for this milestone. That initial run was stopped.
+
+## Level-5 follow-up (completed)
+
+Approved follow-up: reach displayed level 5 (clear levels 1-4), then report
+the selected checkpoint's performance on 100 fresh complete games. Preserve
+the level-2 model and published replay. See [LEVEL5.md](LEVEL5.md).
+
+- [x] Add configurable target levels, complete-game level reach rates, and a
+  separate best-by-level checkpoint, with tests.
+- [x] Measure the original checkpoint on the expanded validation suite:
+  20/20 complete, mean 51.5, median 55.5, best 66, level 2 in 1/20.
+- [x] Run the initial unchanged continuation (planned cap: 20 million additional
+  actions), investigate its terminal-parser failure, and preserve its checkpoints.
+  The cap was not exhausted; experiments adapted from the measured results.
+- [x] Compare learning rate, then exploration strength, while preserving control
+  runs. The lower-rate/lower-entropy continuation produced a frozen level-5 game.
+- [x] Freeze the selected checkpoint and evaluate 100 fresh complete games:
+  mean 83.32, median 72.5, best 167, highest level 3, 0/100 level-5 reaches.
+- [x] Record the 278-point level-5 validation replay and package weights, optimizer,
+  evaluation records, archived logs, checksums, and reproduction instructions
+  without overwriting the original model or public replay.
+
+The first-reach target is verified, not reliable mastery: the selected model
+reached level 5 in 1/20 validation games, but not in the 100-game final test.
+Training stopped automatically at the validation target and was not resumed
+using the test results. Details and provenance are in [LEVEL5.md](LEVEL5.md).

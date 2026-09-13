@@ -4,7 +4,7 @@ from unittest.mock import patch
 import numpy as np
 
 from rl.env import BreakdownEnv, SHAPE, screen_info
-from rl.evaluate import summary
+from rl.evaluate import level_rank, level_target_met, summary
 from rl.replay import NStep, Replay
 
 
@@ -35,6 +35,30 @@ class EnvironmentTests(unittest.TestCase):
         screen[0, 59:64] = list(b"00002")
         screen[10, 28:37] = list(b"GAME\x80OVER")
         self.assertEqual(screen_info(screen), dict(score=77, level=2, game_over=True, waiting=False))
+
+    def test_native_terminal_stop_accepts_graphics_in_word_gap(self):
+        env = BreakdownEnv()
+        try:
+            for gap in [32, *range(128, 192)]:
+                with self.subTest(gap=gap):
+                    env.reset(12)
+                    env.video[10, 28:37] = list(b"GAME"+bytes([gap])+b"OVER")
+                    self.assertLess(env.trs.run_for_tstates(100000), -90000)
+                    _, _, terminal, truncated, info = env.step(3)
+                    self.assertTrue(terminal)
+                    self.assertFalse(truncated)
+                    self.assertTrue(info["game_over"])
+        finally:
+            env.close()
+
+    def test_native_terminal_stop_does_not_wildcard_ascii_letters(self):
+        env = BreakdownEnv()
+        try:
+            env.reset(12)
+            env.video[10, 28:37] = list(b"GAMEXOVER")
+            self.assertGreaterEqual(env.trs.run_for_tstates(100000), 0)
+        finally:
+            env.close()
 
     def test_seeded_reset_and_space_cannot_skip_game_over(self):
         env = BreakdownEnv()
@@ -102,6 +126,39 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(result["median_score"], 15)
         self.assertEqual(result["best_score"], 20)
         self.assertEqual(result["level_1_clears"], 0)
+        self.assertEqual(result["highest_complete_level"], 1)
+        self.assertEqual(result["level_reach_counts"]["2"], 0)
+        self.assertIsNone(level_rank(result, 5))
+        self.assertFalse(level_target_met(result, 2, 1))
+
+    def test_reaching_level_five_is_distinct_from_clearing_it(self):
+        result = summary([
+            dict(score=10, level=1, terminated=True),
+            dict(score=90, level=2, terminated=True),
+            dict(score=250, level=5, terminated=True),
+        ])
+        self.assertEqual(result["level_reach_counts"], {"2": 2, "3": 1, "4": 1, "5": 1})
+        self.assertAlmostEqual(result["level_reach_rates"]["5"], 1/3)
+        self.assertTrue(level_target_met(result, 5, 1))
+        self.assertFalse(level_target_met(result, 5, 2))
+        self.assertFalse(level_target_met(result, 6, 1))
+
+    def test_level_selection_prefers_deeper_games_over_mean_score(self):
+        deeper = summary([dict(score=100, level=3, terminated=True),
+                          dict(score=10, level=1, terminated=True)])
+        shallower = summary([dict(score=90, level=2, terminated=True)]*2)
+        self.assertGreater(level_rank(deeper, 5), level_rank(shallower, 5))
+        empty = summary([])
+        self.assertIsNone(empty["level_reach_rates"]["5"])
+        self.assertIsNone(level_rank(empty, 5))
+        self.assertFalse(level_target_met(empty, 5, 1))
+
+    def test_truncated_high_level_cannot_meet_target(self):
+        result = summary([dict(score=400, level=6, terminated=False)])
+        self.assertEqual(result["highest_level"], 6)
+        self.assertEqual(result["highest_complete_level"], 1)
+        self.assertEqual(result["level_reach_counts"]["5"], 0)
+        self.assertFalse(level_target_met(result, 5, 1))
 
 
 if __name__ == "__main__":

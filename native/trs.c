@@ -33,15 +33,39 @@ volatile unsigned char ram[64 * 1024];
 static ushort video_stop_address = 0;
 static unsigned char video_stop_text[64];
 static int video_stop_length = 0;
+static int video_stop_normalize_text = 0;
 
 void z80_set_video_stop(ushort address, const unsigned char *text, int length)
 {
     video_stop_length = 0;
+    video_stop_normalize_text = 0;
     if (length <= 0 || length > 64 || address < 0x3c00 ||
         (int)address + length > 0x4000) return;
     video_stop_address = address;
     memcpy(video_stop_text, text, length);
     video_stop_length = length;
+}
+
+/* Match the same visible ASCII text as Python's screen reader. The game
+ * leaves existing graphics in spaces between printed words, so a text-space
+ * can be any non-ASCII-text cell, not just the empty graphics glyph 0x80. */
+void z80_set_video_text_stop(ushort address, const unsigned char *text, int length)
+{
+    z80_set_video_stop(address, text, length);
+    video_stop_normalize_text = 1;
+}
+
+static int video_stop_matches(void)
+{
+    if (!video_stop_normalize_text)
+        return memcmp((const void *)(ram + video_stop_address),
+                      video_stop_text, video_stop_length) == 0;
+    for (int i = 0; i < video_stop_length; i++) {
+        unsigned char ch = ram[video_stop_address + i];
+        if (ch < 32 || ch >= 127) ch = ' ';
+        if (ch != video_stop_text[i]) return 0;
+    }
+    return 1;
 }
 
 float screenshot[(2 * 64) * (3 * 16)];
@@ -198,8 +222,7 @@ int z80_run_for_tstates(int tstates, int original_speed)
         Z80Execute(&ctx);
         if (video_stop_length &&
             ram[video_stop_address] == video_stop_text[0] &&
-            memcmp((const void *)(ram + video_stop_address),
-                   video_stop_text, video_stop_length) == 0) break;
+            video_stop_matches()) break;
         if (original_speed && (ctx.tstates >= CYCLES_PER_TIMER)) {
             sync_time_with_host();
             ctx.tstates -=  CYCLES_PER_TIMER;

@@ -1,5 +1,5 @@
 // Replay codec and control-logic check; no browser or network required.
-// Usage: node tests/test_replay.js [results/replay.html]
+// Usage: node tests/test_replay.js [results/replay.html] [evaluation.json]
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
@@ -33,7 +33,21 @@ const final = Buffer.from(read('frames[frames.length - 1]')).toString('latin1')
   .replace(/[^\x20-\x7e]/g, ' ');
 assert.equal(Number(final.slice(6, 11)), read('metadata.score'));
 assert(final.slice(640, 704).includes('GAME OVER'));
-assert(read('frames.some(f => Number(String.fromCharCode(...f.slice(59, 64))) >= 2)'));
+assert.equal(read('Math.max(...frames.map(f => Number(String.fromCharCode(...f.slice(59, 64)))))'),
+             read('metadata.level'));
+assert(read('metadata.level >= 2'));
+if (process.argv[3]) {
+  const evaluation = JSON.parse(fs.readFileSync(process.argv[3], 'utf8'));
+  const game = evaluation.games.find(g => g.seed === read('metadata.seed'));
+  assert(game, 'Replay seed must occur in the supplied evaluation');
+  for (const key of ['score', 'level', 'steps', 'terminated', 'truncated', 'start_tstates']) {
+    assert.equal(read(`metadata.${key}`), game[key], `Replay/evaluation mismatch: ${key}`);
+  }
+  assert.equal(read('metadata.tstates'), evaluation.tstates);
+  if (evaluation.checkpoint_sha256) {
+    assert.equal(read('metadata.checkpoint_sha256'), evaluation.checkpoint_sha256);
+  }
+}
 
 read('atlas.onload()');
 assert.equal(draws, 1024);
@@ -50,4 +64,4 @@ assert.equal(read('playing'), true);
 elements.get('#speed').value = '4';
 read('tick(300)');
 assert(read('current > 1'));
-console.log(`Replay verified: ${read('frames.length')} frames; score ${read('metadata.score')}; play/pause/seek/restart/speed pass.`);
+console.log(`Replay verified: ${read('frames.length')} frames; score ${read('metadata.score')}; level ${read('metadata.level')}; play/pause/seek/restart/speed pass.`);

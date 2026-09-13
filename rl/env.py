@@ -19,6 +19,7 @@ SHAPE = (4, 16, 64)
 ACTIONS = ((), (Key.LEFT,), (Key.RIGHT,), (Key.SPACE,),
            (Key.LEFT, Key.SPACE), (Key.RIGHT, Key.SPACE))
 TEXT_TABLE = bytes(c if 32 <= c < 127 else 32 for c in range(256))
+ENVIRONMENT_VERSION = "normalized-game-over-v2"
 
 
 def screen_info(screen):
@@ -42,6 +43,7 @@ class BreakdownEnv:
         self.trs = TRS(CONFIGS["breakdown"], original_speed=0, fps=30, no_ui=True)
         self.video = np.ctypeslib.as_array(self.trs.ram.ram)[VIDEO:VIDEO+1024].reshape(16, 64)
         wrapper.z80_set_video_stop.argtypes = (ctypes.c_ushort, ctypes.c_char_p, ctypes.c_int)
+        wrapper.z80_set_video_text_stop.argtypes = (ctypes.c_ushort, ctypes.c_char_p, ctypes.c_int)
         self.frames = deque(maxlen=4)
         self.done = True
 
@@ -54,7 +56,7 @@ class BreakdownEnv:
         # Changes neither RAM nor the game's physics or rewards.
         self.start_tstates = int(self.rng.integers(0, 200_001))
         self.trs.run_for_tstates(self.start_tstates)
-        wrapper.z80_set_video_stop(VIDEO+640+28, b"GAME\x80OVER", 9)
+        wrapper.z80_set_video_text_stop(VIDEO+640+28, b"GAME OVER", 9)
         frame = self.video.copy()
         self.frames.clear()
         self.frames.extend(frame.copy() for _ in range(4))

@@ -8,7 +8,7 @@ import time
 
 import numpy as np
 
-from .env import BreakdownEnv
+from .env import BreakdownEnv, ENVIRONMENT_VERSION
 
 
 def checkpoint_config(checkpoint):
@@ -23,16 +23,37 @@ def policy_description(config, deterministic=False):
 
 
 def summary(games):
-    scores = [g["score"] for g in games if g["terminated"]]
+    complete = [g for g in games if g["terminated"]]
+    scores = [g["score"] for g in complete]
+    highest = max((g["level"] for g in games), default=1)
+    reach_counts = {str(level): sum(g["level"] >= level for g in complete)
+                    for level in range(2, max(5, highest)+1)}
     return {
         "games_requested": len(games), "complete_games": len(scores),
         "incomplete_games": len(games)-len(scores),
         "mean_score": float(np.mean(scores)) if scores else None,
         "median_score": float(np.median(scores)) if scores else None,
         "best_score": max(scores) if scores else None,
-        "highest_level": max((g["level"] for g in games), default=1),
-        "level_1_clears": sum(g["level"] >= 2 and g["terminated"] for g in games),
+        "highest_level": highest,
+        "highest_complete_level": max((g["level"] for g in complete), default=1),
+        "level_1_clears": reach_counts["2"],
+        "level_reach_counts": reach_counts,
+        "level_reach_rates": {level: count/len(complete) if complete else None
+                              for level, count in reach_counts.items()},
     }
+
+
+def level_rank(result, target_level):
+    """Rank complete validation suites by deeper-level consistency, then score."""
+    if result["incomplete_games"] or not result["complete_games"]:
+        return None
+    return tuple(result["level_reach_counts"].get(str(level), 0)
+                 for level in range(target_level, 1, -1)) + (result["mean_score"],)
+
+
+def level_target_met(result, target_level, target_clears):
+    return (not result["incomplete_games"] and result["complete_games"] > 0
+            and result["level_reach_counts"].get(str(target_level), 0) >= target_clears)
 
 
 def evaluate(policy, seeds, *, tstates=100_000, max_steps=100_000, verbose=False,
@@ -60,7 +81,7 @@ def evaluate(policy, seeds, *, tstates=100_000, max_steps=100_000, verbose=False
     finally:
         env.close()
     return {**summary(games), "epsilon": epsilon, "tstates": tstates,
-            "max_steps": max_steps, "games": games}
+            "max_steps": max_steps, "environment_version": ENVIRONMENT_VERSION, "games": games}
 
 
 def load_policy(checkpoint, deterministic=False):

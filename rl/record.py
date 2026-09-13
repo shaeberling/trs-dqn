@@ -11,7 +11,7 @@ import struct
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from .env import BreakdownEnv
+from .env import BreakdownEnv, ENVIRONMENT_VERSION
 from .evaluate import checkpoint_config, load_policy, policy_description
 
 
@@ -50,6 +50,7 @@ def record(checkpoint, output, seed, tstates, max_steps, deterministic=False):
     stream = io.BytesIO()
     atlas.save(stream, format="PNG")
     metadata = dict(seed=seed, checkpoint=str(checkpoint),
+                    environment_version=ENVIRONMENT_VERSION,
                     checkpoint_sha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
                     policy=policy_description(config, deterministic),
                     deterministic_override=deterministic,
