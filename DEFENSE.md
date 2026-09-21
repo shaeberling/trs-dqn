@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **600 points**, with **2,003** neural
-actions exactly reverified; its ten-game mean is **564**, median **570**, all stage 1.
+The current standard-policy best is **620 points**, with **2,047** neural
+actions exactly reverified; its ten-game mean is **574**, median **580**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -646,6 +646,17 @@ Its selected complete replay reproduced all **1,982** neural actions after
 reloading the model. This is below the starting checkpoint's mean 564, not an
 improvement claim. It ties the shared best score and therefore does not replace
 the existing 600-point bundle. Both live runs continue unchanged.
+
+After **1,204,224 additional actions**, the longer-rollout trial reached
+**620 points** at counter **6,638,336**. Ten complete validation games: mean
+**574**, median **580**, best **620**, all stage 1 and no mission. The collector
+reloaded the frozen model and exactly reproduced all **2,047** actions, screens
+and rewards before promoting it. The
+[resumable milestone](results/defense/training/ppo-08-long-rollout/step-000006638336/state.json)
+preserves weights, optimizer and the complete evaluation. A preceding round
+averaged 584, so the best single replay is not also the highest-mean checkpoint.
+The 600-point model and all older versions remain available. This is progress
+on reused validation seeds, not yet evidence of a stage clear or mission win.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
