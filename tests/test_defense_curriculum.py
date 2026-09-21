@@ -307,17 +307,20 @@ class DefenseCurriculumTests(unittest.TestCase):
             self.assertTrue(expected[-1][2])
         finally:
             original.close()
-        env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_lookback=8)
-        try:
-            np.testing.assert_array_equal(env.reset(12), first)
-            for action, reference in zip(actions, expected):
-                result = env.step(int(action))
-                np.testing.assert_array_equal(result[0], reference[0])
-                self.assertEqual(result[1:4], reference[1:4])
-                self.assertEqual({key: result[4][key] for key in reference[4]}, reference[4])
-            self.assertTrue(env.archive)
-        finally:
-            env.close()
+        for cells in ("score", "screen"):
+            with self.subTest(cells=cells):
+                env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_lookback=8,
+                                           curriculum_cells=cells)
+                try:
+                    np.testing.assert_array_equal(env.reset(12), first)
+                    for action, reference in zip(actions, expected):
+                        result = env.step(int(action))
+                        np.testing.assert_array_equal(result[0], reference[0])
+                        self.assertEqual(result[1:4], reference[1:4])
+                        self.assertEqual({key: result[4][key] for key in reference[4]}, reference[4])
+                    self.assertTrue(env.archive)
+                finally:
+                    env.close()
 
     def test_invalid_settings(self):
         for config in (dict(curriculum_probability=float("nan")), dict(curriculum_probability=2),
