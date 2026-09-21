@@ -56,6 +56,13 @@ def main():
     parser.add_argument("--sil-batch-size", type=int, default=512)
     parser.add_argument("--sil-loss-weight", type=float, default=.1)
     parser.add_argument("--sil-value-weight", type=float, default=.01)
+    parser.add_argument("--curriculum-probability", type=float, default=0,
+                        help="training-only own-reached-state reset probability; 0 disables")
+    parser.add_argument("--curriculum-score-interval", type=int, default=20)
+    parser.add_argument("--curriculum-per-bin", type=int, default=4)
+    parser.add_argument("--curriculum-bins", type=int, default=16)
+    parser.add_argument("--curriculum-share", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--curriculum-boot-envs", type=int, default=0)
     args = parser.parse_args()
     prior = None
     if args.resume:
@@ -84,6 +91,12 @@ def main():
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
         parser.error("tstates out of range")
+    if (not np.isfinite(args.curriculum_probability) or not 0 <= args.curriculum_probability <= 1
+            or args.curriculum_score_interval < 0 or min(args.curriculum_per_bin, args.curriculum_bins) < 1
+            or not 0 <= args.curriculum_boot_envs < args.envs
+            or (args.curriculum_share and not args.curriculum_probability)
+            or (args.curriculum_boot_envs and not args.curriculum_share)):
+        parser.error("invalid own-experience curriculum settings")
     if (args.sil_updates < 0 or min(args.sil_capacity, args.sil_suffix_steps, args.sil_batch_size) < 1
             or not np.isfinite(args.sil_loss_weight) or args.sil_loss_weight <= 0
             or not np.isfinite(args.sil_value_weight) or args.sil_value_weight < 0):
@@ -124,6 +137,8 @@ def main():
         sil_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 941]))
         if prior and "sil_rng" in prior:
             sil_rng.bit_generator.state = prior["sil_rng"]
+    boot_episodes = prior.get("boot_episodes", episodes) if prior else 0
+    restored_segments = prior.get("restored_segments", 0) if prior else 0
     args.run.mkdir(parents=True, exist_ok=True)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm="ppo", game_sha256=GAME_SHA256,
@@ -133,12 +148,17 @@ def main():
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
+    if args.curriculum_probability:
+        config.update(curriculum_archive_saved=False,
+                      curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
+                      snapshot_source_sha256=sha256(Path(__file__).with_name("defense_snapshot.py")))
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
     log_file = (args.run/"metrics.jsonl").open("a", buffering=1)
     started, start_steps = time.monotonic(), steps
     stop = False
     workers = None
     recent = deque(maxlen=100)
+    recent_restored = deque(maxlen=100)
 
     def log(event):
         row = dict(wall_seconds=round(time.monotonic()-started, 2), **event)
@@ -149,7 +169,8 @@ def main():
             print(json.dumps(row), flush=True)
 
     def state():
-        saved = dict(steps=steps, episodes=episodes, rng=rng.bit_generator.state, config=config)
+        saved = dict(steps=steps, episodes=episodes, boot_episodes=boot_episodes,
+                     restored_segments=restored_segments, rng=rng.bit_generator.state, config=config)
         if sil is not None:
             saved.update(sil_rng=sil_rng.bit_generator.state, sil_replay_saved=False)
         return saved
@@ -164,8 +185,15 @@ def main():
     last_log = time.monotonic()
     log(dict(event="start", steps=steps, config=config))
     try:
+        curriculum = {}
+        if args.curriculum_probability:
+            curriculum = dict(curriculum=True, curriculum_probability=args.curriculum_probability,
+                              curriculum_score_interval=args.curriculum_score_interval,
+                              curriculum_per_bin=args.curriculum_per_bin, curriculum_bins=args.curriculum_bins,
+                              curriculum_share=args.curriculum_share,
+                              curriculum_boot_envs=args.curriculum_boot_envs)
         workers = VectorEnv(args.envs, args.seed+steps, game="defense", tstates=args.tstates,
-                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter)
+                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter, **curriculum)
         obs = workers.observations
         log(dict(event="workers_started", workers=workers.runtime()))
         agent.save(args.run/"latest", state())
@@ -186,7 +214,7 @@ def main():
                         # Only this learner's own screens, selected actions and
                         # score returns; never evaluation/replay-file examples.
                         segment = sil_collector.append(worker, obs[worker], actions[worker], reward,
-                                                       learning_terminal, truncated, True)
+                                                       learning_terminal, truncated, info.get("full_game", True))
                         if segment is not None:
                             log(dict(event="sil_segment", action_counter=steps+worker+1, **segment))
                     if truncated and not learning_terminal:
@@ -195,9 +223,17 @@ def main():
                     reward_row.append(reward)
                     boundary_row.append(learning_terminal or truncated)
                     next_obs.append(reset if reset is not None else frame)
+                    if "curriculum_archive_add" in info:
+                        log(dict(event="curriculum_archive", worker=worker, action_counter=steps+worker+1,
+                                 **info["curriculum_archive_add"]))
                     if terminal or truncated:
                         episodes += 1
-                        recent.append(info)
+                        if info.get("full_game", True):
+                            boot_episodes += 1
+                            recent.append(info)
+                        else:
+                            restored_segments += 1
+                            recent_restored.append(info["episode_reward"])
                         log(dict(event="episode", worker=worker, action_counter=steps+worker+1,
                                  episode=episodes, **info))
                 rewards.append(reward_row)
@@ -239,6 +275,9 @@ def main():
             if time.monotonic()-last_log >= 10:
                 recent_summary = summarize(list(recent))
                 log(dict(event="progress", steps=steps, episodes=episodes,
+                         boot_episodes=boot_episodes, restored_segments=restored_segments,
+                         recent_restored=dict(segments=len(recent_restored),
+                             mean_new_score=float(np.mean(recent_restored)) if recent_restored else None),
                          steps_per_second=(steps-start_steps)/(time.monotonic()-started),
                          recent={k: v for k, v in recent_summary.items() if k != "games"},
                          actor_loss=float(np.mean(metrics, axis=0)[0]),

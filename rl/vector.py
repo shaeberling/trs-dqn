@@ -19,9 +19,11 @@ def worker(pipe, seed, config):
         game = config.pop("game", "breakdown")
         if game == "defense":
             if curriculum:
-                raise ValueError("Breakdown curriculum cannot be used for Defense")
-            from .defense import DefenseEnv
-            env = DefenseEnv(seed=seed, **config)
+                from .defense_curriculum import DefenseCurriculumEnv
+                env = DefenseCurriculumEnv(seed=seed, **config)
+            else:
+                from .defense import DefenseEnv
+                env = DefenseEnv(seed=seed, **config)
         elif game != "breakdown":
             raise ValueError(f"Unknown game: {game}")
         elif curriculum:
