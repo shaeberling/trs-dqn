@@ -35,6 +35,7 @@ class DefenseSnapshot:
     source_full_game: bool
     game_sha256: str = GAME_SHA256
     environment_version: str = ENVIRONMENT_VERSION
+    progress_start_score: int = 0
 
 
 def capture(env):
@@ -50,7 +51,8 @@ def capture(env):
         data.raw, frames, env.score, env.lives, env.stage, env.highest_stage,
         env.steps, env.missions, env._mission_visible, env.start_tstates,
         env.tstates, env.max_steps, len(env.actions), getattr(env, "worker_id", None),
-        getattr(env, "total_actions", env.steps), getattr(env, "full_game", True))
+        getattr(env, "total_actions", env.steps), getattr(env, "full_game", True),
+        progress_start_score=getattr(env, "progress_start_score", 0))
 
 
 def restore(env, saved):
@@ -61,7 +63,8 @@ def restore(env, saved):
                (saved.tstates, saved.max_steps, saved.action_count)
             or saved.frames.shape != (4, 16, 64) or saved.frames.dtype != np.uint8
             or not 1 <= saved.lives <= 4 or not 1 <= saved.stage <= saved.highest_stage <= 3
-            or min(saved.score, saved.steps, saved.missions, saved.source_action) < 0):
+            or min(saved.score, saved.steps, saved.missions, saved.source_action) < 0
+            or not 0 <= saved.progress_start_score <= saved.score):
         raise ValueError("Incompatible Defense snapshot configuration or screen history")
     _configure()
     data = ctypes.create_string_buffer(saved.native)
@@ -75,4 +78,6 @@ def restore(env, saved):
     env.steps, env.missions = saved.steps, saved.missions
     env._mission_visible = saved.mission_visible
     env.start_tstates, env.done = saved.start_tstates, False
+    if hasattr(env, "progress_start_score"):
+        env.progress_start_score = saved.progress_start_score
     return np.stack(env.frames)

@@ -31,7 +31,7 @@ def sha256(path):
 
 def game_rank(game):
     """Completed full games only; verified missions outrank score."""
-    if not game.get("terminated") or game.get("truncated"):
+    if not game.get("terminated") or game.get("truncated") or not game.get("full_game", True):
         return None
     return (game["missions_completed"], game["highest_stage"], game["score"])
 
