@@ -1,0 +1,36 @@
+{
+  "recorded_at_utc": "2026-09-14 11:46:04 UTC",
+  "exact_20_original_game_dictionaries_match": true,
+  "original_result_sha256": "2d34be9091ced844cac55134fb7f5e585adbdd0f8d0acbed9027d0a4d1e656b8",
+  "source_primary_sha256": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e",
+  "package": "runs/level10-temporal-e0da-eval",
+  "package_state_sha256": "948d4bef41f45b024f1a8c6f3c35ae7a65b39863f2bfb8e24ea2e8e7c97a20bb",
+  "package_model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+  "package_evaluation_only_and_no_optimizer_verified": true,
+  "implementation_sha256": {
+    "rl/env.py": "aec498de1b0239f1e06db5cb9ce089474c45f44f6dba01ee837edf39f45cc076",
+    "rl/evaluate.py": "1b5b0de32c70ecd1211aa068ef4c0dac47d4f9955f0aebb6e964537732a373b8",
+    "rl/ppo.py": "59a14e7f2473138c8943b8f90dcb711cb145c742594e9573f6aaeff85e305856",
+    "rl/snapshot.py": "d3d64600d734f9af478321c26092047ec03c39881b21f8f841ae9db722d4bc33",
+    "rl/curriculum.py": "2b24497921a0d1e60fe33752e1ef1a057e5999b3b0e86c4b6f66c9d285ed094f",
+    "rl/vector.py": "cc26435fc1cb9e29e0f869ada1831f1f2909cb4a3a716b2f389f05c17c251a50",
+    "rl/record.py": "82edad320496ba08e70c6ea8d7463d0c5e446b77f76c646ec6d9399b971636e5",
+    "rl/inspect_policy.py": "22ab221dba5284921f9ed65d7e73fb4dc262c3c564b3f46dbdae1d50b12f981a",
+    "tests/test_observation_stride.py": "89fcd0dd898eda8ee89b47724d511fd00ce5d10db930f35cf3d23b0e416f513d"
+  },
+  "tests": {
+    "count": 96,
+    "seconds": 7.172,
+    "session": 5853,
+    "exit_code": 0
+  },
+  "original_compatibility": {
+    "session": 14813,
+    "exit_code": 0,
+    "seeds": [
+      10000,
+      10019
+    ]
+  },
+  "decision": "Original default behavior and evaluation-only candidate package pass. Run the single predeclared spaced primary reproduction using checkpoint defaults; retain original reference."
+}

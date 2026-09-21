@@ -1,0 +1,42 @@
+{
+  "checkpoint": "runs/level10-lr5e5/step-018501632/model.safetensors",
+  "checkpoint_sha256": "c656c9e515a007360f9bfa7bb549594a50d7d60dcaf7230b94defef5d240a3d5",
+  "seeds": [
+    10000,
+    10019
+  ],
+  "policy": "learned categorical, sampled",
+  "max_steps": 0,
+  "timing_method": "/usr/bin/time -p, real seconds, whole CLI process",
+  "load_controlled": false,
+  "caveat": "Other learners remained active; one timing per worker count is not a controlled performance estimate.",
+  "measurements": [
+    {
+      "eval_envs": 1,
+      "result": "parallel-validation-serial-control.json",
+      "sha256": "a4cdb940afd88c1376b5d8019a41a984977eeee580cb9a4f31cc29b603f2c2b2",
+      "whole_process_wall_seconds": 102.08,
+      "complete_games": 20,
+      "all_historical_game_fields_match": true
+    },
+    {
+      "eval_envs": 8,
+      "result": "parallel-validation-8.json",
+      "sha256": "3a83370577c85000cfecb682b74175a671b91599f63344df1d25c80aee6e73ca",
+      "whole_process_wall_seconds": 96.08,
+      "complete_games": 20,
+      "all_historical_game_fields_match": true
+    },
+    {
+      "eval_envs": 20,
+      "result": "parallel-validation-20.json",
+      "sha256": "2d742e1fd4a5f4297a53c4c26e50259bbfd417afb98ddb0378660e2c0386e4d3",
+      "whole_process_wall_seconds": 80.82,
+      "complete_games": 20,
+      "all_historical_game_fields_match": true
+    }
+  ],
+  "total_actions_per_suite": 121555,
+  "selected_eval_envs": 20,
+  "observed_serial_to_selected_speed_ratio": 1.2630536995793122
+}

@@ -1,0 +1,249 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-027500544",
+  "hashes": {
+    "model.safetensors": "9de19f71c6e59056a543d26a52b45622a3ffd84cf013bd4306827d9eb2164c1a",
+    "optimizer.npz": "9cd60667e6e30abf2d06b4d5057aedefbd7092e582e54650d3e2221cad323c54",
+    "state.json": "46869d3291e15537ce2efb5caf061e59152e43eabc4a07e23a7d1fd19e53c469",
+    "evaluation.json": "5dd944ef5c6ab5dea5f2dc50e3b1f446f2d1fdde9857ef7c1e088464e6f5919f"
+  },
+  "summary": {
+    "complete_games": 20,
+    "mean_score": 134.5,
+    "median_score": 117,
+    "best_score": 315,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 14,
+      "3": 6,
+      "4": 3,
+      "5": 3
+    }
+  },
+  "reference_primary": {
+    "complete_games": 20,
+    "mean_score": 166.7,
+    "median_score": 145.5,
+    "best_score": 294,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 18,
+      "3": 10,
+      "4": 5,
+      "5": 2
+    }
+  },
+  "first_ten_primary_suites": [
+    {
+      "steps": 25251840,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 98.6,
+        "median_score": 89.5,
+        "best_score": 264,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 25501696,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 127.2,
+        "median_score": 117,
+        "best_score": 285,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 5,
+          "4": 3,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 25751552,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 150.5,
+        "median_score": 125.5,
+        "best_score": 303,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 7,
+          "4": 6,
+          "5": 2
+        }
+      }
+    },
+    {
+      "steps": 26001408,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 113.75,
+        "median_score": 114,
+        "best_score": 242,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 3,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 26251264,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 102.95,
+        "median_score": 109,
+        "best_score": 196,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 2,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 26501120,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 140.35,
+        "median_score": 115,
+        "best_score": 312,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 6,
+          "4": 4,
+          "5": 2
+        }
+      }
+    },
+    {
+      "steps": 26750976,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 108.05,
+        "median_score": 105,
+        "best_score": 193,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 4,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 27000832,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 106.45,
+        "median_score": 95.5,
+        "best_score": 246,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 4,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 27250688,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 121.55,
+        "median_score": 112,
+        "best_score": 268,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 5,
+          "4": 2,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 27500544,
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 134.5,
+        "median_score": 117,
+        "best_score": 315,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 6,
+          "4": 3,
+          "5": 3
+        }
+      }
+    }
+  ],
+  "primary_rank_exceeds_reference": true,
+  "selection_reason": "Three complete level-5 reaches versus reference two; best primary depth-count rank among the first ten SIL suites. Lower mean and intermediate-level counts than the reference; no overall promotion before secondary audit.",
+  "seed_termination_statistics_verified": true,
+  "level5_games": [
+    {
+      "score": 315,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 13450,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 315,
+      "start_tstates": 33283,
+      "seed": 10000
+    },
+    {
+      "score": 281,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 13400,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 281,
+      "start_tstates": 72093,
+      "seed": 10006
+    },
+    {
+      "score": 306,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 13513,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 306,
+      "start_tstates": 159234,
+      "seed": 10009
+    }
+  ],
+  "secondary_seeds": [
+    10100,
+    10149
+  ],
+  "fresh_test_unused": true
+}

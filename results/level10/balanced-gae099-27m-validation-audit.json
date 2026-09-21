@@ -1,0 +1,252 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-gae099/step-027000832",
+  "hashes": {
+    "model.safetensors": "74444a0ed2f13a1f780cf9eff6645d3f3e5d57562f985a631869d29ecfb49cc7",
+    "optimizer.npz": "48c8c5fbd038c90a387fdc7648ec08cc780291188c22e5f9faebedccf49bc7a8",
+    "state.json": "ea60096d0465e0e87317f639cadc7ea532e928974f132ddbf4e594fb8cfa9d13"
+  },
+  "audit_exit_code": 0,
+  "all_seed_orders_termination_and_statistics_verified": true,
+  "primary_byte_identical": true,
+  "sets": {
+    "candidate_primary": {
+      "path": "results/level10/validation-balanced-gae099-27m.json",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 134.1,
+        "median_score": 120.5,
+        "best_score": 268,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 8,
+          "4": 3,
+          "5": 1
+        }
+      },
+      "level5_games": [
+        {
+          "score": 268,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 11857,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 268.0,
+          "start_tstates": 89846,
+          "seed": 10001
+        }
+      ]
+    },
+    "candidate_secondary": {
+      "path": "results/level10/validation-audit-balanced-gae099-27m.json",
+      "summary": {
+        "complete_games": 50,
+        "mean_score": 119.38,
+        "median_score": 116.0,
+        "best_score": 290,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 38,
+          "3": 8,
+          "4": 4,
+          "5": 3
+        }
+      },
+      "level5_games": [
+        {
+          "score": 290,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 12760,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 290.0,
+          "start_tstates": 184677,
+          "seed": 10107
+        },
+        {
+          "score": 279,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14942,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 279.0,
+          "start_tstates": 63303,
+          "seed": 10118
+        },
+        {
+          "score": 285,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 11832,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 285.0,
+          "start_tstates": 175224,
+          "seed": 10138
+        }
+      ]
+    },
+    "reference_primary": {
+      "path": "results/level10/validation-balanced-lr1e5-long-28m5.json",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 166.7,
+        "median_score": 145.5,
+        "best_score": 294,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 10,
+          "4": 5,
+          "5": 2
+        }
+      },
+      "level5_games": [
+        {
+          "score": 293,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14264,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 293.0,
+          "start_tstates": 105804,
+          "seed": 10012
+        },
+        {
+          "score": 294,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14572,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 294.0,
+          "start_tstates": 188429,
+          "seed": 10017
+        }
+      ]
+    },
+    "reference_secondary": {
+      "path": "results/level10/validation-audit-balanced-lr1e5-long-28m5.json",
+      "summary": {
+        "complete_games": 50,
+        "mean_score": 141.18,
+        "median_score": 124.0,
+        "best_score": 327,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 42,
+          "3": 16,
+          "4": 8,
+          "5": 4
+        }
+      },
+      "level5_games": [
+        {
+          "score": 294,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14122,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 294.0,
+          "start_tstates": 171226,
+          "seed": 10109
+        },
+        {
+          "score": 327,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 16788,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 327.0,
+          "start_tstates": 101828,
+          "seed": 10125
+        },
+        {
+          "score": 294,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 13628,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 294.0,
+          "start_tstates": 168386,
+          "seed": 10130
+        },
+        {
+          "score": 267,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 17311,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 267.0,
+          "start_tstates": 52650,
+          "seed": 10131
+        }
+      ]
+    }
+  },
+  "combined_reused_games": {
+    "candidate": {
+      "games": 70,
+      "mean_score": 123.58571428571429,
+      "median_score": 117.5,
+      "best_score": 290,
+      "level_reach_counts": {
+        "2": 53,
+        "3": 16,
+        "4": 7,
+        "5": 4
+      }
+    },
+    "reference": {
+      "games": 70,
+      "mean_score": 148.47142857142856,
+      "median_score": 124.5,
+      "best_score": 327,
+      "level_reach_counts": {
+        "2": 60,
+        "3": 26,
+        "4": 13,
+        "5": 6
+      }
+    }
+  },
+  "decision": "Do not promote; reference is better on both reused sets. No level-6 result, no fresh-test use."
+}

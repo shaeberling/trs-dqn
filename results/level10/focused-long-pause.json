@@ -1,0 +1,391 @@
+{
+  "start": 23003136,
+  "stop": {
+    "wall_seconds": 4267.88,
+    "event": "stopped",
+    "steps": 28045312,
+    "target_met": false,
+    "mlx_active_bytes": 9798508,
+    "mlx_cache_bytes": 725633552,
+    "mlx_peak_bytes": 1433254564
+  },
+  "full_games": 406,
+  "restored_segments": 4454,
+  "restored_origins_valid": true,
+  "peer_segments": 4323,
+  "training_truncations": 0,
+  "validations": [
+    {
+      "steps": 23252992,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 113,
+      "median_score": 119.5,
+      "best_score": 234,
+      "highest_level": 4,
+      "level_reach_counts": {
+        "2": 14,
+        "3": 4,
+        "4": 1,
+        "5": 0
+      }
+    },
+    {
+      "steps": 23502848,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 111.05,
+      "median_score": 118.5,
+      "best_score": 255,
+      "highest_level": 4,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 2,
+        "4": 2,
+        "5": 0
+      }
+    },
+    {
+      "steps": 23752704,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 119.25,
+      "median_score": 110,
+      "best_score": 298,
+      "highest_level": 5,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 4,
+        "4": 2,
+        "5": 1
+      }
+    },
+    {
+      "steps": 24002560,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 92.75,
+      "median_score": 100,
+      "best_score": 129,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 24252416,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 101.15,
+      "median_score": 110.5,
+      "best_score": 217,
+      "highest_level": 4,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 2,
+        "4": 1,
+        "5": 0
+      }
+    },
+    {
+      "steps": 24502272,
+      "complete_games": 19,
+      "incomplete_games": 1,
+      "mean_score": 90.89473684210526,
+      "median_score": 65,
+      "best_score": 208,
+      "highest_level": 3,
+      "level_reach_counts": {
+        "2": 8,
+        "3": 3,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 24752128,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 96.65,
+      "median_score": 62,
+      "best_score": 203,
+      "highest_level": 3,
+      "level_reach_counts": {
+        "2": 10,
+        "3": 3,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 25001984,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 86.8,
+      "median_score": 66.5,
+      "best_score": 204,
+      "highest_level": 3,
+      "level_reach_counts": {
+        "2": 10,
+        "3": 3,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 25251840,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 76.45,
+      "median_score": 63.5,
+      "best_score": 118,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 9,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 25501696,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 72.1,
+      "median_score": 60.5,
+      "best_score": 116,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 7,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 25751552,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 72.8,
+      "median_score": 57,
+      "best_score": 209,
+      "highest_level": 4,
+      "level_reach_counts": {
+        "2": 6,
+        "3": 1,
+        "4": 1,
+        "5": 0
+      }
+    },
+    {
+      "steps": 26001408,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 69,
+      "median_score": 56.5,
+      "best_score": 121,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 6,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 26251264,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 60.15,
+      "median_score": 58.5,
+      "best_score": 109,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 3,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 26501120,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 61.3,
+      "median_score": 56.5,
+      "best_score": 122,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 4,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 26750976,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 59.8,
+      "median_score": 55.5,
+      "best_score": 119,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 4,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 27000832,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 77.05,
+      "median_score": 63,
+      "best_score": 121,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 8,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 27250688,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 59,
+      "median_score": 53.5,
+      "best_score": 127,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 2,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 27500544,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 78.05,
+      "median_score": 66.5,
+      "best_score": 123,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 10,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 27750400,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 80.5,
+      "median_score": 62.5,
+      "best_score": 131,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 8,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    },
+    {
+      "steps": 28000256,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 77.15,
+      "median_score": 63.5,
+      "best_score": 125,
+      "highest_level": 2,
+      "level_reach_counts": {
+        "2": 9,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      }
+    }
+  ],
+  "publications": [
+    {
+      "level": 5,
+      "count": 2,
+      "first_action": 23840516
+    },
+    {
+      "level": 6,
+      "count": 105,
+      "first_action": 24209801
+    },
+    {
+      "level": 7,
+      "count": 46,
+      "first_action": 24310623
+    },
+    {
+      "level": 8,
+      "count": 19,
+      "first_action": 24455794
+    }
+  ],
+  "practice": [
+    {
+      "start_level": 5,
+      "segments": 1489,
+      "new_reward": 29855,
+      "actions": 919306,
+      "highest_level": 7
+    },
+    {
+      "start_level": 6,
+      "segments": 1072,
+      "new_reward": 19800,
+      "actions": 747502,
+      "highest_level": 7
+    },
+    {
+      "start_level": 7,
+      "segments": 1007,
+      "new_reward": 38653,
+      "actions": 922746,
+      "highest_level": 8
+    },
+    {
+      "start_level": 8,
+      "segments": 886,
+      "new_reward": 7510,
+      "actions": 628958,
+      "highest_level": 8
+    }
+  ],
+  "run": "runs/level10-curriculum-focused-long",
+  "scope": "Completed adaptive pause of an experiment, not completion of the Level-10 objective.",
+  "exit_code": 0,
+  "additional_actions": 5042176,
+  "original_additional_action_budget": 10000000,
+  "unspent_original_action_budget": 4957824,
+  "reason": "Later-level restored practice reached level 8 but plateaued; from-boot validation regressed. Pause after the roughly five-million-action validation and give compute to the protected-boot comparison.",
+  "saved_latest": {
+    "model_sha256": "5f0b627e0fc3e6729beac6f1b098ad5218b2ff5faaec3350a1af37c20c4ded78",
+    "optimizer_sha256": "86e0bb17a1a1bae9f13ee5e47cd98b79022d40ab34d1e418074d8685563d2bf2",
+    "state_sha256": "979cf02b4c9f77922a724da23a051f1d416d923c99b663136adaf9021347f1ee"
+  },
+  "log": "logs/level10-curriculum-focused-long.jsonl",
+  "log_lines": 5435,
+  "log_sha256": "37b12757f56033ef0fb9768ee40445260e249bf3fd340cbfde14d5101f70bd5d",
+  "log_byte_identical_to_source": true,
+  "incomplete_suite_partial_mean_is_not_full_suite_performance": true,
+  "learner_optimizer_rng_saved": true,
+  "training_archives_and_unfinished_emulator_trajectories_not_in_checkpoint": true,
+  "final_test_seeds_used": false
+}

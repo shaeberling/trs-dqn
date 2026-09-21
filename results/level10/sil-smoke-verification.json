@@ -1,0 +1,122 @@
+{
+  "scope": "Implementation diagnostics only; none may seed performance training or model selection",
+  "tests_passed": 83,
+  "disabled_compatibility": "sil-disabled-compatibility.json",
+  "smokes": {
+    "sil-disabled-compat-smoke": {
+      "exit_code": 0,
+      "start_steps": 20500480,
+      "additional_actions": 65536,
+      "stop": {
+        "wall_seconds": 169.72,
+        "event": "stopped",
+        "steps": 20566016,
+        "target_met": false,
+        "training_action_origins": {
+          "from_boot": 46359,
+          "restored": 19177
+        },
+        "mlx_active_bytes": 9769648,
+        "mlx_cache_bytes": 725635088,
+        "mlx_peak_bytes": 1336473280
+      },
+      "log_lines": 45,
+      "log_bytes": 24491,
+      "log_sha256": "ef32cff3ee1db5c214423b692a6d29d39c103195d565a73d9471ec9159394c2a",
+      "checkpoint_hashes": {
+        "model.safetensors": "ea712b655f193ce37539f5969f0a50378acdfca5a88d4ec95aa9ab2623e05e02",
+        "optimizer.npz": "be74b3aaaaacc851396be5ce28a5de9b2f7846c72b4306f488df38213f05b99d",
+        "state.json": "504f865dc1a2e0562dfb41445d3392664895da1a25f1a7e586e3dd5933c80595"
+      },
+      "segment_score_accounting_verified": 0,
+      "all_logged_action_accounting_and_bounds_verified": true,
+      "all_validation_incomplete_no_model_selected": true
+    },
+    "sil-enabled-smoke": {
+      "exit_code": 0,
+      "start_steps": 20500480,
+      "additional_actions": 65536,
+      "stop": {
+        "wall_seconds": 193.28,
+        "event": "stopped",
+        "steps": 20566016,
+        "target_met": false,
+        "training_action_origins": {
+          "from_boot": 43777,
+          "restored": 21759
+        },
+        "mlx_active_bytes": 9759384,
+        "mlx_cache_bytes": 521775912,
+        "mlx_peak_bytes": 1433223656,
+        "sil": {
+          "replay_size": 1024,
+          "pending_transitions": 512,
+          "pending_screen_bytes": 2097152,
+          "replay_array_bytes": 4219904,
+          "completed_learning_segments": 39,
+          "discarded_truncated_segments": 0,
+          "dropped_prefix_transitions": 60142,
+          "committed_transitions": {
+            "from_boot": 2706,
+            "restored": 2176
+          },
+          "updates": 240
+        }
+      },
+      "log_lines": 85,
+      "log_bytes": 50064,
+      "log_sha256": "d02718925b9f192ed5dd4c60b7ad5d73a67c0efd969ecf0f951bdd5815de020b",
+      "checkpoint_hashes": {
+        "model.safetensors": "c30b2915212811b71c179a76f8e4fccf3a022699acb876c8db6ff4a9815197af",
+        "optimizer.npz": "00ea8d4e1f7269238fbef2cacfe44660908c05e958125dd4d1b243fb9e7999f8",
+        "state.json": "c39b2e79eb0ffd28c499a6cdcba0a742cd3f5e1b012ecdd9754c1b74beaa253d"
+      },
+      "segment_score_accounting_verified": 39,
+      "all_logged_action_accounting_and_bounds_verified": true,
+      "all_validation_incomplete_no_model_selected": true
+    },
+    "sil-truncation-smoke": {
+      "exit_code": 0,
+      "start_steps": 20500480,
+      "additional_actions": 4096,
+      "stop": {
+        "wall_seconds": 9.57,
+        "event": "stopped",
+        "steps": 20504576,
+        "target_met": false,
+        "training_action_origins": {
+          "from_boot": 4096,
+          "restored": 0
+        },
+        "mlx_active_bytes": 9769656,
+        "mlx_cache_bytes": 524622652,
+        "mlx_peak_bytes": 758543868,
+        "sil": {
+          "replay_size": 0,
+          "pending_transitions": 0,
+          "pending_screen_bytes": 0,
+          "replay_array_bytes": 527488,
+          "completed_learning_segments": 0,
+          "discarded_truncated_segments": 256,
+          "dropped_prefix_transitions": 2048,
+          "committed_transitions": {
+            "from_boot": 0,
+            "restored": 0
+          },
+          "updates": 0
+        }
+      },
+      "log_lines": 517,
+      "log_bytes": 147149,
+      "log_sha256": "ea6884ff0ab1a1b3d3721a803668f0b7aa85e97bc2b991cb6f8af1cb41d79848",
+      "checkpoint_hashes": {
+        "model.safetensors": "4df167c0793794010e50b9256d3c8a00201b15654441097c28baf07cc3208fc5",
+        "optimizer.npz": "bbe11c4035c3ef36cb2cb8c934dc7c4cfc638c315c815db3cce63bbbab4650d5",
+        "state.json": "0d3e56f78eb6e2361d3e3e06034b4cb5f25b3a170c9fceeb8a8ee690c2b4d04d"
+      },
+      "segment_score_accounting_verified": 256,
+      "all_logged_action_accounting_and_bounds_verified": true,
+      "all_validation_incomplete_no_model_selected": true
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "recorded_at_utc": "2026-09-14 11:23:28 UTC",
+  "exact_game_dictionaries_match": true,
+  "seeds": [
+    10000,
+    10001
+  ],
+  "complete_games": 2,
+  "exit_code": 0,
+  "session": 59372,
+  "result_sha256": "ff31613558362b438c97159b9f27c86876bc3fcadefcb9459aedbc3ac83e1d83",
+  "source_primary_sha256": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e",
+  "decision": "Compatibility gate passed. Run the two predeclared diagnostic arms sequentially; no promotion."
+}

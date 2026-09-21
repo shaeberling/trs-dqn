@@ -1,0 +1,322 @@
+{
+  "through_action": 24768671,
+  "first_entries": [
+    {
+      "publication": {
+        "wall_seconds": 794.52,
+        "event": "curriculum_archive",
+        "steps": 23503102,
+        "worker": 29,
+        "level": 5,
+        "score": 289,
+        "slot": 0,
+        "source_action": 15624,
+        "source_episode_steps": 15624,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 4347,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 832.52,
+          "event": "episode",
+          "score": 334,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 23549758,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 334,
+          "start_tstates": 4347,
+          "full_game": true,
+          "segment_start_score": 0,
+          "segment_start_level": 1,
+          "segment_source_worker": null,
+          "segment_source_action": null,
+          "curriculum_archive_counts": {
+            "5": 2,
+            "6": 3
+          },
+          "worker": 29,
+          "episode_steps": 17082,
+          "episode": 15628
+        }
+      ],
+      "parent_entries": []
+    },
+    {
+      "publication": {
+        "wall_seconds": 820.84,
+        "event": "curriculum_archive",
+        "steps": 23535160,
+        "worker": 23,
+        "level": 6,
+        "score": 328,
+        "slot": 0,
+        "source_action": 16626,
+        "source_episode_steps": 965,
+        "source_full_game": false,
+        "source_start_level": 5,
+        "start_tstates": 4347,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 826.77,
+          "event": "curriculum_episode",
+          "score": 332,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 23542328,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 43,
+          "start_tstates": 4347,
+          "full_game": false,
+          "segment_start_score": 289,
+          "segment_start_level": 5,
+          "segment_source_worker": 29,
+          "segment_source_action": 15624,
+          "curriculum_archive_counts": {
+            "5": 2,
+            "6": 2
+          },
+          "worker": 23,
+          "episode_steps": 1189,
+          "episode": 15625
+        }
+      ],
+      "parent_entries": [
+        {
+          "wall_seconds": 794.52,
+          "event": "curriculum_archive",
+          "steps": 23503102,
+          "worker": 29,
+          "level": 5,
+          "score": 289,
+          "slot": 0,
+          "source_action": 15624,
+          "source_episode_steps": 15624,
+          "source_full_game": true,
+          "source_start_level": 1,
+          "start_tstates": 4347,
+          "retained": true,
+          "shared": true,
+          "shared_with": 31
+        }
+      ]
+    },
+    {
+      "publication": {
+        "wall_seconds": 970.69,
+        "event": "curriculum_archive",
+        "steps": 23673240,
+        "worker": 23,
+        "level": 7,
+        "score": 380,
+        "slot": 0,
+        "source_action": 20941,
+        "source_episode_steps": 1890,
+        "source_full_game": false,
+        "source_start_level": 6,
+        "start_tstates": 4347,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 984.99,
+          "event": "curriculum_episode",
+          "score": 388,
+          "level": 7,
+          "game_over": true,
+          "waiting": false,
+          "steps": 23685080,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 60,
+          "start_tstates": 4347,
+          "full_game": false,
+          "segment_start_score": 328,
+          "segment_start_level": 6,
+          "segment_source_worker": 29,
+          "segment_source_action": 16811,
+          "curriculum_archive_counts": {
+            "5": 2,
+            "6": 5,
+            "7": 1
+          },
+          "worker": 23,
+          "episode_steps": 2260,
+          "episode": 15675
+        }
+      ],
+      "parent_entries": [
+        {
+          "wall_seconds": 826.64,
+          "event": "curriculum_archive",
+          "steps": 23541086,
+          "worker": 29,
+          "level": 6,
+          "score": 328,
+          "slot": 1,
+          "source_action": 16811,
+          "source_episode_steps": 16811,
+          "source_full_game": true,
+          "source_start_level": 1,
+          "start_tstates": 4347,
+          "retained": true,
+          "shared": true,
+          "shared_with": 31
+        }
+      ]
+    },
+    {
+      "publication": {
+        "wall_seconds": 1662.17,
+        "event": "curriculum_archive",
+        "steps": 24228276,
+        "worker": 19,
+        "level": 8,
+        "score": 529,
+        "slot": 0,
+        "source_action": 38286,
+        "source_episode_steps": 2457,
+        "source_full_game": false,
+        "source_start_level": 7,
+        "start_tstates": 4347,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 1736.91,
+          "event": "curriculum_episode",
+          "score": 543,
+          "level": 8,
+          "game_over": true,
+          "waiting": false,
+          "steps": 24256884,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 158,
+          "start_tstates": 4347,
+          "full_game": false,
+          "segment_start_score": 385,
+          "segment_start_level": 7,
+          "segment_source_worker": 26,
+          "segment_source_action": 32252,
+          "curriculum_archive_counts": {
+            "5": 5,
+            "6": 8,
+            "7": 8,
+            "8": 1
+          },
+          "worker": 19,
+          "episode_steps": 3351,
+          "episode": 15924
+        }
+      ],
+      "parent_entries": [
+        {
+          "wall_seconds": 1436.54,
+          "event": "curriculum_archive",
+          "steps": 24035195,
+          "worker": 26,
+          "level": 7,
+          "score": 385,
+          "slot": 5,
+          "source_action": 32252,
+          "source_episode_steps": 8867,
+          "source_full_game": false,
+          "source_start_level": 5,
+          "start_tstates": 4347,
+          "retained": true,
+          "shared": true,
+          "shared_with": 31
+        }
+      ]
+    }
+  ],
+  "protected_restored_segments": 0,
+  "full_training_beyond5": [
+    {
+      "wall_seconds": 832.52,
+      "event": "episode",
+      "score": 334,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 23549758,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 334,
+      "start_tstates": 4347,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "5": 2,
+        "6": 3
+      },
+      "worker": 29,
+      "episode_steps": 17082,
+      "episode": 15628
+    },
+    {
+      "wall_seconds": 2262.3,
+      "event": "episode",
+      "score": 411,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 24690917,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 411,
+      "start_tstates": 37452,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "5": 7,
+        "6": 8,
+        "7": 8,
+        "8": 3
+      },
+      "worker": 4,
+      "episode_steps": 17018,
+      "episode": 16098
+    }
+  ],
+  "origin_checks": true,
+  "run": "runs/level10-curriculum-balanced-lr1e5",
+  "scope": "Changing-policy training provenance, not frozen policy evaluation or final-test evidence.",
+  "source_episode_alignment_and_parent_rewards_verified": true,
+  "fresh_final_test_seeds_used": false
+}

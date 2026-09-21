@@ -1,0 +1,327 @@
+{
+  "run": "runs/level10-curriculum-balanced-sil20",
+  "through_steps": 26061918,
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "sil_accounting": {
+    "learning_suffixes_checked": 776,
+    "episode_suffix_coverages_checked": 267,
+    "committed_suffixes": 776,
+    "discarded_suffixes": 0,
+    "discarded_retained_transitions": 0,
+    "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+  },
+  "first_level5_publication": {
+    "wall_seconds": 1591.96,
+    "event": "curriculum_archive",
+    "steps": 25888196,
+    "worker": 3,
+    "level": 5,
+    "score": 280,
+    "slot": 0,
+    "source_action": 27567,
+    "source_episode_steps": 11546,
+    "source_full_game": true,
+    "source_start_level": 1,
+    "start_tstates": 167765,
+    "retained": true,
+    "shared": true,
+    "shared_with": 31
+  },
+  "first_completed_restored_episode": {
+    "wall_seconds": 1621.9,
+    "event": "curriculum_episode",
+    "score": 314,
+    "level": 5,
+    "game_over": true,
+    "waiting": false,
+    "steps": 25914163,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 34,
+    "start_tstates": 167765,
+    "full_game": false,
+    "segment_start_score": 280,
+    "segment_start_level": 5,
+    "segment_source_worker": 3,
+    "segment_source_action": 27567,
+    "curriculum_archive_counts": {
+      "5": 1
+    },
+    "worker": 18,
+    "episode_steps": 532,
+    "episode": 16449
+  },
+  "first_level6_publication": {
+    "wall_seconds": 1634.9,
+    "event": "curriculum_archive",
+    "steps": 25925655,
+    "worker": 22,
+    "level": 6,
+    "score": 319,
+    "slot": 0,
+    "source_action": 28737,
+    "source_episode_steps": 976,
+    "source_full_game": false,
+    "source_start_level": 5,
+    "start_tstates": 167765,
+    "retained": true,
+    "shared": true,
+    "shared_with": 31
+  },
+  "first_complete_from_boot_level5": {
+    "wall_seconds": 1615.48,
+    "event": "episode",
+    "score": 315,
+    "level": 5,
+    "game_over": true,
+    "waiting": false,
+    "steps": 25908356,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 315,
+    "start_tstates": 167765,
+    "full_game": true,
+    "segment_start_score": 0,
+    "segment_start_level": 1,
+    "segment_source_worker": null,
+    "segment_source_action": null,
+    "curriculum_archive_counts": {
+      "5": 1
+    },
+    "worker": 3,
+    "episode_steps": 12176,
+    "episode": 16446
+  },
+  "first_complete_restored_level6": {
+    "wall_seconds": 1647.76,
+    "event": "curriculum_episode",
+    "score": 327,
+    "level": 6,
+    "game_over": true,
+    "waiting": false,
+    "steps": 25937911,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 47,
+    "start_tstates": 167765,
+    "full_game": false,
+    "segment_start_score": 280,
+    "segment_start_level": 5,
+    "segment_source_worker": 3,
+    "segment_source_action": 27567,
+    "curriculum_archive_counts": {
+      "5": 2,
+      "6": 1
+    },
+    "worker": 22,
+    "episode_steps": 1359,
+    "episode": 16460
+  },
+  "complete_full_training_games": 207,
+  "practice_segments": 60,
+  "training_truncations": 0,
+  "highest_complete_full_training": 5,
+  "highest_complete_practice": 6,
+  "latest_progress": {
+    "wall_seconds": 1812.31,
+    "event": "progress",
+    "steps": 26054656,
+    "episodes": 16528,
+    "steps_per_second": 578.6,
+    "mean_score_100": 111.23,
+    "best_score_100": 315,
+    "highest_level_100": 5,
+    "complete_games_100": 100,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 64,
+      "3": 18,
+      "4": 8,
+      "5": 2
+    },
+    "level_reach_rates_100": {
+      "2": 0.64,
+      "3": 0.18,
+      "4": 0.08,
+      "5": 0.02
+    },
+    "actor_loss": -0.007397283148748102,
+    "value_loss": 0.18284066510386765,
+    "entropy": 0.2829326996579766,
+    "approx_kl": 0.0017115094351538573,
+    "rollout_action_origins": {
+      "from_boot": 2176,
+      "restored": 1920
+    },
+    "training_action_origins": {
+      "from_boot": 997140,
+      "restored": 51436
+    },
+    "mlx_active_bytes": 9759572,
+    "mlx_cache_bytes": 473167656,
+    "mlx_peak_bytes": 1591432704,
+    "sil": {
+      "replay_size": 32768,
+      "pending_transitions": 35337,
+      "pending_screen_bytes": 144740352,
+      "replay_array_bytes": 135036928,
+      "completed_learning_segments": 766,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 274320,
+      "committed_transitions": {
+        "from_boot": 705236,
+        "restored": 33683
+      },
+      "updates": 5100,
+      "rollout_updates": [
+        {
+          "loss": 0.023866809904575348,
+          "actor_loss": 0.22593896090984344,
+          "value_loss": 1.2729142904281616,
+          "positive_fraction": 0.51953125,
+          "applied": true
+        },
+        {
+          "loss": 0.018361186608672142,
+          "actor_loss": 0.1703675389289856,
+          "value_loss": 1.3244311809539795,
+          "positive_fraction": 0.51953125,
+          "applied": true
+        },
+        {
+          "loss": 0.01819148287177086,
+          "actor_loss": 0.1676030158996582,
+          "value_loss": 1.431180477142334,
+          "positive_fraction": 0.5546875,
+          "applied": true
+        },
+        {
+          "loss": 0.02020261250436306,
+          "actor_loss": 0.18698933720588684,
+          "value_loss": 1.503678798675537,
+          "positive_fraction": 0.552734375,
+          "applied": true
+        },
+        {
+          "loss": 0.01922355219721794,
+          "actor_loss": 0.17604964971542358,
+          "value_loss": 1.6185868978500366,
+          "positive_fraction": 0.576171875,
+          "applied": true
+        },
+        {
+          "loss": 0.024924425408244133,
+          "actor_loss": 0.23294347524642944,
+          "value_loss": 1.6300785541534424,
+          "positive_fraction": 0.59375,
+          "applied": true
+        },
+        {
+          "loss": 0.02174297533929348,
+          "actor_loss": 0.20027177035808563,
+          "value_loss": 1.7157970666885376,
+          "positive_fraction": 0.6328125,
+          "applied": true
+        },
+        {
+          "loss": 0.024750595912337303,
+          "actor_loss": 0.2297212779521942,
+          "value_loss": 1.7784680128097534,
+          "positive_fraction": 0.63671875,
+          "applied": true
+        },
+        {
+          "loss": 0.028534069657325745,
+          "actor_loss": 0.26577991247177124,
+          "value_loss": 1.9560785293579102,
+          "positive_fraction": 0.669921875,
+          "applied": true
+        },
+        {
+          "loss": 0.02607153356075287,
+          "actor_loss": 0.2420121282339096,
+          "value_loss": 1.8703205585479736,
+          "positive_fraction": 0.6796875,
+          "applied": true
+        },
+        {
+          "loss": 0.023710768669843674,
+          "actor_loss": 0.21746966242790222,
+          "value_loss": 1.9638023376464844,
+          "positive_fraction": 0.712890625,
+          "applied": true
+        },
+        {
+          "loss": 0.03059174120426178,
+          "actor_loss": 0.2850588858127594,
+          "value_loss": 2.085853338241577,
+          "positive_fraction": 0.734375,
+          "applied": true
+        },
+        {
+          "loss": 0.026410821825265884,
+          "actor_loss": 0.24359288811683655,
+          "value_loss": 2.0515317916870117,
+          "positive_fraction": 0.74609375,
+          "applied": true
+        },
+        {
+          "loss": 0.02733924426138401,
+          "actor_loss": 0.2507733404636383,
+          "value_loss": 2.2619104385375977,
+          "positive_fraction": 0.765625,
+          "applied": true
+        },
+        {
+          "loss": 0.025107597932219505,
+          "actor_loss": 0.22834281623363495,
+          "value_loss": 2.273317575454712,
+          "positive_fraction": 0.783203125,
+          "applied": true
+        },
+        {
+          "loss": 0.026870055124163628,
+          "actor_loss": 0.24480487406253815,
+          "value_loss": 2.389566421508789,
+          "positive_fraction": 0.80078125,
+          "applied": true
+        },
+        {
+          "loss": 0.03351433947682381,
+          "actor_loss": 0.31109264492988586,
+          "value_loss": 2.405075788497925,
+          "positive_fraction": 0.80859375,
+          "applied": true
+        },
+        {
+          "loss": 0.03554849326610565,
+          "actor_loss": 0.3305695652961731,
+          "value_loss": 2.4915380477905273,
+          "positive_fraction": 0.822265625,
+          "applied": true
+        },
+        {
+          "loss": 0.03203556314110756,
+          "actor_loss": 0.2947932779788971,
+          "value_loss": 2.5562336444854736,
+          "positive_fraction": 0.84375,
+          "applied": true
+        },
+        {
+          "loss": 0.02871117554605007,
+          "actor_loss": 0.2616286277770996,
+          "value_loss": 2.548314094543457,
+          "positive_fraction": 0.876953125,
+          "applied": true
+        }
+      ]
+    }
+  },
+  "scope": "First own-source restored SIL20 collection verified. Restored level6 is practice, not a frozen or from-boot milestone. Replay contains this learner's own live training only; starting score is not reward."
+}

@@ -1,0 +1,85 @@
+{
+  "replay": "results/level10/sil-continuation-31m25-secondary-level8-replay.html",
+  "sha256": "1fd6a5a1cf901275f148311dcd65acf9590225095cc4de8431ef81e611293d2f",
+  "recorder_session": 65518,
+  "recorder_exit_code": 0,
+  "recording_guard": 0,
+  "metadata": {
+    "seed": 10128,
+    "checkpoint": "runs/level10-sil-level6-continuation/step-031252480/model.safetensors",
+    "environment_version": "normalized-game-over-v2",
+    "checkpoint_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+    "policy": "learned categorical, sampled",
+    "deterministic_override": false,
+    "frames": 22440,
+    "tstates": 100000,
+    "score": 555,
+    "level": 8,
+    "game_over": true,
+    "waiting": false,
+    "steps": 22439,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 555,
+    "start_tstates": 90186
+  },
+  "all_secondary_game_fields_match": true,
+  "decoded_initial_final_and_monotonic_hud_verified": true,
+  "no_early_game_over": true,
+  "level_entries": [
+    {
+      "level": 1,
+      "frame": 0,
+      "score": 0
+    },
+    {
+      "level": 2,
+      "frame": 2713,
+      "score": 61
+    },
+    {
+      "level": 3,
+      "frame": 5482,
+      "score": 127
+    },
+    {
+      "level": 4,
+      "frame": 7454,
+      "score": 199
+    },
+    {
+      "level": 5,
+      "frame": 10486,
+      "score": 277
+    },
+    {
+      "level": 6,
+      "frame": 13064,
+      "score": 317
+    },
+    {
+      "level": 7,
+      "frame": 17531,
+      "score": 368
+    },
+    {
+      "level": 8,
+      "frame": 20180,
+      "score": 510
+    }
+  ],
+  "level8_actions": 2259,
+  "new_score_after_level8_entry": 45,
+  "action_inspection": {
+    "path": "results/level10/sil-continuation-31m25-policy-inspection.json",
+    "sha256": "2d44febedd131799a4e2e4d32351450bbff082346dfdc8dacaec755093357469",
+    "session": 90113,
+    "exit_code": 0,
+    "seeded_action_mismatches": 0,
+    "all_actions": 22439,
+    "all_identities_and_counts_verified": true
+  },
+  "interpretation": "Fully verified from-boot frozen sampled-policy Level8 replay; all22439actions match seeded neural inference. Not restored practice or reliable Level8 mastery. Level10 remains unreached and fresh final-test seeds unused."
+}

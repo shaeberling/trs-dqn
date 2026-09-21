@@ -1,0 +1,44 @@
+{
+  "recorded_at_utc": "2026-09-14 12:31:45 UTC",
+  "status": "predeclared_before_games",
+  "purpose": "One fixed action-frequency diagnostic of the frozen32M policy:25k/stride4 versus its selected50k/stride2 baseline. Hypothesis only: finer control might help later-level play while preserving nominal300k-T-state screen history.",
+  "checkpoint": "runs/level10-timing50k-stride2-sil4/step-032006144/model.safetensors",
+  "model_sha256": "0ac3de98f31dfa3c1f8ce514d6b762124ff4d9d0b1f294130feef947163e286a",
+  "baseline_primary": "results/level10/validation-timing50k-stride2-sil4-32m.json",
+  "baseline_primary_sha256": "53bd7b0a2edf694550523a29b2581a6d43224933c28394d44144629602e2c25b",
+  "baseline_primary_rank": [
+    0,
+    0,
+    2,
+    3,
+    4,
+    11,
+    16,
+    17,
+    19,
+    279.3
+  ],
+  "configuration": {
+    "tstates": 25000,
+    "observation_stride": 4,
+    "raw_history_frames": 13,
+    "policy_frames": 4,
+    "nominal_policy_history_tstates": 300000,
+    "max_steps": 400000,
+    "games": 20,
+    "envs": 20,
+    "seed": 10000,
+    "epsilon": 0,
+    "deterministic": false
+  },
+  "output": "results/level10/temporal-32m-25k-stride4-primary.json",
+  "evaluation_only": true,
+  "source_mutation": false,
+  "selection_contract": "One fixed20-game reused primary; require all complete. Compare the predeclared depth/count rank against selected32M50k/stride2 primary. If not improved, retain reference and do not run secondary or a timing sweep. If improved, predeclare one50-game reused secondary10100-10149 and require complete70-game rank improvement, uncapped replay/all-action checks and an explicit frozen timing package before any promotion.",
+  "limitations": [
+    "Same nominal history and guard window do not ensure trajectory or physical-time equivalence.",
+    "More actions change policy RNG consumption; this tests the resulting policy/control configuration, not a pure isolated causal effect.",
+    "No fresh final-test seeds, training-data imports, native state modifications or heuristic actions."
+  ],
+  "parallel_work": "One inference-only evaluator alongside existing solelearner48013; training recipe remains unchanged."
+}

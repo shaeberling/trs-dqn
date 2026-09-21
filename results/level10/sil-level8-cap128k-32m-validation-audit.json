@@ -1,0 +1,248 @@
+{
+  "checkpoint": "runs/level10-sil-level8-cap128k/step-032002048",
+  "source_hashes_unchanged": true,
+  "sets": [
+    {
+      "path": "runs/level10-sil-level8-cap128k/step-032002048/evaluation.json",
+      "sha256": "2db08234fe274c660bf607cff7b3b53bfde4dc2cfc3c79c4c1a1ad938cae2575",
+      "summary": {
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 166.55,
+        "median_score": 130.5,
+        "best_score": 370,
+        "highest_complete_level": 6,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 9,
+          "4": 7,
+          "5": 3,
+          "6": 2
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 370,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 15311,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 370,
+          "start_tstates": 63588,
+          "seed": 10003
+        },
+        {
+          "score": 341,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14628,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 341,
+          "start_tstates": 67063,
+          "seed": 10005
+        },
+        {
+          "score": 289,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 12783,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 289,
+          "start_tstates": 72093,
+          "seed": 10006
+        }
+      ]
+    },
+    {
+      "path": "results/level10/validation-audit-sil-level8-cap128k-32m.json",
+      "sha256": "78d1ff07cb25aa8f432a307c419969183d3477b0de034176177c61379e0b558b",
+      "summary": {
+        "complete_games": 50,
+        "incomplete_games": 0,
+        "mean_score": 140.4,
+        "median_score": 121.5,
+        "best_score": 356,
+        "highest_complete_level": 6,
+        "level_reach_counts": {
+          "2": 38,
+          "3": 15,
+          "4": 11,
+          "5": 5,
+          "6": 1
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 283,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 30970,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 283,
+          "start_tstates": 190247,
+          "seed": 10101
+        },
+        {
+          "score": 296,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 16102,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 296,
+          "start_tstates": 159948,
+          "seed": 10127
+        },
+        {
+          "score": 328,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 15726,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 328,
+          "start_tstates": 192793,
+          "seed": 10133
+        },
+        {
+          "score": 280,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14285,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 280,
+          "start_tstates": 279,
+          "seed": 10137
+        },
+        {
+          "score": 356,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14245,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 356,
+          "start_tstates": 112380,
+          "seed": 10148
+        }
+      ]
+    }
+  ],
+  "all_seeds_mode_termination_and_statistics_verified": true,
+  "all_games_complete": true,
+  "combined_reused_validation": {
+    "games": 70,
+    "mean_score": 147.87142857142857,
+    "median_score": 122,
+    "best_score": 370,
+    "highest_complete_level": 6,
+    "level_reach_counts": {
+      "2": 55,
+      "3": 24,
+      "4": 18,
+      "5": 8,
+      "6": 3,
+      "7": 0,
+      "8": 0
+    }
+  },
+  "session_id": 89482,
+  "exit_code": 0,
+  "reference": {
+    "checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+    "primary_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      8,
+      9,
+      15,
+      169.2
+    ],
+    "highest_verified": 8,
+    "primary_steps": 31252480,
+    "combined": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 178.81428571428572,
+      "median_score": 140,
+      "best_score": 555,
+      "highest_level": 8,
+      "highest_complete_level": 8,
+      "level_1_clears": 57,
+      "level_reach_counts": {
+        "2": 57,
+        "3": 36,
+        "4": 26,
+        "5": 16,
+        "6": 4,
+        "7": 2,
+        "8": 1
+      },
+      "level_reach_rates": {
+        "2": 0.8142857142857143,
+        "3": 0.5142857142857142,
+        "4": 0.37142857142857144,
+        "5": 0.22857142857142856,
+        "6": 0.05714285714285714,
+        "7": 0.02857142857142857,
+        "8": 0.014285714285714285
+      }
+    },
+    "replay": "results/level10/sil-continuation-31m25-secondary-level8-replay.html",
+    "model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05"
+  },
+  "matched_control_audit": "results/level10/sil-level8-continuation-32m-validation-audit.json",
+  "matched_control_combined": {
+    "games": 70,
+    "mean_score": 141.77142857142857,
+    "median_score": 121,
+    "best_score": 439,
+    "highest_complete_level": 7,
+    "level_reach_counts": {
+      "2": 52,
+      "3": 23,
+      "4": 13,
+      "5": 4,
+      "6": 1,
+      "7": 1,
+      "8": 0
+    }
+  },
+  "decision": "No reference promotion: all70reused games complete, combined mean147.87/highest6/eightLevel5reaches trail retained e0da mean178.81/highest8/sixteenLevel5reaches. Versus matched control combined141.77/highest7/fourLevel5reaches, mean and counts throughLevel6 improve but depth does not. Continue declared cap128k trial; no fresh final-test use."
+}

@@ -1,0 +1,57 @@
+{
+  "result": "results/level10/epsilon0001-sil-28m25-diagnostic.json",
+  "result_sha256": "cd10f8b64000b8a7b24fddef3c8210f70c516c4b5611cf4d4c57f52980cd0767",
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112/model.safetensors",
+  "checkpoint_sha256": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+  "session": 57128,
+  "exit_code": 0,
+  "all_seeds_termination_summary_mode_hash_verified": true,
+  "summary": {
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 129.05,
+    "median_score": 118,
+    "best_score": 260,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 15,
+    "level_reach_counts": {
+      "2": 15,
+      "3": 6,
+      "4": 3,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.75,
+      "3": 0.3,
+      "4": 0.15,
+      "5": 0
+    }
+  },
+  "rank": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    3,
+    6,
+    15,
+    129.05
+  ],
+  "sampled_reference_rank": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    2,
+    4,
+    6,
+    12,
+    130.25
+  ],
+  "decision": "Complete but weaker than sampled Level6. No promotion, secondary audit or further rate sweep; retain sampled decoding and continue both declared training budgets. Fresh final-test seeds unused."
+}

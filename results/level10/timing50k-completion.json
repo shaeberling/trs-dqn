@@ -1,0 +1,57 @@
+{
+  "run": "runs/level10-timing50k",
+  "exit_code": 0,
+  "reason": "Completed the planned finer-cadence comparison; no complete validation reached level 5. Retain original timing for the next learning experiment.",
+  "start_steps": 20500480,
+  "stop": {
+    "wall_seconds": 4781.05,
+    "event": "stopped",
+    "steps": 24506368,
+    "target_met": false
+  },
+  "additional_actions": 4005888,
+  "tstates_per_action": 50000,
+  "nominal_additional_tstates": 200294400000,
+  "validation_suites": 8,
+  "complete_suites": 7,
+  "incomplete_suites": 1,
+  "highest_complete_validation_level": 4,
+  "best_complete_mean": 122.85,
+  "final_validation": {
+    "wall_seconds": 4781.03,
+    "event": "validation",
+    "steps": 24506368,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 108.3,
+    "median_score": 81,
+    "best_score": 279,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 10,
+    "level_reach_counts": {
+      "2": 10,
+      "3": 3,
+      "4": 3,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.5,
+      "3": 0.15,
+      "4": 0.15,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 50000,
+    "max_steps": 200000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "latest_model_sha256": "42e707dfd3238088792158c8de75e1d9499505b01cd784e16acf4ae605bed9fe",
+  "latest_optimizer_sha256": "c5e5e86d5cc9bd1d2331485bae40fbfdf9ef161edccbcbaef02d61f3c42b6a66",
+  "latest_state_sha256": "96fff26e4e0489fbe1113cfe923e076b308f31d3a09170b145cc447a5b90f9f9",
+  "log": "logs/level10-timing50k.jsonl",
+  "final_test_seeds_used": false
+}

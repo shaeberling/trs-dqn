@@ -1,0 +1,102 @@
+{
+  "recorded_at_utc": "2026-09-14 12:25:30 UTC",
+  "run": "runs/level10-timing50k-stride2-sil4",
+  "through_steps": 33118302,
+  "primary_suites": [
+    {
+      "steps": 31506432,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 224.8,
+      "median_score": 225.5,
+      "best_score": 579,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 18,
+        "3": 12,
+        "4": 10,
+        "5": 7,
+        "6": 2,
+        "7": 2,
+        "8": 1
+      },
+      "raw_evaluation_sha256": "9272c8b87742f5b2337d03f192a00e63935fadec12035fc6837d162e904ae039"
+    },
+    {
+      "steps": 32006144,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 279.3,
+      "median_score": 271,
+      "best_score": 558,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 19,
+        "3": 17,
+        "4": 16,
+        "5": 11,
+        "6": 4,
+        "7": 3,
+        "8": 2
+      },
+      "raw_evaluation_sha256": "53bd7b0a2edf694550523a29b2581a6d43224933c28394d44144629602e2c25b"
+    },
+    {
+      "steps": 32505856,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 181.7,
+      "median_score": 187,
+      "best_score": 333,
+      "highest_complete_level": 6,
+      "level_reach_counts": {
+        "2": 19,
+        "3": 13,
+        "4": 7,
+        "5": 1,
+        "6": 1
+      },
+      "raw_evaluation_sha256": "6b71f566696332b30b501893795c905353ac0bbdc65141b8ed7f2ba6b6ce1f2f"
+    },
+    {
+      "steps": 33005568,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 203.25,
+      "median_score": 154.5,
+      "best_score": 452,
+      "highest_complete_level": 7,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 10,
+        "4": 9,
+        "5": 5,
+        "6": 4,
+        "7": 3
+      },
+      "raw_evaluation_sha256": "9aecc6e987217b9ea683df3b4d331b4b4003fc7e688344275e634925484babcf"
+    }
+  ],
+  "summary": {
+    "complete_primary_suites": 4,
+    "primary_suites_reaching5": 4,
+    "primary_level5_games": 24,
+    "highest_frozen_level": 8
+  },
+  "complete_full_training_games": 66,
+  "complete_practice_segments": 63,
+  "highest_complete_full_training": 8,
+  "highest_complete_practice": 8,
+  "training_guards": [],
+  "sil_accounting": {
+    "learning_suffixes_checked": 366,
+    "episode_suffix_coverages_checked": 129,
+    "committed_suffixes": 366,
+    "discarded_suffixes": 0,
+    "discarded_retained_transitions": 0,
+    "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+  },
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "all_primary_seeds_termination_statistics_verified": true,
+  "decision": "32M reference selected after its separate 70-game/replay gates. Subsequent32.5M and33M complete primaries do not qualify against selected primary rank; no secondary audits. Continue declared training stage. Training Level8 is changing-policy experience, not a new frozen milestone."
+}

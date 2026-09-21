@@ -1,0 +1,489 @@
+{
+  "checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+  "checkpoint_hashes": {
+    "model.safetensors": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+    "optimizer.npz": "c651d98449d697686df92eaa2c623e6ef42433e9fca340383b556f0cf4bbda38",
+    "state.json": "75e0bc0abc9c2b6cc74600f45fe6c42205ebca77be89f860b033d4ddfcd2ab6c",
+    "evaluation.json": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e"
+  },
+  "secondary_session": 76810,
+  "secondary_exit_code": 0,
+  "all_six_seed_termination_statistics_and_candidate_identity_verified": true,
+  "sets": {
+    "candidate_primary": {
+      "path": "results/level10/validation-sil-continuation-31m25.json",
+      "sha256": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e",
+      "summary": {
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 169.2,
+        "median_score": 122.5,
+        "best_score": 328,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 15,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 9,
+          "4": 8,
+          "5": 6
+        },
+        "level_reach_rates": {
+          "2": 0.75,
+          "3": 0.45,
+          "4": 0.4,
+          "5": 0.3
+        }
+      },
+      "rank": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        8,
+        9,
+        15,
+        169.2
+      ]
+    },
+    "candidate_secondary": {
+      "path": "results/level10/validation-audit-sil-continuation-31m25.json",
+      "sha256": "cdf850835b9b86075de7cf8e553eb85e8775387afbb6d99ea34e0ab10ad4246f",
+      "summary": {
+        "games_requested": 50,
+        "complete_games": 50,
+        "incomplete_games": 0,
+        "mean_score": 182.66,
+        "median_score": 148,
+        "best_score": 555,
+        "highest_level": 8,
+        "highest_complete_level": 8,
+        "level_1_clears": 42,
+        "level_reach_counts": {
+          "2": 42,
+          "3": 27,
+          "4": 18,
+          "5": 10,
+          "6": 4,
+          "7": 2,
+          "8": 1
+        },
+        "level_reach_rates": {
+          "2": 0.84,
+          "3": 0.54,
+          "4": 0.36,
+          "5": 0.2,
+          "6": 0.08,
+          "7": 0.04,
+          "8": 0.02
+        }
+      },
+      "rank": [
+        0,
+        0,
+        1,
+        2,
+        4,
+        10,
+        18,
+        27,
+        42,
+        182.66
+      ]
+    },
+    "depth_primary": {
+      "path": "results/level10/validation-balanced-sil-28m25.json",
+      "sha256": "11fdcc3a2371f0e36cf3237f5c92b5c2afa4eb8efd7a76ae30967e27410b3b39",
+      "summary": {
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 130.25,
+        "median_score": 112.5,
+        "best_score": 326,
+        "highest_level": 6,
+        "highest_complete_level": 6,
+        "level_1_clears": 12,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 6,
+          "4": 4,
+          "5": 2,
+          "6": 1
+        },
+        "level_reach_rates": {
+          "2": 0.6,
+          "3": 0.3,
+          "4": 0.2,
+          "5": 0.1,
+          "6": 0.05
+        }
+      },
+      "rank": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        4,
+        6,
+        12,
+        130.25
+      ]
+    },
+    "depth_secondary": {
+      "path": "results/level10/validation-audit-balanced-sil-28m25.json",
+      "sha256": "a2c7e9354ce0666e55966737a6634ad8042e6fd0a0660549a4a249255a349b77",
+      "summary": {
+        "games_requested": 50,
+        "complete_games": 50,
+        "incomplete_games": 0,
+        "mean_score": 146.4,
+        "median_score": 124.5,
+        "best_score": 337,
+        "highest_level": 6,
+        "highest_complete_level": 6,
+        "level_1_clears": 43,
+        "level_reach_counts": {
+          "2": 43,
+          "3": 15,
+          "4": 9,
+          "5": 2,
+          "6": 1
+        },
+        "level_reach_rates": {
+          "2": 0.86,
+          "3": 0.3,
+          "4": 0.18,
+          "5": 0.04,
+          "6": 0.02
+        }
+      },
+      "rank": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        2,
+        9,
+        15,
+        43,
+        146.4
+      ]
+    },
+    "consistency_primary": {
+      "path": "results/level10/validation-balanced-lr1e5-long-28m5.json",
+      "sha256": "600b2c7cf6d88bf5f563d74ccae403728c1542b3c3ff25431eb93cc88c4e67f9",
+      "summary": {
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 166.7,
+        "median_score": 145.5,
+        "best_score": 294,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 18,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 10,
+          "4": 5,
+          "5": 2
+        },
+        "level_reach_rates": {
+          "2": 0.9,
+          "3": 0.5,
+          "4": 0.25,
+          "5": 0.1
+        }
+      },
+      "rank": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        5,
+        10,
+        18,
+        166.7
+      ]
+    },
+    "consistency_secondary": {
+      "path": "results/level10/validation-audit-balanced-lr1e5-long-28m5.json",
+      "sha256": "2e7ab9adb7023de06a2e2d268adef2cde0d20d8e92cf7250bc166b4f016fb5c1",
+      "summary": {
+        "games_requested": 50,
+        "complete_games": 50,
+        "incomplete_games": 0,
+        "mean_score": 141.18,
+        "median_score": 124,
+        "best_score": 327,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 42,
+        "level_reach_counts": {
+          "2": 42,
+          "3": 16,
+          "4": 8,
+          "5": 4
+        },
+        "level_reach_rates": {
+          "2": 0.84,
+          "3": 0.32,
+          "4": 0.16,
+          "5": 0.08
+        }
+      },
+      "rank": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        8,
+        16,
+        42,
+        141.18
+      ]
+    }
+  },
+  "combined_reused_validation": {
+    "candidate": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 178.81428571428572,
+      "median_score": 140,
+      "best_score": 555,
+      "highest_level": 8,
+      "highest_complete_level": 8,
+      "level_1_clears": 57,
+      "level_reach_counts": {
+        "2": 57,
+        "3": 36,
+        "4": 26,
+        "5": 16,
+        "6": 4,
+        "7": 2,
+        "8": 1
+      },
+      "level_reach_rates": {
+        "2": 0.8142857142857143,
+        "3": 0.5142857142857142,
+        "4": 0.37142857142857144,
+        "5": 0.22857142857142856,
+        "6": 0.05714285714285714,
+        "7": 0.02857142857142857,
+        "8": 0.014285714285714285
+      }
+    },
+    "depth": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 141.78571428571428,
+      "median_score": 123.5,
+      "best_score": 337,
+      "highest_level": 6,
+      "highest_complete_level": 6,
+      "level_1_clears": 55,
+      "level_reach_counts": {
+        "2": 55,
+        "3": 21,
+        "4": 13,
+        "5": 4,
+        "6": 2
+      },
+      "level_reach_rates": {
+        "2": 0.7857142857142857,
+        "3": 0.3,
+        "4": 0.18571428571428572,
+        "5": 0.05714285714285714,
+        "6": 0.02857142857142857
+      }
+    },
+    "consistency": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 148.47142857142856,
+      "median_score": 124.5,
+      "best_score": 327,
+      "highest_level": 5,
+      "highest_complete_level": 5,
+      "level_1_clears": 60,
+      "level_reach_counts": {
+        "2": 60,
+        "3": 26,
+        "4": 13,
+        "5": 6
+      },
+      "level_reach_rates": {
+        "2": 0.8571428571428571,
+        "3": 0.37142857142857144,
+        "4": 0.18571428571428572,
+        "5": 0.08571428571428572
+      }
+    }
+  },
+  "secondary_level5_plus_games": [
+    {
+      "score": 518,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 22965,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 518,
+      "start_tstates": 115751,
+      "seed": 10100
+    },
+    {
+      "score": 328,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 17204,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 328,
+      "start_tstates": 196607,
+      "seed": 10102
+    },
+    {
+      "score": 277,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 11603,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 277,
+      "start_tstates": 93295,
+      "seed": 10108
+    },
+    {
+      "score": 265,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 12166,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 265,
+      "start_tstates": 128434,
+      "seed": 10120
+    },
+    {
+      "score": 279,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 12563,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 279,
+      "start_tstates": 79669,
+      "seed": 10123
+    },
+    {
+      "score": 555,
+      "level": 8,
+      "game_over": true,
+      "waiting": false,
+      "steps": 22439,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 555,
+      "start_tstates": 90186,
+      "seed": 10128
+    },
+    {
+      "score": 287,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 18230,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 287,
+      "start_tstates": 173313,
+      "seed": 10136
+    },
+    {
+      "score": 291,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 13243,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 291,
+      "start_tstates": 34322,
+      "seed": 10140
+    },
+    {
+      "score": 382,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 18398,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 382,
+      "start_tstates": 150263,
+      "seed": 10146
+    },
+    {
+      "score": 326,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 15471,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 326,
+      "start_tstates": 112380,
+      "seed": 10148
+    }
+  ],
+  "decision": "Promote checkpoint31,252,480 as the new depth, later-level-consistency and combined-mean validation reference after uncapped replay and zero-action-mismatch verification. All70games complete: mean178.81428571428572, median140, best555, counts2-8=57/36/26/16/4/2/1. This is repeatedly reused validation, not fresh-test evidence or reliable Level8 mastery. Preserve all previous references and committed packages. Goal remains Level10.",
+  "reference_promotion": {
+    "model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+    "replay": "results/level10/sil-continuation-31m25-secondary-level8-replay.html",
+    "replay_verification": "results/level10/sil-continuation-31m25-replay-verification.json",
+    "policy_inspection": "results/level10/sil-continuation-31m25-policy-inspection.json",
+    "old_references_retained": true,
+    "tradeoff": "New combined later-level counts, mean, median and maximum improve, but Level2 count57/70 is below the older mean reference60/70. Do not claim improvement in every metric.",
+    "queued_capacity_source_review_required": true
+  }
+}

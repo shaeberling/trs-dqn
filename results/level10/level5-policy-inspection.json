@@ -1,0 +1,94 @@
+{
+  "checkpoint": "runs/level10-lr5e5/step-018501632/model.safetensors",
+  "checkpoint_sha256": "c656c9e515a007360f9bfa7bb549594a50d7d60dcaf7230b94defef5d240a3d5",
+  "replay": "results/level10/level-5-validation-replay.html",
+  "replay_sha256": "323aa07345132f45b158ca27169c29bcf713ff8cb35aaa4479ecfa0d6c764e9b",
+  "seed": 10011,
+  "score": 282,
+  "level": 5,
+  "batch_size": 128,
+  "seeded_action_mismatches": 0,
+  "scope": "Post-hoc inference on one selected recorded game; not a performance estimate.",
+  "all": {
+    "actions": 14525,
+    "action_entropy_nats": 0.4131828834299724,
+    "direction_entropy_nats": 0.26701674132437564,
+    "serve_entropy_nats": 0.22970841830024347,
+    "mean_non_greedy_direction_probability": 0.11086358351486555,
+    "recorded_non_greedy_direction_fraction": 0.11125645438898452,
+    "mean_serve_probability": 0.651793961281996,
+    "mean_recorded_action_probability": 0.7716380123964615
+  },
+  "playing": {
+    "actions": 14523,
+    "action_entropy_nats": 0.4132332843902546,
+    "direction_entropy_nats": 0.26704792382622594,
+    "serve_entropy_nats": 0.22973874732989705,
+    "mean_non_greedy_direction_probability": 0.11087786108847977,
+    "recorded_non_greedy_direction_fraction": 0.11127177580389727,
+    "mean_serve_probability": 0.6517461866703405,
+    "mean_recorded_action_probability": 0.7716076272685152
+  },
+  "waiting_for_serve": {
+    "actions": 2,
+    "action_entropy_nats": 0.04719631034119326,
+    "direction_entropy_nats": 0.040585004138313875,
+    "serve_entropy_nats": 0.009474169470700702,
+    "mean_non_greedy_direction_probability": 0.007186982715211343,
+    "recorded_non_greedy_direction_fraction": 0.0,
+    "mean_serve_probability": 0.9987093038189414,
+    "mean_recorded_action_probability": 0.9922796189785004
+  },
+  "by_visible_level": {
+    "1": {
+      "actions": 3494,
+      "action_entropy_nats": 0.4022043978282577,
+      "direction_entropy_nats": 0.24889350530358753,
+      "serve_entropy_nats": 0.24047336967743568,
+      "mean_non_greedy_direction_probability": 0.10437729021130523,
+      "recorded_non_greedy_direction_fraction": 0.11161991986262164,
+      "mean_serve_probability": 0.5471238512115395,
+      "mean_recorded_action_probability": 0.7759438600787242
+    },
+    "2": {
+      "actions": 5375,
+      "action_entropy_nats": 0.4305332325683992,
+      "direction_entropy_nats": 0.2886491122704032,
+      "serve_entropy_nats": 0.2301964244362649,
+      "mean_non_greedy_direction_probability": 0.12074196857471528,
+      "recorded_non_greedy_direction_fraction": 0.12,
+      "mean_serve_probability": 0.6772462239714281,
+      "mean_recorded_action_probability": 0.7624444545942337
+    },
+    "3": {
+      "actions": 3032,
+      "action_entropy_nats": 0.37055181678388155,
+      "direction_entropy_nats": 0.23321418351291406,
+      "serve_entropy_nats": 0.20824671254988344,
+      "mean_non_greedy_direction_probability": 0.09526008322569104,
+      "recorded_non_greedy_direction_fraction": 0.09003957783641162,
+      "mean_serve_probability": 0.6806253252534269,
+      "mean_recorded_action_probability": 0.7931537380312764
+    },
+    "4": {
+      "actions": 2417,
+      "action_entropy_nats": 0.43021646417325976,
+      "direction_entropy_nats": 0.28129473737799066,
+      "serve_entropy_nats": 0.23129873603617415,
+      "mean_non_greedy_direction_probability": 0.1165504175751231,
+      "recorded_non_greedy_direction_fraction": 0.11832850641290857,
+      "mean_serve_probability": 0.7083854749101782,
+      "mean_recorded_action_probability": 0.7646357792164332
+    },
+    "5": {
+      "actions": 207,
+      "action_entropy_nats": 0.5735110548684714,
+      "direction_entropy_nats": 0.33961592801277857,
+      "serve_entropy_nats": 0.3311205959539726,
+      "mean_non_greedy_direction_probability": 0.1259917190659868,
+      "recorded_non_greedy_direction_fraction": 0.10628019323671498,
+      "mean_serve_probability": 0.674562408768869,
+      "mean_recorded_action_probability": 0.704292403007655
+    }
+  }
+}

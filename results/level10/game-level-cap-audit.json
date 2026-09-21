@@ -1,0 +1,81 @@
+{
+  "checked_at_utc": "2026-09-19T08:38:00Z",
+  "method": "Read-only static analysis: existing trs.cmd.CMD loader writes into a separate Python bytearray, not a live emulator. No game code, emulator state, policy input, actions, reward or training data changed.",
+  "game_file": "var/breakdown.cmd",
+  "game_sha256": "0eada4c36fbdb135ca14f390cdb3e01a3a3da121a1328a531fcc6c1e2e931ee6",
+  "entry_address": "0x5200",
+  "author_source": "https://pski.net/breakdown-a-new-trs-80-game/",
+  "author_statement_paraphrase": "The author describes eight levels and says the game ends when all are completed.",
+  "level_titles": [
+    "THE BASICS",
+    "BLOCKER",
+    "FREE LIFE",
+    "BONUS",
+    "LOOK OUT",
+    "GAPS",
+    "BIG MONEY",
+    "BLOCK CITY"
+  ],
+  "level_counter_address": "0x6316",
+  "level_counter_direct_byte_write_addresses": [
+    "0x5269",
+    "0x586d",
+    "0x5d7b"
+  ],
+  "verified_spans": [
+    {
+      "address": "0x5869",
+      "bytes": "3a 16 63 3c 32 16 63 fe 09 ca 17 5d cd 3b 57",
+      "interpretation": "Increment the level counter, compare against 9, jump to GAME OVER if equal; otherwise update the level HUD.",
+      "exact_bytes_verified": true
+    },
+    {
+      "address": "0x573b",
+      "bytes": "d5 e5 2a 16 63 11 20 63 cd 52 5f 1a 32 3b 3c 13 1a 32 3c 3c 13 1a 32 3d 3c 13 1a 32 3e 3c 13 1a 32 3f 3c e1 d1 c9",
+      "interpretation": "Read the level word and write five formatted digits to visible video addresses 0x3c3b through 0x3c3f.",
+      "exact_bytes_verified": true
+    },
+    {
+      "address": "0x5d17",
+      "bytes": "dd 21 9c 3e dd 36 00 47 dd 36 01 41 dd 36 02 4d dd 36 03 45 dd 36 05 4f dd 36 06 56 dd 36 07 45 dd 36 08 52",
+      "interpretation": "Write GAME OVER to visible character row 10, starting at 0x3e9c.",
+      "exact_bytes_verified": true
+    },
+    {
+      "address": "0x5d79",
+      "bytes": "3e 01 32 16 63",
+      "interpretation": "Restart resets the level to 1.",
+      "exact_bytes_verified": true
+    }
+  ],
+  "level_transition_disassembly": [
+    {
+      "address": "0x5869",
+      "instruction": "LD A,(0x6316)"
+    },
+    {
+      "address": "0x586c",
+      "instruction": "INC A"
+    },
+    {
+      "address": "0x586d",
+      "instruction": "LD (0x6316),A"
+    },
+    {
+      "address": "0x5870",
+      "instruction": "CP 9"
+    },
+    {
+      "address": "0x5872",
+      "instruction": "JP Z,0x5d17"
+    },
+    {
+      "address": "0x5875",
+      "instruction": "CALL 0x573b"
+    }
+  ],
+  "conclusion": "The unmodified game ends after level 8; the internal counter becomes 9 but the game-over branch skips the HUD update. Displayed Level 9 and Level 10 are not attainable through normal gameplay.",
+  "measurement_limitation": "The current tooling reports terminal GAME OVER and highest displayed level, without distinguishing final-level victory from loss. A zero count of transitions to level 9 is not evidence of zero wins. No all-eight-level victory has been verified.",
+  "scope_decision_required": "Choose beating all eight original levels (with an independently verified screen-derived win criterion) or explicitly authorize a changed game containing levels 9 and 10. Do not silently change the requested target or the game.",
+  "recorded_at_utc": "2026-09-19 08:38:35 UTC"
+}

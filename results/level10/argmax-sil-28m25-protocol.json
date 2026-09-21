@@ -1,0 +1,26 @@
+{
+  "status": "predeclared_not_launched",
+  "date_utc": "2026-09-14",
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112/model.safetensors",
+  "checkpoint_sha256": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+  "purpose": "Recheck deterministic neural decoding on the first verified Level-6 model; previous 10M and 20.5M argmax diagnostics stalled on serves. This materially newer checkpoint was trained with self-imitation, but success is not assumed.",
+  "decoding": "learned logits argmax, existing --deterministic CLI",
+  "seeds": {
+    "start": 10000,
+    "end": 10019,
+    "role": "reused primary validation, not fresh test"
+  },
+  "games": 20,
+  "envs": 20,
+  "tstates": 100000,
+  "max_steps": 50000,
+  "output": "results/level10/argmax-sil-28m25-diagnostic.json",
+  "selection_rule": "Require all 20 games complete before considering performance. Any truncation disqualifies the entire suite; never add scripted serving. Only a promising complete result warrants further separate-mode verification. Preserve sampled-policy training and reference unchanged.",
+  "unchanged": [
+    "both active training runs and their sampled validation",
+    "screen-only learned actions",
+    "raw-score reward",
+    "committed model packages",
+    "fresh final-test seeds 40000-40099"
+  ]
+}

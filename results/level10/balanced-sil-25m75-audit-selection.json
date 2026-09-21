@@ -1,0 +1,68 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-025751552",
+  "checkpoint_sha256": "d670b488dabbb34645eac43a8c460eac72f98b233e1709f7bce4042c7073cbc0",
+  "summary": {
+    "complete_games": 20,
+    "mean_score": 150.5,
+    "median_score": 125.5,
+    "best_score": 303,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 16,
+      "3": 7,
+      "4": 6,
+      "5": 2
+    }
+  },
+  "reference_primary": {
+    "complete_games": 20,
+    "mean_score": 166.7,
+    "median_score": 145.5,
+    "best_score": 294,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 18,
+      "3": 10,
+      "4": 5,
+      "5": 2
+    }
+  },
+  "primary_rank_exceeds_reference": true,
+  "selection_reason": "Same two level-5 reaches but six level-4 reaches versus reference five; third SIL primary merits secondary audit. First three results are mixed; no overall promotion before audit.",
+  "seed_termination_statistics_verified": true,
+  "level5_games": [
+    {
+      "score": 254,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 10761,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 254.0,
+      "start_tstates": 29999,
+      "seed": 10007
+    },
+    {
+      "score": 303,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 12008,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 303.0,
+      "start_tstates": 188429,
+      "seed": 10017
+    }
+  ],
+  "secondary_seeds": [
+    10100,
+    10149
+  ],
+  "fresh_test_unused": true
+}

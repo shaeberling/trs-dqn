@@ -1,0 +1,111 @@
+{
+  "checkpoint": "runs/level10-sil-level8-continuation/step-034500608",
+  "source_hashes_unchanged": true,
+  "sets": [
+    {
+      "path": "runs/level10-sil-level8-continuation/step-034500608/evaluation.json",
+      "sha256": "f52f67794c37b9461ff221dc3b672dde30c5b24b856cfcbef6bd26519365b9ed",
+      "summary": {
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 132.2,
+        "median_score": 123,
+        "best_score": 349,
+        "highest_complete_level": 6,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 3,
+          "4": 2,
+          "5": 1,
+          "6": 1
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 349,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 16973,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 349,
+          "start_tstates": 91003,
+          "seed": 10008
+        }
+      ]
+    },
+    {
+      "path": "results/level10/validation-audit-sil-level8-continuation-34m5.json",
+      "sha256": "1b4ae716d0b029953da8493c48809fa10746c4738a96e5bc4bed8f659af855e0",
+      "summary": {
+        "complete_games": 48,
+        "incomplete_games": 2,
+        "mean_score": 133.5,
+        "median_score": 122,
+        "best_score": 326,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 34,
+          "3": 16,
+          "4": 7,
+          "5": 1
+        }
+      },
+      "guards": [
+        {
+          "score": 63,
+          "level": 1,
+          "game_over": false,
+          "waiting": true,
+          "steps": 100000,
+          "terminated": false,
+          "truncated": true,
+          "life_lost": false,
+          "hud_settle_tstates": 0,
+          "episode_reward": 63,
+          "start_tstates": 67224,
+          "seed": 10117
+        },
+        {
+          "score": 64,
+          "level": 1,
+          "game_over": false,
+          "waiting": true,
+          "steps": 100000,
+          "terminated": false,
+          "truncated": true,
+          "life_lost": false,
+          "hud_settle_tstates": 0,
+          "episode_reward": 64,
+          "start_tstates": 279,
+          "seed": 10137
+        }
+      ],
+      "later_games": [
+        {
+          "score": 326,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 16911,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 326,
+          "start_tstates": 193857,
+          "seed": 10129
+        }
+      ]
+    }
+  ],
+  "all_seeds_mode_termination_and_statistics_verified": true,
+  "all_games_complete": false,
+  "session_id": 36683,
+  "exit_code": 1,
+  "decision": "Disqualify the secondary suite due to incomplete serve-stalled games. No promotion, no full 70-game performance estimate and no final-test use. Keep e0da Level8 reference and unchanged learner."
+}

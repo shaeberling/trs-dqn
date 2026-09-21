@@ -1,0 +1,26 @@
+{
+  "created_at_utc": "2026-09-19T07:26:00Z",
+  "run": "runs/level10-supervised-progress16",
+  "source": "runs/level10-supervised-refkl01-v2/learner/step-116006912",
+  "source_model_sha256": "5b5ea6721db0284ce7bac56db2920144225f083eb2f4e11455464052c3849b85",
+  "hypothesis": "Level-entry-only resets under-sample partially cleared Level8 states. Revisit self-discovered within-level progress to practice the remaining bricks.",
+  "single_learning_change": {
+    "curriculum_score_interval": 16,
+    "previous": 0
+  },
+  "archive_rule": "In addition to same-run level entries, capture a live unmodified state after16 newly earned visible score points since this segment's last archive opportunity. Reset that offset on boot, restore, or level change. Keep the same bounded reservoir of8 snapshots per level; no snapshots loaded from validation, replay, files or earlier runs.",
+  "unchanged": "MLX PPO + SIL4, frozen32M teacher KL0.1, lr5e-6, entropy0.001,32workers/16protectedboot,50ktstates/stride2,score-only reward,life boundaries,all6sampled actions,all other source learning settings",
+  "validation": "20 reused seeds10000–10019 every500k; qualifying50-secondary10100–10149,200kper-game guards; incomplete suites never qualify. Select on70-complete depth rank. Uncapped verified replay on promotion.",
+  "final_test": "Only after frozen validation-selected Level10 and verified replay:100uncapped fresh40000–40099, never for selection.",
+  "preservation": "Versioned self-contained checkpoint/replay bundles with stable selected-best and single-best-effort replay paths. Old bundles never removed.",
+  "verification_gates": [
+    "Disabled before/after65536-action compatibility smoke",
+    "Unit tests for progress offsets, shared native snapshot continuation, bounded archives, no terminal capture, and protected boot workers",
+    "Artifact publication identity and rollback tests",
+    "Full test suite",
+    "Real supervised startup, training archive publication and validation/resume cycle"
+  ],
+  "no_wall_clock_training_limit": true,
+  "old_run_stop": "Graceful operator stop at236003328; selected116M model preserved.48.835h,200499200additional actions,400finished primary suites363complete,Level8 maximum,11644complete restored segments0clears.",
+  "limitations": "This is a Go-Explore-inspired start-state curriculum adaptation, not the full paper algorithm and not a proven cure. Validation is reused and adaptive."
+}

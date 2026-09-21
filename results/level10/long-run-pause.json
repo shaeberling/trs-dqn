@@ -1,0 +1,29 @@
+{
+  "run": "runs/level10-entropy001-long-recovered",
+  "exit_code": 0,
+  "signal": "SIGTERM",
+  "pid": 22307,
+  "reason": "Seven consecutive complete primary validations missed level 5; the last two highest levels declined to 3 then 2. Pause with checkpoint preserved and use freed capacity for the verified self-generated curriculum comparison.",
+  "start_steps": 22253568,
+  "stop": {
+    "wall_seconds": 5518.85,
+    "event": "stopped",
+    "steps": 27598848,
+    "target_met": false
+  },
+  "additional_actions_in_recovery": 5345280,
+  "additional_actions_in_original_and_recovery": 7098368,
+  "original_budget_end": 30500480,
+  "remaining_unspent_actions": 2901632,
+  "validation_suites": 21,
+  "all_suites_complete": true,
+  "highest_complete_validation_level": 5,
+  "latest_checkpoint": "runs/level10-entropy001-long-recovered/latest",
+  "model_sha256": "b817f7d4149b6d98355a909ec00f15067ab3f521ae70fea3915b15cc745d6f34",
+  "optimizer_sha256": "94877b4fda05453083f07d03bbe606c1cfd9e24f1684884e67c60b2beba03e98",
+  "state_sha256": "b9aa10855615c6a639a1937a058d70add9aebb887fcef42d0513dffd282eaeed",
+  "retained_primary_best_checkpoint": "runs/level10-entropy001-long-recovered/step-024002560",
+  "stronger_secondary_source_checkpoint": "runs/level10-entropy001/step-020500480",
+  "log": "logs/level10-entropy001-long-recovered.jsonl",
+  "final_test_seeds_used": false
+}

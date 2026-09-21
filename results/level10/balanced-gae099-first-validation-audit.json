@@ -1,0 +1,204 @@
+{
+  "candidate_sha256": "02ca26d14eca7afaf294abdedcf1a519fcf3df1065c6c9a56c7860dd0f634cc3",
+  "audit_exit_code": 0,
+  "all_seed_orders_termination_and_statistics_verified": true,
+  "sets": {
+    "candidate_primary": {
+      "path": "results/level10/validation-balanced-gae099-25m75.json",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 126.5,
+        "median_score": 123,
+        "best_score": 276,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 4,
+          "4": 2,
+          "5": 0
+        }
+      },
+      "level5_games": []
+    },
+    "candidate_secondary": {
+      "path": "results/level10/validation-audit-balanced-gae099-25m75.json",
+      "summary": {
+        "complete_games": 50,
+        "mean_score": 140.1,
+        "median_score": 121.5,
+        "best_score": 286,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 44,
+          "3": 13,
+          "4": 9,
+          "5": 3
+        }
+      },
+      "level5_games": [
+        {
+          "score": 269,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 10014,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 269,
+          "start_tstates": 115751,
+          "seed": 10100
+        },
+        {
+          "score": 286,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 13351,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 286,
+          "start_tstates": 63303,
+          "seed": 10118
+        },
+        {
+          "score": 281,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 12427,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 281,
+          "start_tstates": 145876,
+          "seed": 10143
+        }
+      ]
+    },
+    "reference_primary": {
+      "path": "results/level10/validation-curriculum-shared-21m.json",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 130.3,
+        "median_score": 114.5,
+        "best_score": 295,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 5,
+          "4": 3,
+          "5": 2
+        }
+      },
+      "level5_games": [
+        {
+          "score": 295,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14487,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 295,
+          "start_tstates": 67063,
+          "seed": 10005
+        },
+        {
+          "score": 282,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 13495,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 282,
+          "start_tstates": 91003,
+          "seed": 10008
+        }
+      ]
+    },
+    "reference_secondary": {
+      "path": "results/level10/validation-audit-curriculum-shared-21m.json",
+      "summary": {
+        "complete_games": 50,
+        "mean_score": 135.12,
+        "median_score": 121,
+        "best_score": 304,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 39,
+          "3": 15,
+          "4": 8,
+          "5": 2
+        }
+      },
+      "level5_games": [
+        {
+          "score": 304,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 18881,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 304,
+          "start_tstates": 27823,
+          "seed": 10113
+        },
+        {
+          "score": 288,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14168,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 288,
+          "start_tstates": 168436,
+          "seed": 10139
+        }
+      ]
+    }
+  },
+  "combined_reused_validation_descriptive_only": {
+    "candidate": {
+      "games": 70,
+      "mean": 136.21428571428572,
+      "median": 122,
+      "best": 286,
+      "reach_counts": {
+        "2": 58,
+        "3": 17,
+        "4": 11,
+        "5": 3
+      }
+    },
+    "reference": {
+      "games": 70,
+      "mean": 133.74285714285713,
+      "median": 120.5,
+      "best": 304,
+      "reach_counts": {
+        "2": 56,
+        "3": 20,
+        "4": 11,
+        "5": 4
+      }
+    }
+  },
+  "decision": "Preserve as a promising candidate, not an overall promotion: secondary mean and level-5 count improve, but primary depth and combined level-5 count trail the reference. Continue matched training. No verified frozen level 6.",
+  "fresh_final_test_seeds_used": false
+}

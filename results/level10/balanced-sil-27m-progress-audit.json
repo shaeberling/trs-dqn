@@ -1,0 +1,379 @@
+{
+  "scope": "Point-in-time progress comparison through SIL 27,000,832 and original 33,001,472; reused primary seeds, not final-test evidence.",
+  "all_seeds_and_termination_statistics_verified": true,
+  "matched_primary_suites": [
+    {
+      "steps": 25251840,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-025251840/evaluation.json",
+        "sha256": "449466fb95ba2dd50e144f439d3c77f113e9aaa5690ff68f7e044891e8c6fb47",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 98.6,
+          "median_score": 89.5,
+          "best_score": 264,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 11,
+            "3": 2,
+            "4": 1,
+            "5": 0
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-025251840/evaluation.json",
+        "sha256": "89cd5c4436c46de50d71ab50cbee3a779c25f50ff71353fd99512e2525e26aa0",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 133.3,
+          "median_score": 116,
+          "best_score": 306,
+          "highest_complete_level": 5,
+          "level_reach_counts": {
+            "2": 15,
+            "3": 7,
+            "4": 3,
+            "5": 1
+          }
+        }
+      }
+    },
+    {
+      "steps": 25501696,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-025501696/evaluation.json",
+        "sha256": "c1bab9d27f6b98a917ab8d1f8210659c9a4c7a09c4c228a06afb6bc00f6e8e11",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 127.2,
+          "median_score": 117,
+          "best_score": 285,
+          "highest_complete_level": 5,
+          "level_reach_counts": {
+            "2": 14,
+            "3": 5,
+            "4": 3,
+            "5": 1
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-025501696/evaluation.json",
+        "sha256": "6013f8b3a4e7517990afd845d1338827324a09e93285044341dd22971531d1ac",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 100.35,
+          "median_score": 104,
+          "best_score": 226,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 11,
+            "3": 3,
+            "4": 1,
+            "5": 0
+          }
+        }
+      }
+    },
+    {
+      "steps": 25751552,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-025751552/evaluation.json",
+        "sha256": "39b766413d52d6b6bfb63c4161c5b103c9454974762ba9382939abe9c5f1c378",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 150.5,
+          "median_score": 125.5,
+          "best_score": 303,
+          "highest_complete_level": 5,
+          "level_reach_counts": {
+            "2": 16,
+            "3": 7,
+            "4": 6,
+            "5": 2
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-025751552/evaluation.json",
+        "sha256": "ab18a88064bdf847437aa2ee3593de2d96b65ee46803f6fb0c66d77106e9fd45",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 121.4,
+          "median_score": 119,
+          "best_score": 282,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 13,
+            "3": 4,
+            "4": 3,
+            "5": 0
+          }
+        }
+      }
+    },
+    {
+      "steps": 26001408,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-026001408/evaluation.json",
+        "sha256": "a1971b42d0066ab786f9902ede8af5e35ecee00430f57b409270686af2b4f20d",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 113.75,
+          "median_score": 114,
+          "best_score": 242,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 14,
+            "3": 3,
+            "4": 2,
+            "5": 0
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-026001408/evaluation.json",
+        "sha256": "e4407aeed63987816cf0a2d4408c5bcdad604b20e8808bd7c7762d5e218ba8b0",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 132.2,
+          "median_score": 125,
+          "best_score": 279,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 12,
+            "3": 6,
+            "4": 4,
+            "5": 0
+          }
+        }
+      }
+    },
+    {
+      "steps": 26251264,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-026251264/evaluation.json",
+        "sha256": "a1eb3a4f86746f2316f13c409428d63b77bff461c3a1cbca4c8f9b1ae42debe3",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 102.95,
+          "median_score": 109,
+          "best_score": 196,
+          "highest_complete_level": 3,
+          "level_reach_counts": {
+            "2": 14,
+            "3": 2,
+            "4": 0,
+            "5": 0
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-026251264/evaluation.json",
+        "sha256": "a67c5fa34b31021036e00e645e8e4f1e227a9c783f87af2db9f031005105b61f",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 117.8,
+          "median_score": 121,
+          "best_score": 200,
+          "highest_complete_level": 3,
+          "level_reach_counts": {
+            "2": 17,
+            "3": 4,
+            "4": 0,
+            "5": 0
+          }
+        }
+      }
+    },
+    {
+      "steps": 26501120,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-026501120/evaluation.json",
+        "sha256": "b019500b7a35111747bbdcfef739644dc8f00358a6956037d652b2c525f0cedc",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 140.35,
+          "median_score": 115,
+          "best_score": 312,
+          "highest_complete_level": 5,
+          "level_reach_counts": {
+            "2": 15,
+            "3": 6,
+            "4": 4,
+            "5": 2
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-026501120/evaluation.json",
+        "sha256": "c7c2ac8e36cc2f99a8671027d873c34e184afdd0a10301cc1f2c2b824716c797",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 142.25,
+          "median_score": 127.5,
+          "best_score": 257,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 19,
+            "3": 5,
+            "4": 2,
+            "5": 0
+          }
+        }
+      }
+    },
+    {
+      "steps": 26750976,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-026750976/evaluation.json",
+        "sha256": "cfb94aaa2332ea84a3f10cd79fbfbda0c3173204662ec93c6e00e2e28885aaa5",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 108.05,
+          "median_score": 105,
+          "best_score": 193,
+          "highest_complete_level": 3,
+          "level_reach_counts": {
+            "2": 15,
+            "3": 4,
+            "4": 0,
+            "5": 0
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-026750976/evaluation.json",
+        "sha256": "a5666d5dee3a15f16d96cd3b02387ecc8f131eccf3363874488a04e5c788a53a",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 135.45,
+          "median_score": 117.5,
+          "best_score": 274,
+          "highest_complete_level": 5,
+          "level_reach_counts": {
+            "2": 17,
+            "3": 7,
+            "4": 3,
+            "5": 1
+          }
+        }
+      }
+    },
+    {
+      "steps": 27000832,
+      "sil": {
+        "file": "runs/level10-curriculum-balanced-sil/step-027000832/evaluation.json",
+        "sha256": "633bdb1c8247ef681b3587fe4118ecdde13aa69fa7069338746b8250b8e4e930",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 106.45,
+          "median_score": 95.5,
+          "best_score": 246,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 13,
+            "3": 4,
+            "4": 2,
+            "5": 0
+          }
+        }
+      },
+      "control": {
+        "file": "runs/level10-curriculum-balanced-lr1e5-long/step-027000832/evaluation.json",
+        "sha256": "245ffbef7fa82c3da353ae799ec77e9b7ef6b753d745b29ddbd0dd8a3319f6ae",
+        "summary": {
+          "complete_games": 20,
+          "mean_score": 138.5,
+          "median_score": 127.5,
+          "best_score": 273,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 18,
+            "3": 7,
+            "4": 2,
+            "5": 0
+          }
+        }
+      }
+    }
+  ],
+  "later_original_primary_suites": [
+    {
+      "steps": 32251904,
+      "file": "runs/level10-curriculum-balanced-lr1e5-long/step-032251904/evaluation.json",
+      "sha256": "f367d2ab1d8ca029572ffb0f436f0a6e56a3d8dc1153e130e92ae2b835d02ffa",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 117.3,
+        "median_score": 117.5,
+        "best_score": 287,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 3,
+          "4": 2,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 32501760,
+      "file": "runs/level10-curriculum-balanced-lr1e5-long/step-032501760/evaluation.json",
+      "sha256": "ba62fdb01a8df197847b9c95d1ef862cd4c37ca8a5b2536713c4538a46219523",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 111.95,
+        "median_score": 120.5,
+        "best_score": 267,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 3,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 32751616,
+      "file": "runs/level10-curriculum-balanced-lr1e5-long/step-032751616/evaluation.json",
+      "sha256": "77222d45ab0868d346b27222582e1406e817736db1aaa8b3762567d8480f7d8d",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 123.35,
+        "median_score": 120.5,
+        "best_score": 295,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 4,
+          "4": 2,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 33001472,
+      "file": "runs/level10-curriculum-balanced-lr1e5-long/step-033001472/evaluation.json",
+      "sha256": "f39450ae6287e2d7770c70eafd945a25794c1062ab65ec5bcd208a80d4559111",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 82.5,
+        "median_score": 61,
+        "best_score": 135,
+        "highest_complete_level": 2,
+        "level_reach_counts": {
+          "2": 9,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        }
+      }
+    }
+  ],
+  "reference_unchanged": "runs/level10-curriculum-balanced-lr1e5-long/step-028504064",
+  "highest_frozen_level": 5,
+  "fresh_final_seeds_used": false
+}

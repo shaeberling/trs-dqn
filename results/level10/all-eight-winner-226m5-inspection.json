@@ -1,0 +1,126 @@
+{
+  "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-226500608/model.safetensors",
+  "checkpoint_sha256": "b74d8f62e3414afef7e74fba504d35e5cb085c5dc3080e712562fafabe5b7d2c",
+  "replay": "results/level10/all-eight-winner-226m5-replay.html",
+  "replay_sha256": "b0754b173d5cbc33385b7ee9c527467ee7c43f0e776fa12f5d7201b904027b30",
+  "seed": 10001,
+  "score": 585,
+  "level": 8,
+  "observation_stride": 2,
+  "tstates": 50000,
+  "batch_size": 128,
+  "seeded_action_mismatches": 0,
+  "scope": "Post-hoc inference on one selected recorded game; not a performance estimate.",
+  "all": {
+    "actions": 49159,
+    "action_entropy_nats": 0.2871030701942054,
+    "direction_entropy_nats": 0.20017341259252816,
+    "serve_entropy_nats": 0.16632555481512906,
+    "mean_non_greedy_direction_probability": 0.08356122071323377,
+    "recorded_non_greedy_direction_fraction": 0.0821009377733477,
+    "mean_serve_probability": 0.5893570834683376,
+    "mean_recorded_action_probability": 0.8373576895078996
+  },
+  "playing": {
+    "actions": 49157,
+    "action_entropy_nats": 0.2871021490426006,
+    "direction_entropy_nats": 0.20017003653622276,
+    "serve_entropy_nats": 0.16632099673023373,
+    "mean_non_greedy_direction_probability": 0.08356095926786247,
+    "recorded_non_greedy_direction_fraction": 0.08210427812925931,
+    "mean_serve_probability": 0.5893628175351899,
+    "mean_recorded_action_probability": 0.837354800634996
+  },
+  "waiting_for_serve": {
+    "actions": 2,
+    "action_entropy_nats": 0.30974359491200887,
+    "direction_entropy_nats": 0.2831518124952346,
+    "serve_entropy_nats": 0.2783564444141672,
+    "mean_non_greedy_direction_probability": 0.08998715577178018,
+    "recorded_non_greedy_direction_fraction": 0.0,
+    "mean_serve_probability": 0.44842232133987636,
+    "mean_recorded_action_probability": 0.9083618521690369
+  },
+  "by_visible_level": {
+    "1": {
+      "actions": 6182,
+      "action_entropy_nats": 0.26607104894999367,
+      "direction_entropy_nats": 0.18788594065885422,
+      "serve_entropy_nats": 0.15673388179454184,
+      "mean_non_greedy_direction_probability": 0.07926899257522395,
+      "recorded_non_greedy_direction_fraction": 0.07699773536072468,
+      "mean_serve_probability": 0.6276940404930169,
+      "mean_recorded_action_probability": 0.846713040789343
+    },
+    "2": {
+      "actions": 7484,
+      "action_entropy_nats": 0.3148268873527457,
+      "direction_entropy_nats": 0.22080113841490467,
+      "serve_entropy_nats": 0.17788722831893053,
+      "mean_non_greedy_direction_probability": 0.09197451704636687,
+      "recorded_non_greedy_direction_fraction": 0.09166221272047034,
+      "mean_serve_probability": 0.5615810644832805,
+      "mean_recorded_action_probability": 0.8232540337992361
+    },
+    "3": {
+      "actions": 5736,
+      "action_entropy_nats": 0.27175903582350297,
+      "direction_entropy_nats": 0.18626350793655685,
+      "serve_entropy_nats": 0.16354819763555836,
+      "mean_non_greedy_direction_probability": 0.07745541760397268,
+      "recorded_non_greedy_direction_fraction": 0.08036959553695955,
+      "mean_serve_probability": 0.5473869547427328,
+      "mean_recorded_action_probability": 0.8431896174493718
+    },
+    "4": {
+      "actions": 7729,
+      "action_entropy_nats": 0.26692832879814565,
+      "direction_entropy_nats": 0.18728751734137888,
+      "serve_entropy_nats": 0.14774566560923974,
+      "mean_non_greedy_direction_probability": 0.0777689740170368,
+      "recorded_non_greedy_direction_fraction": 0.07439513520507181,
+      "mean_serve_probability": 0.6734904054903289,
+      "mean_recorded_action_probability": 0.8466645529165365
+    },
+    "5": {
+      "actions": 1889,
+      "action_entropy_nats": 0.26600499871364663,
+      "direction_entropy_nats": 0.19003390471598924,
+      "serve_entropy_nats": 0.1424920530987363,
+      "mean_non_greedy_direction_probability": 0.07823432399503655,
+      "recorded_non_greedy_direction_fraction": 0.07834833245103229,
+      "mean_serve_probability": 0.6883497336455076,
+      "mean_recorded_action_probability": 0.8521571956619319
+    },
+    "6": {
+      "actions": 3306,
+      "action_entropy_nats": 0.2518219583447016,
+      "direction_entropy_nats": 0.18721223856799782,
+      "serve_entropy_nats": 0.13901410516073473,
+      "mean_non_greedy_direction_probability": 0.0770679455326754,
+      "recorded_non_greedy_direction_fraction": 0.07320024198427103,
+      "mean_serve_probability": 0.635908919847158,
+      "mean_recorded_action_probability": 0.8596086260943006
+    },
+    "7": {
+      "actions": 9107,
+      "action_entropy_nats": 0.28034786140658063,
+      "direction_entropy_nats": 0.1955999619275082,
+      "serve_entropy_nats": 0.16657416672612188,
+      "mean_non_greedy_direction_probability": 0.08253516776279356,
+      "recorded_non_greedy_direction_fraction": 0.08158559349950588,
+      "mean_serve_probability": 0.5438585093433609,
+      "mean_recorded_action_probability": 0.8417871056480535
+    },
+    "8": {
+      "actions": 7726,
+      "action_entropy_nats": 0.33686907645201397,
+      "direction_entropy_nats": 0.22665789820633944,
+      "serve_entropy_nats": 0.20067089149535647,
+      "mean_non_greedy_direction_probability": 0.09446390590724046,
+      "recorded_non_greedy_direction_fraction": 0.09125032358270774,
+      "mean_serve_probability": 0.542089273155473,
+      "mean_recorded_action_probability": 0.8115326487981047
+    }
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "matched_suites": [
+    {
+      "steps": 25251840,
+      "settings": {
+        "no_sil": {
+          "path": "runs/level10-curriculum-balanced-lr1e5-long/step-025251840/evaluation.json",
+          "sha256": "89cd5c4436c46de50d71ab50cbee3a779c25f50ff71353fd99512e2525e26aa0",
+          "summary": {
+            "complete_games": 20,
+            "mean_score": 133.3,
+            "median_score": 116,
+            "best_score": 306,
+            "highest_complete_level": 5,
+            "level_reach_counts": {
+              "2": 15,
+              "3": 7,
+              "4": 3,
+              "5": 1
+            }
+          }
+        },
+        "sil4": {
+          "path": "runs/level10-curriculum-balanced-sil/step-025251840/evaluation.json",
+          "sha256": "449466fb95ba2dd50e144f439d3c77f113e9aaa5690ff68f7e044891e8c6fb47",
+          "summary": {
+            "complete_games": 20,
+            "mean_score": 98.6,
+            "median_score": 89.5,
+            "best_score": 264,
+            "highest_complete_level": 4,
+            "level_reach_counts": {
+              "2": 11,
+              "3": 2,
+              "4": 1,
+              "5": 0
+            }
+          }
+        },
+        "sil20": {
+          "path": "runs/level10-curriculum-balanced-sil20/step-025251840/evaluation.json",
+          "sha256": "6b97a701f8ad1db03d5242b7f201e1ea97f19059ef2085a64257f3d600c0ef9f",
+          "summary": {
+            "complete_games": 20,
+            "mean_score": 114.2,
+            "median_score": 108.5,
+            "best_score": 286,
+            "highest_complete_level": 4,
+            "level_reach_counts": {
+              "2": 15,
+              "3": 4,
+              "4": 2,
+              "5": 0
+            }
+          }
+        }
+      }
+    },
+    {
+      "steps": 25501696,
+      "settings": {
+        "no_sil": {
+          "path": "runs/level10-curriculum-balanced-lr1e5-long/step-025501696/evaluation.json",
+          "sha256": "6013f8b3a4e7517990afd845d1338827324a09e93285044341dd22971531d1ac",
+          "summary": {
+            "complete_games": 20,
+            "mean_score": 100.35,
+            "median_score": 104,
+            "best_score": 226,
+            "highest_complete_level": 4,
+            "level_reach_counts": {
+              "2": 11,
+              "3": 3,
+              "4": 1,
+              "5": 0
+            }
+          }
+        },
+        "sil4": {
+          "path": "runs/level10-curriculum-balanced-sil/step-025501696/evaluation.json",
+          "sha256": "c1bab9d27f6b98a917ab8d1f8210659c9a4c7a09c4c228a06afb6bc00f6e8e11",
+          "summary": {
+            "complete_games": 20,
+            "mean_score": 127.2,
+            "median_score": 117,
+            "best_score": 285,
+            "highest_complete_level": 5,
+            "level_reach_counts": {
+              "2": 14,
+              "3": 5,
+              "4": 3,
+              "5": 1
+            }
+          }
+        },
+        "sil20": {
+          "path": "runs/level10-curriculum-balanced-sil20/step-025501696/evaluation.json",
+          "sha256": "f7aca0ce088170f7a2017368f03966320989ba478abd373217432a6b83bf4539",
+          "summary": {
+            "complete_games": 20,
+            "mean_score": 96.3,
+            "median_score": 103,
+            "best_score": 190,
+            "highest_complete_level": 3,
+            "level_reach_counts": {
+              "2": 13,
+              "3": 2,
+              "4": 0,
+              "5": 0
+            }
+          }
+        }
+      }
+    }
+  ],
+  "seed_termination_and_statistics_verified": true,
+  "decision": "Mixed early SIL20 results: first primary stronger than SIL4 but below control; second below both at depth. Continue declared budget and retain the verified level-6 checkpoint. No secondary audit, replay selection, or fresh-test use for these checkpoints."
+}

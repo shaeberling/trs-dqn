@@ -1,0 +1,45 @@
+{
+  "series": [
+    {
+      "run": "runs/level10-sil-level8-continuation",
+      "latest_plotted_progress": 36253696,
+      "latest_primary": 36253696,
+      "primary_suites": 20,
+      "eligible_score_depth_points": 19,
+      "excluded_incomplete_steps": [
+        34000896
+      ],
+      "verified_training_progress_records": 325,
+      "highest_plotted_complete_training_level": 5,
+      "highest_eligible_primary_level": 7,
+      "initialization_offset": 500000
+    },
+    {
+      "run": "runs/level10-sil-level8-cap128k",
+      "latest_plotted_progress": 33161216,
+      "latest_primary": 33001472,
+      "primary_suites": 7,
+      "eligible_score_depth_points": 6,
+      "excluded_incomplete_steps": [
+        31752192
+      ],
+      "verified_training_progress_records": 122,
+      "highest_plotted_complete_training_level": 7,
+      "highest_eligible_primary_level": 6,
+      "initialization_offset": 500000
+    }
+  ],
+  "hashes": {
+    ".png": "5da142d6c0c636116ef29f9a83bc853c423f3932b7dbcb069b7bfec20dd9eb76",
+    ".svg": "fc07df8ceb565a3de759d4b85def6882d8e04b93a718cb1124c757e2fb699991",
+    ".json": "f6b89616eadcab6a1568b7631fb5beeca0c51e868bee446443384b0dcbccbaaf"
+  },
+  "historical_random_baseline": {
+    "path": "results/level5/random.json",
+    "mean_score": 1.54,
+    "seeds": "30000-30099"
+  },
+  "scope": "Snapshot of complete from-boot training and logged primary validations; restored practice and incomplete games do not count as performance. Separate secondary audits, including retained Level8 reference, are not plotted. Goal10 line; stars mark6-or-higher complete primary reaches. No new final-test data.",
+  "visual_inspection": "Legible labels/legend, distinct curves, goal10 line and completion panel; image inspected.",
+  "recorded_at_utc": "2026-09-14 10:59:57 UTC"
+}

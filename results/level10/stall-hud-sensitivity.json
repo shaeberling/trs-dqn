@@ -1,0 +1,248 @@
+{
+  "checkpoint": "runs/level10-entropy001-long/step-022253568/model.safetensors",
+  "checkpoint_sha256": "c2b56f88cc21c6978f8abf2873abbd85a2d228957d3d11426e3b6b52e5194b21",
+  "scope": "Synthetic screen-input sensitivity probe on one recorded stalled observation. Not actual gameplay, demonstrations, or training data.",
+  "variants": [
+    {
+      "variant": "original",
+      "probabilities": [
+        7.1180969105077985e-12,
+        0.004216169938445091,
+        1.4236432033243318e-9,
+        5.313022799491307e-10,
+        0.9957841634750366,
+        6.8572303391079e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.313022799491307e-10,
+      "raw_left_probability_sum": 1.0000003576278687,
+      "effective_left_held_probability": 0.9999999981302368,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_level_digits_1",
+      "probabilities": [
+        7.105400469387124e-12,
+        0.004212841857224703,
+        1.4176358975603875e-9,
+        5.297863814313075e-10,
+        0.9957869648933411,
+        6.827696186206822e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.297863814313075e-10,
+      "raw_left_probability_sum": 0.9999998211860657,
+      "effective_left_held_probability": 0.9999998193163151,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_level_digits_2",
+      "probabilities": [
+        7.1085992994768255e-12,
+        0.00421367771923542,
+        1.419148243364532e-9,
+        5.301634686816215e-10,
+        0.9957860112190247,
+        6.835123134152354e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.301634686816215e-10,
+      "raw_left_probability_sum": 0.9999997019767761,
+      "effective_left_held_probability": 0.9999997001070223,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_level_digits_3",
+      "probabilities": [
+        7.111772976076125e-12,
+        0.004214509390294552,
+        1.4206458232024488e-9,
+        5.305427763779846e-10,
+        0.9957850575447083,
+        6.842493238679026e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.305427763779846e-10,
+      "raw_left_probability_sum": 0.9999995827674866,
+      "effective_left_held_probability": 0.9999995808977297,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_level_digits_4",
+      "probabilities": [
+        7.114934075930224e-12,
+        0.0042153457179665565,
+        1.4221478439324642e-9,
+        5.309224171412552e-10,
+        0.9957850575447083,
+        6.849884215398561e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.309224171412552e-10,
+      "raw_left_probability_sum": 1.0000003576278687,
+      "effective_left_held_probability": 0.9999999981302399,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_level_digits_6",
+      "probabilities": [
+        7.121057216119553e-12,
+        0.0042169541120529175,
+        1.4250667312865062e-9,
+        5.316874718275244e-10,
+        0.9957832098007202,
+        6.864270929440863e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.316874718275244e-10,
+      "raw_left_probability_sum": 1.0000001192092896,
+      "effective_left_held_probability": 0.9999999981302338,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_level_digits_10",
+      "probabilities": [
+        7.099114698871922e-12,
+        0.004210219252854586,
+        1.418038797496024e-9,
+        5.286397430914747e-10,
+        0.9957898259162903,
+        6.823412945777818e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.286397430914747e-10,
+      "raw_left_probability_sum": 1,
+      "effective_left_held_probability": 0.9999999981302558,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_score_digits_0",
+      "probabilities": [
+        7.46567998394232e-12,
+        0.004106023348867893,
+        1.495452428557087e-9,
+        5.501157862575212e-10,
+        0.9958943128585815,
+        7.163762472117696e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.501157862575212e-10,
+      "raw_left_probability_sum": 1.0000003576278687,
+      "effective_left_held_probability": 0.9999999981298892,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_score_digits_60",
+      "probabilities": [
+        7.267548542133628e-12,
+        0.004174905829131603,
+        1.4563952266399838e-9,
+        5.398636537812251e-10,
+        0.9958249926567078,
+        6.996866641628685e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.398636537812251e-10,
+      "raw_left_probability_sum": 0.9999998807907104,
+      "effective_left_held_probability": 0.9999998789207978,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_score_digits_130",
+      "probabilities": [
+        7.361945254802382e-12,
+        0.004130586050450802,
+        1.4757848276758523e-9,
+        5.420189852500812e-10,
+        0.9958696365356445,
+        7.0729457846141486e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.420189852500812e-10,
+      "raw_left_probability_sum": 1.000000238418579,
+      "effective_left_held_probability": 0.9999999981299929,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_score_digits_200",
+      "probabilities": [
+        7.446182559434078e-12,
+        0.004104104824364185,
+        1.4871637254998404e-9,
+        5.485661369597494e-10,
+        0.9958962202072144,
+        7.1326358153100955e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.485661369597494e-10,
+      "raw_left_probability_sum": 1.0000003576278687,
+      "effective_left_held_probability": 0.9999999981299087,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_score_digits_400",
+      "probabilities": [
+        7.426241045715987e-12,
+        0.004102386999875307,
+        1.478689726219784e-9,
+        5.469352748477263e-10,
+        0.9958971738815308,
+        7.100533938597664e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.469352748477263e-10,
+      "raw_left_probability_sum": 0.9999995827674866,
+      "effective_left_held_probability": 0.9999995808974151,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "only_score_digits_600",
+      "probabilities": [
+        7.402242881149323e-12,
+        0.00410148361697793,
+        1.469075416871135e-9,
+        5.449432571857926e-10,
+        0.9958981275558472,
+        7.062862295015293e-9
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 5.449432571857926e-10,
+      "raw_left_probability_sum": 0.9999995827674866,
+      "effective_left_held_probability": 0.999999640502084,
+      "effective_space_alone_probability": 4.656612873077393e-10
+    },
+    {
+      "variant": "blank_top_row",
+      "probabilities": [
+        7.514953936915703e-12,
+        0.0040193661116063595,
+        1.7991731438016245e-9,
+        8.257838302050402e-10,
+        0.9959807395935059,
+        1.0516169268726117e-8
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 8.257838302050402e-10,
+      "raw_left_probability_sum": 1.0000001192092896,
+      "effective_left_held_probability": 0.9999999971985173,
+      "effective_space_alone_probability": 9.313225746154785e-10
+    },
+    {
+      "variant": "blank_score_and_level_digits",
+      "probabilities": [
+        8.40375685706718e-12,
+        0.004275215324014425,
+        2.1721469067870203e-9,
+        7.572790172716282e-10,
+        0.9957243204116821,
+        1.0297712016438254e-8
+      ],
+      "argmax_action": 4,
+      "space_alone_probability": 7.572790172716282e-10,
+      "raw_left_probability_sum": 0.9999995231628418,
+      "effective_left_held_probability": 0.9999995198948091,
+      "effective_space_alone_probability": 9.313225746154785e-10
+    }
+  ],
+  "numerics": "These are raw float32 softmax outputs; their sums can differ slightly from 1. Effective probabilities describe the implemented float32-CDF sampler."
+}

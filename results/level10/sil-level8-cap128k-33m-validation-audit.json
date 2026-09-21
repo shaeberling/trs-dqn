@@ -1,0 +1,131 @@
+{
+  "checkpoint": "runs/level10-sil-level8-cap128k/step-033001472",
+  "source_hashes_unchanged": true,
+  "sets": [
+    {
+      "path": "runs/level10-sil-level8-cap128k/step-033001472/evaluation.json",
+      "sha256": "63f2a1eb679be706491c7c2ba90bdcfe03de1dd1dee9b00ce21a26f5208ae53f",
+      "summary": {
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 129.45,
+        "median_score": 112.5,
+        "best_score": 366,
+        "highest_complete_level": 6,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 7,
+          "4": 4,
+          "5": 1,
+          "6": 1
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 366,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 16784,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 366,
+          "start_tstates": 41966,
+          "seed": 10014
+        }
+      ]
+    },
+    {
+      "path": "results/level10/validation-audit-sil-level8-cap128k-33m.json",
+      "sha256": "17a6fef3d0afbf32f14c31771a1ad8759bffffd5656ce131a6915a0afb776b5d",
+      "summary": {
+        "complete_games": 50,
+        "incomplete_games": 0,
+        "mean_score": 112.84,
+        "median_score": 115,
+        "best_score": 279,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 34,
+          "3": 9,
+          "4": 4,
+          "5": 0
+        }
+      },
+      "guards": [],
+      "later_games": []
+    }
+  ],
+  "all_seeds_mode_termination_and_statistics_verified": true,
+  "all_games_complete": true,
+  "combined_reused_validation": {
+    "games": 70,
+    "mean_score": 117.58571428571429,
+    "median_score": 115,
+    "best_score": 366,
+    "highest_complete_level": 6,
+    "level_reach_counts": {
+      "2": 47,
+      "3": 16,
+      "4": 8,
+      "5": 1,
+      "6": 1,
+      "7": 0,
+      "8": 0
+    }
+  },
+  "session_id": 79906,
+  "exit_code": 0,
+  "reference": {
+    "checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+    "primary_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      8,
+      9,
+      15,
+      169.2
+    ],
+    "highest_verified": 8,
+    "primary_steps": 31252480,
+    "combined": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 178.81428571428572,
+      "median_score": 140,
+      "best_score": 555,
+      "highest_level": 8,
+      "highest_complete_level": 8,
+      "level_1_clears": 57,
+      "level_reach_counts": {
+        "2": 57,
+        "3": 36,
+        "4": 26,
+        "5": 16,
+        "6": 4,
+        "7": 2,
+        "8": 1
+      },
+      "level_reach_rates": {
+        "2": 0.8142857142857143,
+        "3": 0.5142857142857142,
+        "4": 0.37142857142857144,
+        "5": 0.22857142857142856,
+        "6": 0.05714285714285714,
+        "7": 0.02857142857142857,
+        "8": 0.014285714285714285
+      }
+    },
+    "replay": "results/level10/sil-continuation-31m25-secondary-level8-replay.html",
+    "model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05"
+  },
+  "decision": "No promotion. All70reused games complete, but combined mean117.59/highest6/oneLevel5reach trail the retained Level8 source and earlier capacity candidates. Secondary reaches only4. Continue declared capacity trial; no fresh final-test use."
+}

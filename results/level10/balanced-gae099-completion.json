@@ -1,0 +1,585 @@
+{
+  "run": "runs/level10-curriculum-balanced-gae099",
+  "exit_code": 0,
+  "additional_actions": 5001216,
+  "stop": {
+    "wall_seconds": 6196.17,
+    "event": "stopped",
+    "steps": 30007296,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 3437013,
+      "restored": 1564203
+    },
+    "mlx_active_bytes": 9798508,
+    "mlx_cache_bytes": 725635088,
+    "mlx_peak_bytes": 1446171584
+  },
+  "log": {
+    "lines": 3241,
+    "bytes": 1761767,
+    "sha256": "4d34b946f9c91c29e4fbeed1cb3e2d87b2ff1e48f7fab32ef6564915f844eb9f"
+  },
+  "final_hashes": {
+    "model.safetensors": "620b7cb0bb00e345977acc9b588f3bf9a09afd2c34535e2863adc383acd673e5",
+    "optimizer.npz": "64e2528dc760dce6c93c1f973b8a26b89d9e874486016b4697cbecfe07d1ecff",
+    "state.json": "992fc665e0ba23c44477a3a6858fec182f4bf32044406fca5d93c8a8770264bd"
+  },
+  "full_training_games": 666,
+  "practice_segments": 1937,
+  "highest_full_training": 7,
+  "highest_practice": 8,
+  "truncated_training": 0,
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "all_primary_seeds_termination_means_and_reach_counts_verified": true,
+  "matched_primary": [
+    {
+      "steps": 25251840,
+      "control": {
+        "mean_score": 133.3,
+        "median_score": 116.0,
+        "best_score": 306,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 7,
+          "4": 3,
+          "5": 1
+        }
+      },
+      "gae099": {
+        "mean_score": 128.55,
+        "median_score": 118.5,
+        "best_score": 278,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 6,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 25501696,
+      "control": {
+        "mean_score": 100.35,
+        "median_score": 104.0,
+        "best_score": 226,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 3,
+          "4": 1,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 103.65,
+        "median_score": 117.5,
+        "best_score": 219,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 3,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 25751552,
+      "control": {
+        "mean_score": 121.4,
+        "median_score": 119.0,
+        "best_score": 282,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 4,
+          "4": 3,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 126.5,
+        "median_score": 123.0,
+        "best_score": 276,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 4,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 26001408,
+      "control": {
+        "mean_score": 132.2,
+        "median_score": 125.0,
+        "best_score": 279,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 6,
+          "4": 4,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 132.3,
+        "median_score": 116.0,
+        "best_score": 244,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 5,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 26251264,
+      "control": {
+        "mean_score": 117.8,
+        "median_score": 121.0,
+        "best_score": 200,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 4,
+          "4": 0,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 146.7,
+        "median_score": 120.5,
+        "best_score": 281,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 8,
+          "4": 5,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 26501120,
+      "control": {
+        "mean_score": 142.25,
+        "median_score": 127.5,
+        "best_score": 257,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 19,
+          "3": 5,
+          "4": 2,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 131.4,
+        "median_score": 116.0,
+        "best_score": 320,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 5,
+          "4": 3,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 26750976,
+      "control": {
+        "mean_score": 135.45,
+        "median_score": 117.5,
+        "best_score": 274,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 7,
+          "4": 3,
+          "5": 1
+        }
+      },
+      "gae099": {
+        "mean_score": 101.0,
+        "median_score": 96.0,
+        "best_score": 252,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 27000832,
+      "control": {
+        "mean_score": 138.5,
+        "median_score": 127.5,
+        "best_score": 273,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 7,
+          "4": 2,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 134.1,
+        "median_score": 120.5,
+        "best_score": 268,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 8,
+          "4": 3,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 27250688,
+      "control": {
+        "mean_score": 131.95,
+        "median_score": 125.0,
+        "best_score": 279,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 6,
+          "4": 2,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 111.35,
+        "median_score": 104.5,
+        "best_score": 244,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 3,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 27500544,
+      "control": {
+        "mean_score": 148.55,
+        "median_score": 125.0,
+        "best_score": 286,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 6,
+          "4": 5,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 106.6,
+        "median_score": 85.5,
+        "best_score": 248,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 10,
+          "3": 4,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 27750400,
+      "control": {
+        "mean_score": 142.05,
+        "median_score": 124.5,
+        "best_score": 294,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 6,
+          "4": 4,
+          "5": 2
+        }
+      },
+      "gae099": {
+        "mean_score": 102.25,
+        "median_score": 108.5,
+        "best_score": 272,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 28000256,
+      "control": {
+        "mean_score": 112.3,
+        "median_score": 113.5,
+        "best_score": 242,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 4,
+          "4": 1,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 92.45,
+        "median_score": 86.0,
+        "best_score": 195,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 28250112,
+      "control": {
+        "mean_score": 109.3,
+        "median_score": 119.0,
+        "best_score": 264,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 98.85,
+        "median_score": 93.0,
+        "best_score": 241,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 28504064,
+      "control": {
+        "mean_score": 166.7,
+        "median_score": 145.5,
+        "best_score": 294,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 10,
+          "4": 5,
+          "5": 2
+        }
+      },
+      "gae099": {
+        "mean_score": 96.7,
+        "median_score": 83.5,
+        "best_score": 239,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 10,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 28753920,
+      "control": {
+        "mean_score": 121.65,
+        "median_score": 111.5,
+        "best_score": 250,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 6,
+          "4": 4,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 130.75,
+        "median_score": 120.5,
+        "best_score": 291,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 5,
+          "4": 2,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 29003776,
+      "control": {
+        "mean_score": 116.65,
+        "median_score": 98.0,
+        "best_score": 278,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 5,
+          "4": 2,
+          "5": 1
+        }
+      },
+      "gae099": {
+        "mean_score": 101.0,
+        "median_score": 85.5,
+        "best_score": 266,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 10,
+          "3": 3,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 29253632,
+      "control": {
+        "mean_score": 130.25,
+        "median_score": 120.5,
+        "best_score": 285,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 5,
+          "4": 2,
+          "5": 1
+        }
+      },
+      "gae099": {
+        "mean_score": 98.45,
+        "median_score": 87.5,
+        "best_score": 330,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 2,
+          "4": 1,
+          "5": 1
+        }
+      }
+    },
+    {
+      "steps": 29503488,
+      "control": {
+        "mean_score": 139.1,
+        "median_score": 123.0,
+        "best_score": 293,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 5,
+          "4": 5,
+          "5": 2
+        }
+      },
+      "gae099": {
+        "mean_score": 107.25,
+        "median_score": 113.5,
+        "best_score": 195,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 4,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 29753344,
+      "control": {
+        "mean_score": 127.55,
+        "median_score": 108.0,
+        "best_score": 282,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 5,
+          "4": 4,
+          "5": 2
+        }
+      },
+      "gae099": {
+        "mean_score": 97.85,
+        "median_score": 103.5,
+        "best_score": 187,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 2,
+          "4": 0,
+          "5": 0
+        }
+      }
+    },
+    {
+      "steps": 30003200,
+      "control": {
+        "mean_score": 132.9,
+        "median_score": 123.0,
+        "best_score": 296,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 5,
+          "4": 4,
+          "5": 0
+        }
+      },
+      "gae099": {
+        "mean_score": 80.45,
+        "median_score": 63.5,
+        "best_score": 179,
+        "highest_complete_level": 3,
+        "level_reach_counts": {
+          "2": 8,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        }
+      }
+    }
+  ],
+  "best_primary_step": 27000832,
+  "summary": {
+    "gae099_suites_reaching5": 4,
+    "control_suites_reaching5": 8,
+    "gae099_level5_games": 4,
+    "control_level5_games": 12
+  },
+  "decision": "Finish this comparison; no new frozen depth and no reference replacement. Preserve results and prioritize the predeclared SIL trial. Reused suites are not independent fresh-test evidence."
+}

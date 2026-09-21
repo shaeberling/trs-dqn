@@ -1,0 +1,49 @@
+{
+  "scope": "Worker import/real-update equivalence diagnostic, not a performance candidate or controlled speed benchmark.",
+  "source_checkpoint": "runs/level10-entropy001/step-020500480",
+  "source_checkpoint_sha256": "510ce9632f744301f3a0f2b9c100b4c5c070afa88f1dbc466324c7c411d9fb70",
+  "before": {
+    "run": "runs/curriculum-cache-smoke",
+    "ppo_import_loads_mlx": true,
+    "fresh_import_max_rss_raw": 58458112
+  },
+  "after": {
+    "run": "runs/worker-import-smoke",
+    "ppo_import_loads_mlx": false,
+    "fresh_import_max_rss_raw": 43810816,
+    "workers": [
+      {
+        "pid": 50357,
+        "mlx_loaded": false
+      },
+      {
+        "pid": 50358,
+        "mlx_loaded": false
+      },
+      {
+        "pid": 50359,
+        "mlx_loaded": false
+      },
+      {
+        "pid": 50360,
+        "mlx_loaded": false
+      }
+    ],
+    "stop": {
+      "wall_seconds": 8.45,
+      "event": "stopped",
+      "steps": 20504576,
+      "target_met": false,
+      "mlx_active_bytes": 9769644,
+      "mlx_cache_bytes": 725635088,
+      "mlx_peak_bytes": 771131120
+    },
+    "exit_code": 0
+  },
+  "additional_actions_each": 4096,
+  "model_bytes_equal": true,
+  "optimizer_bytes_equal": true,
+  "rng_equal": true,
+  "step_and_episode_counters_equal": true,
+  "tests_passed": 55
+}

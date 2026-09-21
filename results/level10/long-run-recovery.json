@@ -1,0 +1,28 @@
+{
+  "recorded_at_utc": "2026-09-13 21:54:51 UTC",
+  "interrupted_run": "runs/level10-entropy001-long",
+  "interrupted_pid": 9440,
+  "confirmed_exit_code": 137,
+  "last_log_event": "validation_start",
+  "training_steps": 22253568,
+  "start_steps": 20500480,
+  "additional_actions_before_interruption": 1753088,
+  "reason": "Sampled validation seed 10010 remained on PASS BALL at score 292, level 5, with an effectively left-holding policy. A separate 100000-action diagnostic completed 19/20 games and truncated that seed. The old process did not exit after SIGTERM because it lacked evaluation cancellation; only its exact PID was then terminated.",
+  "discarded": "Unfinished validation and unsaved live emulator trajectories; no post-checkpoint training update existed during the stalled evaluation.",
+  "checkpoint": "runs/level10-entropy001-long/step-022253568",
+  "sha256": {
+    "model.safetensors": "c2b56f88cc21c6978f8abf2873abbd85a2d228957d3d11426e3b6b52e5194b21",
+    "optimizer.npz": "def1be4c5d2c2470652c9669fb3a6003a5acd9d86767277fb69c96bfb699a4e5",
+    "state.json": "0e5a5a7d17aece3b5af61792811607d7b01473109d16ab6afd086b856e17979e"
+  },
+  "archived_log": "results/level10/logs/level10-entropy001-long.jsonl",
+  "recovered_run": "runs/level10-entropy001-long-recovered",
+  "budget_end_steps": 30500480,
+  "remaining_actions_at_resume": 8246912,
+  "learning_settings_changed": false,
+  "eval_max_steps": 100000,
+  "eval_envs": 20,
+  "selection_policy": "Any incomplete suite is disqualified; validation-protocol change resets inherited selection records.",
+  "final_test_and_target_replay_max_steps": 0,
+  "final_test_seeds_40000_40099_used": false
+}

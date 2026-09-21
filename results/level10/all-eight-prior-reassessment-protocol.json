@@ -1,0 +1,123 @@
+{
+  "created_at_utc": "2026-09-20 07:06:50 UTC",
+  "purpose": "Reassess strong historical frozen policies because the former level-only target could not identify original-game victories.",
+  "selection_rule": "Three highest complete old-run primary suites by Level8 reach count, then Level7 count, then mean score; fixed before any new outcomes are seen.",
+  "candidates": [
+    {
+      "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-122503168",
+      "mean": 360.9,
+      "best": 576,
+      "counts": {
+        "2": 19,
+        "3": 16,
+        "4": 16,
+        "5": 15,
+        "6": 10,
+        "7": 9,
+        "8": 6
+      },
+      "games8": [
+        {
+          "seed": 10000,
+          "score": 540
+        },
+        {
+          "seed": 10001,
+          "score": 575
+        },
+        {
+          "seed": 10005,
+          "score": 571
+        },
+        {
+          "seed": 10013,
+          "score": 568
+        },
+        {
+          "seed": 10014,
+          "score": 550
+        },
+        {
+          "seed": 10019,
+          "score": 576
+        }
+      ]
+    },
+    {
+      "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-226500608",
+      "mean": 371.7,
+      "best": 585,
+      "counts": {
+        "2": 20,
+        "3": 18,
+        "4": 16,
+        "5": 14,
+        "6": 10,
+        "7": 10,
+        "8": 5
+      },
+      "games8": [
+        {
+          "seed": 10001,
+          "score": 585
+        },
+        {
+          "seed": 10003,
+          "score": 541
+        },
+        {
+          "seed": 10008,
+          "score": 555
+        },
+        {
+          "seed": 10011,
+          "score": 540
+        },
+        {
+          "seed": 10016,
+          "score": 574
+        }
+      ]
+    },
+    {
+      "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-222502912",
+      "mean": 370.3,
+      "best": 576,
+      "counts": {
+        "2": 20,
+        "3": 20,
+        "4": 18,
+        "5": 17,
+        "6": 10,
+        "7": 8,
+        "8": 5
+      },
+      "games8": [
+        {
+          "seed": 10000,
+          "score": 529
+        },
+        {
+          "seed": 10002,
+          "score": 574
+        },
+        {
+          "seed": 10007,
+          "score": 576
+        },
+        {
+          "seed": 10010,
+          "score": 541
+        },
+        {
+          "seed": 10013,
+          "score": 558
+        }
+      ]
+    }
+  ],
+  "cases": "For each unchanged checkpoint, rerun original20 primary seeds10000-10019 and original50 secondary seeds10100-10149. Same50k timing/stride2/sampled policy/200k guard.",
+  "promotion": "Only a stronger complete70-game win-first rank plus uncapped full neural-action-verified replay may replace the reference. These are reused validation, never fresh testing.",
+  "training": "One ordinary evaluation helper at a time alongside the sole existing learner. No states/actions/labels from these evaluations enter training.",
+  "fresh_seeds_used": false
+}

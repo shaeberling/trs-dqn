@@ -1,0 +1,29 @@
+{
+  "reference": "runs/curriculum-reserved-boot-prob1-smoke/latest",
+  "actual": "runs/sil-disabled-compat-smoke/latest",
+  "model_optimizer_byte_identical": true,
+  "learner_rng_counters_selection_identical": true,
+  "hashes": {
+    "model.safetensors": "ea712b655f193ce37539f5969f0a50378acdfca5a88d4ec95aa9ab2623e05e02",
+    "optimizer.npz": "be74b3aaaaacc851396be5ce28a5de9b2f7846c72b4306f488df38213f05b99d"
+  },
+  "steps": 20566016,
+  "source_actions": 20500480,
+  "additional_actions": 65536,
+  "no_sil_rng_buffer_or_logs": true,
+  "stop": {
+    "wall_seconds": 169.72,
+    "event": "stopped",
+    "steps": 20566016,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 46359,
+      "restored": 19177
+    },
+    "mlx_active_bytes": 9769648,
+    "mlx_cache_bytes": 725635088,
+    "mlx_peak_bytes": 1336473280
+  },
+  "exit_code": 0,
+  "scope": "Disabled-mode implementation compatibility, not a performance candidate"
+}

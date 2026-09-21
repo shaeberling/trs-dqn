@@ -1,0 +1,177 @@
+{
+  "date_utc": "2026-09-14",
+  "all_primary_seed_termination_and_statistics_verified": true,
+  "sets": {
+    "level6_continuation": {
+      "through_steps": 29253632,
+      "primary_suites": [
+        {
+          "steps": 28504064,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 93.2,
+          "median_score": 65,
+          "best_score": 286,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 8,
+            "3": 2,
+            "4": 1,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "b102e4bd7d040a27e7c44164d6395dde7875ad7c2b2a164b3a760cf913593c20"
+        },
+        {
+          "steps": 28753920,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 104.85,
+          "median_score": 108,
+          "best_score": 261,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 13,
+            "3": 2,
+            "4": 1,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "65ee8e35d829da502b59c592296d4e306072de85873e44d4ca82ce0b4bf141c2"
+        },
+        {
+          "steps": 29003776,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 150.8,
+          "median_score": 123.5,
+          "best_score": 315,
+          "highest_complete_level": 5,
+          "level_reach_counts": {
+            "2": 13,
+            "3": 8,
+            "4": 6,
+            "5": 3
+          },
+          "raw_evaluation_sha256": "8658d8ab7cadae05820a32bc7acc9f70a01ec9413612eedf583f459ec6ae7db9"
+        }
+      ]
+    },
+    "sil20": {
+      "through_steps": 26795694,
+      "primary_suites": [
+        {
+          "steps": 25251840,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 114.2,
+          "median_score": 108.5,
+          "best_score": 286,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 15,
+            "3": 4,
+            "4": 2,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "6b97a701f8ad1db03d5242b7f201e1ea97f19059ef2085a64257f3d600c0ef9f"
+        },
+        {
+          "steps": 25501696,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 96.3,
+          "median_score": 103,
+          "best_score": 190,
+          "highest_complete_level": 3,
+          "level_reach_counts": {
+            "2": 13,
+            "3": 2,
+            "4": 0,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "f7aca0ce088170f7a2017368f03966320989ba478abd373217432a6b83bf4539"
+        },
+        {
+          "steps": 25751552,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 126.85,
+          "median_score": 106.5,
+          "best_score": 290,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 11,
+            "3": 7,
+            "4": 4,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "b3e4b8c568ed1a018d8488501080e08586c310cce5b028660b017b69fc39c3a5"
+        },
+        {
+          "steps": 26001408,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 100.2,
+          "median_score": 109,
+          "best_score": 192,
+          "highest_complete_level": 3,
+          "level_reach_counts": {
+            "2": 16,
+            "3": 1,
+            "4": 0,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "fc8476eca5b8ca23b4f0b011db8d0c3ae97194338a1ca57f2700e959af884486"
+        },
+        {
+          "steps": 26251264,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 118.05,
+          "median_score": 116,
+          "best_score": 280,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 13,
+            "3": 4,
+            "4": 3,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "65d11d43481feb189241ec9b64337412fa6b45bbe4301d65c2c38d4adf5e9272"
+        },
+        {
+          "steps": 26501120,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 99.2,
+          "median_score": 89,
+          "best_score": 250,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 11,
+            "3": 2,
+            "4": 1,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "f378840fe9dc54a984db77e2a5dadd985baec4ac9886f538da9e3b7ff7319ea3"
+        },
+        {
+          "steps": 26750976,
+          "complete_games": 20,
+          "incomplete_games": 0,
+          "mean_score": 117.2,
+          "median_score": 119.5,
+          "best_score": 261,
+          "highest_complete_level": 4,
+          "level_reach_counts": {
+            "2": 16,
+            "3": 3,
+            "4": 2,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "8f1a584feb9552c724f6fd0a231f938eadc575510e93ad8a62eae76d0f274137"
+        }
+      ]
+    }
+  },
+  "decision": "Both tranches remain active. No new frozen depth beyond Level 6; retain f58 Level-6 depth reference and 285 higher-mean Level-5 reference. These repeatedly reused validations are not fresh tests."
+}

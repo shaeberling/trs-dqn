@@ -1,0 +1,186 @@
+{
+  "recorded_at_utc": "2026-09-14 11:54:00 UTC",
+  "all_metadata_seeds_boot_offsets_hashes_termination_and_statistics_verified": true,
+  "primary": {
+    "path": "results/level10/temporal-e0da-integrated-spaced.json",
+    "sha256": "48a1e06a4980c18b781dfcd1fcd327cb31b6fddcafcc0bf20c5b02b15e625c3e",
+    "summary": {
+      "games_requested": 20,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 269.4,
+      "median_score": 276,
+      "best_score": 543,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 20,
+        "3": 18,
+        "4": 14,
+        "5": 10,
+        "6": 2,
+        "7": 2,
+        "8": 1,
+        "9": 0,
+        "10": 0
+      }
+    }
+  },
+  "secondary": {
+    "path": "results/level10/validation-temporal-e0da-spaced-secondary.json",
+    "sha256": "01d99fa2257ebdc604d2e9a47a4d50feb17596bdf21caa6a9c257d7bf3131e82",
+    "summary": {
+      "games_requested": 50,
+      "complete_games": 50,
+      "incomplete_games": 0,
+      "mean_score": 218.98,
+      "median_score": 239,
+      "best_score": 404,
+      "highest_complete_level": 7,
+      "level_reach_counts": {
+        "2": 50,
+        "3": 36,
+        "4": 30,
+        "5": 11,
+        "6": 4,
+        "7": 1,
+        "8": 0,
+        "9": 0,
+        "10": 0
+      }
+    }
+  },
+  "combined": {
+    "games_requested": 70,
+    "complete_games": 70,
+    "incomplete_games": 0,
+    "mean_score": 233.38571428571427,
+    "median_score": 244.5,
+    "best_score": 543,
+    "highest_complete_level": 8,
+    "level_reach_counts": {
+      "2": 70,
+      "3": 54,
+      "4": 44,
+      "5": 21,
+      "6": 6,
+      "7": 3,
+      "8": 1,
+      "9": 0,
+      "10": 0
+    }
+  },
+  "retained_reference": {
+    "games_requested": 70,
+    "complete_games": 70,
+    "incomplete_games": 0,
+    "mean_score": 178.81428571428572,
+    "median_score": 140,
+    "best_score": 555,
+    "highest_complete_level": 8,
+    "level_reach_counts": {
+      "2": 57,
+      "3": 36,
+      "4": 26,
+      "5": 16,
+      "6": 4,
+      "7": 2,
+      "8": 1,
+      "9": 0,
+      "10": 0
+    }
+  },
+  "new_rank": [
+    0,
+    0,
+    1,
+    3,
+    6,
+    21,
+    44,
+    54,
+    70,
+    233.38571428571427
+  ],
+  "reference_rank": [
+    0,
+    0,
+    1,
+    2,
+    4,
+    16,
+    26,
+    36,
+    57,
+    178.81428571428572
+  ],
+  "rank_improves": true,
+  "secondary_guards": [],
+  "deepest_secondary_games": [
+    {
+      "score": 404,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 36783,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 404,
+      "start_tstates": 115751,
+      "seed": 10100
+    },
+    {
+      "score": 338,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 34602,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 338,
+      "start_tstates": 79669,
+      "seed": 10123
+    },
+    {
+      "score": 371,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 28000,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 371,
+      "start_tstates": 168436,
+      "seed": 10139
+    },
+    {
+      "score": 359,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 30044,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 359,
+      "start_tstates": 36520,
+      "seed": 10145
+    }
+  ],
+  "all_predeclared_integration_gates_verified": true,
+  "observed_exit": {
+    "session": 76080,
+    "exit_code": 0
+  },
+  "selected_checkpoint": "runs/level10-temporal-e0da-eval",
+  "selected_model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+  "selected_state_sha256": "948d4bef41f45b024f1a8c6f3c35ae7a65b39863f2bfb8e24ea2e8e7c97a20bb",
+  "replay": "results/level10/temporal-e0da-spaced-primary-level8-replay.html",
+  "decision": "Promote the fixed50k/stride2 configuration as the validation reference: all70games complete and predeclared depth/count rank improves, with an uncapped Level8 replay and every action verified. This improves reused-set consistency, not highest level or best score. Preserve original-timing source/reference and committed Level5 unchanged. No Level9/10, fresh tests or reliable-mastery claim. New fine-tuning must resume the original learner with explicit timing changes, not this evaluation-only package."
+}

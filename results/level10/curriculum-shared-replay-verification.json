@@ -1,0 +1,40 @@
+{
+  "exact_secondary_game_match": true,
+  "secondary_complete_games": 50,
+  "secondary_mean": 135.12,
+  "secondary_median": 121.0,
+  "secondary_best": 304,
+  "secondary_reach_counts": {
+    "2": 39,
+    "3": 15,
+    "4": 8,
+    "5": 2
+  },
+  "replay_metadata": {
+    "seed": 10113,
+    "checkpoint": "runs/level10-curriculum-shared/step-021000192/model.safetensors",
+    "environment_version": "normalized-game-over-v2",
+    "checkpoint_sha256": "53a59a8777b548898f0260b47aae9b6293b24cefe42dfd43a98f7134191049cc",
+    "policy": "learned categorical, sampled",
+    "deterministic_override": false,
+    "frames": 18882,
+    "tstates": 100000,
+    "score": 304,
+    "level": 5,
+    "game_over": true,
+    "waiting": false,
+    "steps": 18881,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 304.0,
+    "start_tstates": 27823
+  },
+  "replay_sha256": "f7615f670c818a43961d8858c663fb36be8c095c1e1856a3e5559b8b45f42237",
+  "level5_entry_frame": 18552,
+  "level5_entry_score": 296,
+  "level5_actions": 329,
+  "level5_new_points": 8,
+  "scope": "One selected complete validation replay, not an estimate of typical level-5 survival; never used as training data."
+}

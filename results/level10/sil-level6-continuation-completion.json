@@ -1,0 +1,647 @@
+{
+  "run": "runs/level10-sil-level6-continuation",
+  "through_steps": 33251328,
+  "terminal": true,
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "all_primary_seeds_termination_statistics_verified": true,
+  "full_episode_boundaries": 522,
+  "complete_full_training_games": 522,
+  "practice_segments": 1078,
+  "complete_practice_segments": 1078,
+  "highest_complete_full_training": 7,
+  "highest_complete_practice": 8,
+  "training_guards": [],
+  "publications": 231,
+  "checked_progress_records": 579,
+  "latest_progress": {
+    "wall_seconds": 7300.3,
+    "event": "progress",
+    "steps": 33243136,
+    "episodes": 19240,
+    "steps_per_second": 683.9,
+    "mean_score_100": 132.29,
+    "best_score_100": 345,
+    "highest_level_100": 6,
+    "complete_games_100": 100,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 72,
+      "3": 30,
+      "4": 18,
+      "5": 6,
+      "6": 1
+    },
+    "level_reach_rates_100": {
+      "2": 0.72,
+      "3": 0.3,
+      "4": 0.18,
+      "5": 0.06,
+      "6": 0.01
+    },
+    "actor_loss": -0.008125993830617517,
+    "value_loss": 0.19230401888489723,
+    "entropy": 0.24303828226402402,
+    "approx_kl": 0.002102389778883662,
+    "rollout_action_origins": {
+      "from_boot": 2432,
+      "restored": 1664
+    },
+    "training_action_origins": {
+      "from_boot": 3305100,
+      "restored": 1687924
+    },
+    "mlx_active_bytes": 9759572,
+    "mlx_cache_bytes": 473130792,
+    "mlx_peak_bytes": 2034605272,
+    "sil": {
+      "replay_size": 32768,
+      "pending_transitions": 38237,
+      "pending_screen_bytes": 156618752,
+      "replay_array_bytes": 135036928,
+      "completed_learning_segments": 3281,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 1560547,
+      "committed_transitions": {
+        "from_boot": 2059206,
+        "restored": 1335034
+      },
+      "updates": 4856,
+      "rollout_updates": [
+        {
+          "loss": 0.01378394104540348,
+          "actor_loss": 0.11107204109430313,
+          "value_loss": 2.676736354827881,
+          "positive_fraction": 0.4453125,
+          "applied": true
+        },
+        {
+          "loss": 0.015782685950398445,
+          "actor_loss": 0.13420435786247253,
+          "value_loss": 2.3622500896453857,
+          "positive_fraction": 0.4375,
+          "applied": true
+        },
+        {
+          "loss": 0.01746167242527008,
+          "actor_loss": 0.14747025072574615,
+          "value_loss": 2.7146475315093994,
+          "positive_fraction": 0.4453125,
+          "applied": true
+        },
+        {
+          "loss": 0.019690586254000664,
+          "actor_loss": 0.16931134462356567,
+          "value_loss": 2.7594525814056396,
+          "positive_fraction": 0.451171875,
+          "applied": true
+        }
+      ]
+    }
+  },
+  "primary_suites": [
+    {
+      "steps": 28504064,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 93.2,
+      "median_score": 65,
+      "best_score": 286,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 8,
+        "3": 2,
+        "4": 1,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "b102e4bd7d040a27e7c44164d6395dde7875ad7c2b2a164b3a760cf913593c20"
+    },
+    {
+      "steps": 28753920,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 104.85,
+      "median_score": 108,
+      "best_score": 261,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 2,
+        "4": 1,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "65ee8e35d829da502b59c592296d4e306072de85873e44d4ca82ce0b4bf141c2"
+    },
+    {
+      "steps": 29003776,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 150.8,
+      "median_score": 123.5,
+      "best_score": 315,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 8,
+        "4": 6,
+        "5": 3
+      },
+      "raw_evaluation_sha256": "8658d8ab7cadae05820a32bc7acc9f70a01ec9413612eedf583f459ec6ae7db9"
+    },
+    {
+      "steps": 29253632,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 163.7,
+      "median_score": 130.5,
+      "best_score": 300,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 9,
+        "4": 5,
+        "5": 1
+      },
+      "raw_evaluation_sha256": "37fb2ae8ab6f6f8a60150ce85a16daee94e4b0af33b00716bb51817197d39e99"
+    },
+    {
+      "steps": 29503488,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 129.85,
+      "median_score": 118,
+      "best_score": 266,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 16,
+        "3": 6,
+        "4": 2,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "28d5c2974cbc45cb4074c9fe37d4c70a11d7bb7db565481b227a4729c47ca7bc"
+    },
+    {
+      "steps": 29753344,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 145.5,
+      "median_score": 122,
+      "best_score": 293,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 14,
+        "3": 8,
+        "4": 4,
+        "5": 1
+      },
+      "raw_evaluation_sha256": "6f218dbca1afbd49d35c1b16c8f64e705bc26e96e39b0d10870ea73923ea99fd"
+    },
+    {
+      "steps": 30003200,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 152.85,
+      "median_score": 121,
+      "best_score": 298,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 7,
+        "4": 5,
+        "5": 2
+      },
+      "raw_evaluation_sha256": "71ff10300c3de8448628da48c5f61b68eb8f5f3fb72f0a176d0810162b6eefe0"
+    },
+    {
+      "steps": 30253056,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 127.05,
+      "median_score": 125.5,
+      "best_score": 284,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 14,
+        "3": 5,
+        "4": 2,
+        "5": 1
+      },
+      "raw_evaluation_sha256": "e4e1a673b2b6826d2f05a9cacd42e46cc0c5756b161d42db7f0ef063f8d536e6"
+    },
+    {
+      "steps": 30502912,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 117.45,
+      "median_score": 124,
+      "best_score": 260,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 15,
+        "3": 4,
+        "4": 1,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "f5e5fbee68eb6fdb64dfdc6c54c6d643cbbf8e3585baa6bd54a3ad356c3f597c"
+    },
+    {
+      "steps": 30752768,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 150.3,
+      "median_score": 124,
+      "best_score": 321,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 16,
+        "3": 7,
+        "4": 5,
+        "5": 4
+      },
+      "raw_evaluation_sha256": "0b800f0251cd15dbd6f7fe672b8a3dc68b635481554fb2cea09343e4ac108359"
+    },
+    {
+      "steps": 31002624,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 127.5,
+      "median_score": 123.5,
+      "best_score": 199,
+      "highest_complete_level": 3,
+      "level_reach_counts": {
+        "2": 16,
+        "3": 7,
+        "4": 0,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "099aef0eb61ca1b0324ab21eda812c5cbe15acfc227c6d4e00b5304603ecaadd"
+    },
+    {
+      "steps": 31252480,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 169.2,
+      "median_score": 122.5,
+      "best_score": 328,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 15,
+        "3": 9,
+        "4": 8,
+        "5": 6
+      },
+      "raw_evaluation_sha256": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e"
+    },
+    {
+      "steps": 31502336,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 122.2,
+      "median_score": 120.5,
+      "best_score": 262,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 14,
+        "3": 5,
+        "4": 1,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "dc3eb8f5a8e736e7e5b7a9fe12e8b873c977ebe65a5cf551f956098ac69a17f1"
+    },
+    {
+      "steps": 31752192,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 179.55,
+      "median_score": 167,
+      "best_score": 337,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 16,
+        "3": 11,
+        "4": 8,
+        "5": 4
+      },
+      "raw_evaluation_sha256": "c0a6a3dba3cb4be289f59b5a4897e8c1196c02e0f94ac542109526d3b4f82113"
+    },
+    {
+      "steps": 32002048,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 96,
+      "median_score": 87,
+      "best_score": 184,
+      "highest_complete_level": 3,
+      "level_reach_counts": {
+        "2": 11,
+        "3": 2,
+        "4": 0,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "dc4fcfd382f0871c62b91a886b4dba789e6b09025e93824e19903c395964ccf6"
+    },
+    {
+      "steps": 32251904,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 144.45,
+      "median_score": 124.5,
+      "best_score": 312,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 18,
+        "3": 7,
+        "4": 3,
+        "5": 2
+      },
+      "raw_evaluation_sha256": "d2a7ad1fb6c63d7a99f1ab79479268b130071f62374f580976265eef80ce5ca5"
+    },
+    {
+      "steps": 32501760,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 128.05,
+      "median_score": 119,
+      "best_score": 288,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 15,
+        "3": 5,
+        "4": 2,
+        "5": 2
+      },
+      "raw_evaluation_sha256": "2b4ace0e54a0d64a468adff43844bd30240ae105f844d93f88144692b21e7edb"
+    },
+    {
+      "steps": 32751616,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 144.3,
+      "median_score": 118,
+      "best_score": 289,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 15,
+        "3": 7,
+        "4": 5,
+        "5": 2
+      },
+      "raw_evaluation_sha256": "6dce2aac3d19fe48819a93fbab9c373bb18ecd4599cd1914c0015e694afe00f2"
+    },
+    {
+      "steps": 33001472,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 165.35,
+      "median_score": 149.5,
+      "best_score": 301,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 18,
+        "3": 10,
+        "4": 5,
+        "5": 1
+      },
+      "raw_evaluation_sha256": "4e9842a00a86ab550854e1511b164ba6eaf3f7fee2e4d45f0d14d03092c50761"
+    },
+    {
+      "steps": 33251328,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 133.25,
+      "median_score": 120,
+      "best_score": 242,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 15,
+        "3": 7,
+        "4": 4,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "1a1cb9dcb32861eb44f523b771f4ae5c3d40437a6dd073b79c8e27e01d3b8449"
+    }
+  ],
+  "best_primary_step": 31252480,
+  "summary": {
+    "complete_primary_suites": 20,
+    "primary_suites_reaching5": 12,
+    "primary_level5_games": 29,
+    "highest_frozen_level": 5
+  },
+  "worker_runtime": {
+    "wall_seconds": 0,
+    "event": "worker_runtime",
+    "steps": 28250112,
+    "workers": [
+      {
+        "pid": 5361,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5362,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5363,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5364,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5365,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5366,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5367,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5368,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5369,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5370,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5372,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5373,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5378,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5379,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5380,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5381,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 5382,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5383,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5385,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5386,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5387,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5388,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5389,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5390,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5391,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5392,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5393,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5394,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5395,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5396,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5397,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 5398,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      }
+    ]
+  },
+  "stop": {
+    "wall_seconds": 7336.2,
+    "event": "stopped",
+    "steps": 33251328,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 3309964,
+      "restored": 1691252
+    },
+    "mlx_active_bytes": 9759572,
+    "mlx_cache_bytes": 532077592,
+    "mlx_peak_bytes": 2034605272,
+    "sil": {
+      "replay_size": 32768,
+      "pending_transitions": 32341,
+      "pending_screen_bytes": 132468736,
+      "replay_array_bytes": 135036928,
+      "completed_learning_segments": 3293,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 1562710,
+      "committed_transitions": {
+        "from_boot": 2064037,
+        "restored": 1342128
+      },
+      "updates": 4864
+    }
+  },
+  "additional_actions": 5001216,
+  "final_hashes": {
+    "model.safetensors": "88e2fe8e6bfa8c66128353deaa57aacead7930db46bfd80a759e572564f5e91c",
+    "optimizer.npz": "f4cbec09f89e4162d476a218f4796e88ebcd643b0125f98590d11e98487a34b8",
+    "state.json": "d805f685df5e9e035492160c2030690b50c3d42e21e2f526884d2296a37f0730"
+  },
+  "log": {
+    "lines": 5830,
+    "bytes": 3062241,
+    "sha256": "601eaac4096ea2ae2d5bdcc77288d0ec4ffad0aaabe9414eeccae76e23691fcb"
+  },
+  "sil_accounting": {
+    "learning_suffixes_checked": 3293,
+    "episode_suffix_coverages_checked": 1600,
+    "committed_suffixes": 3293,
+    "discarded_suffixes": 0,
+    "discarded_retained_transitions": 0,
+    "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+  },
+  "saved_sil_rng_and_nonpersistent_replay_verified": true,
+  "learner_session": 16165,
+  "exit_code": 0,
+  "selection_decision": "Preserve final learner; select the already audited/replayed31,252,480 Level8 checkpoint, not the weaker final weights. Continue from that verified source under the new protocol."
+}

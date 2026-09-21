@@ -1,0 +1,166 @@
+{
+  "run": "runs/level10-sil-level6-continuation",
+  "through_steps": 29753344,
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "sil_accounting": {
+    "learning_suffixes_checked": 912,
+    "episode_suffix_coverages_checked": 356,
+    "committed_suffixes": 912,
+    "discarded_suffixes": 0,
+    "discarded_retained_transitions": 0,
+    "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+  },
+  "complete_full_training_games": 199,
+  "complete_practice_segments": 157,
+  "highest_complete_full_training": 6,
+  "highest_complete_practice": 8,
+  "training_guards": [],
+  "first_full_training_level6": {
+    "wall_seconds": 1604.39,
+    "event": "episode",
+    "score": 366,
+    "level": 6,
+    "game_over": true,
+    "waiting": false,
+    "steps": 29363804,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 366,
+    "start_tstates": 86081,
+    "full_game": true,
+    "segment_start_score": 0,
+    "segment_start_level": 1,
+    "segment_source_worker": null,
+    "segment_source_action": null,
+    "curriculum_archive_counts": {
+      "5": 5,
+      "6": 8,
+      "7": 7,
+      "8": 1
+    },
+    "worker": 27,
+    "episode_steps": 13989,
+    "episode": 17871
+  },
+  "publications": [
+    {
+      "wall_seconds": 1496.08,
+      "event": "curriculum_archive",
+      "steps": 29286876,
+      "worker": 27,
+      "level": 5,
+      "score": 279,
+      "slot": 3,
+      "source_action": 32399,
+      "source_episode_steps": 11585,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 86081,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 1543.5,
+      "event": "curriculum_archive",
+      "steps": 29320892,
+      "worker": 27,
+      "level": 6,
+      "score": 319,
+      "slot": 0,
+      "source_action": 33462,
+      "source_episode_steps": 12648,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 86081,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    }
+  ],
+  "primary_suites": [
+    {
+      "steps": 28504064,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 93.2,
+      "median_score": 65,
+      "best_score": 286,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 8,
+        "3": 2,
+        "4": 1,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "b102e4bd7d040a27e7c44164d6395dde7875ad7c2b2a164b3a760cf913593c20"
+    },
+    {
+      "steps": 28753920,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 104.85,
+      "median_score": 108,
+      "best_score": 261,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 2,
+        "4": 1,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "65ee8e35d829da502b59c592296d4e306072de85873e44d4ca82ce0b4bf141c2"
+    },
+    {
+      "steps": 29003776,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 150.8,
+      "median_score": 123.5,
+      "best_score": 315,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 13,
+        "3": 8,
+        "4": 6,
+        "5": 3
+      },
+      "raw_evaluation_sha256": "8658d8ab7cadae05820a32bc7acc9f70a01ec9413612eedf583f459ec6ae7db9"
+    },
+    {
+      "steps": 29253632,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 163.7,
+      "median_score": 130.5,
+      "best_score": 300,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 9,
+        "4": 5,
+        "5": 1
+      },
+      "raw_evaluation_sha256": "37fb2ae8ab6f6f8a60150ce85a16daee94e4b0af33b00716bb51817197d39e99"
+    },
+    {
+      "steps": 29503488,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 129.85,
+      "median_score": 118,
+      "best_score": 266,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 16,
+        "3": 6,
+        "4": 2,
+        "5": 0
+      },
+      "raw_evaluation_sha256": "28d5c2974cbc45cb4074c9fe37d4c70a11d7bb7db565481b227a4729c47ca7bc"
+    }
+  ],
+  "interpretation": "First complete from-boot Level6 in this continuation is a changing-policy training game, not frozen validation. Five complete primary suites so far reach at most5. Preserve frozen f58 Level6 reference; no fresh final-test games used."
+}

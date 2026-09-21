@@ -1,0 +1,145 @@
+{
+  "run": "runs/level10-curriculum-shared",
+  "exit_code": 0,
+  "reason": "Completed the two-million-action shared-archive comparison; preserve its stronger earlier checkpoint and continue with focused level-5-plus practice.",
+  "start_steps": 20500480,
+  "stop": {
+    "wall_seconds": 1823.56,
+    "event": "stopped",
+    "steps": 22503424,
+    "target_met": false,
+    "mlx_active_bytes": 9798508,
+    "mlx_cache_bytes": 508923648,
+    "mlx_peak_bytes": 1433260196
+  },
+  "additional_actions": 2002944,
+  "validation_suites": 8,
+  "complete_suites": 8,
+  "incomplete_suites": 0,
+  "highest_complete_validation_level": 5,
+  "best_depth_checkpoint": {
+    "steps": 21000192,
+    "model_sha256": "53a59a8777b548898f0260b47aae9b6293b24cefe42dfd43a98f7134191049cc",
+    "optimizer_sha256": "737136261869c6b67a16b6da37bdf006556f46533eba7db38d97287bbdc73d66",
+    "state_sha256": "f8eaff4d358223a14de8af1675dffd7c6412a6e641af8b7b93e66d7c2e4c00d0",
+    "primary": {
+      "wall_seconds": 490.74,
+      "event": "validation",
+      "steps": 21000192,
+      "games_requested": 20,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 130.3,
+      "median_score": 114.5,
+      "best_score": 295,
+      "highest_level": 5,
+      "highest_complete_level": 5,
+      "level_1_clears": 17,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 5,
+        "4": 3,
+        "5": 2
+      },
+      "level_reach_rates": {
+        "2": 0.85,
+        "3": 0.25,
+        "4": 0.15,
+        "5": 0.1
+      },
+      "epsilon": 0,
+      "tstates": 100000,
+      "max_steps": 100000,
+      "environment_version": "normalized-game-over-v2",
+      "eval_envs": 20,
+      "policy": "learned categorical, sampled"
+    },
+    "secondary": "validation-audit-curriculum-shared-21m.json",
+    "replay": "curriculum-shared-secondary-replay.html"
+  },
+  "best_complete_mean": 136.35,
+  "final_validation": {
+    "wall_seconds": 1823.55,
+    "event": "validation",
+    "steps": 22503424,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 114.45,
+    "median_score": 107.5,
+    "best_score": 247,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 16,
+    "level_reach_counts": {
+      "2": 16,
+      "3": 4,
+      "4": 2,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.8,
+      "3": 0.2,
+      "4": 0.1,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "complete_from_boot_training_games": 241,
+  "highest_complete_from_boot_training_level": 5,
+  "training_guard_hits": 0,
+  "practice_by_start_level": [
+    {
+      "start_level": 2,
+      "segments": 65,
+      "peer_segments": 64,
+      "total_actions": 238654,
+      "mean_actions": 3671.6,
+      "total_new_reward": 5496,
+      "mean_new_reward": 84.55384615384615,
+      "highest_level": 5
+    },
+    {
+      "start_level": 3,
+      "segments": 66,
+      "peer_segments": 64,
+      "total_actions": 197252,
+      "mean_actions": 2988.6666666666665,
+      "total_new_reward": 5134,
+      "mean_new_reward": 77.78787878787878,
+      "highest_level": 5
+    },
+    {
+      "start_level": 4,
+      "segments": 53,
+      "peer_segments": 52,
+      "total_actions": 136479,
+      "mean_actions": 2575.0754716981132,
+      "total_new_reward": 2944,
+      "mean_new_reward": 55.54716981132076,
+      "highest_level": 5
+    },
+    {
+      "start_level": 5,
+      "segments": 58,
+      "peer_segments": 57,
+      "total_actions": 8441,
+      "mean_actions": 145.5344827586207,
+      "total_new_reward": 74,
+      "mean_new_reward": 1.2758620689655173,
+      "highest_level": 5
+    }
+  ],
+  "practice_origins_and_new_reward_verified": true,
+  "archive_publications": 340,
+  "latest_model_sha256": "a936750c1c9ccca15dd88adeb1cf3eacc446eadf8492c74c795508f70f4ccfb4",
+  "latest_optimizer_sha256": "b16679a74eb9a3a9c2838b891dd34414e5930af76e6e594da1405018bdf3a541",
+  "latest_state_sha256": "edaecae1f77d4dde9014f33be8ab5fbcb1e84fa1d988c9a27dbb4d0b0fd29c9b",
+  "log": "logs/level10-curriculum-shared.jsonl",
+  "final_test_seeds_used": false
+}

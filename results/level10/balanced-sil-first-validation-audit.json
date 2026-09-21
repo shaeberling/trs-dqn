@@ -1,0 +1,37 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-025251840",
+  "hashes": {
+    "model.safetensors": "82b9d9b10874a1c54a2c8c9f6edd39be9042d7d855d19518f2349f81aa5a51f8",
+    "optimizer.npz": "8f50629bb8993db7b0a04da23bccab39382f7bf3cf3bcab7de22b4cc31bfc571",
+    "state.json": "1897655c959d9f194ca785d596de0a3ff81404d8295ae0db7547baf8b4f0ff73"
+  },
+  "summary": {
+    "complete_games": 20,
+    "mean_score": 98.6,
+    "median_score": 89.5,
+    "best_score": 264,
+    "highest_complete_level": 4,
+    "level_reach_counts": {
+      "2": 11,
+      "3": 2,
+      "4": 1,
+      "5": 0
+    }
+  },
+  "control_summary": {
+    "complete_games": 20,
+    "mean_score": 133.3,
+    "median_score": 116.0,
+    "best_score": 306,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 15,
+      "3": 7,
+      "4": 3,
+      "5": 1
+    }
+  },
+  "all_seeds_termination_statistics_verified": true,
+  "sil_rng_saved_replay_not_persisted": true,
+  "scope": "First complete reused-primary SIL validation; lower than matched control, no reference promotion, no fresh-test use."
+}

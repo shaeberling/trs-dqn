@@ -1,0 +1,77 @@
+{
+  "control": "runs/level10-curriculum-balanced-lr1e5-long",
+  "treatment": "runs/level10-curriculum-balanced-gae099",
+  "start_steps": 25006080,
+  "source": "runs/level10-curriculum-balanced-lr1e5/latest",
+  "source_hashes": {
+    "model.safetensors": "a68d536f2a5492e2a707e12ac8ccb0518de1b7b0a820e8ec879292c9291f2458",
+    "optimizer.npz": "232a75db92718e6f002811e6e3de02e33e8fb103590817a332c1199a2fa39097",
+    "state.json": "01702aecfc86b35a285fc4d4cf00ba152daf79357f33a9b25b31ea513c148bdf"
+  },
+  "configuration_differences": {
+    "steps": [
+      35006080,
+      30006080
+    ],
+    "additional_steps": [
+      10000000,
+      5000000
+    ],
+    "run": [
+      "runs/level10-curriculum-balanced-lr1e5-long",
+      "runs/level10-curriculum-balanced-gae099"
+    ],
+    "gae_lambda": [
+      0.95,
+      0.99
+    ]
+  },
+  "all_other_settings_identical": true,
+  "workers_per_run": 32,
+  "protected_boot_workers_per_run": 16,
+  "all_emulator_workers_omit_mlx": true,
+  "fresh_archives_per_run": true,
+  "finite_updates_verified": true,
+  "all_logged_origin_totals_verified": true,
+  "treatment_latest_progress": {
+    "wall_seconds": 118.73,
+    "event": "progress",
+    "steps": 25124864,
+    "episodes": 16279,
+    "steps_per_second": 1000.5,
+    "mean_score_100": 54.23076923076923,
+    "best_score_100": 104,
+    "highest_level_100": 2,
+    "complete_games_100": 13,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 2,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "level_reach_rates_100": {
+      "2": 0.15384615384615385,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "actor_loss": -0.008031996883801185,
+    "value_loss": 0.19739172235131264,
+    "entropy": 0.3185373996384442,
+    "approx_kl": 0.0011879533849423751,
+    "rollout_action_origins": {
+      "from_boot": 4096,
+      "restored": 0
+    },
+    "training_action_origins": {
+      "from_boot": 118784,
+      "restored": 0
+    },
+    "mlx_active_bytes": 9798428,
+    "mlx_cache_bytes": 725635088,
+    "mlx_peak_bytes": 1336502060
+  },
+  "tests_passed": 72,
+  "final_test_seeds_used": false
+}
