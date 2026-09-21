@@ -744,6 +744,13 @@ Ten complete validation games: mean **8,834**, median **9,115**, best **10,280**
 still all stage 1 and no mission. The immutable replay bundle preserves its
 weights, evaluation, action trace and verification alongside the earlier milestones.
 
+Run 09 also improved consistency at counter **7,342,848**: ten complete games
+averaged **9,527**, median **10,240**, best **10,280**. This ties the best
+individual score, so it does not replace the best-effort replay. Its separate
+[model and optimizer checkpoint](results/defense/training/ppo-09-curriculum-life/step-000007342848/state.json)
+is preserved for resuming training. All ten games remained stage 1, without
+a successful mission; these reused validation seeds are not a fresh test set.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
