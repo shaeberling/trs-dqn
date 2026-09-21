@@ -534,6 +534,15 @@ yet. Its isolated replay reproduced all **1,733** neural actions after weight
 reload; the shared 460-point best remains unchanged. Boot-game and restored
 segment counters remain separate in the live log.
 
+The second validation mean rose to **420** and the third to **438** (median
+**440**, best **460**) after **303,104 additional actions**, at counter
+**3,537,664**. The [third checkpoint](results/defense/training/ppo-07-curriculum/step-000003537664/state.json)
+preserves model, optimizer and the complete ten-game evaluation. This improves
+consistency on reused validation seeds, not fresh-test performance: every game
+remained in stage 1, with no mission completed. The shared best single-effort
+replay stays with the original verified 460-point model because the new best
+score only ties it. Both active experiments continue unchanged.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
