@@ -1,0 +1,31 @@
+{
+  "purpose": "Read-only check of bootstrap-head diversity before interpreting the weak short-run mean-policy score",
+  "source": "results/defense/training/bootstrap-smoke-01/replay",
+  "checkpoint_sha256": "4f0893f93163a9ac9e6154ae46aa4e8efcb3268a32bdba818fd33d981b387b93",
+  "trace_sha256": "2aa781345f6e08bb36854da8be0691211f26e5bfe49caa5c12f840c2ed9eecda",
+  "method": "Hash-check the own verified bundle, reload BootstrapQ with five heads and prior scale 1, reconstruct each original four-frame stack with initial-frame padding, infer learned/prior/total values in batches of 32 and compare their argmax actions. The canonical greedy-mean network must reproduce all recorded actions. Report raw-action agreement and within-head standard deviation across the 20 action values; verify the weights hash again afterward.",
+  "actions": 1208,
+  "all_mean_actions_reproduced": true,
+  "parameter_updates": 0,
+  "native_states_created_or_restored": 0,
+  "heads": [
+    {"head": 0, "agreement_with_mean": 0.3824503311258278, "unique_actions": 8, "most_common_action": "UP", "most_common_count": 590},
+    {"head": 1, "agreement_with_mean": 0.5107615894039735, "unique_actions": 10, "most_common_action": "LEFT", "most_common_count": 538},
+    {"head": 2, "agreement_with_mean": 0.3609271523178808, "unique_actions": 10, "most_common_action": "DOWN+SPACE", "most_common_count": 522},
+    {"head": 3, "agreement_with_mean": 0.076158940397351, "unique_actions": 16, "most_common_action": "RIGHT+SPACE", "most_common_count": 632},
+    {"head": 4, "agreement_with_mean": 0.7251655629139073, "unique_actions": 11, "most_common_action": "LEFT", "most_common_count": 881}
+  ],
+  "unanimous_head_fraction": 0.0016556291390728477,
+  "mean_pairwise_agreement": 0.14594370860927153,
+  "mean_without_prior_action_agreement": 0.0,
+  "prior_only_mean_action_agreement": 0.0,
+  "mean_policy_action_counts": {"UP": 41, "LEFT": 998, "RIGHT": 73, "DOWN+SPACE": 1, "LEFT+SPACE": 1, "RIGHT+SPACE": 1, "LEFT+RIGHT": 93},
+  "median_within_head_action_std": {"learned": 0.036297548562288284, "scaled_prior": 0.03716458007693291, "total": 0.008857274428009987},
+  "limitations": [
+    "One selected 140-point stage-1 replay from the 16,384-action smoke checkpoint; not representative of the continuing fresh production learner or its training distribution.",
+    "Raw action disagreement is not necessarily behavioral disagreement: some key combinations have equivalent effects in a stage.",
+    "No individual-head game outcomes were measured. This is not evidence that any individual head plays better than the ensemble mean, or that disagreement caused its low score.",
+    "Removing the prior only for an action-agreement calculation is not a trained ablation or a performance evaluation. Learned and prior components interact; neither component's standalone argmax measures its contribution to score.",
+    "No replay actions, frames, head choices or diagnostic labels were fed into training. No policy, prior scale or evaluation rule was changed. The longer independent trial continues to its original complete-game evaluation gate."
+  ]
+}
