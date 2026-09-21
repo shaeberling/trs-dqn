@@ -1633,6 +1633,18 @@ The decision heads are learning anew, and the source encoder's 10,447,616
 earlier actions must not be omitted when discussing training cost. Both
 fresh-policy trials continue without replacing the stronger global model.
 
+Run 17 subsequently reached **600** at its own counter **3,604,480**:
+[ten-game mean 570, median 580](results/defense/training/ppo-17-fresh-seed/step-000003604480/evaluation.json),
+all stage 1. The full optimizer/model and a
+[2,004-action verified replay](results/defense/training/ppo-17-fresh-seed/replay-600/replay.html)
+are preserved alongside the earlier 460-point checkpoint. Run 20 reached
+**460** at its own counter **704,512**, with
+[mean 380, median 360](results/defense/training/ppo-20-encoder-transfer/step-000000704512/evaluation.json)
+and a [1,673-action verified replay](results/defense/training/ppo-20-encoder-transfer/replay-460/replay.html).
+These are different training ages, not a matched performance comparison.
+Both are intermediate improvements within their own trials, below the shared
+10,480-point policy; neither has reached stage 2 or a successful mission.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
@@ -1714,6 +1726,13 @@ This full-size trial tests the hypothesis despite the lower short-check mean;
 no gain is claimed. Fresh-seed run 17 and own-encoder/fresh-head run 20 continue.
 The sole collector retains all earlier sources and includes run 21, with the
 same complete-game and frozen-policy verification gates.
+
+Run 21's [first ten complete games](results/defense/training/ppo-21-long-lookback/step-000010554112/evaluation.json)
+at **10,554,112** (**106,496** new actions) averaged **9,672**, median **10,385**,
+best **10,480**, all stage 1 without a mission. Its
+[first replay](results/defense/training/ppo-21-long-lookback/first-replay/replay.html)
+verified **2,520** actions; the full model/optimizer checkpoint is preserved.
+This is below its parent's mean and does not replace the shared best.
 
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-long-lookback-reproduction \
