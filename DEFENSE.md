@@ -1973,6 +1973,12 @@ improved again. Its full checkpoint and
 [1,695-action verified replay](results/defense/training/dqn-22-fresh/replay-380/replay.html)
 are saved. These ten complete games still all ended in stage 1 without success.
 
+At **1,200,000**, ordinary DQN reached
+[mean 376, median 380, best 400](results/defense/training/dqn-22-fresh/step-000001200000/evaluation.json).
+The full online/target/optimizer and
+[1,703-action verified replay](results/defense/training/dqn-22-fresh/replay-400/replay.html)
+are preserved. All ten games remained in stage 1, with no mission completion.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
@@ -2044,6 +2050,39 @@ The ordinary four-worker DQN check had mean **328**, median **320**, best **360*
 at the same action count: the bootstrap check is substantially worse, not an
 early performance advantage. This short check establishes working integration,
 not efficacy. GPU peak was approximately 454 MB, excluding replay/emulator memory.
+
+A [read-only head-agreement check](results/defense/diagnostics/bootstrap-smoke-head-agreement.json)
+reconstructed all 1,208 input stacks from that own verified replay and reproduced
+every mean-policy action. Pairwise **raw-action** agreement among heads was
+**14.59%**, while the mean policy chose LEFT on **998** steps. Head preferences
+differed; this was not identical-head behavior on the selected trajectory.
+It does **not** measure individual-head game performance, establish the cause
+of the low score, or represent the new production run. Action aliases further
+limit behavioral interpretation. No weights, prior scale, evaluation rule or
+training data were changed; the production trial continues to its original gate.
+
+The subsequent [matched zero-prior check](results/defense/training/bootstrap-no-prior-smoke-01/config.json)
+changed **only** `bootstrap_prior_scale` from 1 to 0, plus its output paths.
+Seed, architecture, independent heads, initial random-network generation,
+membership probability, epsilon, replay, optimizer, 16,384-action budget,
+960 updates, four workers and ten validation seeds all remained the same.
+All **36 frozen prior tensors** were identical across the saved checks and the
+zero-prior online/target networks; the zero scale disables their contribution,
+not their construction. Subsequent learned weights and trajectories naturally
+diverge as a result of the changed policy.
+
+Its [ten complete games](results/defense/training/bootstrap-no-prior-smoke-01/checkpoint/evaluation.json)
+had mean/median/best **280 / 280 / 280**, all stage 1 losses, versus
+**140 / 140 / 140** with scale 1 on the same seeds. The
+[verified replay](results/defense/training/bootstrap-no-prior-smoke-01/replay/replay.html)
+reproduced **1,482** actions. Its full checkpoint, config and log are preserved;
+it exited normally and is excluded from the collector. This favors zero prior
+in this short **single-training-seed** comparison, but remains below the
+ordinary DQN check's mean 328. It does not establish a long-run advantage or
+justify changing the ongoing production trial before its scheduled evaluation.
+
+To reproduce this check, use the short-check command below with
+`--bootstrap-prior-scale 0` and distinct run/artifact directories.
 
 `defense-dqn-24-bootstrap` starts fresh at counter zero with seed 97,
 **five heads**, prior scale **1**, membership probability **0.5**, epsilon **0.01**
