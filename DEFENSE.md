@@ -1670,6 +1670,19 @@ Run 20 reached **600** at **2,203,648** new actions:
 The full optimizer/model and [1,985-action verified replay](results/defense/training/ppo-20-encoder-transfer/replay-600/replay.html)
 are preserved. All ten games remained in stage 1 without a mission.
 
+Run 17's next rare breakthrough was **2,890** at **6,504,448** actions:
+[ten complete games](results/defense/training/ppo-17-fresh-seed/step-000006504448/evaluation.json)
+averaged **791**, median **560**, all stage 1. Its
+[verified replay](results/defense/training/ppo-17-fresh-seed/replay-2890/replay.html)
+reproduced **2,102** actions. The next batch at 6,602,752 returned to mean
+**568**, median **570**, best **580**: this is not yet stable higher-scoring play.
+Run 20 reached **640** at **3,301,376** new actions, with
+[mean 582, median 580](results/defense/training/ppo-20-encoder-transfer/step-000003301376/evaluation.json)
+and [2,081 verified actions](results/defense/training/ppo-20-encoder-transfer/replay-640/replay.html).
+Both full model/optimizer checkpoints are preserved. Neither reached stage 2
+or replaced the stronger shared best; the counters differ and run 20's encoder
+also includes the previously documented pretraining cost.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
@@ -2026,6 +2039,14 @@ median **10,280**, best **10,360**, all stage 1 without a mission. Its
 reproduced **2,507** actions. The full model/optimizer is preserved. This first
 regular batch is below the calibrated parent, not an improvement; the longer
 trial continues without replacing the stronger shared best.
+
+By **12,184,320**, run 23 matched the shared best's **10,480** single-game
+score, with [ten-game mean 9,710, median 10,460](results/defense/training/ppo-23-life-age/step-000012184320/evaluation.json).
+All games remained in stage 1, with no mission completion. Its full optimizer
+and [2,581-action verified replay](results/defense/training/ppo-23-life-age/replay-10480/replay.html)
+are preserved separately. This recovers the score plateau but is still below
+the starting calibration's mean; an equal best score does not promote the
+global replay, and does not establish new progression.
 
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-age-calibration-reproduction \
