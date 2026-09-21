@@ -9,6 +9,7 @@ import numpy as np
 from rl.defense import (ACTIONS, ACTION_NAMES, DefenseEnv, GAME_SHA256,
                         GAME_OVER_TEXT, screen_info)
 from rl.defense_smoke import verify_trace, write_replay
+from rl.defense_audit import audit
 from trs import Key
 
 
@@ -22,6 +23,12 @@ def hud(left=b"280 **"):
 class DefenseTests(unittest.TestCase):
     def test_archive_binary_identity(self):
         self.assertEqual(hashlib.sha256(Path("var/defense.cmd").read_bytes()).hexdigest(), GAME_SHA256)
+
+    def test_original_game_wrap_is_static_evidence_not_a_claimed_win(self):
+        report = audit()
+        self.assertEqual(report["original_stage_cycle"], [1, 2, 3, 1])
+        self.assertIn("YOU did it", report["success_text"])
+        self.assertFalse(report["successful_gameplay_observed"])
 
     def test_hud_and_blink_are_not_zero(self):
         info = screen_info(hud())

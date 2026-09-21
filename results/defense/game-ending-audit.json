@@ -1,0 +1,44 @@
+{
+  "game": "Obstacle Run / Missile Defense",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "cmd_entry": "0xA870",
+  "method": "read-only CMD decoding and instruction-byte contracts",
+  "original_stage_cycle": [
+    1,
+    2,
+    3,
+    1
+  ],
+  "success_text": "     YOU did it      ",
+  "loss_text": "** GAME OVER PLAYER 1 **",
+  "successful_gameplay_observed": false,
+  "conclusion": "Three-stage mission cycles; no finite last-level exit in the audited dispatcher. A loss GAME OVER is not a mission victory.",
+  "remaining": "Observe the successful completion screen and subsequent stage wrap in an unmodified learned-policy playthrough.",
+  "checks": [
+    {
+      "address": "0x6F97",
+      "bytes": "3a ed 7c 3d 28 08 3d 28 0a cd 02 a0 18 08 cd d0 73 18 03 cd e4 81",
+      "interpretation": "Read P1 stage. Stage 1 calls 73D0; stage 2 calls 81E4; stage 3 calls A002."
+    },
+    {
+      "address": "0x6FB6",
+      "bytes": "3a ed 7c 3c 32 ed 7c fe 04 20 c5 3e 01 32 ed 7c 18 be",
+      "interpretation": "After success increment P1 stage. Compare 4; if equal reset stage to 1. Both branches return to 6F86."
+    },
+    {
+      "address": "0xA016",
+      "bytes": "3a 0f 70 b7 cc f9 a2",
+      "interpretation": "Stage 3 calls completion animation A2F9 only when outcome flag is zero (success)."
+    },
+    {
+      "address": "0xA358",
+      "bytes": "21 6f a3 11 16 3e 01 15 00 ed b0",
+      "interpretation": "Copy 21 bytes of completion text from A36F to visible screen 3E16, row 8 column 22."
+    },
+    {
+      "address": "0x7070",
+      "bytes": "21 95 70 11 d4 3d 01 18 00 ed b0",
+      "interpretation": "Loss routine copies the 24-character GAME OVER message to row 7 column 20."
+    }
+  ]
+}

@@ -1,5 +1,26 @@
 # GOALS
 
+## Active extension: Defense / Obstacle Run
+
+The user has additionally requested autonomous training of the game in
+`Missile_Defense.zip`, confirmed to be the existing `var/defense.cmd` (its
+on-screen name is **Obstacle Run**). Investigate the original level structure,
+keep improving a learned screen-only policy until successful game completion
+is observed, and preserve intermediate results, model weights and a verified
+best replay. Commit meaningful milestones and push when authorized by the
+repository's permission controls. Do not alter the original game or overwrite
+Breakdown's completed results.
+
+The same learning, screen-only, score-reward and no-demonstration rules below
+apply. Defense's controls and outcomes differ: see [DEFENSE.md](DEFENSE.md).
+Static inspection finds a three-stage cycle, not a finite numbered last level.
+The active target therefore requires observing the original successful mission
+sequence and verifying its subsequent behavior; ordinary loss GAME OVER is
+not success. Static evidence alone does not satisfy the gameplay goal.
+
+The following sections retain the original Breakdown assignment and results
+criteria as historical scope; they are not Defense-specific game facts.
+
 ## The assignment
 
 Teach a neural network to play the TRS-80 game **Breakdown** — a

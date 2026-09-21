@@ -56,6 +56,8 @@ DMK SHA-256:
 
 The CMD enters at `0xA870`. Static code addresses below are engineering audit
 references, **not policy inputs or reward sources**.
+The [reproducible ending audit](results/defense/game-ending-audit.json) checks
+the instruction bytes directly; rerun with `venv/bin/python -m rl.defense_audit`.
 
 | What the code establishes | Relevant addresses |
 |---|---|
