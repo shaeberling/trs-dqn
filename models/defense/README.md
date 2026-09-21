@@ -20,10 +20,11 @@ promotions remain under `results/defense/learned/versions/`. A best individual
 effort is not a fresh-test success rate; use the accompanying full evaluation
 to understand consistency. No successful mission has yet been verified.
 
-Current standard-policy best: **600 points**, all **2,003** neural actions
+Current standard-policy best: **620 points**, all **2,047** neural actions
 verified after reloading the frozen model. Ten complete validation games:
-mean **564**, median **570**, all stage 1. This comes from the lower-entropy,
-ship-loss-boundary continuation at counter **5,434,112**, with ordinary
+mean **574**, median **580**, all stage 1. This comes from the longer-rollout
+continuation of the lower-entropy, ship-loss-boundary run, at counter
+**6,638,336**, with ordinary
 temperature-1 sampling. The older versions below remain preserved.
 The earlier [560-point checkpoint](../../results/defense/training/ppo-06-life-boundary/step-000004733696/state.json)
 averaged **506** (median 510) and remains preserved separately. A better
