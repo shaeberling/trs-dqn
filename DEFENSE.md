@@ -1869,6 +1869,49 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-short-action-check \
   --mlx-cache-mb 256 --eval-envs 4 --eval-every 16384 --steps 10464000
 ```
 
+### Frozen action-rate and visual-history comparison
+
+The earlier shorter-action result needs an important qualification. A
+**frozen-parent history-spacing probe** now separates action cadence from
+the screen-history span. `rl.defense_temporal_probe` reuses the generic raw-frame
+history wrapper with Defense's evaluator. It changes no weights, rewards or
+categorical sampling rule, supplies no actions, and is restricted to the ten
+reused primary validation seeds. Results are explicitly evaluation-only and
+ineligible for promotion. Complete games are uncapped; HUD/terminal settling
+adds variable time beyond the nominal history span.
+
+All rows below use run 12's **10,447,616** checkpoint and seeds 10000–10009:
+
+| Action interval / frame stride | Nominal four-frame span | Mean | Median | Best |
+| --- | ---: | ---: | ---: | ---: |
+| [100,000 / 1, original validation](results/defense/training/ppo-12-lookback/step-000010447616/evaluation.json) | 300,000 | 10,474 | 10,480 | 10,480 |
+| [50,000 / 1, frozen control](results/defense/validation/step-10447616-tstates-50000-stride-1.json) | 150,000 | 7,939 | 7,760 | 10,310 |
+| [50,000 / 2, frozen probe](results/defense/validation/step-10447616-tstates-50000-stride-2.json) | 300,000 | 10,433 | 10,430 | 10,480 |
+
+Intervals/spans are CPU T-states. All 30 games ended in stage 1 without a
+mission. The repeated stride-1 probe reproduced **all ten complete game
+records exactly** from the earlier 50,000-T-state evaluation, not merely its
+summary. With stride 2, all ten paired scores increased; mean difference was
+**+2,494**. The checkpoint hash remained unchanged throughout both probes.
+This recovers most of the frozen model's original score consistency at the
+faster action rate, but does not demonstrate deeper progression, reliable
+winning, or learning at that rate. It also does not convert the earlier small
+short-action training regression into a success.
+
+This motivates a subsequent **training** experiment that preserves visual
+history and accounts for the changed action duration in its credit/reset
+horizons. Such training is not implemented by this probe. The production
+learners and shared best remain unchanged. **227 regression tests** passed,
+including real Defense frame-spacing/sampling tests, input-seed restrictions,
+the no-cap/no-promotion contract and existing generic temporal-history tests.
+
+```bash
+venv/bin/python -m rl.defense_temporal_probe \
+  results/defense/training/ppo-12-lookback/step-000010447616/model.safetensors \
+  --tstates 50000 --stride 2 --envs 4 --output results/defense/validation/new-history-probe.json
+# For the narrow-history control, use --stride 1 and a distinct output path.
+```
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -1985,6 +2028,12 @@ fell from the previous batch. Its full checkpoint and
 [1,785-action verified replay](results/defense/training/dqn-22-fresh/replay-420/replay.html)
 are preserved. All ten games remained in stage 1 without a mission; a higher
 single effort does not imply a better mean or deeper progression.
+
+At **1,400,000**, ordinary DQN reached
+[mean 458, median 470, best 500](results/defense/training/dqn-22-fresh/step-000001400000/evaluation.json).
+Its full online/target/optimizer checkpoint and
+[1,963-action verified replay](results/defense/training/dqn-22-fresh/replay-500/replay.html)
+are preserved. All ten complete games still ended in stage 1 without a mission.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
