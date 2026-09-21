@@ -1131,6 +1131,14 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-long-horizon-reproduct
   --gamma .999 --gae-lambda .999 --rollout 1024
 ```
 
+After four long rollouts (**131,072 additional actions**), run 14's
+[first ten complete evaluation games](results/defense/training/ppo-14-long-horizon/first-validation.json)
+averaged **10,208**, median **10,480**, best **10,480**, all stage 1 and no
+mission. Its replay reproduced all **2,580** neural actions; the
+[verification record](results/defense/training/ppo-14-long-horizon/first-verification.json)
+is preserved. This is below its parent's mean and does not establish a gain.
+The original shared best remains unchanged, and both full trials continue.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
