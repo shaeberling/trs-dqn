@@ -1,0 +1,41 @@
+{
+  "purpose": "Read-only check for overwhelming value-gradient dominance; not a training update or performance evaluation",
+  "source_version": "step-000008342272-125346536cb1-seed-10004",
+  "checkpoint_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+  "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+  "source_score": 10480,
+  "source_actions": 2580,
+  "settings": {"rollout": 256, "gamma": 0.997, "gae_lambda": 0.95, "life_terminal": true, "reward_scale": 0.01, "entropy": 0.002},
+  "method": [
+    "Reconstruct four-frame screen stacks from the frozen model's own trace, padding initial history with the boot frame.",
+    "Compute frozen action log probabilities and values; use recorded visible-score rewards and visible life-loss/terminal events.",
+    "Calculate configured GAE in consecutive 256-action blocks with value bootstrap at block ends. Normalize advantages separately in each block.",
+    "Differentiate PPO actor loss minus entropy coefficient times entropy, and separately the actual weighted value loss (0.25 times mean squared return error).",
+    "Compare gradient norms and cosine over shared conv and hidden parameters. Compute the combined all-parameter norm and hypothetical 0.5 global clipping multiplier.",
+    "Do not call the optimizer. Check every model parameter remains byte-for-byte equal in its NumPy representation."
+  ],
+  "parameter_updates": 0,
+  "model_parameters_unchanged": true,
+  "columns": ["start_action", "actions", "policy_shared_norm", "weighted_value_shared_norm", "value_to_policy_ratio", "shared_cosine", "global_gradient_norm", "global_clip_multiplier"],
+  "rows": [
+    [0, 256, 0.962272425904383, 0.740986238776828, 0.7700379007331721, 0.1401724573330935, 2.357824437265032, 0.2120598938994699],
+    [256, 256, 1.799289298981744, 1.5064957343315772, 0.8372726582568657, -0.24086732260269755, 3.8275363838397998, 0.13063233105008346],
+    [512, 256, 0.0821722686389651, 0.08878087161860555, 1.080423762044057, -0.05299460908027217, 0.2771979951952618, 1.0],
+    [768, 256, 0.7149729474259174, 1.3020243154532352, 1.8210819306392647, 0.08361101735783148, 2.928298092614998, 0.170747643916776],
+    [1024, 256, 2.1809215619686735, 1.0027384296466997, 0.4597773927924066, 0.011807204466797398, 3.9293458957989986, 0.12724764204000658],
+    [1280, 256, 0.22946929131721316, 0.9846094582260047, 4.2908114309069045, -0.026245576021886593, 2.1779330036214146, 0.22957547324394828],
+    [1536, 256, 0.7560970057002251, 2.0249930667475384, 2.678218603540405, 0.04940959344374011, 4.222077212760042, 0.11842511986490689],
+    [1792, 256, 1.6905922506695243, 0.9435263143124919, 0.5581040099638619, -0.028490426508698173, 2.9845716555395425, 0.1675282277347807],
+    [2048, 256, 0.2541323919235268, 1.3579841355914528, 5.3436089957398885, 0.14463038763594932, 3.423962639952315, 0.1460296307459019],
+    [2304, 256, 0.747205284577209, 2.023353157146964, 2.707894602608221, 0.07713059200197343, 4.375968570814167, 0.1142604184442241],
+    [2560, 20, 4.331789044501332, 9.458276222467537, 2.183457256413177, -0.2035646978465587, 19.24487448392475, 0.025980943675036703]
+  ],
+  "full_block_ratio_summary": {"minimum": 0.4597773927924066, "median": 1.4507528463416608, "maximum": 5.3436089957398885},
+  "limitations": [
+    "One selected best evaluation trajectory, not representative live training minibatches or an independent sample.",
+    "Single-trajectory blocks and per-block normalization differ from the learner's 32-worker rollout normalization and shuffled minibatches.",
+    "Uses the global-best checkpoint's GAE lambda 0.95, not the continuing learners' 0.99.",
+    "The final 20-action partial block is reported separately and excluded from the full-block ratio summary.",
+    "Does not prove a cause of the plateau or rule out value/policy interference. No optimizer or architecture change follows from this diagnostic alone."
+  ]
+}
