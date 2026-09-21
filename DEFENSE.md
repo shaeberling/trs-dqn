@@ -207,8 +207,8 @@ fresh-test seeds to tune the model.
 
 - Live progress: `runs/defense-dqn-22-fresh/status.json`,
   `runs/defense-dqn-24-bootstrap/status.json`,
-  `runs/defense-ppo-25-matched-history/status.json` and
-  `runs/defense-dqn-26-own-resets/status.json`, each with an adjacent
+  `runs/defense-dqn-26-own-resets/status.json` and
+  `runs/defense-ppo-27-matched-history-low-lr/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -262,6 +262,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-dqn-24-bootstrap/artifacts \
   --source runs/defense-ppo-25-matched-history/artifacts \
   --source runs/defense-dqn-26-own-resets/artifacts \
+  --source runs/defense-ppo-27-matched-history-low-lr/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -2028,6 +2029,55 @@ are preserved. This first batch is below the frozen timing-matched parent and
 the short learning check; the longer trial continues, without replacing the
 stronger shared best.
 
+Run 25's second batch at **10,857,216** raised its own best to **10,460**,
+but its mean fell to **8,750** (median **8,155**). The full
+[checkpoint](results/defense/training/ppo-25-matched-history/step-000010857216/evaluation.json)
+and [5,116-action verified replay](results/defense/training/ppo-25-matched-history/replay-10460/replay.html)
+are preserved. The five successive validation means were **9,411 → 8,750 →
+7,910 → 2,562 → 326**, with final median **300**, best **440** at **11,463,424**.
+No complete game reached stage 2 or a mission.
+
+The trial stopped cleanly at **11,512,576**, after **1,064,960** new actions,
+**193** complete boot games and **91** restored segments. Its
+[final optimizer checkpoint](results/defense/training/ppo-25-matched-history/final-checkpoint/state.json)
+and [full log](results/defense/training/ppo-25-matched-history/metrics.jsonl)
+are preserved alongside its first/strongest-mean and best-effort checkpoints.
+This sustained loss of competence motivated stopping the configuration, not
+a wall-clock limit. A separate half-learning-rate check starts from the
+original strong parent, never the collapsed model; a learning-rate explanation
+is a hypothesis, not a diagnosed cause of this regression.
+
+The [half-learning-rate short check](results/defense/training/matched-history-low-lr-smoke-01/resume-config.json)
+differs from the earlier four-worker matched-history check **only** in learning
+rate (**0.00025 → 0.000125**) and output paths. Both start from the original
+10,447,616 parent and train 32,768 new actions to **10,480,384**. The new
+[ten-game result](results/defense/training/matched-history-low-lr-smoke-01/checkpoint/evaluation.json)
+was mean **10,152**, median **10,450**, best **10,480**, versus the original
+check's mean **9,685**, median **10,415**, best **10,480**. All games remained
+stage-1 losses. This short comparison improves retention but remains below
+the frozen timing-matched parent's mean **10,433**; it does not establish
+deeper progress or explain the longer trial's failure.
+
+The new check completed four boot games; no restored segment had finished
+at its checkpoint. It recorded **329** archive events, all with exact
+64-action lookback, **30** from ongoing restored segments. Its
+[4,987-action verified replay](results/defense/training/matched-history-low-lr-smoke-01/replay/replay.html),
+full optimizer and log are preserved, and it exited normally. It is excluded
+from the collector and is not used as the parent of the longer trial.
+
+`defense-ppo-27-matched-history-low-lr` now runs at the normal 32-worker size,
+starting directly from the same original **10,447,616** parent. Its
+[configuration](results/defense/training/ppo-27-matched-history-low-lr/resume-config.json)
+differs from run 25's **only** in learning rate (0.000125) and output paths.
+It retains unlimited learning/games, 50,000-T-state actions, stride 2,
+rollout/batch 512, adjusted gamma/lambda, eight boot-only workers and lookback
+64. It replaces stopped run 25's compute slot; DQN runs 22, 24 and 26 continue.
+The larger rollout had increased minibatches per nominal game-time window;
+halving the rate tests a smaller update size, not an exact optimizer-budget
+equivalence because Adam and KL-based epoch stopping are nonlinear. The sole
+collector includes run 27, with all older sources retained and small checks
+excluded. No longer-run improvement is claimed from the short result alone.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -2036,6 +2086,8 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reprod
   --gamma 0.9984988733093293 --gae-lambda 0.99498743710662 \
   --curriculum-lookback 64 --curriculum-boot-envs 8 --mlx-cache-mb 512 \
   --eval-envs 8 --eval-every 200000 --steps 0
+# For run 27's lower-rate variant, use a distinct run/artifact directory and
+# add --learning-rate 0.000125, keeping the original parent above.
 ```
 
 ### Independent Double-DQN training path
@@ -2265,6 +2317,16 @@ Training and episodes are uncapped; ten from-boot evaluations occur every
 24 and 25 continue unchanged. The sole collector includes run 26 and all
 historical sources, excluding both short checks, with the same frozen-policy
 verification before any global promotion.
+
+Run 26's [first ten complete evaluations](results/defense/training/dqn-26-own-resets/step-000000100000/evaluation.json),
+at **100,000** actions, averaged **204**, median **200**, best **260**, all
+stage-1 losses without a mission. This is below ordinary run 22's same-counter
+mean/median/best **280**, not an improvement. The full online/target/optimizer
+checkpoint and [1,482-action verified replay](results/defense/training/dqn-26-own-resets/first-replay/replay.html)
+are preserved. At that checkpoint, training had completed **50** boot games,
+**27** restored segments and **5,624** optimizer updates. Segment counts are
+not counted as full games. This fresh-start trial continues without promoting
+over the stronger shared best.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-own-resets-reproduction \
