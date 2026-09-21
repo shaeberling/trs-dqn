@@ -411,6 +411,18 @@ verification. These diagnostic bundles are excluded from best-model promotion.
 This small comparison does not establish that changing training entropy would
 help; both active learners continue with their original settings.
 
+An additional [action-timing diagnostic](results/defense/sampling-probes/step-8342272-tstates-50000.json)
+used the frozen **10,480-point** model at counter **8,342,272**, ordinary
+temperature-1 sampling, and the same ten validation seeds. Reducing each action
+from **100,000 to 50,000 T-states** (twice as many policy decisions per emulated
+second) gave mean **5,809**, median **5,785**, best **8,740**, all stage 1 and no
+mission. The original timing gave mean **9,981**, median **10,380**, best
+**10,480**. All diagnostic games completed without an action cap.
+This is an explicit evaluation-only timing override, not a newly trained model
+or a best-replay promotion. It provides no evidence that changing the frozen
+policy's control rate alone helps; it does not rule out learning separately at
+the shorter interval. Both active learners retain their original timing.
+
 ### Lower-entropy continuation
 
 `defense-ppo-05-low-entropy` resumes the original 20-action checkpoint at
