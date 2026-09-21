@@ -1979,6 +1979,13 @@ The full online/target/optimizer and
 [1,703-action verified replay](results/defense/training/dqn-22-fresh/replay-400/replay.html)
 are preserved. All ten games remained in stage 1, with no mission completion.
 
+At **1,300,000**, ordinary DQN's best increased to **420**, although its
+[mean 366 and median 360](results/defense/training/dqn-22-fresh/step-000001300000/evaluation.json)
+fell from the previous batch. Its full checkpoint and
+[1,785-action verified replay](results/defense/training/dqn-22-fresh/replay-420/replay.html)
+are preserved. All ten games remained in stage 1 without a mission; a higher
+single effort does not imply a better mean or deeper progression.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
@@ -2097,6 +2104,20 @@ This deliberately longer test of coherent exploration replaces stopped run 20;
 it is not justified as already stronger. Runs 17, 22 and 23 remain active.
 The single collector retains all historical sources and includes run 24, with
 the same independent full-replay verification gate and unchanged global best.
+
+Run 24's [first ten complete games](results/defense/training/dqn-24-bootstrap/step-000000200000/evaluation.json),
+at **200,000** actions and **11,874** updates, each scored **380**
+(mean/median/best **380 / 380 / 380**), all stage 1 losses without a mission.
+Its full online/target/prior/optimizer checkpoint and
+[1,705-action verified replay](results/defense/training/dqn-24-bootstrap/first-replay/replay.html)
+are preserved. Training had completed 128 boot games at that checkpoint.
+Ordinary DQN's [same-counter ten games](results/defense/training/dqn-22-fresh/step-000000200000/evaluation.json)
+each scored **280** on the same seeds. This is a local early advantage for the
+ensemble setup, not evidence of improved depth, broad superiority or lower
+compute cost. Architecture, priors and exploration schedule differ; it is not
+a single-feature ablation or a comparison against a long zero-prior ensemble.
+Both are one training seed with reused validation seeds. Run 24 continues
+without replacing the stronger shared 10,480-point best.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-bootstrap-check \
