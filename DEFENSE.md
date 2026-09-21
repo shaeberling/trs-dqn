@@ -1663,6 +1663,65 @@ venv/bin/python -u -m rl.defense_evaluate \
   --games 100 --seed 30000 --envs 8 --max-steps 0
 ```
 
+### Longer own-state lead-in experiment
+
+A [read-only replay timing check](results/defense/diagnostics/lookback-lead-in.json)
+compared eligible lookback candidates within each life of the existing best
+replay. The last eligible 32-action candidates were **51–63 actions** before
+visible ship loss; 128-action candidates would be **147–159 actions** earlier.
+These are candidate indices, not live archive selections or exact collision
+times. The diagnostic created/restored no native states, and neither its
+indices nor replay actions are supplied to training. The hypothesis is simply
+that earlier own-reached resets leave more opportunity to change behavior.
+
+The existing lookback option required no production-code change. A new
+real-emulator test checks exact opaque snapshot/screen equality at lag 128,
+bounded history, saved-state score metadata, and clearing at every ship loss
+and reset. All **207 regression tests** passed. An isolated
+[four-worker check](results/defense/training/lookback128-smoke-01/resume-config.json)
+resumed run 12 at **10,447,616** and added **16,384** actions. Apart from paths,
+its configuration differs from the earlier no-noise four-worker control only
+in lookback **32 → 128**. Its 307 lagged archive events had exact 128-action
+offsets; four boot games and one restored segment completed during training.
+
+Its [ten complete validation games](results/defense/training/lookback128-smoke-01/checkpoint/evaluation.json)
+averaged **9,304**, median **9,590**, best **10,480**, all stage 1, compared with
+the control's mean **9,929**, median **10,460**, best **10,480**. This is not an
+improvement. The [verified replay](results/defense/training/lookback128-smoke-01/replay/replay.html)
+reproduced **2,578** neural actions. Full logs, optimizer and replay are
+preserved; this short check is excluded from the global collector.
+
+Run 19's moderate weight-noise trial stopped cleanly at **12,602,112** after
+**2,121,728** additional actions, **636** boot games, **379** restored segments
+and **21** ten-game evaluations. No observed stage advance or mission occurred.
+Peak mean was **10,456**, median **10,480**, at **12,184,320**; the final
+evaluation averaged **9,549**, median **10,035**, best **10,480**. Its
+[full log](results/defense/training/ppo-19-moderate-weight-noise/metrics.jsonl),
+[final optimizer](results/defense/training/ppo-19-moderate-weight-noise/final-checkpoint/state.json),
+[peak-mean checkpoint](results/defense/training/ppo-19-moderate-weight-noise/step-000012184320/evaluation.json)
+and [verified best replay](results/defense/training/ppo-19-moderate-weight-noise/best-effort/replay.html)
+are preserved. Its observed depth plateau, not a wall-clock deadline, motivated
+reassigning its slot.
+
+`defense-ppo-21-long-lookback` now resumes directly from the same strong run-12
+parent, **not** from the four-worker check. It changes lookback 32 to 128 with
+32 workers, rollout 256, batch 512, discount 0.997, GAE lambda 0.99, entropy
+0.002, life boundaries, shared score-bin curriculum and eight boot-only
+workers. Noise and SIL remain off; training and evaluation are uncapped.
+The [configuration](results/defense/training/ppo-21-long-lookback/resume-config.json)
+records the current source hash and explicit defaults added since run 12.
+This full-size trial tests the hypothesis despite the lower short-check mean;
+no gain is claimed. Fresh-seed run 17 and own-encoder/fresh-head run 20 continue.
+The sole collector retains all earlier sources and includes run 21, with the
+same complete-game and frozen-policy verification gates.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-long-lookback-reproduction \
+  --resume results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-long-lookback-reproduction/artifacts \
+  --curriculum-lookback 128 --steps 0 --eval-every 100000
+```
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a

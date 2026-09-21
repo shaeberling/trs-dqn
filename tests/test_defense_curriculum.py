@@ -170,9 +170,15 @@ class DefenseCurriculumTests(unittest.TestCase):
             workers.close()
 
     def test_lookback_uses_exact_earlier_own_state_and_never_crosses_ship_loss(self):
+        self._check_exact_lookback_history(8)
+
+    def test_128_action_lookback_is_exact_bounded_and_stays_within_the_same_life(self):
+        self._check_exact_lookback_history(128)
+
+    def _check_exact_lookback_history(self, lookback):
         env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_share=True,
-                                   worker_id=0, curriculum_lookback=8)
-        visited = deque(maxlen=9)
+                                   worker_id=0, curriculum_lookback=lookback)
+        visited = deque(maxlen=lookback+1)
         entries, losses = 0, 0
         try:
             env.reset(12)
@@ -185,13 +191,13 @@ class DefenseCurriculumTests(unittest.TestCase):
                     self.assertNotIn("curriculum_archive_add", info)
                 elif not done:
                     visited.append(capture(env))
-                self.assertLessEqual(len(env.history), 9)
+                self.assertLessEqual(len(env.history), lookback+1)
                 if "_curriculum_snapshot" in info:
                     entries += 1
                     saved, expected = info["_curriculum_snapshot"], visited[0]
                     self.assertEqual(saved.native, expected.native)
                     np.testing.assert_array_equal(saved.frames, expected.frames)
-                    self.assertEqual(saved.source_action, env.total_actions-8)
+                    self.assertEqual(saved.source_action, env.total_actions-lookback)
                     self.assertEqual(saved.lives, env.lives)
                     self.assertEqual(saved.stage, env.stage)
                     self.assertEqual(saved.progress_start_score, env.progress_start_score)
@@ -200,7 +206,7 @@ class DefenseCurriculumTests(unittest.TestCase):
                     self.assertEqual(event["source_episode_steps"], saved.steps)
                     self.assertEqual(event["score"], saved.score)
                     self.assertEqual(event["progress_bin"], (saved.score-saved.progress_start_score)//20)
-                    self.assertEqual(event["lookback_actions"], 8)
+                    self.assertEqual(event["lookback_actions"], lookback)
                     self.assertEqual(event["trigger_action"], env.total_actions)
                     self.assertEqual(event["trigger_score"], env.score)
                 if done:

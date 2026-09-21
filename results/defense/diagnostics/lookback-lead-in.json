@@ -1,0 +1,29 @@
+{
+  "purpose": "Read-only timing comparison to motivate a longer own-state reset lead-in",
+  "source_version": "step-000008342272-125346536cb1-seed-10004",
+  "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+  "score_interval": 20,
+  "method": "Accumulate recorded visible-score rewards. Within each recorded life, identify changes of the current 20-point progress bin. Skip triggers with insufficient same-life history, and identify the actual earlier frame t-lookback. Report the last eligible candidate in each life. This computes indices only; it does not create or restore emulator snapshots.",
+  "columns": ["life_start_frame", "visible_life_loss_frame", "eligible_triggers", "last_trigger_frame", "candidate_source_frame", "candidate_visible_score", "candidate_progress", "actions_from_candidate_to_visible_loss"],
+  "lookback_32": [
+    [0,410,12,388,356,2600,2600,54],
+    [410,1133,13,1114,1082,5220,2600,51],
+    [1133,1863,15,1832,1800,6340,1100,63],
+    [1863,2580,14,2550,2518,8960,1100,62]
+  ],
+  "lookback_128": [
+    [0,410,9,388,260,140,140,150],
+    [410,1133,13,1114,986,2760,140,147],
+    [1133,1863,15,1832,1704,5380,140,159],
+    [1863,2580,14,2550,2422,8000,140,158]
+  ],
+  "parameter_updates": 0,
+  "native_states_created_or_restored": 0,
+  "limitations": [
+    "One selected stage-1 replay; not a representative sample of the continuing learners' reset archives.",
+    "Candidates are not necessarily retained or selected by bounded archives, reservoir sampling or peer sharing.",
+    "Visible ship-count loss can lag the physical collision; these are not exact collision lead times.",
+    "No replay actions or candidate frame indices are passed into training. The proposed experiment changes only the generic lookback length used on the new learner's own experience.",
+    "More lead-in is a hypothesis, not evidence of improved play or a supplied route."
+  ]
+}
