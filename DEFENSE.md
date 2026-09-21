@@ -552,8 +552,9 @@ rounds**. No game reached stage 2; its best-so-far effort stayed at 600 for
 is preserved with optimizer and evaluation. Its
 [complete log](results/defense/training/ppo-06-life-boundary/metrics.jsonl) and
 [final resumable state](results/defense/training/ppo-06-life-boundary/final-checkpoint/state.json)
-are archived. Run 08, which subsequently reached 620, remains active; the
-freed slot now tests curriculum resets with its successful learning boundaries.
+are archived. Run 08 subsequently reached 620 and later 10,280; its final
+results are below. The freed slot tested curriculum resets with the successful
+ship-loss learning boundaries.
 
 ### Own-experience curriculum: run 07
 
@@ -676,7 +677,7 @@ averaged **552**, median **580**, best **600**, all stage 1 with no mission.
 Its selected complete replay reproduced all **1,982** neural actions after
 reloading the model. This is below the starting checkpoint's mean 564, not an
 improvement claim. It tied the then-current shared best score and therefore did
-not replace the existing 600-point bundle. Run 08 continues unchanged.
+not replace the existing 600-point bundle. Run 08 continued unchanged.
 
 After **1,204,224 additional actions**, the longer-rollout trial reached
 **620 points** at counter **6,638,336**. Ten complete validation games: mean
@@ -689,6 +690,19 @@ averaged 584, so the best single replay is not also the highest-mean checkpoint.
 The 600-point model and all older versions remain available. This is progress
 on reused validation seeds, not yet evidence of a stage clear or mission win.
 
+Run 08 subsequently reached **10,280 points**, with all **2,495** neural
+actions verified in its own [best replay](results/defense/training/ppo-08-long-rollout/best-effort/replay.html).
+Its strongest ten-game mean was **9,358**, median **9,510**, best **10,280**, at
+counter **8,940,288**; that [resumable checkpoint](results/defense/training/ppo-08-long-rollout/step-000008940288/state.json)
+is preserved separately. It did not exceed 10,280 over five consecutive
+validation rounds, and no training or evaluation game reached stage 2.
+The run stopped cleanly at **9,325,312**, after **3,891,200 additional actions**,
+**1,890 new complete training games** and **38 validation rounds**. Its
+[complete log](results/defense/training/ppo-08-long-rollout/metrics.jsonl) and
+[final model and optimizer](results/defense/training/ppo-08-long-rollout/final-checkpoint/state.json)
+are archived. Its training slot now runs the longer-credit comparison below;
+the independent run 09 was not interrupted.
+
 ### Curriculum with ship-loss boundaries: run 09
 
 `defense-ppo-09-curriculum-life` resumes the preserved 620-point model at
@@ -697,7 +711,8 @@ to that checkpoint: probability 0.5, same-run snapshot sharing, and eight
 protected boot workers. All PPO settings, including **256-action rollouts and
 ship-loss learning boundaries**, remain unchanged. The
 [configuration](results/defense/training/ppo-09-curriculum-life/resume-config.json)
-records this comparison. Run 08 remains active as the unchanged baseline.
+records this comparison. Run 08 initially remained the unchanged baseline;
+it was later archived as described above. Run 09 remains active.
 
 This is not a restart of the earlier failed curriculum's final policy. Run 07
 started from a weaker 460-point model, used 128-action rollouts and did not have
@@ -774,8 +789,44 @@ At counter **8,342,272**, after **1,703,936 additional actions**, run 09 reached
 Ten complete validation games: mean **9,981**, median **10,380**, best **10,480**,
 still all stage 1 and no mission. Its separate
 [resumable checkpoint](results/defense/training/ppo-09-curriculum-life/step-000008342272/state.json)
-and immutable replay bundle are preserved. The unchanged longer-rollout
-comparison is also improving, but has not reached stage 2 either.
+and immutable replay bundle are preserved. No successful stage clear has
+been observed in this run or the archived longer-rollout comparison.
+
+### Longer-credit comparison: run 10
+
+`defense-ppo-10-long-credit` resumes the preserved **10,480-point** checkpoint
+at counter **8,342,272**. The only changed training parameter is **GAE lambda
+0.95 to 0.99**; the [configuration](results/defense/training/ppo-10-long-credit/resume-config.json)
+was compared directly with its parent checkpoint. The existing return code
+propagates an error backward within a learning segment by `gamma * lambda`
+per action. With unchanged gamma 0.997, the new trace decays more slowly.
+The hypothesis is that this helps assign delayed score rewards to earlier
+choices; it is not a demonstrated improvement yet.
+
+The screen input, 20 actions, timing, score-only reward, 256-action rollouts,
+learning rate, entropy, curriculum settings, protected boot workers and
+ship-loss boundaries are unchanged. Model, optimizer and policy RNG resume
+from the saved checkpoint; the own-experience snapshot archive starts empty
+and refills from newly played states. There are no game/episode action caps
+or wall-clock limits. Three focused checks passed for analytic trace decay,
+episode-boundary isolation and optimizer-resume equivalence before launch.
+Run 09 continues unchanged as the reference experiment. Both write isolated
+artifacts, with the single verification collector watching both sources.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-long-credit-reproduction \
+  --resume results/defense/training/ppo-09-curriculum-life/step-000008342272 \
+  --artifacts runs/defense-long-credit-reproduction/artifacts --gae-lambda .99
+```
+
+After **106,496 additional actions**, run 10's
+[first complete validation](results/defense/training/ppo-10-long-credit/first-validation.json)
+averaged **9,275**, median **10,390**, best **10,460**, all stage 1 and no mission.
+Its local best replay exactly reproduced all **2,568** neural actions after
+reloading the weights; the [verification record](results/defense/training/ppo-10-long-credit/first-verification.json)
+is preserved. This first result is below its starting checkpoint's mean 9,981
+and best 10,480, so it does not replace the shared best or establish improvement.
+The experiment continues unchanged beyond this initial validation.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
