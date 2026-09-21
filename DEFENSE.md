@@ -205,7 +205,7 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-dqn-22-fresh/status.json`,
+- Live progress: `runs/defense-dqn-28-large-replay/status.json`,
   `runs/defense-dqn-24-bootstrap/status.json`,
   `runs/defense-dqn-26-own-resets/status.json` and
   `runs/defense-ppo-27-matched-history-low-lr/status.json`, each with an adjacent
@@ -263,6 +263,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-25-matched-history/artifacts \
   --source runs/defense-dqn-26-own-resets/artifacts \
   --source runs/defense-ppo-27-matched-history-low-lr/artifacts \
+  --source runs/defense-dqn-28-large-replay/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -2088,6 +2089,13 @@ new depth, and long-run stability remains unproven. Its full optimizer and
 are preserved separately; the equal best score does not replace the shared
 global replay.
 
+At **11,250,432** (**802,816** new actions), its fourth batch averaged
+[10,237, median 10,370, best 10,480](results/defense/training/ppo-27-matched-history-low-lr/step-000011250432/evaluation.json).
+The full optimizer checkpoint is preserved. This compares with run 25's
+same-counter mean **2,562**; the lower-rate variant has retained substantially
+more score through these four batches. All ten games still lost in stage 1,
+so this is retention, not new depth or proof of lasting stability.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -2249,6 +2257,16 @@ That full online/target/optimizer checkpoint is also preserved. The lower
 single-game best did not replace its existing 2,060-point replay, and no game
 reached stage 2 or a mission.
 
+Run 22 subsequently stopped after **3,030,192** actions, **188,761** updates
+and **1,784** complete training games. Its [final resumable checkpoint](results/defense/training/dqn-22-fresh/final-checkpoint/state.json)
+and [entire training log](results/defense/training/dqn-22-fresh/metrics.jsonl)
+are preserved alongside the best-effort and peak-mean checkpoints above.
+Across **30** complete validation batches, none reached stage 2 or a mission.
+The [last batch at 3,000,000](results/defense/training/dqn-22-fresh/step-000003000000/evaluation.json)
+averaged **356**, median **360**, best **380**. The six final validation means
+were 324, 402, 362, 372, 376 and 356. This persistent regression, rather than
+a wall-clock limit, motivated replacing its compute slot with run 28 below.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
@@ -2307,6 +2325,38 @@ metadata and other allocations are excluded from this comparison. This
 validates a substantial reduction in duplicated screen data in this check,
 not a total-RAM or speedup claim, nor evidence that a larger buffer improves
 learning. No recorded evaluation trace was used as training experience.
+
+### Larger-buffer DQN comparison
+
+`defense-dqn-28-large-replay` starts independently from fresh seed-97 weights,
+with **200,000** replay transitions instead of run 22's **50,000**, using the
+lossless compact storage above. It does not resume the storage check or any
+previous model. Its [configuration](results/defense/training/dqn-28-large-replay/config.json)
+retains ordinary Double DQN's eight workers, batch 64, learning rate 0.0001,
+five-step returns, gamma 0.997, 100,000-T-state actions, stride 1, life
+boundaries, 10,000-action warmup, update every 16 aggregate actions, target
+copy every 2,000 updates and epsilon decay to 0.05. Own-state resets and
+bootstrap heads are disabled. Training and complete-game evaluation remain
+uncapped; evaluation runs every 100,000 actions from boot.
+
+More retained own experience is a hypothesis to test, not a diagnosed fix
+for run 22's regression. Source hashes differ because intervening optional
+features were added; default compatibility and exact dense/compact training
+parity were tested as documented above. No policy input, reward bonus or
+evaluation demonstration has been added. The sole collector includes run 28
+and retains all historical sources; other live learners continue unchanged.
+
+Its [first ten complete games at 100,000](results/defense/training/dqn-28-large-replay/step-000000100000/evaluation.json)
+averaged **268**, median **260**, best **280**, all stage-1 losses. This is below
+run 22's same-counter mean 280, not an early performance improvement. The full
+online/target/optimizer checkpoint and [1,477-action verified replay](results/defense/training/dqn-28-large-replay/first-replay/replay.html)
+are preserved.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-large-replay-reproduction \
+  --artifacts runs/defense-dqn-large-replay-reproduction/artifacts \
+  --seed 97 --capacity 200000 --compact-replay
+```
 
 ### Ordinary DQN with its own reached-state resets
 
@@ -2400,6 +2450,15 @@ with a [1,598-action verified replay](results/defense/training/dqn-26-own-resets
 and full optimizer/target checkpoint preserved. All ten games remained stage-1
 losses. This recovers from its first batch and is only slightly above ordinary
 run 22's same-counter mean/best 280; it is not evidence of a robust advantage.
+
+At **400,000**, run 26 reached
+[mean 302, median 320, best 340](results/defense/training/dqn-26-own-resets/step-000000400000/evaluation.json),
+with a [1,600-action verified replay](results/defense/training/dqn-26-own-resets/replay-340/replay.html).
+At **600,000**, it reached
+[mean 326, median 320, best 360](results/defense/training/dqn-26-own-resets/step-000000600000/evaluation.json),
+with a [1,643-action verified replay](results/defense/training/dqn-26-own-resets/replay-360/replay.html).
+Both full optimizer/target checkpoints are preserved; all games remained
+stage-1 losses. These small lineage improvements do not replace the shared best.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-own-resets-reproduction \
