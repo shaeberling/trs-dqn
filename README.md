@@ -18,6 +18,9 @@ An independent value-learning alternative is available through
 `python -m rl.defense_dqn`: Double DQN with prioritized own-experience replay,
 complete-game greedy evaluation and verified replays. See its settings and
 experimental results in [DEFENSE.md](DEFENSE.md).
+Its optional `--bootstrap-heads 5` experiment uses per-game value-head
+exploration with frozen random priors and greedy ensemble evaluation; it
+does not add demonstrations, hidden-state inputs or reward bonuses.
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh

@@ -16,8 +16,8 @@ import time
 import numpy as np
 
 from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256
-from .defense_learning import (DQN_ALGORITHM, evaluate, greedy_policy, publish_best,
-                               sha256, summarize, write_json)
+from .defense_learning import (BOOTSTRAP_ALGORITHM, DQN_ALGORITHM, evaluate, greedy_policy,
+                               policy_description, publish_best, sha256, summarize, write_json)
 from .replay import NStep, Replay
 from .vector import VectorEnv
 
@@ -43,6 +43,12 @@ def main():
                         help="new aggregate actions per optimizer update")
     parser.add_argument("--epsilon-steps", type=int, default=1_000_000)
     parser.add_argument("--epsilon-final", type=float, default=.05)
+    parser.add_argument("--bootstrap-heads", type=int, default=0,
+                        help="0 = ordinary DQN; at least 2 = per-game value-head exploration")
+    parser.add_argument("--bootstrap-probability", type=float, default=.5)
+    parser.add_argument("--bootstrap-prior-scale", type=float, default=1.)
+    parser.add_argument("--bootstrap-epsilon", type=float, default=.01,
+                        help="constant random-action probability after bootstrap warmup")
     parser.add_argument("--target-every", type=int, default=2000,
                         help="optimizer updates per target-network copy")
     parser.add_argument("--tstates", type=int, default=100_000)
@@ -64,10 +70,12 @@ def main():
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
         config = prior["config"]
-        if (config.get("algorithm") != DQN_ALGORITHM or config.get("game") != "defense"
+        expected_algorithm = BOOTSTRAP_ALGORITHM if args.bootstrap_heads else DQN_ALGORITHM
+        if (config.get("algorithm") != expected_algorithm or config.get("game") != "defense"
                 or config.get("game_sha256") != GAME_SHA256
                 or config.get("environment_version") != ENVIRONMENT_VERSION
-                or config.get("action_names") != list(action_names(args.allow_enter))):
+                or config.get("action_names") != list(action_names(args.allow_enter))
+                or config.get("bootstrap_heads", 0) != args.bootstrap_heads):
             parser.error("Resume requires a compatible Defense DQN checkpoint")
         if not all((args.resume/name).is_file() for name in
                    ("model.safetensors", "target.safetensors", "optimizer.npz")):
@@ -86,6 +94,11 @@ def main():
         parser.error("invalid optimizer, discount, reward scale or epsilon")
     if not 1 <= args.tstates <= 1_000_000:
         parser.error("tstates out of range")
+    if (args.bootstrap_heads < 0 or args.bootstrap_heads == 1
+            or not np.isfinite(args.bootstrap_probability) or not 0 < args.bootstrap_probability <= 1
+            or not np.isfinite(args.bootstrap_prior_scale) or args.bootstrap_prior_scale < 0
+            or not np.isfinite(args.bootstrap_epsilon) or not 0 <= args.bootstrap_epsilon <= 1):
+        parser.error("invalid bootstrap heads, membership, prior scale or epsilon")
     if args.run.exists() and not args.resume:
         parser.error("run already exists; choose a new directory or --resume")
     if args.artifacts.resolve() == args.run.resolve():
@@ -97,8 +110,15 @@ def main():
     from .model import Learner
     from .train import checkpoint
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
-    agent = Learner(args.learning_rate, args.seed, action_count=len(action_names(args.allow_enter)))
+    if args.bootstrap_heads:
+        from .defense_bootstrap import BootstrapLearner
+        agent = BootstrapLearner(args.learning_rate, args.seed,
+                                 action_count=len(action_names(args.allow_enter)),
+                                 heads=args.bootstrap_heads, prior_scale=args.bootstrap_prior_scale)
+    else:
+        agent = Learner(args.learning_rate, args.seed, action_count=len(action_names(args.allow_enter)))
     rng = np.random.default_rng(args.seed)
+    bootstrap_rng = np.random.default_rng(args.seed+2_000_000)
     steps, updates, episodes = 0, 0, 0
     if prior:
         agent.online.load_weights(str(args.resume/"model.safetensors"))
@@ -108,10 +128,13 @@ def main():
         agent.state = [agent.online.state, agent.target.state, agent.optimizer.state]
         agent.update = mx.compile(agent._update, inputs=agent.state, outputs=agent.state)
         rng.bit_generator.state = prior["rng"]
+        if args.bootstrap_heads:
+            bootstrap_rng.bit_generator.state = prior["bootstrap_rng"]
         steps, updates, episodes = (prior[k] for k in ("steps", "updates", "episodes"))
     mx.eval(agent.state)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
-    config.update(game="defense", algorithm=DQN_ALGORITHM, game_sha256=GAME_SHA256,
+    config.update(game="defense", algorithm=BOOTSTRAP_ALGORITHM if args.bootstrap_heads else DQN_ALGORITHM,
+                  game_sha256=GAME_SHA256,
                   native_sha256=sha256(Path("libtrs.so")),
                   environment_version=ENVIRONMENT_VERSION,
                   environment_source_sha256=sha256(Path(__file__).with_name("defense.py")),
@@ -126,9 +149,21 @@ def main():
                   replay_resume="refill from new own experience; no saved trajectories loaded",
                   resume_semantics="online, target, optimizer and RNG restored; episodes restart from boot",
                   priority_alpha=.6, priority_beta="0.4 to 1 over epsilon-steps aggregate actions")
+    if args.bootstrap_heads:
+        config.update(bootstrap_source_sha256=sha256(Path(__file__).with_name("defense_bootstrap.py")),
+                      bootstrap_replay_source_sha256=sha256(Path(__file__).with_name("defense_bootstrap_replay.py")),
+                      training_policy="uniform value head per complete game plus constant epsilon; random warmup",
+                      bootstrap_membership="independent Bernoulli mask once per n-step insertion; empty masks allowed",
+                      bootstrap_priority="mean absolute TD error over all heads",
+                      bootstrap_resume="masks/replay refill; head redrawn for new boot game; priors restored from weights",
+                      policy=policy_description(config), evaluation_policy=policy_description(config))
     args.run.mkdir(parents=True, exist_ok=True)
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
-    replay = Replay(args.capacity)
+    if args.bootstrap_heads:
+        from .defense_bootstrap_replay import BootstrapReplay
+        replay = BootstrapReplay(args.capacity, args.bootstrap_heads, args.bootstrap_probability, bootstrap_rng)
+    else:
+        replay = Replay(args.capacity)
     buffers = [NStep(replay, args.n_step, args.gamma) for _ in range(args.envs)]
     recent = deque(maxlen=100)
     started, start_steps = time.monotonic(), steps
@@ -136,10 +171,14 @@ def main():
     next_eval, next_update = steps+args.eval_every, steps+args.train_every
     log_file = (args.run/"metrics.jsonl").open("a", buffering=1)
     stop, workers = False, None
+    episode_heads = None
 
     def state():
-        return dict(steps=steps, updates=updates, episodes=episodes,
-                    rng=rng.bit_generator.state, config=config)
+        saved = dict(steps=steps, updates=updates, episodes=episodes,
+                     rng=rng.bit_generator.state, config=config)
+        if args.bootstrap_heads:
+            saved["bootstrap_rng"] = bootstrap_rng.bit_generator.state
+        return saved
 
     def log(row):
         row = dict(wall_seconds=round(time.monotonic()-started, 2), **row)
@@ -164,10 +203,15 @@ def main():
         while not stop and (not args.steps or steps < args.steps):
             epsilon = max(args.epsilon_final, 1-(1-args.epsilon_final)*
                           max(0, steps-args.warmup)/args.epsilon_steps)
+            if args.bootstrap_heads:
+                epsilon = args.bootstrap_epsilon
+                if episode_heads is None:
+                    episode_heads = rng.integers(args.bootstrap_heads, size=args.envs)
             if replay.size < max(1, args.warmup):
                 actions = rng.integers(len(config["action_names"]), size=args.envs)
             else:
-                actions = agent.actions(observations)
+                actions = (agent.actions(observations, episode_heads) if args.bootstrap_heads
+                           else agent.actions(observations))
                 explore = rng.random(args.envs) < epsilon
                 actions[explore] = rng.integers(len(config["action_names"]), size=int(explore.sum()))
             results = workers.step(actions)
@@ -181,7 +225,11 @@ def main():
                     episodes += 1
                     recent.append(info)
                     log(dict(event="episode", worker=worker, action_counter=steps+worker+1,
-                             episode=episodes, **info))
+                             episode=episodes, **info,
+                             **({"bootstrap_head": int(episode_heads[worker])} if args.bootstrap_heads else {})))
+                    if args.bootstrap_heads:
+                        # No change at ship loss: the selected head lasts the whole game.
+                        episode_heads[worker] = rng.integers(args.bootstrap_heads)
             observations = np.stack(following)
             steps += args.envs
             while steps >= next_update:

@@ -206,12 +206,13 @@ continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
 - Live progress: `runs/defense-ppo-17-fresh-seed/status.json`,
-  `runs/defense-ppo-19-moderate-weight-noise/status.json` and
-  `runs/defense-ppo-20-encoder-transfer/status.json`, each with an adjacent
+  `runs/defense-dqn-22-fresh/status.json`,
+  `runs/defense-ppo-23-life-age/status.json` and
+  `runs/defense-dqn-24-bootstrap/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
-- Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
+- Historical checkpoints: `runs/defense-ppo-*/step-*/` and `runs/defense-dqn-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
   [replay](results/defense/learned/best/replay.html) and
@@ -255,6 +256,10 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-18-weight-noise/artifacts \
   --source runs/defense-ppo-19-moderate-weight-noise/artifacts \
   --source runs/defense-ppo-20-encoder-transfer/artifacts \
+  --source runs/defense-ppo-21-long-lookback/artifacts \
+  --source runs/defense-dqn-22-fresh/artifacts \
+  --source runs/defense-ppo-23-life-age/artifacts \
+  --source runs/defense-dqn-24-bootstrap/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -1683,6 +1688,18 @@ Both full model/optimizer checkpoints are preserved. Neither reached stage 2
 or replaced the stronger shared best; the counters differ and run 20's encoder
 also includes the previously documented pretraining cost.
 
+Run 20 subsequently stopped normally at **3,817,472** new actions after
+**1,656** complete boot games, **1,058** restored segments and **38** ten-game
+validations. Its last mean/median/best were **580 / 580 / 600** at 3,801,088;
+peak mean was **592**, median **600**, best **600** at 2,506,752. The
+[final optimizer](results/defense/training/ppo-20-encoder-transfer/final-checkpoint/state.json),
+[peak-mean checkpoint](results/defense/training/ppo-20-encoder-transfer/step-000002506752/evaluation.json)
+and [full log](results/defense/training/ppo-20-encoder-transfer/metrics.jsonl)
+are preserved alongside the earlier 640-point replay. No real training or
+evaluation game reached stage 2 or a mission. The repeated score/depth plateau,
+not a wall-clock deadline, motivated assigning its slot to bootstrap DQN.
+The fresh-seed PPO lineage continues independently.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
@@ -1943,6 +1960,19 @@ Its online/target/optimizer checkpoint and
 are preserved. This is a small within-run improvement, still stage 1 and well
 below the PPO models; it establishes no algorithm advantage.
 
+At **900,000** actions, ordinary DQN reached
+[mean 336, median 340, best 360](results/defense/training/dqn-22-fresh/step-000000900000/evaluation.json).
+The full online/target/optimizer and
+[1,672-action verified replay](results/defense/training/dqn-22-fresh/replay-360/replay.html)
+are preserved. All ten games remained in stage 1; this remains a local
+improvement, not a new global best or stage progression.
+
+At **1,000,000**, ordinary DQN's
+[mean 354, median 360, best 380](results/defense/training/dqn-22-fresh/step-000001000000/evaluation.json)
+improved again. Its full checkpoint and
+[1,695-action verified replay](results/defense/training/dqn-22-fresh/replay-380/replay.html)
+are saved. These ten complete games still all ended in stage 1 without success.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
@@ -1950,6 +1980,98 @@ venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-continuation \
   --artifacts runs/defense-dqn-continuation/artifacts \
   --resume runs/defense-dqn-reproduction/latest
+```
+
+### Bootstrapped value exploration
+
+The optional `rl.defense_dqn --bootstrap-heads 5` path adapts
+[Bootstrapped DQN](https://arxiv.org/abs/1602.04621) and
+[randomized prior functions](https://arxiv.org/abs/1806.03335). A training
+worker draws one value head uniformly at a new **complete game**, retaining
+it across ship losses. This tests more temporally consistent exploration
+than changing random actions independently at every step. The weights still
+learn during that game; the head identity, not the network parameters, stays
+fixed. A configurable constant epsilon adds occasional uniform actions, and
+the initial empty-replay warmup remains uniformly random.
+
+This implementation uses shared convolutional features followed by independent
+256-unit hidden and dueling output heads. A separate randomly initialized
+network of the same architecture supplies fixed additive priors. The prior
+parameters are frozen, excluded from Adam, saved with both online and target
+networks, and restored exactly. These are random screen-to-value functions,
+not game knowledge, an oracle, demonstrations or additional reward.
+
+Each own n-step transition receives independent Bernoulli head memberships
+**once when inserted**. Memberships persist through sampling and ring-buffer
+reuse replaces them with the new transition's memberships. Empty memberships
+are allowed. Every head's Double-Q target uses its own online action choice
+and corresponding target head, including the same prior. Masked Huber losses
+are averaged over active memberships with replay importance weights; a shared
+priority is the mean absolute TD error over all heads. Life-terminal returns
+still stop at visible loss, even though the behavior head persists for the game.
+
+Evaluation is a fixed, deterministic **greedy mean of ensemble Q-values plus
+priors**, not a favorable-head search. Complete-game evaluation, frozen-weight
+action/screen/reward verification and stage/mission-first ranking are unchanged.
+PPO, ordinary DQN and bootstrap optimizer resumes cannot be interchanged, nor
+can the number of heads change on resume. Replay/masks refill from new own
+experience; online/target/prior/optimizer and both RNG states are restored,
+but new boot episodes draw new heads. The policy still sees only four raw
+screen frames and training reward remains scaled visible score difference.
+
+This is **not an exact paper reproduction**: shared visual layers, dueling
+heads, prioritized n-step replay, the greedy-mean evaluation rule, our optimizer
+and TRS-80 observations are explicit adaptations. With five heads, checkpoints
+are substantially larger than ordinary DQN; long-run evaluation/checkpoint
+frequency must account for available disk space. Default `--bootstrap-heads 0`
+retains ordinary DQN behavior. The four existing production learners do not
+change their loaded algorithms.
+
+Tests cover persistent replay masks, head-specific Double-Q arithmetic,
+masked head gradients, frozen priors, target synchronization, greedy ensemble
+reload, invalid configurations, exact zero-update optimizer/RNG cloning,
+real-emulator training/resume, and head persistence across ship losses.
+The full suite passed **224 tests** after integration.
+
+The [isolated check](results/defense/training/bootstrap-smoke-01/config.json)
+completed **16,384** own actions and **960** updates, then evaluated ten complete
+games: [mean/median/best all **140**](results/defense/training/bootstrap-smoke-01/checkpoint/evaluation.json),
+all stage 1 losses. Its
+[verified replay](results/defense/training/bootstrap-smoke-01/replay/replay.html)
+reproduced **1,208** actions. The full online/target/prior/optimizer, configuration
+and log are preserved. It exited normally and is excluded from the collector.
+The ordinary four-worker DQN check had mean **328**, median **320**, best **360**
+at the same action count: the bootstrap check is substantially worse, not an
+early performance advantage. This short check establishes working integration,
+not efficacy. GPU peak was approximately 454 MB, excluding replay/emulator memory.
+
+`defense-dqn-24-bootstrap` starts fresh at counter zero with seed 97,
+**five heads**, prior scale **1**, membership probability **0.5**, epsilon **0.01**
+after a **10,000-transition random warmup**, eight workers, batch 64, capacity
+50,000, n-step 5, discount 0.997 and target synchronization every 2,000 updates.
+It does not load the smoke weights, another learner's encoder, replay traces
+or native snapshots. All episode/training caps are zero. Ten-game evaluations
+occur every **200,000** actions; each full checkpoint is approximately **91 MiB**,
+so storage remains monitored. Its
+[configuration](results/defense/training/dqn-24-bootstrap/config.json) is preserved.
+This deliberately longer test of coherent exploration replaces stopped run 20;
+it is not justified as already stronger. Runs 17, 22 and 23 remain active.
+The single collector retains all historical sources and includes run 24, with
+the same independent full-replay verification gate and unchanged global best.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-bootstrap-check \
+  --artifacts runs/defense-bootstrap-check/artifacts --seed 97 \
+  --envs 4 --batch-size 64 --capacity 8192 --warmup 1024 --target-every 256 \
+  --steps 16384 --eval-every 16384 --eval-envs 4 --mlx-cache-mb 256 \
+  --bootstrap-heads 5 --bootstrap-prior-scale 1 \
+  --bootstrap-probability .5 --bootstrap-epsilon .01
+
+# Independent unlimited production trial (fresh weights, standard DQN defaults):
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-bootstrap-reproduction \
+  --artifacts runs/defense-bootstrap-reproduction/artifacts --seed 97 \
+  --bootstrap-heads 5 --bootstrap-prior-scale 1 \
+  --bootstrap-probability .5 --bootstrap-epsilon .01 --eval-every 200000
 ```
 
 ### Own-action-age archive experiment
