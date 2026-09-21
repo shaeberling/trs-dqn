@@ -78,8 +78,11 @@ class PPO:
         self.predict = mx.compile(self.model.policy_value, inputs=self.model.state)
         mx.eval(self.state)
 
-    def _loss(self, model, obs, actions, old_logp, advantages, returns, reference_log_probs=None):
+    def _loss(self, model, obs, actions, old_logp, advantages, returns, reference_log_probs=None,
+              logit_bias=None):
         logits, values = model.policy_value(obs)
+        if logit_bias is not None:
+            logits = logits + mx.stop_gradient(logit_bias)
         log_probs = logits-mx.logsumexp(logits, axis=-1, keepdims=True)
         logp = mx.take_along_axis(log_probs, actions[:, None], axis=-1)[:, 0]
         logratio = logp-old_logp
@@ -96,16 +99,21 @@ class PPO:
                     (actor, critic, entropy, kl, anchor))
         return actor+.5*critic-self.entropy*entropy, (actor, critic, entropy, kl)
 
-    def _update(self, obs, actions, old_logp, advantages, returns, reference_log_probs=None):
+    def _update(self, obs, actions, old_logp, advantages, returns, reference_log_probs=None,
+                logit_bias=None):
         (loss, metrics), grads = nn.value_and_grad(self.model, self._loss)(
-            self.model, obs, actions, old_logp, advantages, returns, reference_log_probs)
+            self.model, obs, actions, old_logp, advantages, returns, reference_log_probs, logit_bias)
         grads, norm = optim.clip_grad_norm(grads, .5)
         self.optimizer.update(self.model, grads)
         return loss, metrics
 
-    def act(self, obs, rng):
+    def act(self, obs, rng, logit_bias=None):
         logits, values = self.predict(mx.array(obs))
         logits, values = np.array(logits), np.array(values)
+        if logit_bias is not None:
+            if logit_bias.shape != logits.shape or not np.isfinite(logit_bias).all():
+                raise ValueError("policy bias noise must match logits and be finite")
+            logits = logits + logit_bias
         logp = logits-np.logaddexp.reduce(logits, axis=-1, keepdims=True)
         probs = np.exp(logp)
         actions = (rng.random(len(obs))[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
