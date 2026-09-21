@@ -1312,6 +1312,20 @@ best, not a replacement for that model or evidence of stage progress.
 
 ### Optional state-dependent output-weight exploration
 
+Run 15 (bias-noise SD 1) stopped gracefully at **12,708,608** actions after
+**2,260,992 new actions**, **696** additional complete boot games, **497**
+restored training segments and **22** complete ten-game evaluations. Neither
+training nor evaluation reached stage 2. Best remained **10,480**; peak mean
+was **10,470**, median **10,480**, at counter **11,455,232**. Its last evaluation
+at **12,651,264** averaged **9,829**, median **10,470**, best **10,480**.
+The [full log](results/defense/training/ppo-15-bias-noise/metrics.jsonl),
+[final optimizer](results/defense/training/ppo-15-bias-noise/final-checkpoint/state.json),
+[peak-mean checkpoint](results/defense/training/ppo-15-bias-noise/step-000011455232/evaluation.json)
+and [2,501-action verified best replay](results/defense/training/ppo-15-bias-noise/best-effort/replay.html)
+are preserved. This is a plateau in the tested configuration, not evidence
+that every parameter-noise method fails. The stronger-bias and independent
+fresh-seed learners continue unchanged.
+
 `--policy-weight-noise STD` is a training-only alternative to bias noise; both
 default to zero and cannot be combined. Each worker draws a Gaussian matrix
 with the same shape as the learned actor's output weights, and retains it
