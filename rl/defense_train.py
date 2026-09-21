@@ -37,6 +37,8 @@ def main():
     parser.add_argument("--epochs", type=int, default=4)
     parser.add_argument("--learning-rate", type=float, default=2.5e-4)
     parser.add_argument("--entropy", type=float, default=.02)
+    parser.add_argument("--value-coefficient", type=float, default=.5,
+                        help="weight on half mean-squared value error; default preserves prior PPO")
     parser.add_argument("--policy-bias-noise", type=float, default=0,
                         help="training-only actor bias noise std, fixed per life; 0 disables")
     parser.add_argument("--policy-weight-noise", type=float, default=0,
@@ -130,8 +132,9 @@ def main():
             or (args.policy_weight_noise and (args.policy_bias_noise or args.sil_updates))):
         parser.error("policy-weight-noise must be finite/nonnegative and cannot be combined with bias noise or SIL")
     if (not all(np.isfinite(v) for v in (args.learning_rate, args.entropy, args.gamma,
-                                        args.gae_lambda, args.reward_scale))
+                                        args.gae_lambda, args.reward_scale, args.value_coefficient))
             or args.learning_rate <= 0 or args.entropy < 0 or args.reward_scale <= 0
+            or args.value_coefficient < 0
             or not 0 < args.gamma < 1 or not 0 < args.gae_lambda <= 1):
         parser.error("invalid optimizer/return parameters")
     if args.run.exists() and not args.resume:
@@ -140,7 +143,7 @@ def main():
     from mlx.utils import tree_unflatten
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
     agent = PPO(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
-                action_count=len(action_names(args.allow_enter)))
+                action_count=len(action_names(args.allow_enter)), value_coefficient=args.value_coefficient)
     rng = np.random.default_rng(args.seed)
     steps, episodes = 0, 0
     initialization = None
@@ -195,6 +198,9 @@ def main():
     config.update(game="defense", algorithm="ppo", game_sha256=GAME_SHA256,
                   native_sha256=sha256("libtrs.so"), environment_version=ENVIRONMENT_VERSION,
                   environment_source_sha256=sha256(Path(__file__).with_name("defense.py")),
+                  trainer_source_sha256=sha256(Path(__file__)),
+                  ppo_source_sha256=sha256(Path(__file__).with_name("ppo.py")),
+                  model_source_sha256=sha256(Path(__file__).with_name("model.py")),
                   action_names=list(action_names(args.allow_enter)), observation="four raw 16x64 video-memory frames",
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,

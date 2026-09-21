@@ -2115,6 +2115,36 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reprod
 # add --learning-rate 0.000125, keeping the original parent above.
 ```
 
+### PPO value-loss weight comparison
+
+`rl.defense_train --value-coefficient` controls the weight on **half the mean
+squared value error** in PPO's existing joint loss. The default remains **0.5**,
+so the complete value term is still 0.25 times mean squared error. A value of
+0.1 makes that term 0.05 times mean squared error. The actor objective, entropy
+coefficient, advantage/return calculation, reward, observations, action set
+and evaluation policy are unchanged. This is not a reward bonus or a second
+source of supervision. SIL's separate loss, when enabled, is unaffected.
+
+The option is saved and inherited on resume, can be explicitly overridden,
+and defaults to the old weight for older checkpoints. Current live learners
+are not silently reconfigured. Source hashes now identify the Defense trainer,
+PPO loss implementation and unchanged network in new configuration records.
+
+This tests whether reducing the critic's contribution to the shared encoder
+helps retain useful policy behavior. Rising value error around run 27's
+regression motivates the comparison but does not establish causality; error
+can also be a consequence of changed behavior. Adam's existing moments and
+joint gradient clipping mean reducing this coefficient is not equivalent to
+scaling a separate critic learning rate.
+
+All **252 regression tests** passed. Targeted checks verify exact default loss
+and every gradient against the previous formula (including reference-KL mode),
+the isolated coefficient's effect on value/shared gradients without changing
+actor-head gradients, invalid arguments, real-emulator default parity and
+resume inheritance/override/legacy fallback. Paired short training checks use
+the same original parent and settings, changing only the coefficient; their
+sources are excluded from the shared best collector.
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
