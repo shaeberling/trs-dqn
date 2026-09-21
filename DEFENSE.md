@@ -1251,6 +1251,14 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-strong-bias-reproducti
   --artifacts runs/defense-strong-bias-reproduction/artifacts --policy-bias-noise 2
 ```
 
+After **106,496 additional actions**, run 16's
+[first ten unperturbed complete games](results/defense/training/ppo-16-strong-bias-noise/first-validation.json)
+averaged **10,314**, median **10,360**, best **10,480**, all stage 1 and no mission.
+Its [verification record](results/defense/training/ppo-16-strong-bias-noise/first-verification.json)
+confirms all **2,531** replay actions. This is below the common parent's mean
+10,474 and run 15's first mean 10,440; no improvement is established. The
+trial continues, and the existing shared best has not been replaced.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
