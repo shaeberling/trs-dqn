@@ -20,9 +20,15 @@ def main():
     parser.add_argument("--baseline", type=Path, default=Path("results/random.json"))
     parser.add_argument("--target-level", type=int, default=2,
                         help="add a complete-game level-reach panel for targets above level 2")
+    parser.add_argument("--highlight-level", type=int,
+                        help="displayed level whose verified reaches get stars; defaults to target-level")
     args = parser.parse_args()
     if args.target_level < 2:
         parser.error("target-level must be at least 2")
+    if args.highlight_level is None:
+        args.highlight_level = args.target_level
+    if args.highlight_level < 2:
+        parser.error("highlight-level must be at least 2")
     heights = [3, 1.2, 1] if args.target_level > 2 else [3, 1]
     fig, axes = plt.subplots(len(heights), 1, figsize=(10, 8 if len(heights) == 3 else 6.5),
                              sharex=True, gridspec_kw={"height_ratios": heights}, layout="constrained")
@@ -64,11 +70,15 @@ def main():
         scores.scatter([(r["steps"]+offset)/1000 for r in valid], [r["mean_score"] for r in valid],
                        color=color, marker="o", s=32, edgecolor="white", linewidth=0.5,
                        label=f"{label}: complete validation suite", zorder=3)
-        clears = [r for r in valid if r.get("level_1_clears", 0)]
+        clears = [r for r in valid if
+                  (r.get("level_1_clears", 0) if args.highlight_level == 2 else
+                   r.get("level_reach_counts", {}).get(str(args.highlight_level), 0))]
         if clears:
             scores.scatter([(r["steps"]+offset)/1000 for r in clears], [r["mean_score"] for r in clears],
                            color="#e1ad01", marker="*", s=180, edgecolor="#473700", linewidth=.8,
-                           label=None if clear_label_used else "Verified level-1 clear", zorder=4)
+                           label=None if clear_label_used else
+                           ("Verified level-1 clear" if args.highlight_level == 2 else
+                            f"Verified level-{args.highlight_level} reach"), zorder=4)
             clear_label_used = True
         completion.plot([(r["steps"]+offset)/1000 for r in evaluations],
                         [r["complete_games"]/r["games_requested"] for r in evaluations],

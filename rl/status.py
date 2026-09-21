@@ -22,6 +22,11 @@ def read_status(directory):
     validation = [row for row in events if row["event"] == "validation"]
     errors = [row for row in events if row["event"] == "error"]
     last = events[-1]
+    evaluation_progress = next((row for row in reversed(events)
+                                if row["event"] == "evaluation_progress"), None)
+    if (last["event"] not in ("validation_start", "evaluation_progress")
+            or evaluation_progress is None or evaluation_progress.get("steps") != last.get("steps")):
+        evaluation_progress = None
     return {
         "run": str(directory),
         "last_event": last["event"],
@@ -32,11 +37,21 @@ def read_status(directory):
         "wall_seconds": last.get("wall_seconds"),
         "target_met": last.get("target_met", False),
         "highest_training_level": max((row.get("level", 1) for row in events
-                                        if row["event"] == "episode" and row.get("terminated")), default=1),
+                                        if row["event"] == "episode" and row.get("terminated")
+                                        and row.get("full_game", True)), default=1),
         "best_training_score": max((row.get("score", 0) for row in events
-                                     if row["event"] == "episode" and row.get("terminated")), default=0),
+                                     if row["event"] == "episode" and row.get("terminated")
+                                     and row.get("full_game", True)), default=0),
+        "curriculum": {
+            "archive_additions": sum(row["event"] == "curriculum_archive" for row in events),
+            "segments": sum(row["event"] == "curriculum_episode" for row in events),
+            "highest_segment_level": max((row.get("level", 1) for row in events
+                                           if row["event"] == "curriculum_episode"), default=None),
+        },
         "progress": {key: progress.get(key) for key in
-                     ("steps_per_second", "mean_score_100", "level_reach_counts_100", "entropy", "approx_kl")},
+                     ("steps_per_second", "mean_score_100", "level_reach_counts_100", "entropy", "approx_kl",
+                      "mlx_active_bytes", "mlx_cache_bytes", "mlx_peak_bytes")},
+        "evaluation_progress": evaluation_progress,
         "recent_validation": [{key: row.get(key) for key in
                                ("steps", "mean_score", "best_score", "highest_complete_level",
                                 "complete_games", "incomplete_games", "level_reach_counts")}

@@ -9,6 +9,26 @@ from rl.replay import NStep, Replay
 
 
 class EnvironmentTests(unittest.TestCase):
+    def test_level_nine_to_ten_redraw_cannot_invent_level_nineteen(self):
+        env = BreakdownEnv()
+        try:
+            env.reset(12)
+            env.level = 9
+            readings = iter([b"00019", b"00010", b"00010"])
+
+            def partial_redraw(tstates):
+                env.video[0, 59:64] = list(next(readings))
+
+            with patch.object(env.trs, "run_for_tstates", side_effect=partial_redraw):
+                obs, reward, done, truncated, info = env.step(3)
+            self.assertEqual(info["level"], 10)
+            self.assertEqual(env.level, 10)
+            self.assertEqual(reward, 0)
+            self.assertFalse(done or truncated)
+            np.testing.assert_array_equal(obs[-1, 0, 59:64], list(b"00010"))
+        finally:
+            env.close()
+
     def test_digit_redraw_cannot_invent_score_reward(self):
         env = BreakdownEnv()
         try:
@@ -114,6 +134,16 @@ class ReplayTests(unittest.TestCase):
 
 
 class EvaluationTests(unittest.TestCase):
+    def test_curriculum_segment_cannot_count_as_complete_game_or_target(self):
+        result = summary([dict(score=15, level=1, terminated=True),
+                          dict(score=700, level=10, terminated=True, full_game=False)])
+        self.assertEqual(result["complete_games"], 1)
+        self.assertEqual(result["incomplete_games"], 1)
+        self.assertEqual(result["mean_score"], 15)
+        self.assertEqual(result["highest_complete_level"], 1)
+        self.assertIsNone(level_rank(result, 10))
+        self.assertFalse(level_target_met(result, 10, 1))
+
     def test_incomplete_games_cannot_inflate_score_or_clear_count(self):
         result = summary([
             dict(score=10, level=1, terminated=True),
@@ -159,6 +189,23 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(result["highest_complete_level"], 1)
         self.assertEqual(result["level_reach_counts"]["5"], 0)
         self.assertFalse(level_target_met(result, 5, 1))
+
+    def test_level_ten_target_uses_displayed_level_not_score(self):
+        below = summary([dict(score=999, level=9, terminated=True)])
+        reached = summary([dict(score=600, level=10, terminated=True)])
+        self.assertFalse(level_target_met(below, 10, 1))
+        self.assertTrue(level_target_met(reached, 10, 1))
+        self.assertFalse(level_target_met(reached, 11, 1))
+        self.assertEqual(reached["level_reach_counts"]["10"], 1)
+        self.assertGreater(level_rank(reached, 10), level_rank(below, 10))
+
+    def test_unfinished_level_ten_cannot_meet_target(self):
+        result = summary([dict(score=600, level=10, terminated=False),
+                          dict(score=70, level=2, terminated=True)])
+        self.assertEqual(result["highest_complete_level"], 2)
+        self.assertEqual(result["level_reach_counts"]["10"], 0)
+        self.assertIsNone(level_rank(result, 10))
+        self.assertFalse(level_target_met(result, 10, 1))
 
 
 if __name__ == "__main__":

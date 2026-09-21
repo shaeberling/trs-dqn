@@ -11,15 +11,17 @@ import struct
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
-from .env import BreakdownEnv, ENVIRONMENT_VERSION
+from .env import BreakdownEnv, ENVIRONMENT_VERSION, validate_observation_stride
 from .evaluate import checkpoint_config, load_policy, policy_description
 
 
-def record(checkpoint, output, seed, tstates, max_steps, deterministic=False):
+def record(checkpoint, output, seed, tstates, max_steps, deterministic=False, observation_stride=None):
     config = checkpoint_config(checkpoint)
     tstates = config.get("tstates", 100_000) if tstates is None else tstates
+    observation_stride = validate_observation_stride(
+        config.get("observation_stride", 1) if observation_stride is None else observation_stride)
     policy = load_policy(checkpoint, deterministic=deterministic)
-    env = BreakdownEnv(tstates=tstates, max_steps=max_steps)
+    env = BreakdownEnv(tstates=tstates, max_steps=max_steps, observation_stride=observation_stride)
     frames, actions = [], []
     try:
         obs = env.reset(seed)
@@ -54,7 +56,7 @@ def record(checkpoint, output, seed, tstates, max_steps, deterministic=False):
                     checkpoint_sha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
                     policy=policy_description(config, deterministic),
                     deterministic_override=deterministic,
-                    frames=len(frames), tstates=tstates, **info)
+                    frames=len(frames), tstates=tstates, observation_stride=observation_stride, **info)
     template = Path(__file__).with_name("replay.html").read_text()
     html = (template.replace("__METADATA__", json.dumps(metadata).replace("</", "<\\/"))
             .replace("__FRAMES__", base64.b64encode(payload).decode())
@@ -73,7 +75,9 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path, default=Path("results/replay.html"))
     parser.add_argument("--seed", type=int, default=20_000)
     parser.add_argument("--tstates", type=int, help="defaults to checkpoint action duration")
+    parser.add_argument("--observation-stride", type=int, help="defaults to checkpoint frame spacing or 1")
     parser.add_argument("--max-steps", type=int, default=100_000)
     parser.add_argument("--deterministic", action="store_true", help="force PPO argmax as in evaluation")
     args = parser.parse_args()
-    record(args.checkpoint, args.output, args.seed, args.tstates, args.max_steps, args.deterministic)
+    record(args.checkpoint, args.output, args.seed, args.tstates, args.max_steps, args.deterministic,
+           args.observation_stride)

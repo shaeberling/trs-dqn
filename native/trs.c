@@ -6,6 +6,7 @@
 #include <sys/time.h>
 #include <errno.h>
 #include <string.h>
+#include <stdint.h>
 
 // Model I specs
 #define TIMER_HZ_1 40
@@ -230,4 +231,77 @@ int z80_run_for_tstates(int tstates, int original_speed)
         }
     }
     return ctx.tstates - threshold_tstates;
+}
+
+/* Opaque, same-build snapshots for headless RL environment resets. These are
+ * never policy inputs. Host pointers are neither exported nor trusted on load.
+ * Custom callbacks and real-time/UI execution are not supported by this API. */
+typedef struct {
+    uint32_t magic, version, context_size;
+    Z80Context cpu;
+    unsigned char memory[64 * 1024];
+    ushort stop_address;
+    unsigned char stop_text[64];
+    int stop_length, stop_normalize;
+} TRSSnapshot;
+
+size_t z80_snapshot_size(void)
+{
+    return sizeof(TRSSnapshot);
+}
+
+static int snapshot_callbacks_supported(void)
+{
+    return !z80_mem_read_func && !z80_mem_write_func &&
+           !z80_io_read_func && !z80_io_write_func;
+}
+
+int z80_save_snapshot(void *destination, size_t length)
+{
+    if (!destination || length != sizeof(TRSSnapshot) ||
+        !snapshot_callbacks_supported()) return 0;
+    TRSSnapshot saved;
+    memset(&saved, 0, sizeof(saved));
+    saved.magic = 0x54525353;
+    saved.version = 1;
+    saved.context_size = sizeof(Z80Context);
+    saved.cpu = ctx;
+    saved.cpu.memRead = NULL;
+    saved.cpu.memWrite = NULL;
+    saved.cpu.ioRead = NULL;
+    saved.cpu.ioWrite = NULL;
+    saved.cpu.memParam = saved.cpu.ioParam = 0;
+    memcpy(saved.memory, (const void *)ram, sizeof(saved.memory));
+    saved.stop_address = video_stop_address;
+    memcpy(saved.stop_text, video_stop_text, sizeof(saved.stop_text));
+    saved.stop_length = video_stop_length;
+    saved.stop_normalize = video_stop_normalize_text;
+    memcpy(destination, &saved, sizeof(saved));
+    return 1;
+}
+
+int z80_restore_snapshot(const void *source, size_t length)
+{
+    if (!source || length != sizeof(TRSSnapshot) ||
+        !snapshot_callbacks_supported()) return 0;
+    TRSSnapshot saved;
+    memcpy(&saved, source, sizeof(saved));
+    if (saved.magic != 0x54525353 || saved.version != 1 ||
+        saved.context_size != sizeof(Z80Context) ||
+        saved.stop_length < 0 || saved.stop_length > 64 ||
+        (saved.stop_normalize != 0 && saved.stop_normalize != 1) ||
+        (saved.stop_length && (saved.stop_address < 0x3c00 ||
+         (int)saved.stop_address + saved.stop_length > 0x4000))) return 0;
+    ctx = saved.cpu;
+    ctx.memRead = z80_mem_read;
+    ctx.memWrite = z80_mem_write;
+    ctx.ioRead = z80_io_read;
+    ctx.ioWrite = z80_io_write;
+    ctx.memParam = ctx.ioParam = 0;
+    memcpy((void *)ram, saved.memory, sizeof(saved.memory));
+    video_stop_address = saved.stop_address;
+    memcpy(video_stop_text, saved.stop_text, sizeof(video_stop_text));
+    video_stop_length = saved.stop_length;
+    video_stop_normalize_text = saved.stop_normalize;
+    return 1;
 }

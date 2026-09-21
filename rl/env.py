@@ -7,12 +7,14 @@ to the model. Every gameplay key combination comes from the selected action.
 
 import ctypes
 from collections import deque
+import operator
 
 import numpy as np
 
 from main import CONFIGS
 from trs import TRS, Key
 from trs.native import wrapper
+from .outcome import screen_outcome
 
 VIDEO = 0x3C00
 SHAPE = (4, 16, 64)
@@ -20,6 +22,18 @@ ACTIONS = ((), (Key.LEFT,), (Key.RIGHT,), (Key.SPACE,),
            (Key.LEFT, Key.SPACE), (Key.RIGHT, Key.SPACE))
 TEXT_TABLE = bytes(c if 32 <= c < 127 else 32 for c in range(256))
 ENVIRONMENT_VERSION = "normalized-game-over-v2"
+
+
+def validate_observation_stride(value):
+    if isinstance(value, (bool, np.bool_)):
+        raise ValueError("observation stride must be a positive integer")
+    try:
+        value = operator.index(value)
+    except TypeError as error:
+        raise ValueError("observation stride must be a positive integer") from error
+    if value < 1:
+        raise ValueError("observation stride must be a positive integer")
+    return value
 
 
 def screen_info(screen):
@@ -36,7 +50,8 @@ def screen_info(screen):
 
 
 class BreakdownEnv:
-    def __init__(self, seed=0, tstates=100_000, max_steps=30_000):
+    def __init__(self, seed=0, tstates=100_000, max_steps=30_000, observation_stride=1):
+        self.observation_stride = validate_observation_stride(observation_stride)
         self.rng = np.random.default_rng(seed)
         self.tstates = tstates
         self.max_steps = max_steps
@@ -44,8 +59,12 @@ class BreakdownEnv:
         self.video = np.ctypeslib.as_array(self.trs.ram.ram)[VIDEO:VIDEO+1024].reshape(16, 64)
         wrapper.z80_set_video_stop.argtypes = (ctypes.c_ushort, ctypes.c_char_p, ctypes.c_int)
         wrapper.z80_set_video_text_stop.argtypes = (ctypes.c_ushort, ctypes.c_char_p, ctypes.c_int)
-        self.frames = deque(maxlen=4)
+        self.frames = deque(maxlen=3*self.observation_stride+1)
         self.done = True
+
+    def observation(self):
+        """Four raw screens; retain intermediate frames for exact future stacks."""
+        return np.stack(list(self.frames)[::self.observation_stride])
 
     def reset(self, seed=None):
         if seed is not None:
@@ -59,14 +78,14 @@ class BreakdownEnv:
         wrapper.z80_set_video_text_stop(VIDEO+640+28, b"GAME OVER", 9)
         frame = self.video.copy()
         self.frames.clear()
-        self.frames.extend(frame.copy() for _ in range(4))
+        self.frames.extend(frame.copy() for _ in range(self.frames.maxlen))
         info = screen_info(frame)
         if info["score"] != 0 or info["level"] != 1 or info["game_over"]:
             raise RuntimeError(f"Unexpected boot screen: {info}")
         self.score, self.level, self.steps, self.episode_reward = 0, 1, 0, 0
         self.reserve_balls = int(np.count_nonzero(frame[0, 33:35] == 0x95))
         self.done = False
-        return np.stack(self.frames)
+        return self.observation()
 
     def step(self, action):
         if self.done:
@@ -118,7 +137,8 @@ class BreakdownEnv:
                     life_lost=life_lost,
                     hud_settle_tstates=hud_settle_tstates,
                     episode_reward=self.episode_reward, start_tstates=self.start_tstates)
-        return np.stack(self.frames), reward, terminated, truncated, info
+        info.update(screen_outcome(frame, info))
+        return self.observation(), reward, terminated, truncated, info
 
     def close(self):
         self.trs.keyboard.all_keys_up()
