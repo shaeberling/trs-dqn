@@ -205,10 +205,12 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-08-long-rollout/status.json` and
-  `runs/defense-ppo-09-curriculum-life/status.json`, each with an adjacent
-  `metrics.jsonl`. Runs 04, 05, 06 and 07 have stopped cleanly; their complete logs
-  and final resumable checkpoints are archived below.
+- Live progress: `runs/defense-ppo-16-strong-bias-noise/status.json`,
+  `runs/defense-ppo-17-fresh-seed/status.json` and
+  `runs/defense-ppo-18-weight-noise/status.json`, each with an adjacent
+  `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
+  archived resumable checkpoints are recorded below. Confirm a status file's
+  PID is still alive before treating it as evidence of a running learner.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -242,6 +244,15 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-07-curriculum/artifacts \
   --source runs/defense-ppo-08-long-rollout/artifacts \
   --source runs/defense-ppo-09-curriculum-life/artifacts \
+  --source runs/defense-ppo-10-long-credit/artifacts \
+  --source runs/defense-ppo-11-exploration/artifacts \
+  --source runs/defense-ppo-12-lookback/artifacts \
+  --source runs/defense-ppo-13-screen-cells/artifacts \
+  --source runs/defense-ppo-14-long-horizon/artifacts \
+  --source runs/defense-ppo-15-bias-noise/artifacts \
+  --source runs/defense-ppo-16-strong-bias-noise/artifacts \
+  --source runs/defense-ppo-17-fresh-seed/artifacts \
+  --source runs/defense-ppo-18-weight-noise/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -1406,6 +1417,15 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-weight-noise-reproduct
   --artifacts runs/defense-weight-noise-reproduction/artifacts \
   --steps 0 --eval-every 100000
 ```
+
+Run 18's [first complete evaluation](results/defense/training/ppo-18-weight-noise/first-validation.json),
+at **10,586,880** actions (**106,496** additional actions after calibration),
+averaged **10,193**, median **10,460**, best **10,480**. All ten games ended
+in stage 1 without a mission. Its [verification record](results/defense/training/ppo-18-weight-noise/first-verification.json)
+confirms **2,502** reproduced actions; the source checkpoint and replay hashes
+match. This is an early continuation result, not a new best. The full source
+checkpoint and replay remain in the local run directory; the calibration's
+complete bundle is committed above. The existing shared best remains unchanged.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
