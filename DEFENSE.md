@@ -207,8 +207,8 @@ fresh-test seeds to tune the model.
 
 - Live progress: `runs/defense-ppo-17-fresh-seed/status.json`,
   `runs/defense-dqn-22-fresh/status.json`,
-  `runs/defense-ppo-23-life-age/status.json` and
-  `runs/defense-dqn-24-bootstrap/status.json`, each with an adjacent
+  `runs/defense-dqn-24-bootstrap/status.json` and
+  `runs/defense-ppo-25-matched-history/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -260,6 +260,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-dqn-22-fresh/artifacts \
   --source runs/defense-ppo-23-life-age/artifacts \
   --source runs/defense-dqn-24-bootstrap/artifacts \
+  --source runs/defense-ppo-25-matched-history/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -1940,6 +1941,55 @@ and logs are excluded. The first pass replaced **393** duplicate files across
 concurrent training also changes free space. No historical checkpoint was
 deleted, and the existing disk-space safety threshold was not lowered.
 
+### Matched-history learning check and longer trial
+
+The [isolated four-worker check](results/defense/training/matched-history-smoke-01/resume-config.json)
+resumed the original run-12 optimizer at **10,447,616**, not a timing-probe
+trajectory. It trained **32,768** new actions at 50,000 T-states with stride 2,
+ending at **10,480,384**. Relative to the earlier 16,384-action, 100,000-T-state
+four-worker control, rollout and batch doubled to **512**, lookback doubled
+to **64**, gamma became **sqrt(0.997)** and GAE lambda **sqrt(0.99)**. These
+preserve nominal visual, rollout, reset and discount horizons and the number
+of minibatches per rollout. Variable HUD settling, new decision opportunities,
+RNG use and changed optimization data prevent an exact game-time equivalence.
+
+Four complete boot games and two restored segments finished during training.
+All **326** archive events had exact 64-action source/trigger offsets; **60**
+originated in restored segments. The check's
+[ten complete evaluations](results/defense/training/matched-history-smoke-01/checkpoint/evaluation.json)
+averaged **9,685**, median **10,415**, best **10,480**, all stage-1 losses.
+This is below the frozen same-timing parent's mean **10,433** and the old
+100,000-T-state short control's **9,929**, though above the earlier narrow-history
+short-action check's **5,261**. It is not a controlled single-setting ablation
+or a demonstrated improvement. Its
+[5,089-action verified replay](results/defense/training/matched-history-smoke-01/replay/replay.html),
+full optimizer and log are preserved; it exited normally and is excluded
+from the collector.
+
+`defense-ppo-25-matched-history` now tests this timing/history combination at
+**32 workers**, resuming the original **10,447,616** parent directly, **not**
+the short-check checkpoint. It uses rollout 512, batch 512, eight boot-only
+workers, score-bin sharing at probability 0.5, lookback 64 and the adjusted
+discounts above. Training and games have no action or wall-clock cap; complete
+ten-game evaluations occur every approximately 200,000 actions. Batch size
+stays 512 for memory headroom, so the larger rollout has more minibatches
+than the original normal-size trial. The
+[saved configuration](results/defense/training/ppo-25-matched-history/resume-config.json)
+records all settings and source hashes. It replaces stopped run 23's compute
+slot. The sole collector was restarted with stride-aware verification and this
+full trial added; all old sources remain, and small probes remain excluded.
+No stage-2 or mission success is claimed from launching it.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
+  --resume results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-matched-history-reproduction/artifacts \
+  --envs 32 --rollout 512 --batch-size 512 --tstates 50000 --observation-stride 2 \
+  --gamma 0.9984988733093293 --gae-lambda 0.99498743710662 \
+  --curriculum-lookback 64 --curriculum-boot-envs 8 --mlx-cache-mb 512 \
+  --eval-envs 8 --eval-every 200000 --steps 0
+```
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -2317,6 +2367,18 @@ and [2,581-action verified replay](results/defense/training/ppo-23-life-age/repl
 are preserved separately. This recovers the score plateau but is still below
 the starting calibration's mean; an equal best score does not promote the
 global replay, and does not establish new progression.
+
+Run 23 subsequently stopped cleanly at **14,174,976**, after **2,293,760**
+new actions, **693** complete boot games, **449** completed restored segments
+and **22** complete validation batches. None reached stage 2 or a mission.
+Its strongest mean was
+[10,464, median/best 10,480 at 13,486,848](results/defense/training/ppo-23-life-age/step-000013486848/evaluation.json);
+the final validation mean was **9,984**, median **10,360**, best **10,460**.
+The peak optimizer checkpoint, [full log](results/defense/training/ppo-23-life-age/metrics.jsonl)
+and [final optimizer checkpoint](results/defense/training/ppo-23-life-age/final-checkpoint/state.json)
+are preserved alongside its earlier verified best replay. Its depth plateau,
+not a wall-clock budget, prompted reassigning the compute to a timing/history
+experiment. The shared global replay remains unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-age-calibration-reproduction \
