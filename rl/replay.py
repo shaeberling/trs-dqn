@@ -8,11 +8,17 @@ from .env import SHAPE
 
 
 class Replay:
-    def __init__(self, capacity=200_000, alpha=0.6):
+    def __init__(self, capacity=200_000, alpha=0.6, *, compact=False):
         self.capacity, self.alpha = capacity, alpha
         self.pos, self.size, self.maximum = 0, 0, 1.0
-        self.obs = np.empty((capacity, *SHAPE), np.uint8)
-        self.next_obs = np.empty_like(self.obs)
+        self.frame_storage = None
+        if compact:
+            from .frame_storage import FrameStorage
+            self.frame_storage = FrameStorage(capacity)
+            self.obs, self.next_obs = self.frame_storage.obs, self.frame_storage.next_obs
+        else:
+            self.obs = np.empty((capacity, *SHAPE), np.uint8)
+            self.next_obs = np.empty_like(self.obs)
         self.actions = np.empty(capacity, np.int32)
         self.returns = np.empty(capacity, np.float32)
         self.discounts = np.empty(capacity, np.float32)

@@ -27,6 +27,9 @@ existing models). Checkpoint evaluation and verified replays retain that setting
 Ordinary Defense DQN also has optional resets to opaque states reached during
 its own training; evaluation always starts from boot. See the reset controls
 and experimental limitations in [DEFENSE.md](DEFENSE.md).
+`--compact-replay` optionally shares byte-identical visible frames in DQN's
+training buffer, preserving exact observations and sampling while reducing
+screen-storage duplication. It works with ordinary and bootstrap DQN.
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh
