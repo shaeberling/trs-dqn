@@ -2145,6 +2145,34 @@ resume inheritance/override/legacy fallback. Paired short training checks use
 the same original parent and settings, changing only the coefficient; their
 sources are excluded from the shared best collector.
 
+The completed matched pair used four workers, 512-step rollouts, batch 512,
+50,000-T-state actions, stride 2, learning rate 0.000125, the adjusted gamma/
+lambda and 64-action lookback of the lower-rate timing check above. Both
+started directly from original parent **10,447,616** and collected **32,768**
+new actions, ending at **10,480,384**. Configuration differences are only the
+coefficient and output paths; no evaluation trajectory is training data.
+
+| Value coefficient | Mean | Median | Best | Verified replay actions |
+| --- | ---: | ---: | ---: | ---: |
+| [0.5 control](results/defense/training/value-control-01/checkpoint/evaluation.json) | 10,152 | 10,450 | 10,480 | [4,987](results/defense/training/value-control-01/replay/replay.html) |
+| [0.1 reduced](results/defense/training/value-small-01/checkpoint/evaluation.json) | 8,679 | 7,940 | 10,460 | [5,084](results/defense/training/value-small-01/replay/replay.html) |
+
+All twenty validation games lost in stage 1. The reduced weight scored lower
+on nine of the ten paired seeds, higher on one, with a mean difference of
+**−1,473**. It is not being promoted to a longer run. This negative short
+comparison does not prove why PPO regressed, or rule out every other critic
+configuration. The control additionally reproduced the earlier lower-rate
+check's model bytes, all **26 optimizer arrays**, counters/RNG and all ten
+game records **exactly**; see its [parity record](results/defense/training/value-control-01/parity.json).
+
+Both checks exited normally; full models, optimizer states, logs, settings
+and verified replays are preserved. Each completed four new boot games during
+training; the control completed no restored segments and the reduced variant
+completed two. Those restored segments are not counted as complete games.
+An opposite-direction **1.0** coefficient check uses the same parent and
+settings, recorded [here](results/defense/training/value-large-01/resume-config.json).
+It is a bounded comparison, not a production replacement or a claimed gain.
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -2395,6 +2423,13 @@ with a [1,631-action verified replay](results/defense/training/dqn-28-large-repl
 The full optimizer/target checkpoint is preserved. This is above run 22's
 same-counter mean/best 280, but all ten games still lost in stage 1. One early
 batch on reused seeds does not establish improved depth or durable stability.
+
+At **400,000**, run 28 reached
+[mean 328, median 320, best 340](results/defense/training/dqn-28-large-replay/step-000000400000/evaluation.json).
+The intervening 300,000-action mean was 298, best 300, so the improvement was
+not monotonic. The full checkpoint and [1,610-action verified replay](results/defense/training/dqn-28-large-replay/replay-340/replay.html)
+are preserved. This is close to run 22's same-counter mean 322 and equal best
+340; all games remained stage-1 losses, not evidence of a clear advantage.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-large-replay-reproduction \

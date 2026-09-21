@@ -1,0 +1,24 @@
+{
+  "purpose": "Default value coefficient preserves the previous lower-rate short training check exactly",
+  "reference": "results/defense/training/matched-history-low-lr-smoke-01/checkpoint",
+  "candidate": "results/defense/training/value-control-01/checkpoint",
+  "value_coefficient": 0.5,
+  "model_file_bytes_equal": true,
+  "model_sha256": "50655bac91df5a1056adaffd90d208146449911b3f12860f0d57a3fdc9ed1101",
+  "optimizer_arrays_compared": 26,
+  "optimizer_arrays_exactly_equal": true,
+  "exactly_equal_state_fields": ["steps", "episodes", "boot_episodes", "restored_segments", "rng"],
+  "complete_evaluation_records_compared": 10,
+  "evaluation_json_exactly_equal": true,
+  "additional_training_actions": 32768,
+  "mean_score": 10152.0,
+  "median_score": 10450.0,
+  "best_score": 10480,
+  "highest_stage": 1,
+  "mission_games": 0,
+  "verified_replay_actions": 4987,
+  "limitations": [
+    "Own-experience integration parity check, not new depth or a fresh success-rate estimate.",
+    "The default check and coefficient variants are excluded from the shared best collector."
+  ]
+}
