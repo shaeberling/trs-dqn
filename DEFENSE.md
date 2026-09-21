@@ -1489,6 +1489,21 @@ the full calibration bundle is committed above. This early result is below
 its starting mean, not an improvement; training continues without replacing
 the global best on a tied score.
 
+### Read-only policy/value-gradient diagnostic
+
+A [frozen-model diagnostic](results/defense/diagnostics/gradient-probe-8342272.json)
+used the global-best model's own 2,580-action replay to compare its policy plus
+entropy gradient with its weighted value-loss gradient. It reconstructed only
+screen stacks, visible-score rewards and visible life boundaries; no optimizer
+update occurred, and every model parameter was checked unchanged. In ten full
+256-action trajectory blocks, the shared-encoder value/policy norm ratio was
+**0.46–5.34**, median **1.45**. This does not show overwhelming value-gradient
+dominance throughout that selected trajectory, and is not a diagnosis of the
+plateau. It is not representative live training data: per-block normalization,
+one selected game and the older checkpoint's GAE lambda 0.95 differ from the
+continuing learners. The final 20-action partial block is recorded separately.
+Reward scaling, optimizer and architecture remain unchanged on this evidence.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
