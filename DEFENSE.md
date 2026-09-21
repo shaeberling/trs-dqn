@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **2,950 points**, with **2,008** neural
-actions exactly reverified; its ten-game mean is **1,055**, median **650**, all stage 1.
+The current standard-policy best is **10,200 points**, with **2,495** neural
+actions exactly reverified; its ten-game mean is **7,019**, median **7,090**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -720,6 +720,16 @@ and verified replays remain available, and both active runs continue unchanged.
 The visible reward trace contains thirty 20-point increments and awards of
 100, 750 and 1,500 points. The large score gain therefore does not by itself
 demonstrate a longer survival time or a later stage.
+
+The next checkpoint, counter **7,039,744** (**401,408 additional actions**),
+reached **10,200 points**. Ten complete games averaged **7,019**, median **7,090**,
+best **10,200**, all stage 1 with no completed mission. The collector verified
+all **2,495** actions, screens and rewards from the reloaded frozen policy;
+trace checks again confirmed zero initial score, four ships, and no stage-2
+intro or mission message. Its
+[resumable checkpoint](results/defense/training/ppo-09-curriculum-life/step-000007039744/state.json)
+and immutable replay bundle are preserved separately from the 2,950-point
+milestone. This remains a score improvement, not a verified stage clear.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
