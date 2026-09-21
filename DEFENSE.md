@@ -1177,6 +1177,43 @@ actions of its [replay](results/defense/training/bias-noise-smoke-01/replay/repl
 were reproduced. This validates integration, not improved performance; the
 smoke artifact source is excluded from the production collector.
 
+### Persistent exploration: run 15
+
+`defense-ppo-15-bias-noise` resumes the same run-12 checkpoint at counter
+**10,447,616** used to start run 14, but retains its original 256-action
+rollouts, discount 0.997 and GAE lambda 0.99. Its sole changed learning
+parameter relative to that parent is **policy-bias noise 0 → 1**. The
+[configuration](results/defense/training/ppo-15-bias-noise/resume-config.json)
+records this and the tested implementation hashes. The previously absent
+screen-cell setting retains its score-bin default; reward, observations,
+controls, action timing and optimizer state are unchanged.
+
+The smoke checkpoint is not reused. This is a third independent full learner,
+with 32 workers, eight protected boot workers, 50% curriculum resets for
+eligible workers, newly collected own-state archives and no action/time caps.
+Runs 13 and 14 continue unchanged. Its complete-game evaluation uses the
+unperturbed policy, and its isolated artifact source is included in the single
+verification collector. Memory pressure and aggregate throughput are monitored
+with the extra learner active; noisy training scores are not standard-policy
+validation results and cannot directly promote the best replay.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-bias-noise-reproduction \
+  --resume results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-bias-noise-reproduction/artifacts --policy-bias-noise 1
+```
+
+After **106,496 additional actions**, run 15's
+[first ten complete unperturbed games](results/defense/training/ppo-15-bias-noise/first-validation.json)
+averaged **10,440**, median **10,460**, best **10,480**, all stage 1 and no mission.
+Its replay reproduced all **2,501** neural actions; the
+[verification record](results/defense/training/ppo-15-bias-noise/first-verification.json)
+is preserved. This is below its starting mean of 10,474, not a gain. Initial
+three-learner monitoring found roughly 1,670 aggregate training actions/second,
+stable swap usage on the follow-up check and 37% reported free memory; these
+are short observations, not a hardware benchmark. All three trials continue,
+with the original verified best unchanged.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
