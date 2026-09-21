@@ -1,0 +1,27 @@
+{
+  "published_at_utc": "2026-09-20T20:54:58.290821+00:00",
+  "url": "https://breakdown-learned-replay.saschah.chatgpt.site/presentation.html",
+  "project_id": "appgprj_6aa6056fc7408191a0f910b978d92591",
+  "version_id": "appgprj_6aa6056fc7408191a0f910b978d92591~appgver_f3b8a101eb508191b32998e87961c19e",
+  "version_number": 3,
+  "deployment_id": "appgdep_6ab0481cffd481919a6b4052e1384a18",
+  "status": "succeeded",
+  "access_mode": "public",
+  "site_source_commit": "d1668bc9fd889a32bd5e19da5ddd651c259c8d0c",
+  "local_file": "results/training-presentation.html",
+  "sha256": "8165f5e8b2c32cec32a1f735710a00a7d2fe21968c0b27a08555128048107e4a",
+  "slides": 10,
+  "verification": {
+    "desktop_all_slides": true,
+    "mobile_all_slides": true,
+    "keyboard_navigation": true,
+    "overview": true,
+    "speaker_notes": true,
+    "print_pages": 10,
+    "public_browser_http_status": 200,
+    "public_embedded_images_loaded": 6,
+    "public_javascript_errors": 0,
+    "replay_file_unchanged": true
+  },
+  "scope": "Only the separate Sites source checkout was committed and pushed. Existing replay and public audience preserved; training repository not committed or pushed."
+}
