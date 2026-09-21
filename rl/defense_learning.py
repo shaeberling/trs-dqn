@@ -50,9 +50,9 @@ def summarize(games):
                 games=games)
 
 
-def load_policy(checkpoint):
+def load_policy(checkpoint, *, temperature=1.0):
     from .model import QNetwork
-    from .evaluate import categorical_policy
+    from .temperature_probe import temperature_policy
     import mlx.core as mx
     checkpoint = Path(checkpoint)
     config = json.loads((checkpoint.parent/"state.json").read_text())["config"]
@@ -65,7 +65,7 @@ def load_policy(checkpoint):
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
     predict = mx.compile(model.policy_value, inputs=model.state)
-    return categorical_policy(lambda obs: np.array(predict(mx.array(obs))[0])), config
+    return temperature_policy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
 
 
 def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
@@ -135,9 +135,10 @@ def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False, 
     return np.asarray(frames), np.asarray(actions, np.uint8), np.asarray(rewards, np.float32), dict(seed=seed, **info), events
 
 
-def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_stop=lambda: False):
+def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_stop=lambda: False,
+                        temperature=1.0):
     """Reload frozen weights and re-run every neural action and screen from boot."""
-    policy, config = load_policy(checkpoint)
+    policy, config = load_policy(checkpoint, temperature=temperature)
     actual = record_game(policy, result["seed"], tstates=config["tstates"],
                          max_steps=config["eval_max_steps"], should_stop=should_stop,
                          allow_enter=config.get("allow_enter", False))
@@ -147,7 +148,7 @@ def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_
         raise RuntimeError("Policy re-execution outcome mismatch")
     if game_rank(result) is None:
         raise ValueError("An incomplete replay cannot replace the best complete game")
-    return dict(verified=True, verified_actions=len(actions),
+    return dict(verified=True, verified_actions=len(actions), temperature=temperature,
                 checkpoint_sha256=sha256(checkpoint), game_sha256=GAME_SHA256,
                 environment_version=ENVIRONMENT_VERSION,
                 method="reload weights; reproduce every policy action, reward and screen from boot")

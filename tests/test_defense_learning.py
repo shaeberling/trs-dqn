@@ -16,6 +16,20 @@ from rl.sil import SILReplay, TrainingSuffixes
 
 
 class DefenseLearningTests(unittest.TestCase):
+    def test_probe_recording_rejects_changed_weights_and_existing_output(self):
+        from rl.defense_evaluate import record_probe
+        with tempfile.TemporaryDirectory() as tmp:
+            checkpoint = Path(tmp)/"model.safetensors"
+            checkpoint.write_bytes(b"changed")
+            report = dict(temporal_override=False, incomplete_games=0, checkpoint_sha256="wrong")
+            with self.assertRaisesRegex(ValueError, "weights differ"):
+                record_probe(checkpoint, report, Path(tmp)/"probe")
+            self.assertFalse((Path(tmp)/"probe").exists())
+            with self.assertRaisesRegex(ValueError, "already exists"):
+                record_probe(checkpoint, report, Path(tmp))
+            with self.assertRaisesRegex(ValueError, "complete games"):
+                record_probe(checkpoint, dict(report, incomplete_games=1), Path(tmp)/"probe")
+
     def test_self_imitation_uses_defense_actions_and_visible_score(self):
         replay = SILReplay(8)
         suffix = TrainingSuffixes(replay, 1, gamma=.9, action_count=21, score_reader=screen_info)
@@ -55,6 +69,14 @@ class DefenseLearningTests(unittest.TestCase):
             original = agent.policy(31)
             loaded.reset_seed(31)
             np.testing.assert_array_equal(original(obs), loaded(obs))
+            scaled, _ = load_policy(path/"model.safetensors", temperature=.5)
+            expected = categorical_policy(lambda x: np.array(agent.predict(mx.array(x))[0])/.5)
+            scaled.reset_seed(42)
+            expected.reset_seed(42)
+            np.testing.assert_array_equal(scaled(obs), expected(obs))
+            for invalid in (0, -1, float("nan"), float("inf"), True):
+                with self.assertRaises(ValueError):
+                    load_policy(path/"model.safetensors", temperature=invalid)
             config["game"] = "breakdown"
             (path/"state.json").write_text(json.dumps(dict(config=config)))
             with self.assertRaises(ValueError):

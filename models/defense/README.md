@@ -28,7 +28,16 @@ baseline, not a completed training goal.
 The next preserved improvement, at 1,133,312 cumulative actions, reached **380**
 points with all **1,658** neural actions verified. Its ten-game mean was **358**,
 median **360**, still entirely in stage 1. The 20-action run was paused cleanly
-at 1,542,912 actions; a fresh learned-Enter experiment is now being evaluated.
+at 1,542,912 actions; the learned-Enter experiment is now continuing with
+own-experience self-imitation.
+
+Highest separately preserved sampling diagnostic: **400 points**, all **1,743**
+actions verified. [Replay](../../results/defense/sampling-probes/temperature-050/replay.html)
+and [weights](../../results/defense/sampling-probes/temperature-050/model.safetensors)
+use the same frozen model with explicit **temperature 0.5**. Ten reused validation
+games: mean **384**, median **380**, all stage 1. This is not a new trained model
+or mission completion, and does not replace the standard-policy links above.
+Use `rl.defense_evaluate --temperature .5` to reproduce this sampling variant.
 
 See [DEFENSE.md](../../DEFENSE.md) for training, independent evaluation, controls,
 reward handling, the original three-stage loop, and remaining completion checks.

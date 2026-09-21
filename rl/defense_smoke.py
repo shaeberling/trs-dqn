@@ -55,6 +55,13 @@ def write_replay(path, frames, actions, metadata):
             "<strong>Trained screen-only neural policy.</strong> No scripted gameplay controller.")
         template = template.replace("The recorded action sequence has been rerun and every resulting screen checked.",
             "The frozen model was reloaded and every neural action, screen and reward verified from boot.")
+    if metadata.get("evaluation_only"):
+        temperature = float(metadata["temperature"])
+        if not np.isfinite(temperature) or temperature <= 0:
+            raise ValueError("invalid replay sampling temperature")
+        template = template.replace("No scripted gameplay controller.",
+            f"No scripted gameplay controller. Evaluation-only sampling probe, temperature {temperature:g}; "
+            "original weights unchanged. Not a new training milestone.")
     path.write_text(template.replace("__META__", json.dumps(metadata).replace("</", "<\\/"))
                     .replace("__FRAMES__", base64.b64encode(payload).decode())
                     .replace("__ATLAS__", base64.b64encode(stream.getvalue()).decode())
