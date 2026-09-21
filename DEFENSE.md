@@ -423,6 +423,19 @@ or a best-replay promotion. It provides no evidence that changing the frozen
 policy's control rate alone helps; it does not rule out learning separately at
 the shorter interval. Both active learners retain their original timing.
 
+A read-only action-alias check used the frozen
+[10,480-point policy and its own trace](results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004/manifest.json),
+querying 109 four-frame observations at action indices **280–388** before its
+first ship loss. Mean categorical entropy was **0.21745 nats**; merging the
+nine forward-fire aliases (action IDs 9–17, equivalent in stage 1) into one
+probability gave **0.19499 nats**. Only **0.02246 nats**, about 10%, came from
+variation within those aliases. Mean movement probability was **0.60089**;
+forward-fire-only probability was **0.18815**. This narrow pre-collision window
+does not support redundant fire choices as the dominant source of apparent
+exploration. It is not an all-state or later-stage result. The diagnostic
+changed no weights, controls or training inputs, and the 20-action set remains
+unchanged.
+
 ### Lower-entropy continuation
 
 `defense-ppo-05-low-entropy` resumes the original 20-action checkpoint at
