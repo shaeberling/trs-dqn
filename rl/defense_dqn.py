@@ -33,6 +33,8 @@ def main():
     parser.add_argument("--envs", type=int, default=8)
     parser.add_argument("--batch-size", type=int, default=64)
     parser.add_argument("--capacity", type=int, default=50_000)
+    parser.add_argument("--compact-replay", action=argparse.BooleanOptionalAction, default=False,
+                        help="losslessly share identical visible frames in training replay")
     parser.add_argument("--learning-rate", type=float, default=1e-4)
     parser.add_argument("--gamma", type=float, default=.997)
     parser.add_argument("--n-step", type=int, default=5)
@@ -190,13 +192,17 @@ def main():
         config.update(curriculum_archive_saved=False,
                       curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
                       snapshot_source_sha256=sha256(Path(__file__).with_name("defense_snapshot.py")))
+    if args.compact_replay:
+        config.update(replay_storage="exact-visible-frame-interning-v1",
+                      frame_storage_source_sha256=sha256(Path(__file__).with_name("frame_storage.py")))
     args.run.mkdir(parents=True, exist_ok=True)
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
     if args.bootstrap_heads:
         from .defense_bootstrap_replay import BootstrapReplay
-        replay = BootstrapReplay(args.capacity, args.bootstrap_heads, args.bootstrap_probability, bootstrap_rng)
+        replay = BootstrapReplay(args.capacity, args.bootstrap_heads, args.bootstrap_probability,
+                                 bootstrap_rng, compact=args.compact_replay)
     else:
-        replay = Replay(args.capacity)
+        replay = Replay(args.capacity, compact=args.compact_replay)
     buffers = [NStep(replay, args.n_step, args.gamma) for _ in range(args.envs)]
     recent = deque(maxlen=100)
     recent_restored = deque(maxlen=100)
@@ -299,6 +305,8 @@ def main():
                          replay_size=replay.size, epsilon=epsilon,
                          steps_per_second=(steps-start_steps)/(time.monotonic()-started),
                          recent={k: v for k, v in summarize(list(recent)).items() if k != "games"},
+                         **({"replay_frame_storage": replay.frame_storage.stats()}
+                            if args.compact_replay else {}),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
                          **last_metrics))
                 last_log = time.monotonic()

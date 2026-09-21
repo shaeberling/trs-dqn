@@ -1,0 +1,30 @@
+{
+  "reference_checkpoint": "results/defense/training/dqn-smoke-01/checkpoint",
+  "candidate_checkpoint": "results/defense/training/compact-replay-smoke-01/checkpoint",
+  "training_actions": 16384,
+  "source_of_experience": "fresh own emulator interaction; no replay-file training data",
+  "all_online_arrays_exact": true,
+  "online_array_count": 12,
+  "all_target_arrays_exact": true,
+  "target_array_count": 12,
+  "all_optimizer_arrays_exact": true,
+  "optimizer_array_count": 26,
+  "common_counters_and_rng_exact": true,
+  "all_ten_complete_game_records_exact": true,
+  "shared_model_sha256": "5cc856154cfa5beed326131c38ca8e4017508ea13c14db9e4f9e2d643fd26c38",
+  "verified_replay_actions": 1655,
+  "storage_sample": {
+    "training_actions": 15416,
+    "replay_size": 8192,
+    "unique_frames": 3739,
+    "frame_slots": 4123,
+    "screen_payload_bytes": 3828736,
+    "screen_index_bytes": 262144,
+    "dense_equivalent_screen_bytes": 67108864
+  },
+  "limitations": [
+    "Storage sample is a logged in-training point, not the final checkpoint.",
+    "Storage byte figures exclude Python metadata, other replay arrays, emulators and MLX allocations.",
+    "Exact reproduction validates storage equivalence, not a learning improvement or a throughput comparison."
+  ]
+}

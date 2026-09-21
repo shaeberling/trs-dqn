@@ -6,11 +6,11 @@ from .replay import Replay
 
 
 class BootstrapReplay(Replay):
-    def __init__(self, capacity, heads, probability, rng):
+    def __init__(self, capacity, heads, probability, rng, *, compact=False):
         if (isinstance(heads, bool) or not isinstance(heads, int) or heads < 2
                 or not np.isfinite(probability) or not 0 < probability <= 1):
             raise ValueError("invalid bootstrap membership configuration")
-        super().__init__(capacity)
+        super().__init__(capacity, compact=compact)
         self.masks = np.empty((capacity, heads), np.float32)
         self._probability, self._rng = probability, rng
 

@@ -2243,6 +2243,12 @@ and full optimizer/target checkpoint are preserved. This is a new single-game
 best for the independent DQN lineage, but its mean is below the 1,700,000-action
 checkpoint's 1,372. All ten games remained stage-1 losses.
 
+Its later **2,200,000** checkpoint improved the ten-game mean to
+[1,467, median 1,270, best 2,020](results/defense/training/dqn-22-fresh/step-000002200000/evaluation.json).
+That full online/target/optimizer checkpoint is also preserved. The lower
+single-game best did not replace its existing 2,060-point replay, and no game
+reached stage 2 or a mission.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
@@ -2251,6 +2257,56 @@ venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-continuation \
   --artifacts runs/defense-dqn-continuation/artifacts \
   --resume runs/defense-dqn-reproduction/latest
 ```
+
+### Lossless compact training replay
+
+`rl.defense_dqn --compact-replay` optionally replaces dense duplicated screen
+stacks with exact frame identities and reference-counted byte storage. Each
+observation and next-observation still records its **four exact frames**;
+there is no inference from temporal adjacency, worker order, n-step distance,
+life boundaries or restored-state history. Byte-key equality resolves hash
+collisions without approximation. When ring slots are overwritten, unreferenced
+frames are released and their IDs reused; sampled arrays are independent,
+writable copies. No native state is inspected and no RNG draw is added.
+
+Actions, rewards, discounts, priorities, sampling weights, bootstrap memberships,
+model inputs and update rules are unchanged. The option supports both ordinary
+and bootstrap DQN, defaults off, and is inherited on optimizer resume. Replay
+still refills from new experience after resume; it is not a loaded demonstration
+archive. Configuration records the storage implementation hash. Logged storage
+figures distinguish frame payload and index bytes from the equivalent dense
+arrays; these figures **exclude Python metadata and the other replay/model
+allocations**, and are not total process-memory measurements.
+
+All **246 regression tests** passed. New checks exercise ring wraparound,
+repeated boot frames, exact reference counts, sampling without aliases,
+arbitrary history spacing, real own-state resets, n-step terminal/truncation
+handling, identical priority trees, bootstrap masks and RNGs. Real-emulator
+dense/compact training produced **exactly equal online, target and optimizer
+arrays**, episode/update counters and RNG states for both ordinary and bootstrap
+DQN, including ring reuse; compact resumes were also exercised.
+
+This is intended to make larger own-experience buffers practical on the Mac
+Mini, not to change the policy or claim a learning gain from storage alone.
+The existing live learners have not been restarted or silently switched.
+
+An [isolated compact-storage check](results/defense/training/compact-replay-smoke-01/config.json)
+repeated the original fresh 16,384-action DQN check's learning settings. It
+reproduced **every array** in the online model (12), target model (12) and
+optimizer (26), the common counters/RNG state, and **all ten complete game
+records exactly**. The [parity record](results/defense/training/compact-replay-smoke-01/parity.json)
+documents this comparison. Mean/median/best remained **328 / 320 / 360**, all
+stage 1; its [replay](results/defense/training/compact-replay-smoke-01/replay/replay.html)
+verified **1,655** actions. Full weights, target, optimizer, configuration and
+log are preserved. It exited normally and is excluded from the collector.
+
+At its logged **15,416**-action point, the full 8,192-transition buffer held
+**3,739** distinct frames: **3,828,736** payload bytes plus **262,144** index
+bytes, about **3.90 MiB** versus **64 MiB** for dense screen arrays. Python
+metadata and other allocations are excluded from this comparison. This
+validates a substantial reduction in duplicated screen data in this check,
+not a total-RAM or speedup claim, nor evidence that a larger buffer improves
+learning. No recorded evaluation trace was used as training experience.
 
 ### Ordinary DQN with its own reached-state resets
 
