@@ -67,9 +67,14 @@ class SILReplay:
 
 
 class TrainingSuffixes:
-    def __init__(self, replay, workers, gamma=.995, suffix_steps=2048):
+    def __init__(self, replay, workers, gamma=.995, suffix_steps=2048, *,
+                 action_count=6, score_reader=screen_info):
         if workers < 1 or suffix_steps < 1 or not 0 <= gamma <= 1:
             raise ValueError("invalid SIL trajectory settings")
+        if (not isinstance(action_count, (int, np.integer)) or isinstance(action_count, (bool, np.bool_))
+                or action_count < 1 or not callable(score_reader)):
+            raise ValueError("invalid SIL action count or visible score reader")
+        self.action_count, self.score_reader = action_count, score_reader
         self.replay, self.gamma, self.limit = replay, gamma, suffix_steps
         self.pending = [deque(maxlen=suffix_steps) for _ in range(workers)]
         self.trimmed = [0]*workers
@@ -79,7 +84,7 @@ class TrainingSuffixes:
     def append(self, worker, obs, action, reward, terminal, truncated, from_boot):
         if (not 0 <= worker < len(self.pending) or obs.shape != SHAPE
                 or obs.dtype != np.uint8 or not isinstance(action,(int,np.integer))
-                or not 0 <= action < 6 or not np.isfinite(reward)):
+                or not 0 <= action < self.action_count or not np.isfinite(reward)):
             raise ValueError("invalid own-training transition")
         queue = self.pending[worker]
         if queue and queue[-1][3] != from_boot:
@@ -92,7 +97,7 @@ class TrainingSuffixes:
             return None
         event = dict(worker=worker,retained_suffix_steps=len(queue),
                      dropped_prefix_steps=self.trimmed[worker],full_game=bool(from_boot),
-                     initial_score=screen_info(queue[0][0][-1])["score"],
+                     initial_score=self.score_reader(queue[0][0][-1])["score"],
                      score_reward_sum=sum(x[2] for x in queue),truncated=bool(truncated),
                      committed=not truncated)
         if truncated:
