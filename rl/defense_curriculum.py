@@ -1,7 +1,7 @@
 """Training-only resets to unmodified states reached by this learner itself.
 
-Archive selection uses visible stage and score earned since that stage/life
-began. No action script, hidden-state labels, demonstration files or bonuses.
+Archive selection uses visible stage and either score progress or coarse screen
+cells. No action script, hidden-state labels, demonstration files or bonuses.
 Complete-game evaluation always uses the ordinary DefenseEnv instead.
 """
 
@@ -11,18 +11,24 @@ import numpy as np
 
 from .defense import DefenseEnv, ENVIRONMENT_VERSION, GAME_SHA256, positive_integer
 from .defense_snapshot import DefenseSnapshot, capture, restore
+from .defense_cells import screen_cell
 
 
 class DefenseCurriculumEnv(DefenseEnv):
     def __init__(self, seed=0, curriculum_probability=.5, curriculum_score_interval=20,
                  curriculum_per_bin=4, curriculum_bins=16, curriculum_share=False,
-                 worker_id=None, curriculum_reset=True, curriculum_lookback=0, **config):
+                 worker_id=None, curriculum_reset=True, curriculum_lookback=0,
+                 curriculum_cells="score", curriculum_screen_interval=32, **config):
         if not np.isfinite(curriculum_probability) or not 0 <= curriculum_probability <= 1:
             raise ValueError("invalid curriculum probability")
         self.interval = positive_integer(curriculum_score_interval, "score interval", allow_zero=True)
         self.per_bin = positive_integer(curriculum_per_bin, "entries per bin")
         self.bins = positive_integer(curriculum_bins, "bins per stage")
         self.lookback = positive_integer(curriculum_lookback, "curriculum lookback", allow_zero=True)
+        if curriculum_cells not in ("score", "screen"):
+            raise ValueError("invalid curriculum cell representation")
+        self.cells = curriculum_cells
+        self.screen_interval = positive_integer(curriculum_screen_interval, "screen cell interval")
         if worker_id is not None:
             worker_id = positive_integer(worker_id, "worker ID", allow_zero=True)
         if curriculum_share and (not curriculum_probability or worker_id is None):
@@ -37,16 +43,27 @@ class DefenseCurriculumEnv(DefenseEnv):
         self.total_actions = 0
         self.progress_start_score = 0
 
-    def _key(self, stage, score, start_score):
+    def _key(self, stage, score, start_score, frames=None):
+        if self.cells == "screen":
+            return stage, screen_cell(frames)
         return stage, (score-start_score)//self.interval if self.interval else 0
 
     def _reserve_slot(self, key):
         if key not in self.archive:
             peers = sorted(k for k in self.archive if k[0] == key[0])
             if len(peers) >= self.bins:
-                if key <= peers[0]:
-                    return None
-                del self.archive[peers[0]], self.encounters[peers[0]]
+                if self.cells == "screen":
+                    # Bottom-k hash priorities retain a bounded, score-independent
+                    # sample of distinct cells. Frequent revisits cannot crowd
+                    # out rare cells merely by being encountered more often.
+                    victim = peers[-1]
+                    if key >= victim:
+                        return None
+                else:
+                    victim = peers[0]
+                    if key <= victim:
+                        return None
+                del self.archive[victim], self.encounters[victim]
             self.archive[key], self.encounters[key] = [], 0
         self.encounters[key] += 1
         bank = self.archive[key]
@@ -80,7 +97,7 @@ class DefenseCurriculumEnv(DefenseEnv):
             self.progress_start_score = 0
             self.segment_source_worker = self.segment_source_action = None
         self.segment_start_score, self.segment_start_stage = self.score, self.stage
-        self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score)
+        self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score, obs)
         return obs
 
     def receive_archive(self, entries):
@@ -99,7 +116,7 @@ class DefenseCurriculumEnv(DefenseEnv):
                     or saved.frames.shape != (4, 16, 64) or saved.frames.dtype != np.uint8):
                 raise ValueError("invalid same-run Defense peer snapshot")
         for saved in entries:
-            key = self._key(saved.stage, saved.score, saved.progress_start_score)
+            key = self._key(saved.stage, saved.score, saved.progress_start_score, saved.frames)
             slot = self._reserve_slot(key)
             if slot is not None:
                 self._install(key, saved, slot)
@@ -111,7 +128,7 @@ class DefenseCurriculumEnv(DefenseEnv):
         stage_entry = self.stage != previous_stage
         if stage_entry or info["life_lost"]:
             self.progress_start_score = self.score
-            self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score)
+            self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score, obs)
         if self.curriculum_probability and self.lookback:
             # Keep only actually visited states within this life and stage.
             # Neither the policy nor the reward receives this opaque history.
@@ -119,9 +136,15 @@ class DefenseCurriculumEnv(DefenseEnv):
                 self.history.clear()
             if not self.done and not info["life_lost"]:
                 self.history.append(capture(self))
-        key = self._key(self.stage, self.score, self.progress_start_score)
-        progress_entry = bool(self.interval and key != self.last_archive_key)
-        self.last_archive_key = key
+        key = self._key(self.stage, self.score, self.progress_start_score, obs)
+        if self.cells == "screen":
+            sample = self.total_actions % self.screen_interval == 0
+            progress_entry = sample and key != self.last_archive_key
+            if sample:
+                self.last_archive_key = key
+        else:
+            progress_entry = bool(self.interval and key != self.last_archive_key)
+            self.last_archive_key = key
         info.update(full_game=self.full_game, segment_start_score=self.segment_start_score,
                     segment_start_stage=self.segment_start_stage,
                     segment_source_worker=self.segment_source_worker,
@@ -131,13 +154,13 @@ class DefenseCurriculumEnv(DefenseEnv):
                 and (stage_entry or progress_entry)):
             saved = None
             if self.lookback and not stage_entry:
-                # A new stage is always captured immediately. Ordinary score
-                # progress can select an earlier own-play state, giving a
-                # future reset more lead-in before the rewarding event.
+                # A new stage is always captured immediately. Other archive
+                # events can select an earlier own-play state, giving a future
+                # reset more lead-in before the triggering event.
                 if len(self.history) <= self.lookback:
                     return obs, reward, terminal, truncated, info
                 saved = self.history[0]
-                key = self._key(saved.stage, saved.score, saved.progress_start_score)
+                key = self._key(saved.stage, saved.score, saved.progress_start_score, saved.frames)
             slot = self._reserve_slot(key)
             if slot is not None or self.curriculum_share:
                 if saved is None:
@@ -146,11 +169,15 @@ class DefenseCurriculumEnv(DefenseEnv):
                     self._install(key, saved, slot)
                 info["curriculum_archive_add"] = dict(
                     stage=saved.stage, score=saved.score, progress=saved.score-saved.progress_start_score,
-                    progress_bin=key[1], entry_kind="stage_entry" if stage_entry else "score_progress",
+                    progress_bin=(saved.score-saved.progress_start_score)//self.interval if self.interval else 0,
+                    entry_kind="stage_entry" if stage_entry else (
+                        "screen_cell" if self.cells == "screen" else "score_progress"),
                     source_action=saved.source_action, source_episode_steps=saved.steps,
                     source_full_game=saved.source_full_game, retained=slot is not None, shared=self.curriculum_share,
                     source_parent_worker=self.segment_source_worker,
                     source_parent_action=self.segment_source_action)
+                if self.cells == "screen":
+                    info["curriculum_archive_add"]["screen_cell"] = key[1]
                 if self.lookback:
                     info["curriculum_archive_add"].update(
                         lookback_actions=self.total_actions-saved.source_action,

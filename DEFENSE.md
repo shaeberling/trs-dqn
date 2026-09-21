@@ -917,6 +917,17 @@ frozen model; the [verification record](results/defense/training/ppo-11-explorat
 is preserved. This is below its starting model's mean 9,981 and best 10,480;
 it does not replace the shared best. The experiment continues unchanged.
 
+Run 11 was subsequently stopped gracefully at counter **10,865,408**, after
+**2,523,136 additional actions**, 795 new completed boot games, 524 completed
+restored segments and 25 ten-game validations. It tied 10,480 but never exceeded
+it or reached stage 2. Its strongest validation mean was **10,450** (median
+10,460) at counter **9,349,888**; the final validation mean was 9,353.
+The [full log](results/defense/training/ppo-11-exploration/metrics.jsonl),
+[final optimizer checkpoint](results/defense/training/ppo-11-exploration/final-checkpoint/state.json),
+[strongest-mean checkpoint](results/defense/training/ppo-11-exploration/step-000009349888/state.json)
+and [verified best replay](results/defense/training/ppo-11-exploration/best-effort/replay.html)
+are retained. Increased entropy alone did not resolve this trial's bottleneck.
+
 ### Optional earlier-state curriculum
 
 `--curriculum-lookback N` is disabled by default (`N=0`). With the option
@@ -988,6 +999,51 @@ Its local replay reproduced all **2,544** neural actions; the
 is preserved. This ties the shared best and is slightly below the starting
 mean of 10,473, so it does not establish improvement or replace the existing
 best-effort replay. The experiment continues unchanged.
+
+### Optional screen-cell curriculum
+
+`--curriculum-cells screen` changes the training archive's grouping from score
+bins to coarse screen fingerprints. This is inspired by the archive-and-return
+idea in [Go-Explore](https://www.nature.com/articles/s41586-020-03157-9), not an
+implementation of its full algorithm or demonstration-based robustification.
+Only states reached by the current learner are retained; no external gameplay,
+scripted actions, hidden-state labels or extra rewards are introduced.
+
+The archive key decodes the latest frame's graphics characters, omits the HUD
+row, averages the remaining 45×128 binary raster into 9×16 blocks, quantizes
+each block to eight levels, then hashes the result. Text is absent from this
+graphics-only key. The **policy input remains all four original screen frames**,
+including text; this encoding is used only to group training reset states.
+The default `--curriculum-cells score` retains the previous behavior.
+
+Screen changes are sampled every `--curriculum-screen-interval` actions
+(default 32). Each stage retains at most `--curriculum-bins` distinct cells,
+using the smallest deterministic hash priorities as a score-independent,
+bounded sample. Per-cell snapshots use reservoir sampling. This fixed
+representation and bounded selection are implementation choices, not claims
+to reproduce the paper's cell-selection scheme. Ordinary reset selection is
+uniform across retained stages, cells and snapshots. A lookback, if enabled,
+uses the actual earlier snapshot's screen key and score baseline.
+
+All **190 regression tests** passed, including native snapshot restoration,
+reward-free screen-cell collection, unchanged full-game screens/rewards,
+peer routing, protected boot workers, bounded order-independent cell retention
+and exact graphics encoding. No learned stage-2 or mission completion is
+established by these tests.
+
+A [bounded integration run](results/defense/training/screen-cells-smoke-01/resume-config.json)
+trained for **16,384 new actions** from run 10's strongest-mean checkpoint.
+It used four workers (one protected boot worker), 128 cells per stage, one
+snapshot per cell, 32-action sampling and lookback, and reset probability 1
+for the other workers. It logged 376 archive events covering 243 distinct
+screen keys, including 105 events from restored play; four boot games and one
+restored segment completed with exact visible-score reward accounting.
+The [subsequent ten complete games](results/defense/training/screen-cells-smoke-01/evaluation.json)
+averaged **8,009**, median **7,755**, best **10,280**, all stage 1. All **2,478**
+actions of its [replay](results/defense/training/screen-cells-smoke-01/replay/replay.html)
+were reproduced after reloading the model. This checks integration, not
+improvement: performance is below the parent. Its model, optimizer and log are
+preserved, and this smoke/probe source is excluded from the best collector.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
