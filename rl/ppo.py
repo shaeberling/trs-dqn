@@ -79,8 +79,11 @@ class PPO:
         mx.eval(self.state)
 
     def _loss(self, model, obs, actions, old_logp, advantages, returns, reference_log_probs=None,
-              logit_bias=None):
-        logits, values = model.policy_value(obs)
+              logit_bias=None, head_weight_noise=None):
+        if head_weight_noise is None:
+            logits, values = model.policy_value(obs)
+        else:
+            logits, values = model.policy_value(obs, head_weight_noise=head_weight_noise)
         if logit_bias is not None:
             logits = logits + mx.stop_gradient(logit_bias)
         log_probs = logits-mx.logsumexp(logits, axis=-1, keepdims=True)
@@ -100,15 +103,22 @@ class PPO:
         return actor+.5*critic-self.entropy*entropy, (actor, critic, entropy, kl)
 
     def _update(self, obs, actions, old_logp, advantages, returns, reference_log_probs=None,
-                logit_bias=None):
+                logit_bias=None, head_weight_noise=None):
         (loss, metrics), grads = nn.value_and_grad(self.model, self._loss)(
-            self.model, obs, actions, old_logp, advantages, returns, reference_log_probs, logit_bias)
+            self.model, obs, actions, old_logp, advantages, returns, reference_log_probs,
+            logit_bias, head_weight_noise)
         grads, norm = optim.clip_grad_norm(grads, .5)
         self.optimizer.update(self.model, grads)
         return loss, metrics
 
-    def act(self, obs, rng, logit_bias=None):
-        logits, values = self.predict(mx.array(obs))
+    def act(self, obs, rng, logit_bias=None, head_weight_noise=None):
+        if head_weight_noise is not None:
+            expected = (len(obs), *self.model.advantage.weight.shape)
+            if head_weight_noise.shape != expected or not np.isfinite(head_weight_noise).all():
+                raise ValueError("policy weight noise must match actor head and be finite")
+            logits, values = self.predict(mx.array(obs), head_weight_noise=mx.array(head_weight_noise))
+        else:
+            logits, values = self.predict(mx.array(obs))
         logits, values = np.array(logits), np.array(values)
         if logit_bias is not None:
             if logit_bias.shape != logits.shape or not np.isfinite(logit_bias).all():

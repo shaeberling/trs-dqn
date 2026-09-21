@@ -1310,6 +1310,61 @@ and full replay/model bundle are preserved as this independent run's baseline.
 This is early learning from random initialization, far below the established
 best, not a replacement for that model or evidence of stage progress.
 
+### Optional state-dependent output-weight exploration
+
+`--policy-weight-noise STD` is a training-only alternative to bias noise; both
+default to zero and cannot be combined. Each worker draws a Gaussian matrix
+with the same shape as the learned actor's output weights, and retains it
+until a visible life/episode boundary. For screen features `h`, the policy
+logits are `(W + delta_W) h + b`. Unlike a constant bias offset, the effect
+therefore depends on the screen. The value head is unperturbed. No action is
+selected by a script, and no game data other than the screen is introduced.
+
+This extends the restricted
+[parameter-noise adaptation](https://arxiv.org/abs/1706.01905) to the actor's
+output weight matrix, not the whole network. Its scale is fixed, not adaptive;
+it is not a full reproduction of that paper or NoisyNet. Evaluation, model
+exports and the shared-best collector still use the unperturbed learned
+network. The stored weight format and default prediction path are unchanged.
+
+PPO stores each actual life draw once in a rollout bank, with time-major
+worker indices for sampling and shuffling; it does not duplicate the full
+matrix for every observation. The original draw is reused when computing
+the new policy likelihood. Gradients pass through the screen encoder exactly
+as if the actor weights had been perturbed directly; noise itself is constant
+for differentiation. The independent noise RNG is checkpointed, with fresh
+life draws on resume. SIL combinations are rejected as untested.
+
+All **201 regression tests** passed, including exact perturbed-weight
+likelihood/gradient comparisons for every model parameter, finite updates,
+rollout-bank ordering and snapshot isolation, zero-noise equivalence, and
+invalid-mode checks. The stricter gradient-tree comparison was also rerun
+separately. Existing production learners started before this change and
+continue using their original settings.
+
+Two isolated four-worker checks resumed run 12's 10,447,616-action checkpoint
+and each trained for 16,384 additional actions. They used rollout 256, batch
+256, one protected boot-only worker and otherwise inherited the parent
+settings. Their unperturbed evaluations each contain ten complete games:
+
+| Output-weight noise SD | Mean | Median | Best | Verified replay actions |
+| --- | ---: | ---: | ---: | ---: |
+| [0 (matched control)](results/defense/training/weight-noise-control-01/checkpoint/evaluation.json) | 9,929 | 10,460 | 10,480 | 2,554 |
+| [0.02](results/defense/training/weight-noise-smoke-01/checkpoint/evaluation.json) | 324 | 320 | 380 | 1,703 |
+| [0.005](results/defense/training/weight-noise-smoke-02/checkpoint/evaluation.json) | 7,668 | 7,920 | 10,460 | 2,523 |
+
+Both remained in stage 1 with no successful mission. These are regressions
+from the parent's 10,474 validation mean, not successful exploration results.
+The smaller noise did less harm in this small test, but it did not improve
+the model. Full logs, configurations, optimizer checkpoints and verified
+replays are preserved, including the failed larger-noise trial. Neither is
+a collector source or a replacement for the global best. The matched no-noise
+control also regressed, but retained much more performance than either noisy
+trial. It used the same parent, seed, action count and training settings with
+both noise options disabled. Its full checkpoint and verified replay are also
+preserved. These single-seed checks do not establish general causality or
+predict the outcome with the normal 32-worker training setup.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
