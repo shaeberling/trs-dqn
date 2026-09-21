@@ -40,6 +40,13 @@ class DefenseTests(unittest.TestCase):
         wipe[0, 63] = 128
         self.assertIsNone(screen_info(wipe)["score"])
 
+    def test_stage_one_course_audit_is_static_not_policy_progress(self):
+        course = audit()["stage_one_course"]
+        self.assertEqual((course["start"], course["end_marker"], course["rows"]),
+                         ("0x76A9", "0x7BD8", 126))
+        self.assertEqual(course["command_counts"], {"0": 126, "1": 1, "2": 247, "3": 27, "4": 104})
+        self.assertFalse(course["policy_progress_measured"])
+
     def test_screen_only_stage_and_mission_messages(self):
         for stage, message in enumerate((b"You are now entering the", b"Find your way through the",
                                          b"Now at last you enter the"), 1):

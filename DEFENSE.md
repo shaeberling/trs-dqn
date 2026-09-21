@@ -123,6 +123,16 @@ game continues until all ships are gone. Higher score alone does not prove
 mission completion. A diagnostic action cap is reported as **truncated**, never
 as a win or complete loss.
 
+The [stage-one course audit](results/defense/stage-one-course-audit.json) verifies
+that the original first stage advances automatically when its scrolling
+obstacle stream is exhausted, **not when a score threshold is reached**. Static
+decoding finds 126 stream rows between `0x76A9` and the end marker at `0x7BD8`;
+the original row-update countdown is six. These are engineering facts about
+the immutable game asset, not measurements of any policy's progress. No stream
+pointer, row counter, layout-derived route, or other hidden state is supplied
+to the policy, reward, or curriculum. A learned full-game stage transition
+must still be observed on screen before reporting a clear.
+
 ## Verified smoke tests and replays
 
 | Controller (not learned) | Complete games | Mean | Median | Best | Highest stage |
