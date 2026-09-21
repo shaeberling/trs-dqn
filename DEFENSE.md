@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **10,280 points**, with **2,519** neural
-actions exactly reverified; its ten-game mean is **8,834**, median **9,115**, all stage 1.
+The current standard-policy best is **10,480 points**, with **2,580** neural
+actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -768,6 +768,14 @@ individual score, so it does not replace the best-effort replay. Its separate
 [model and optimizer checkpoint](results/defense/training/ppo-09-curriculum-life/step-000007342848/state.json)
 is preserved for resuming training. All ten games remained stage 1, without
 a successful mission; these reused validation seeds are not a fresh test set.
+
+At counter **8,342,272**, after **1,703,936 additional actions**, run 09 reached
+**10,480 points**, with all **2,580** actions exactly verified from boot.
+Ten complete validation games: mean **9,981**, median **10,380**, best **10,480**,
+still all stage 1 and no mission. Its separate
+[resumable checkpoint](results/defense/training/ppo-09-curriculum-life/step-000008342272/state.json)
+and immutable replay bundle are preserved. The unchanged longer-rollout
+comparison is also improving, but has not reached stage 2 either.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
