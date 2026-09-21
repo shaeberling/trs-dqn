@@ -1580,6 +1580,15 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-encoder-transfer-check
   --eval-envs 4 --eval-every 16384 --steps 16384
 ```
 
+A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
+also checked all **2,581** frames of the global-best replay. Its **112** distinct
+character codes all fall within the encoder's graphics or ASCII ranges.
+All **64** semigraphics glyphs matched the actual emulator font at their six
+block interiors when compared with the model's rendering table. No dropped
+character or graphics-bit-layout mismatch was found. This covers the recorded
+stage-1 game, not unseen stages or the quality of learned visual features;
+the input pipeline was left unchanged.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a

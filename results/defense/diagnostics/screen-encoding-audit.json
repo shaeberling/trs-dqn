@@ -1,0 +1,22 @@
+{
+  "purpose": "Read-only check for dropped visible character codes or incorrect graphics-bit layout",
+  "source_version": "step-000008342272-125346536cb1-seed-10004",
+  "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+  "frames": 2581,
+  "unique_codes": 112,
+  "unsupported_codes": [],
+  "supported_ranges": {"ascii_channel": [32, 126], "graphics_channel": [128, 191]},
+  "font_path": "var/AnotherMansTreasureMIII64C.ttf",
+  "font_sha256": "5600975876afd5edca7b8604621667ac7c1d65d86edbbfa745ec5fd2f12d2961",
+  "model_source_sha256": "6db77fdc54c3a6ae6f82aa2eccb4d0723c2d3546e07a0e02e93815f762a0d3e1",
+  "graphics_codes_checked": 64,
+  "mismatches": [],
+  "method": "Render each code 128 through 191 with the emulator's actual font at size 26, offset (0,-1), into an 8x26 grayscale cell. Threshold at 127 at x=[2,6], y=[4,13,21], the six block interiors. Compare the resulting 3x2 raster exactly against rl.model.render_table()[code,:,:,0]. Separately enumerate every byte value in the archived replay frames and check encoder range coverage.",
+  "parameter_updates": 0,
+  "game_memory_writes": 0,
+  "limitations": [
+    "Character-range coverage is verified only for this recorded stage-1 game, not unseen stages.",
+    "The graphics-bit test covers all 64 semigraphics glyphs; ASCII remains an explicit code-value channel, not a rasterized glyph channel.",
+    "This checks encoding fidelity, not whether learned features preserve the information needed for successful control."
+  ]
+}
