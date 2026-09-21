@@ -1741,6 +1741,48 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-long-lookback-reproduc
   --curriculum-lookback 128 --steps 0 --eval-every 100000
 ```
 
+### Shorter-action learning check
+
+An isolated [four-worker adaptation check](results/defense/training/short-action-smoke-01/resume-config.json)
+resumed the same run-12 parent at **10,447,616**, changing action duration from
+100,000 to **50,000 T-states**. It added **16,384 actions** with the same
+settings as the earlier four-worker no-noise control; configuration differences
+are only paths and action duration. This changes the policy's control cadence
+without changing the original executable. It also halves the emulated-time
+span of the four-frame input, rollout, lookback and unchanged per-action
+discount horizon, so it is not a matched game-time or credit-horizon experiment.
+
+Its [ten complete games](results/defense/training/short-action-smoke-01/checkpoint/evaluation.json)
+averaged **5,261**, median **5,410**, best **7,370**, all stage 1 with no mission.
+The [verified replay](results/defense/training/short-action-smoke-01/replay/replay.html)
+reproduced **4,843** neural actions at the shorter cadence. Full configuration,
+log, optimizer and replay are preserved. The check exited normally and is
+excluded from the collector; the three full learners retain their timing.
+
+To separate immediate timing mismatch from adaptation, the **exact same frozen
+parent** was also evaluated at 50,000 T-states on the same ten seeds, without
+parameter updates. This [parent comparison](results/defense/training/short-action-smoke-01/frozen-parent-at-50000.json)
+averaged **7,939**, median **7,760**, best **10,310**, all stage 1. Its weights
+were hash-checked unchanged, and the report is explicitly evaluation-only and
+ineligible for promotion. Thus the brief adaptation batch reduced the mean
+relative to this parent at the same cadence; it did not merely inherit the
+entire observed drop from changing timing. The 100,000-T-state trained control
+averaged **9,929**, median **10,460**, best **10,480**.
+
+No boot game or restored segment finished during the short adaptation batch:
+the four training episodes were still in progress at its checkpoint. Together
+with its small size and changed physical-time horizons, this limits any claim
+about eventual shorter-action learning. No full-size replacement was launched
+on these results; the earlier-reset and fresh-policy trials continue.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-short-action-check \
+  --resume results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-short-action-check/artifacts --tstates 50000 \
+  --envs 4 --rollout 256 --batch-size 256 --curriculum-boot-envs 1 \
+  --mlx-cache-mb 256 --eval-envs 4 --eval-every 16384 --steps 10464000
+```
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
