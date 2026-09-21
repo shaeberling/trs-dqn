@@ -1645,6 +1645,15 @@ These are different training ages, not a matched performance comparison.
 Both are intermediate improvements within their own trials, below the shared
 10,480-point policy; neither has reached stage 2 or a successful mission.
 
+At its own counter **1,400,832**, run 20 improved to
+[mean 444, median 440, best 480](results/defense/training/ppo-20-encoder-transfer/step-000001400832/evaluation.json).
+Its full optimizer/model and [1,734-action verified replay](results/defense/training/ppo-20-encoder-transfer/replay-480/replay.html)
+are preserved. Run 17 at the same fresh-action counter had mean **404**,
+median **400**, best **460** on these validation seeds. This one-seed,
+reused-validation comparison is a small local advantage for encoder transfer,
+not evidence of better final performance or lower total training cost: run 20
+also used an encoder pretrained for 10,447,616 actions. Both remain in stage 1.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
