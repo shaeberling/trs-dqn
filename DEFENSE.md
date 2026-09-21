@@ -1991,14 +1991,33 @@ full optimizer, config and log are preserved. It exited normally and is
 excluded from the collector.
 
 `defense-age-calibration-01` ([configuration](results/defense/training/age-calibration-01/resume-config.json))
-now tests the criterion at the normal **32-worker**
+tested the criterion at the normal **32-worker**
 batch size, using run 21's stronger preserved parent at **11,750,144**, not the
 four-worker smoke checkpoint. It retains rollout 256, batch 512, lookback 128,
 eight boot-only workers and the parent's learning settings. The check permits
 **131,072** new actions (4,096 per worker), so resets can actually be exercised
 after complete boot games; merely filling archives would not test the proposed
-mechanism. It occupies stopped run 21's slot, is excluded from the collector,
-and has not yet established improved play or justified a long trial.
+mechanism. It used stopped run 21's slot and is excluded from the collector.
+
+The check exited normally at **11,881,216**, with **32** complete boot games
+and **seven** completed restored training segments. All **3,044** archive
+events had correct source-age bins and 128-action offsets; **315** originated
+in already-restored segments. Its [ten complete games](results/defense/training/age-calibration-01/checkpoint/evaluation.json)
+averaged **10,387**, median **10,460**, best **10,480**, all stage 1 without a
+mission. The [replay](results/defense/training/age-calibration-01/replay/replay.html)
+verified **2,573** actions. Full logs, optimizer and replay are preserved. This
+retains strong play but remains below the parent's ten-game mean **10,478**;
+it is not evidence of improvement and has no matched 32-worker resumed control.
+
+`defense-ppo-23-life-age` now continues from that checked calibration's
+optimizer at **11,881,216**, with the same 32-worker settings, **unlimited**
+training and 100,000-action evaluations. The
+[configuration](results/defense/training/ppo-23-life-age/resume-config.json)
+records its lineage; emulator episodes restart and archives refill from new
+own experience. This longer trial tests whether reward-free later states help
+progression, not a claimed success of the calibration. Runs 17, 20 and DQN 22
+continue. The sole collector includes the new full trial and all old sources,
+but neither small check. The shared best remains unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-age-calibration-reproduction \
@@ -2006,6 +2025,12 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-age-calibration-reprod
   --artifacts runs/defense-age-calibration-reproduction/artifacts \
   --curriculum-cells age --curriculum-age-interval 32 \
   --eval-every 131072 --steps 11881216
+
+# Continue the preserved calibration with unlimited learning:
+venv/bin/python -u -m rl.defense_train --run runs/defense-life-age-reproduction \
+  --resume results/defense/training/age-calibration-01/checkpoint \
+  --artifacts runs/defense-life-age-reproduction/artifacts \
+  --steps 0 --eval-every 100000
 ```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
