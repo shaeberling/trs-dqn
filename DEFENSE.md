@@ -205,8 +205,9 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-17-fresh-seed/status.json` and
-  `runs/defense-ppo-18-weight-noise/status.json`, each with an adjacent
+- Live progress: `runs/defense-ppo-17-fresh-seed/status.json`,
+  `runs/defense-ppo-18-weight-noise/status.json` and
+  `runs/defense-ppo-19-moderate-weight-noise/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -252,6 +253,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-16-strong-bias-noise/artifacts \
   --source runs/defense-ppo-17-fresh-seed/artifacts \
   --source runs/defense-ppo-18-weight-noise/artifacts \
+  --source runs/defense-ppo-19-moderate-weight-noise/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -1440,6 +1442,42 @@ confirms **2,502** reproduced actions; the source checkpoint and replay hashes
 match. This is an early continuation result, not a new best. The full source
 checkpoint and replay remain in the local run directory; the calibration's
 complete bundle is committed above. The existing shared best remains unchanged.
+
+The larger SD **0.02** was also checked for four rollouts with the same normal
+32-worker setup and the same run-12 parent, rather than inferring its behavior
+solely from the failed four-worker check. Its
+[ten complete unperturbed games](results/defense/training/weight-noise-calibration-02/checkpoint/evaluation.json)
+averaged **7,783**, median **8,180**, best **10,480**, all stage 1. The
+[replay](results/defense/training/weight-noise-calibration-02/replay/replay.html)
+verified **2,520** actions. Full logs, configuration, optimizer and replay are
+preserved, and this calibration is excluded from the collector. It was still
+substantially more disruptive than SD 0.005 in this comparison, so no long
+SD-0.02 run was launched. These are short, single-seed validation comparisons,
+not independent success-rate estimates or proof about eventual learning.
+
+The midpoint SD **0.01** passed the same four-rollout check: its
+[ten complete games](results/defense/training/weight-noise-calibration-03/checkpoint/evaluation.json)
+averaged **10,462**, median **10,480**, best **10,480**, all stage 1. Its
+[replay](results/defense/training/weight-noise-calibration-03/replay/replay.html)
+verified **2,524** actions. The full checkpoint, configuration, log and replay
+are preserved. This retained performance in the short calibration, not a
+stage advance or a demonstrated exploration benefit.
+
+`defense-ppo-19-moderate-weight-noise` now continues from that calibration's
+optimizer at **10,480,384**, with the same unlimited 32-worker settings and
+100,000-action evaluation interval as run 18, but noise SD **0.01** instead of
+0.005. Each trial has its own calibrated parent and RNG history. The
+[configuration](results/defense/training/ppo-19-moderate-weight-noise/resume-config.json)
+records this provenance. The collector includes both trials and the fresh
+seed learner, with the same strict replay-verification gates. No larger-noise
+regression was substituted for the shared best.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-moderate-weight-reproduction \
+  --resume results/defense/training/weight-noise-calibration-03/checkpoint \
+  --artifacts runs/defense-moderate-weight-reproduction/artifacts \
+  --steps 0 --eval-every 100000
+```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
