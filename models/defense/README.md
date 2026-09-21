@@ -20,11 +20,11 @@ promotions remain under `results/defense/learned/versions/`. A best individual
 effort is not a fresh-test success rate; use the accompanying full evaluation
 to understand consistency. No successful mission has yet been verified.
 
-Current standard-policy best: **10,280 points**, all **2,519** neural actions
+Current standard-policy best: **10,480 points**, all **2,580** neural actions
 verified after reloading the frozen model. Ten complete validation games:
-mean **8,834**, median **9,115**, all stage 1. This comes from the own-experience
+mean **9,981**, median **10,380**, all stage 1. This comes from the own-experience
 curriculum continuation with longer rollouts and ship-loss learning boundaries,
-at counter **7,244,544**, with ordinary
+at counter **8,342,272**, with ordinary
 temperature-1 sampling. The older versions below remain preserved.
 Evaluation and replay both start from boot with zero score and four ships;
 this is not a restored practice segment or a verified stage clear.
