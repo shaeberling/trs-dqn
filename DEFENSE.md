@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **400 points**, with **1,682** neural
-actions exactly reverified; its ten-game mean/median is **360**, all stage 1.
+The current standard-policy best is **460 points**, with **1,675** neural
+actions exactly reverified; its ten-game mean is **416**, median **420**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -407,6 +407,16 @@ individual score or fresh-test success rate. The
 preserves its weights, optimizer and complete evaluation. The next validation
 means were 362 and 326, so this is not a claim of monotonic improvement.
 
+Continued unchanged, run 05 subsequently set verified bests of **420**, **440**,
+and **460**. At counter **3,234,560**, ten complete validation games averaged
+**416**, median **420**, best **460**, still all stage 1 with no mission.
+The collector reloaded the frozen weights and reproduced all **1,675** actions,
+screens and rewards before publishing the current best. Its
+[resumable checkpoint](results/defense/training/ppo-05-low-entropy/step-000003234560/state.json)
+includes the optimizer and evaluation. The next two validation means were 412
+and 410. This improvement came from ordinary from-boot training, not the
+optional curriculum below; all intermediate replay bundles remain preserved.
+
 ### Ship-loss learning-boundary comparison
 
 `defense-ppo-06-life-boundary` starts from exactly the same checkpoint and
@@ -444,7 +454,7 @@ the [shared best replay](results/defense/learned/best/replay.html) and
 This is a new trained-policy best, distinct from the older temperature-0.5
 diagnostic. Neither demonstrates a stage clear. All previous versions remain.
 
-### Own-experience snapshot preparation (not active in training yet)
+### Optional own-experience curriculum (tested, not enabled in main runs)
 
 `rl.defense_snapshot` adapts the existing native snapshot API to Defense's
 visible score, ships, stage, screen history and outcome bookkeeping. It saves
@@ -461,10 +471,40 @@ process. The native terminal-text stop was also restored correctly. These
 recorded actions are test fixtures only, not training examples. The 21-action
 profile and invalid-state rejection are tested separately.
 
-This is preparation for a possible own-reached-state training curriculum, not
-an activated curriculum or evidence of better gameplay. Runs 05 and 06 still
-use their unchanged from-boot training setup. Any later curriculum must retain
-from-boot evaluation and distinguish restored segments from complete games.
+`rl.defense_curriculum` optionally resets training workers to these unmodified,
+own-reached states. Archive bins use visible stage and score earned since the
+current life/stage began, not cumulative points from previous lost ships.
+Each stage has a bounded number of bins and reservoir entries. Workers can
+share snapshots reached within the same run; protected boot workers always
+start normally. There is no archive-file loader or external demonstration input.
+
+Restored segments are marked `full_game=False`, cannot enter best-game ranking,
+and report only newly earned score. Training counters distinguish boot games
+from restored segments, including in self-imitation provenance. Reward remains
+the actual score delta, and evaluation always uses complete ordinary from-boot
+games. Archives are not checkpointed: after resume they refill from new play.
+The default curriculum probability is zero, leaving normal training unchanged.
+
+An isolated [8,192-action smoke run](results/defense/training/curriculum-smoke-01/metrics.jsonl)
+completed three boot games and four restored segments with protected-worker
+sharing and self-imitation enabled. Its two-game validation mean was 290;
+the selected replay reproduced all 1,548 actions. A further
+[4,096-action resume check](results/defense/training/curriculum-smoke-resume-01/metrics.jsonl)
+restored optimizer/RNG state, rebuilt archives from new play, and verified a
+1,557-action replay. These are integration checks, not performance gains.
+
+Runs 05 and 06 remain unchanged while they continue improving. A future isolated
+trial can use the archived checkpoint, without replacing either live run:
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-curriculum-trial \
+  --resume results/defense/training/ppo-05-low-entropy/step-000003234560 \
+  --artifacts runs/defense-curriculum-trial/artifacts \
+  --curriculum-probability .5 --curriculum-share --curriculum-boot-envs 8
+```
+
+To publish future trial improvements, restart the single collector with that
+additional isolated source. Never add a competing shared-best writer.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an

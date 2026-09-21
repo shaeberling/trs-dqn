@@ -1,0 +1,51 @@
+{
+  "complete_games": 2,
+  "incomplete_games": 0,
+  "mean_score": 290.0,
+  "median_score": 290.0,
+  "best_score": 300,
+  "highest_stage": 1,
+  "mission_games": 0,
+  "stage_2_games": 0,
+  "stage_3_games": 0,
+  "games": [
+    {
+      "seed": 10000,
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 1496,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 1802000,
+      "start_tstates": 33283
+    },
+    {
+      "seed": 10001,
+      "score": 300,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 1557,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 300.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 352000,
+      "start_tstates": 89846
+    }
+  ]
+}
