@@ -7,14 +7,31 @@ from unittest.mock import patch
 import mlx.core as mx
 import numpy as np
 
-from rl.defense import ACTION_NAMES, ENVIRONMENT_VERSION, GAME_SHA256, action_names
+from rl.defense import ACTION_NAMES, ENVIRONMENT_VERSION, GAME_SHA256, action_names, screen_info
 from rl.defense_learning import game_rank, load_policy, publish_best, summarize
 from rl.evaluate import categorical_policy
 from rl.ppo import PPO
 from rl.vector import VectorEnv
+from rl.sil import SILReplay, TrainingSuffixes
 
 
 class DefenseLearningTests(unittest.TestCase):
+    def test_self_imitation_uses_defense_actions_and_visible_score(self):
+        replay = SILReplay(8)
+        suffix = TrainingSuffixes(replay, 1, gamma=.9, action_count=21, score_reader=screen_info)
+        obs = np.full((4, 16, 64), 128, np.uint8)
+        obs[:, 0] = list(b"80 ****".ljust(29)+b"180020"+b" "*29)
+        self.assertIsNone(suffix.append(0, obs, 20, .2, False, False, True))
+        event = suffix.append(0, obs, 19, .4, True, False, True)
+        self.assertEqual(event["initial_score"], 80)
+        self.assertAlmostEqual(event["score_reward_sum"], .6)
+        np.testing.assert_allclose(replay.returns[:2], [.56, .4])
+        np.testing.assert_array_equal(replay.actions[:2], [20, 19])
+        with self.assertRaises(ValueError):
+            suffix.append(0, obs, 21, 0., False, False, True)
+        suffix.append(0, obs, 20, 1., False, True, True)
+        self.assertEqual(replay.size, 2)  # Truncated suffixes never become training returns.
+
     def test_twenty_action_ppo_updates_and_checkpoint_roundtrip(self):
         agent = PPO(seed=12, action_count=20)
         rng = np.random.default_rng(4)

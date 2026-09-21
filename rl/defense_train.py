@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256
+from .defense import action_names, screen_info, ENVIRONMENT_VERSION, GAME_SHA256
 from .defense_learning import evaluate, publish_best, sha256, summarize, write_json
 from .ppo import PPO, gae
 from .vector import VectorEnv
@@ -49,6 +49,13 @@ def main():
     parser.add_argument("--eval-seed", type=int, default=10_000)
     parser.add_argument("--eval-max-steps", type=int, default=0)
     parser.add_argument("--mlx-cache-mb", type=int, default=1024)
+    parser.add_argument("--sil-updates", type=int, default=0,
+                        help="self-imitation updates from own training returns per rollout; 0 disables")
+    parser.add_argument("--sil-capacity", type=int, default=32768)
+    parser.add_argument("--sil-suffix-steps", type=int, default=2048)
+    parser.add_argument("--sil-batch-size", type=int, default=512)
+    parser.add_argument("--sil-loss-weight", type=float, default=.1)
+    parser.add_argument("--sil-value-weight", type=float, default=.01)
     args = parser.parse_args()
     prior = None
     if args.resume:
@@ -77,6 +84,10 @@ def main():
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
         parser.error("tstates out of range")
+    if (args.sil_updates < 0 or min(args.sil_capacity, args.sil_suffix_steps, args.sil_batch_size) < 1
+            or not np.isfinite(args.sil_loss_weight) or args.sil_loss_weight <= 0
+            or not np.isfinite(args.sil_value_weight) or args.sil_value_weight < 0):
+        parser.error("invalid own-experience self-imitation settings")
     if (not all(np.isfinite(v) for v in (args.learning_rate, args.entropy, args.gamma,
                                         args.gae_lambda, args.reward_scale))
             or args.learning_rate <= 0 or args.entropy < 0 or args.reward_scale <= 0
@@ -103,6 +114,16 @@ def main():
         agent.model.advantage.weight *= .1
         agent.model.advantage.bias *= .1
         agent.compile()
+    sil = None
+    if args.sil_updates:
+        from .sil import SILReplay, TrainingSuffixes, SelfImitation
+        sil_replay = SILReplay(args.sil_capacity)
+        sil_collector = TrainingSuffixes(sil_replay, args.envs, args.gamma, args.sil_suffix_steps,
+                                         action_count=len(action_names(args.allow_enter)), score_reader=screen_info)
+        sil = SelfImitation(agent, args.sil_loss_weight, args.sil_value_weight)
+        sil_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 941]))
+        if prior and "sil_rng" in prior:
+            sil_rng.bit_generator.state = prior["sil_rng"]
     args.run.mkdir(parents=True, exist_ok=True)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm="ppo", game_sha256=GAME_SHA256,
@@ -128,7 +149,10 @@ def main():
             print(json.dumps(row), flush=True)
 
     def state():
-        return dict(steps=steps, episodes=episodes, rng=rng.bit_generator.state, config=config)
+        saved = dict(steps=steps, episodes=episodes, rng=rng.bit_generator.state, config=config)
+        if sil is not None:
+            saved.update(sil_rng=sil_rng.bit_generator.state, sil_replay_saved=False)
+        return saved
 
     def request_stop(signum, frame):
         nonlocal stop
@@ -158,6 +182,13 @@ def main():
                     frame, reward, terminal, truncated, info, reset = result
                     reward *= args.reward_scale
                     learning_terminal = terminal or (args.life_terminal and info["life_lost"])
+                    if sil is not None:
+                        # Only this learner's own screens, selected actions and
+                        # score returns; never evaluation/replay-file examples.
+                        segment = sil_collector.append(worker, obs[worker], actions[worker], reward,
+                                                       learning_terminal, truncated, True)
+                        if segment is not None:
+                            log(dict(event="sil_segment", action_counter=steps+worker+1, **segment))
                     if truncated and not learning_terminal:
                         _, value = agent.predict(mx.array(frame[None]))
                         reward += args.gamma*float(value[0].item())
@@ -194,6 +225,17 @@ def main():
                 metrics.extend(epoch_metrics)
                 if np.mean(epoch_metrics, axis=0)[3] > .03:
                     break
+            sil_metrics = {}
+            if sil is not None:
+                details = []
+                if sil_replay.size:
+                    for _ in range(args.sil_updates):
+                        indices, batch = sil_replay.sample(args.sil_batch_size, sil_rng)
+                        advantages, update = sil.train(batch)
+                        sil_replay.priorities(indices, advantages)
+                        details.append(update)
+                sil_metrics = {"sil": {**sil_collector.metrics(), "updates": sil.updates,
+                                       "rollout_updates": details}}
             if time.monotonic()-last_log >= 10:
                 recent_summary = summarize(list(recent))
                 log(dict(event="progress", steps=steps, episodes=episodes,
@@ -203,7 +245,8 @@ def main():
                          value_loss=float(np.mean(metrics, axis=0)[1]),
                          entropy=float(np.mean(metrics, axis=0)[2]),
                          approx_kl=float(np.mean(metrics, axis=0)[3]),
-                         mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory()))
+                         mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
+                         **sil_metrics))
                 last_log = time.monotonic()
             if steps >= next_eval and not stop:
                 directory = args.run/f"step-{steps:012d}"
