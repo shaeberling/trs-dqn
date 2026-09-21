@@ -2078,6 +2078,16 @@ equivalence because Adam and KL-based epoch stopping are nonlinear. The sole
 collector includes run 27, with all older sources retained and small checks
 excluded. No longer-run improvement is claimed from the short result alone.
 
+Run 27's [first ten complete evaluations](results/defense/training/ppo-27-matched-history-low-lr/step-000010660608/evaluation.json),
+at **10,660,608** (**212,992** new actions), averaged **9,933**, median
+**10,385**, best **10,480**, all stage-1 losses. At the same first checkpoint,
+run 25 averaged **9,411**, median **9,590**, best **10,440**. The lower-rate
+trial therefore retains more score in this first batch, but neither shows
+new depth, and long-run stability remains unproven. Its full optimizer and
+[5,044-action verified replay](results/defense/training/ppo-27-matched-history-low-lr/first-replay/replay.html)
+are preserved separately; the equal best score does not replace the shared
+global replay.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -2327,6 +2337,13 @@ are preserved. At that checkpoint, training had completed **50** boot games,
 **27** restored segments and **5,624** optimizer updates. Segment counts are
 not counted as full games. This fresh-start trial continues without promoting
 over the stronger shared best.
+
+At **200,000**, run 26 reached
+[mean 282, median 280, best 300](results/defense/training/dqn-26-own-resets/step-000000200000/evaluation.json),
+with a [1,598-action verified replay](results/defense/training/dqn-26-own-resets/replay-300/replay.html)
+and full optimizer/target checkpoint preserved. All ten games remained stage-1
+losses. This recovers from its first batch and is only slightly above ordinary
+run 22's same-counter mean/best 280; it is not evidence of a robust advantage.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-own-resets-reproduction \
