@@ -60,15 +60,19 @@ def update_selection(result, target_level, best_mean, best_levels, *, game_win=F
 
 class PPO:
     def __init__(self, seed=17, learning_rate=2.5e-4, entropy=0.01, reference_kl_weight=0,
-                 action_count=6):
+                 action_count=6, value_coefficient=.5):
         if not np.isfinite(reference_kl_weight) or reference_kl_weight < 0:
             raise ValueError("reference KL weight must be finite and nonnegative")
+        if (isinstance(value_coefficient, (bool, np.bool_))
+                or not np.isfinite(value_coefficient) or value_coefficient < 0):
+            raise ValueError("value coefficient must be finite and nonnegative")
         _load_backend()
         mx.random.seed(seed)
         self.model = QNetwork(action_count=action_count)
         self.optimizer = optim.Adam(learning_rate, eps=1e-5)
         self.optimizer.init(self.model.trainable_parameters())
         self.entropy = entropy
+        self.value_coefficient = value_coefficient
         self.reference_kl_weight = reference_kl_weight
         self.compile()
 
@@ -98,9 +102,9 @@ class PPO:
             if reference_log_probs is None:
                 raise ValueError("enabled reference penalty requires rollout targets")
             anchor = reference_kl(log_probs, reference_log_probs)
-            return (actor+.5*critic-self.entropy*entropy+self.reference_kl_weight*anchor,
+            return (actor+self.value_coefficient*critic-self.entropy*entropy+self.reference_kl_weight*anchor,
                     (actor, critic, entropy, kl, anchor))
-        return actor+.5*critic-self.entropy*entropy, (actor, critic, entropy, kl)
+        return actor+self.value_coefficient*critic-self.entropy*entropy, (actor, critic, entropy, kl)
 
     def _update(self, obs, actions, old_logp, advantages, returns, reference_log_probs=None,
                 logit_bias=None, head_weight_noise=None):
