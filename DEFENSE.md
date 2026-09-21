@@ -2096,6 +2096,13 @@ same-counter mean **2,562**; the lower-rate variant has retained substantially
 more score through these four batches. All ten games still lost in stage 1,
 so this is retention, not new depth or proof of lasting stability.
 
+The fifth batch, at **11,463,424**, fell to
+[mean 6,929, median 7,900, best 10,460](results/defense/training/ppo-27-matched-history-low-lr/step-000011463424/evaluation.json).
+That full checkpoint is preserved as well. Lowering the rate delayed the
+earlier run's regression but has not eliminated it; none of these games
+reached stage 2. One declining batch is not yet grounds to claim a permanent
+plateau or to retire this trial.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -2352,6 +2359,13 @@ run 22's same-counter mean 280, not an early performance improvement. The full
 online/target/optimizer checkpoint and [1,477-action verified replay](results/defense/training/dqn-28-large-replay/first-replay/replay.html)
 are preserved.
 
+At **200,000**, it reached
+[mean 316, median 320, best 320](results/defense/training/dqn-28-large-replay/step-000000200000/evaluation.json),
+with a [1,631-action verified replay](results/defense/training/dqn-28-large-replay/replay-320/replay.html).
+The full optimizer/target checkpoint is preserved. This is above run 22's
+same-counter mean/best 280, but all ten games still lost in stage 1. One early
+batch on reused seeds does not establish improved depth or durable stability.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-large-replay-reproduction \
   --artifacts runs/defense-dqn-large-replay-reproduction/artifacts \
@@ -2599,6 +2613,36 @@ online/target/prior/optimizer checkpoint and
 are preserved. The intervening 400,000-action mean was 350 (best 380), and
 the 600,000-action games all scored 320, so this recovery was not monotonic.
 It is a new milestone for this lineage, not a global-best or depth improvement.
+
+A [frozen-head diagnostic](results/defense/diagnostics/bootstrap-800000-heads.json)
+then compared this exact checkpoint's greedy ensemble with each individual
+learned head plus its saved random prior. Each fixed policy played ten complete,
+uncapped games from boot on the reused seeds 10000–10009; a head was never
+selected based on the current state or outcome. The ensemble reproduced all
+ten saved game records exactly, and model/configuration hashes were unchanged.
+
+| Fixed policy | Mean | Median | Best |
+| --- | ---: | ---: | ---: |
+| Ensemble | 520 | 520 | 520 |
+| Head 0 | 482 | 500 | 520 |
+| Head 1 | 508 | 500 | 520 |
+| Head 2 | 520 | 520 | 520 |
+| Head 3 | 440 | 420 | 520 |
+| Head 4 | 368 | 380 | 400 |
+
+All **60** games lost in stage 1. At this checkpoint, ensemble averaging is
+not concealing a better single-head score or stage reach on these seeds.
+This does not diagnose the training plateau or rule out different behavior at
+future checkpoints. The probe makes no parameter updates, is excluded from
+promotion and never supplies actions or traces to training. No production
+evaluation rule was changed. All **248 regression tests** passed, including
+fixed-head selection, shape validation and unchanged evaluation RNG checks.
+
+```bash
+venv/bin/python -m rl.defense_head_probe \
+  results/defense/training/dqn-24-bootstrap/step-000000800000/model.safetensors \
+  --envs 4 --output runs/defense-bootstrap-heads-reproduction.json
+```
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-bootstrap-check \
