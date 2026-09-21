@@ -36,6 +36,7 @@ class DefenseSnapshot:
     game_sha256: str = GAME_SHA256
     environment_version: str = ENVIRONMENT_VERSION
     progress_start_score: int = 0
+    life_steps: int = 0
 
 
 def capture(env):
@@ -52,7 +53,8 @@ def capture(env):
         env.steps, env.missions, env._mission_visible, env.start_tstates,
         env.tstates, env.max_steps, len(env.actions), getattr(env, "worker_id", None),
         getattr(env, "total_actions", env.steps), getattr(env, "full_game", True),
-        progress_start_score=getattr(env, "progress_start_score", 0))
+        progress_start_score=getattr(env, "progress_start_score", 0),
+        life_steps=getattr(env, "life_steps", 0))
 
 
 def restore(env, saved):
@@ -64,6 +66,8 @@ def restore(env, saved):
             or saved.frames.shape != (4, 16, 64) or saved.frames.dtype != np.uint8
             or not 1 <= saved.lives <= 4 or not 1 <= saved.stage <= saved.highest_stage <= 3
             or min(saved.score, saved.steps, saved.missions, saved.source_action) < 0
+            or not isinstance(saved.life_steps, (int, np.integer))
+            or isinstance(saved.life_steps, (bool, np.bool_)) or saved.life_steps < 0
             or not 0 <= saved.progress_start_score <= saved.score):
         raise ValueError("Incompatible Defense snapshot configuration or screen history")
     _configure()
@@ -80,4 +84,6 @@ def restore(env, saved):
     env.start_tstates, env.done = saved.start_tstates, False
     if hasattr(env, "progress_start_score"):
         env.progress_start_score = saved.progress_start_score
+    if hasattr(env, "life_steps"):
+        env.life_steps = saved.life_steps
     return np.stack(env.frames)

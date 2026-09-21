@@ -1779,6 +1779,17 @@ best **10,480**, all stage 1 without a mission. Its
 verified **2,520** actions; the full model/optimizer checkpoint is preserved.
 This is below its parent's mean and does not replace the shared best.
 
+Run 21 eventually stopped cleanly at **12,380,928**, after **1,933,312** new
+actions, **582** boot games, **394** completed restored segments and **19**
+ten-game validations. Peak mean was **10,478** at **11,750,144** (the frozen
+100-game comparison is above); the last evaluation averaged **10,210**,
+median **10,460**, best **10,480**. No training or evaluation record reached
+stage 2 or a mission. Its [full log](results/defense/training/ppo-21-long-lookback/metrics.jsonl)
+and [final optimizer](results/defense/training/ppo-21-long-lookback/final-checkpoint/state.json)
+are preserved in addition to the earlier checkpoints and verified replays.
+The depth plateau, despite improved score consistency, motivated using its
+slot for a different archive criterion; no wall-clock deadline forced the stop.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-long-lookback-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -1912,6 +1923,13 @@ buffer filled, swap use remained near **5.3 GiB** and the other learners
 continued progressing; MLX's reported DQN peak was about **296 MB** (excluding
 the NumPy replay buffer and emulator processes). Resource use remains monitored.
 
+At **400,000** actions, run 22 improved to
+[mean 322, median 320, best 340](results/defense/training/dqn-22-fresh/step-000000400000/evaluation.json).
+Its online/target/optimizer checkpoint and
+[1,651-action verified greedy replay](results/defense/training/dqn-22-fresh/replay-340/replay.html)
+are preserved. This is a small within-run improvement, still stage 1 and well
+below the PPO models; it establishes no algorithm advantage.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
@@ -1919,6 +1937,75 @@ venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-continuation \
   --artifacts runs/defense-dqn-continuation/artifacts \
   --resume runs/defense-dqn-reproduction/latest
+```
+
+### Own-action-age archive experiment
+
+`--curriculum-cells age --curriculum-age-interval 32` is an optional alternative
+to score bins and coarse screen cells. It groups **actually reached** states
+by visible stage and the learner's own action count since the last visible
+ship-loss or stage boundary. A boot starts the counter at zero; each policy
+action increments it. A real reset to an own saved state restores that state's
+original counter, rather than inventing additional age or zeroing it at a new
+training segment. No native payload is decoded or modified.
+
+The motivation is to retain potentially useful states reached without an
+immediate score increase. This changes **training reset selection only**:
+the policy still receives the same four screen frames, the reward is still
+only visible score change, and evaluation still starts from boot without an
+archive. The counter is not a policy input, extra reward, hidden game timer,
+position label, route or demonstration. It is also **not exact physical
+survival or course progress**: visible loss can lag collision, and action
+counts include intros/animations and may cover variable emulated time during
+HUD settling. Later counter values need not correspond to better play.
+
+Age-bin changes can trigger snapshots even at zero reward. The existing
+lookback chooses the actual earlier same-life/stage snapshot and uses that
+snapshot's age, score and baseline, not the later trigger's values. The
+bounded archive keeps the largest age bins per visible stage, uses reservoir
+sampling within each bin and samples stage/bin/state uniformly for a reset.
+Defaults remain score bins; existing score/screen behavior and all live runs
+remain unchanged unless a new learner explicitly selects this option.
+
+All **218 regression tests** passed. New tests cover exact native/screen/age
+equality at lag 128, bounded later-bin retention, counter clearing at visible
+life/stage boundaries, saved-counter peer restore, malformed counters,
+reward-free events and sharing without exposing snapshots to the model.
+Full-game screen/reward comparisons also include age mode. Bookkeeping-only
+stage-transition fixtures are unit tests, not evidence of an actual stage clear.
+
+An isolated [four-worker check](results/defense/training/age-smoke-01/resume-config.json)
+resumed run 12 at **10,447,616**, with lookback 128 and **16,384** new actions.
+Relative to the earlier lookback-128 score-bin check, it changes the archive
+criterion and its age interval/encoding, plus recorded source hashes and paths.
+All **384** archive events had exact 128-action source/trigger offsets and
+saved-age bin assignments. Four boot games completed; a restored segment
+began generating own states but none had completed at the checkpoint.
+
+Its [ten complete games](results/defense/training/age-smoke-01/checkpoint/evaluation.json)
+averaged **8,456**, median **8,890**, best **10,460**, all stage 1, versus the
+score-bin control's mean **9,304**, median **9,590**, best **10,480**. This is a
+regression in that short comparison, not an improvement. Its
+[2,552-action verified replay](results/defense/training/age-smoke-01/replay/replay.html),
+full optimizer, config and log are preserved. It exited normally and is
+excluded from the collector.
+
+`defense-age-calibration-01` ([configuration](results/defense/training/age-calibration-01/resume-config.json))
+now tests the criterion at the normal **32-worker**
+batch size, using run 21's stronger preserved parent at **11,750,144**, not the
+four-worker smoke checkpoint. It retains rollout 256, batch 512, lookback 128,
+eight boot-only workers and the parent's learning settings. The check permits
+**131,072** new actions (4,096 per worker), so resets can actually be exercised
+after complete boot games; merely filling archives would not test the proposed
+mechanism. It occupies stopped run 21's slot, is excluded from the collector,
+and has not yet established improved play or justified a long trial.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-age-calibration-reproduction \
+  --resume results/defense/training/ppo-21-long-lookback/step-000011750144 \
+  --artifacts runs/defense-age-calibration-reproduction/artifacts \
+  --curriculum-cells age --curriculum-age-interval 32 \
+  --eval-every 131072 --steps 11881216
 ```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
