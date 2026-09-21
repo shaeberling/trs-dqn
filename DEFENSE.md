@@ -1000,6 +1000,18 @@ is preserved. This ties the shared best and is slightly below the starting
 mean of 10,473, so it does not establish improvement or replace the existing
 best-effort replay. The experiment continues unchanged.
 
+Run 12 subsequently stopped gracefully at counter **11,094,784**, after
+**2,048,000 additional actions**, 640 new completed boot games, 401 completed
+restored segments and 20 ten-game validations. It never exceeded 10,480 or
+reached stage 2. Its strongest mean was **10,474**, median 10,480, at counter
+**10,447,616**; the final validation mean was 10,444. This tiny mean increase
+over the parent (10,473) is not evidence of a meaningful gain on reused seeds.
+The [full log](results/defense/training/ppo-12-lookback/metrics.jsonl),
+[final checkpoint](results/defense/training/ppo-12-lookback/final-checkpoint/state.json),
+[strongest-mean optimizer checkpoint](results/defense/training/ppo-12-lookback/step-000010447616/state.json)
+and [best local replay](results/defense/training/ppo-12-lookback/best-effort/replay.html)
+are preserved. Earlier resets alone did not resolve this trial's bottleneck.
+
 ### Optional screen-cell curriculum
 
 `--curriculum-cells screen` changes the training archive's grouping from score
@@ -1080,6 +1092,44 @@ Its local replay reproduced all **2,505** neural actions; the
 [verification record](results/defense/training/ppo-13-screen-cells/first-verification.json)
 is retained. This ties the shared best score but is below the parent mean;
 it is not evidence of improvement. The full run continues unchanged.
+
+### Longer-return PPO: run 14
+
+`defense-ppo-14-long-horizon` replaces the stopped run 12, while run 13 continues.
+It resumes the preserved run-12 checkpoint at **10,447,616**, changing three
+training settings together: rollout **256 → 1,024**, discount factor
+**0.997 → 0.999**, and GAE lambda **0.99 → 0.999**. All other learning/game
+settings are inherited, including score-bin curriculum, 32-action lookback,
+eight boot-only workers, ship-loss learning boundaries, screen-only input and
+visible-score-only reward. The newly introduced screen-cell mode stays off.
+The [saved configuration](results/defense/training/ppo-14-long-horizon/resume-config.json)
+records the settings and backward-compatible curriculum implementation hash.
+There are no episode, total-action or wall-clock limits.
+
+The motivation is longer credit assignment, not a proven diagnosis. In the
+preserved 10,480-point trace, the four ship segments last 410, 723, 730 and
+717 actions (later segments include inter-ship animations), each scoring
+2,620. The old untruncated GAE residual kernel `(gamma*lambda)^k` has a
+53.1-action half-life; the new one has a 346.4-action half-life. Actual direct
+credit is also cut off by rollout ends and life boundaries; learned value
+bootstrapping can carry information farther. Longer traces increase variance.
+These calculations do not identify a route or show that longer credit will
+escape the observed local behavior.
+
+Testing different return horizons is also motivated by
+[Agent57's discussion of long-term credit](https://deepmind.google/blog/agent57-outperforming-the-human-atari-benchmark/).
+This trial remains PPO: it does not implement Agent57, use its intrinsic rewards,
+or introduce a meta-controller. All **191 regression tests** passed, including
+analytic 1,024-step GAE weights, terminal masking and bootstrap propagation
+at the new parameters. The same single collector includes this run and keeps
+the previous verified best available until a genuine improvement is verified.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-long-horizon-reproduction \
+  --resume results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-long-horizon-reproduction/artifacts \
+  --gamma .999 --gae-lambda .999 --rollout 1024
+```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an

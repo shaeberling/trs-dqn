@@ -148,6 +148,26 @@ class PPOTests(unittest.TestCase):
                             np.zeros(1, np.float32), .995, .99)
         np.testing.assert_array_equal(advantages[:33], np.zeros((33, 1)))
 
+    def test_long_horizon_gae_terminal_and_bootstrap_weights(self):
+        gamma, lam, length = .999, .999, 1024
+        q = gamma*lam
+        rewards = np.zeros((length, 2), np.float32)
+        values = np.zeros_like(rewards)
+        boundaries = np.zeros_like(rewards)
+        rewards[-1, 0], boundaries[-1, 0] = 1, 1
+        # Worker 0 ends at a real boundary; worker 1 bootstraps normally.
+        advantages, returns = gae(rewards, values, boundaries,
+                                  np.array([99, 2], np.float32), gamma, lam)
+        decay = q**np.arange(length-1, -1, -1)
+        np.testing.assert_allclose(advantages[:, 0], decay, rtol=5e-5)
+        np.testing.assert_allclose(advantages[:, 1], 2*gamma*decay, rtol=5e-5)
+        np.testing.assert_array_equal(advantages, returns)
+        # A life/episode boundary must still block later reward and bootstrap.
+        boundaries[511] = 1
+        advantages, _ = gae(rewards, values, boundaries,
+                            np.array([99, 2], np.float32), gamma, lam)
+        np.testing.assert_array_equal(advantages[:512], np.zeros((512, 2)))
+
     def test_categorical_checkpoint_reproduces_seeded_policy(self):
         agent = PPO()
         obs = np.full((16, *SHAPE), 128, np.uint8)
