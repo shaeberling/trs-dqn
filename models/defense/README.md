@@ -20,10 +20,10 @@ promotions remain under `results/defense/learned/versions/`. A best individual
 effort is not a fresh-test success rate; use the accompanying full evaluation
 to understand consistency. No successful mission has yet been verified.
 
-Current standard-policy best: **500 points**, all **1,901** neural actions
+Current standard-policy best: **560 points**, all **1,975** neural actions
 verified after reloading the frozen model. Ten complete validation games:
-mean **462**, median **460**, all stage 1. This comes from the lower-entropy,
-ship-loss-boundary continuation at counter **4,434,688**, with ordinary
+mean **506**, median **510**, all stage 1. This comes from the lower-entropy,
+ship-loss-boundary continuation at counter **4,733,696**, with ordinary
 temperature-1 sampling. The older versions below remain preserved.
 
 The first preserved learned checkpoint, after 102,400 training actions, scored
@@ -38,13 +38,15 @@ at 1,542,912 actions. Learned-Enter and self-imitation experiments did not
 improve the preserved best; training now continues from this checkpoint
 with a lower entropy coefficient. See DEFENSE.md for the separate live paths.
 
-Highest separately preserved sampling diagnostic: **400 points**, all **1,743**
-actions verified. [Replay](../../results/defense/sampling-probes/temperature-050/replay.html)
-and [weights](../../results/defense/sampling-probes/temperature-050/model.safetensors)
-use the same frozen model with explicit **temperature 0.5**. Ten reused validation
-games: mean **384**, median **380**, all stage 1. This is not a new trained model
+Highest separately preserved sampling diagnostic: **520 points**, all **1,837**
+actions verified. [Replay](../../results/defense/sampling-probes/step-4434688-temperature-050/replay.html)
+and [weights](../../results/defense/sampling-probes/step-4434688-temperature-050/model.safetensors)
+use the older 500-point frozen model with explicit **temperature 0.5**. Ten reused validation
+games: mean **464**, median **460**, all stage 1. This is not a new trained model
 or mission completion, and does not replace the standard-policy links above.
 Use `rl.defense_evaluate --temperature .5` to reproduce this sampling variant.
+The earlier [400-point sampling probe](../../results/defense/sampling-probes/temperature-050/replay.html)
+also remains preserved.
 
 See [DEFENSE.md](../../DEFENSE.md) for training, independent evaluation, controls,
 reward handling, the original three-stage loop, and remaining completion checks.
