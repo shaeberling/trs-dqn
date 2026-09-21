@@ -24,6 +24,9 @@ does not add demonstrations, hidden-state inputs or reward bonuses.
 Both Defense trainers support `--observation-stride` to space their four
 visible input frames independently of action duration (default 1 preserves
 existing models). Checkpoint evaluation and verified replays retain that setting.
+Ordinary Defense DQN also has optional resets to opaque states reached during
+its own training; evaluation always starts from boot. See the reset controls
+and experimental limitations in [DEFENSE.md](DEFENSE.md).
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh
