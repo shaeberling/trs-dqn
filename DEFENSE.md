@@ -205,9 +205,9 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-06-life-boundary/status.json` and
-  `runs/defense-ppo-08-long-rollout/status.json`, each with an adjacent
-  `metrics.jsonl`. Runs 04, 05 and 07 have stopped cleanly; their complete logs
+- Live progress: `runs/defense-ppo-08-long-rollout/status.json` and
+  `runs/defense-ppo-09-curriculum-life/status.json`, each with an adjacent
+  `metrics.jsonl`. Runs 04, 05, 06 and 07 have stopped cleanly; their complete logs
   and final resumable checkpoints are archived below.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
@@ -241,6 +241,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-06-life-boundary/artifacts \
   --source runs/defense-ppo-07-curriculum/artifacts \
   --source runs/defense-ppo-08-long-rollout/artifacts \
+  --source runs/defense-ppo-09-curriculum-life/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -443,7 +444,7 @@ Run 05 then regressed for six consecutive validation rounds (means 318, 296,
 **2,961,408 additional actions**, **1,824 new complete training games**, and
 29 validation rounds. Its [complete log](results/defense/training/ppo-05-low-entropy/metrics.jsonl)
 and [final resumable checkpoint](results/defense/training/ppo-05-low-entropy/final-checkpoint/state.json)
-are preserved. Run 06 continues; the freed slot now runs the own-experience
+are preserved. Run 06 continued; the freed slot started the own-experience
 curriculum from run 05's strongest archived checkpoint, not its regressed end.
 
 ### Ship-loss learning-boundary comparison
@@ -462,7 +463,7 @@ Its first ten-game validation, after **102,400 additional actions**, had mean
 not stage completion or a statistically established success-rate improvement.
 The second round fell to mean **314**, median **320**, best **340**; the early
 gain is therefore not evidence of stable superiority.
-Run 06 remains active for further training with its isolated archive;
+Run 06 used its isolated archive throughout training;
 run 06's local replay is
 `runs/defense-ppo-06-life-boundary/artifacts/best/replay.html`.
 
@@ -484,8 +485,8 @@ This is a new trained-policy best, distinct from the older temperature-0.5
 diagnostic. Neither demonstrates a stage clear. All previous versions remain.
 
 Run 06 later matched the strongest ten-game validation mean, **416**, at
-counter **3,435,264** (median 420, best 440), still all stage 1. It remains
-unchanged while separate experiments run alongside it.
+counter **3,435,264** (median 420, best 440), still all stage 1. It continued
+unchanged while separate experiments ran alongside it.
 
 At counter **4,434,688**, unchanged run 06 set a new standard-policy best of
 **500 points**: ten complete validation games averaged **462**, median **460**,
@@ -523,6 +524,18 @@ and rewards before promotion. Its
 preserves the optimizer and complete evaluation alongside the shared replay.
 This improves both the best effort and reused-seed validation mean, not a
 fresh-test success rate or evidence of stage completion.
+
+Run 06 eventually stopped cleanly at counter **7,199,488**, after **6,066,176
+additional actions**, **3,423 new complete training games**, and **60 validation
+rounds**. No game reached stage 2; its best-so-far effort stayed at 600 for
+17 further rounds after first reaching that score. The strongest mean was
+**586**; the latest matching
+[checkpoint](results/defense/training/ppo-06-life-boundary/step-000007035648/state.json)
+is preserved with optimizer and evaluation. Its
+[complete log](results/defense/training/ppo-06-life-boundary/metrics.jsonl) and
+[final resumable state](results/defense/training/ppo-06-life-boundary/final-checkpoint/state.json)
+are archived. Run 08, which subsequently reached 620, remains active; the
+freed slot now tests curriculum resets with its successful learning boundaries.
 
 ### Own-experience curriculum: run 07
 
@@ -599,7 +612,7 @@ consistency on reused validation seeds, not fresh-test performance: every game
 remained in stage 1, with no mission completed. This did not replace the shared
 best single-effort replay because its best score only tied the original
 460-point model. Run 06 subsequently set the 600-point best described above.
-Run 06 continues unchanged; the curriculum was subsequently paused as below.
+Both historical runs were subsequently paused as described here.
 
 After **2,027,520 additional actions**, run 07 stopped cleanly at inherited
 counter **5,262,080**. It completed **974 new boot games** and **641 restored
@@ -626,8 +639,8 @@ consisted entirely of explicitly visible introduction text. No full 256-action
 chunk was entirely reward-free. These replay observations are not measurements of
 every actual multi-worker training batch, nor proof of a cause. The hypothesis
 is that longer batches mix introductions and active play more consistently.
-They do not skip screens, inject actions, or add reward. Run 06 remains an
-unchanged comparison, and complete from-boot validation decides performance.
+They do not skip screens, inject actions, or add reward. Run 06 initially stayed
+as an unchanged comparison; complete from-boot validation decides performance.
 
 ```sh
 venv/bin/python -u -m rl.defense_train --run runs/defense-long-rollout-reproduction \
@@ -644,8 +657,8 @@ After **106,496 additional actions**, run 08's
 averaged **552**, median **580**, best **600**, all stage 1 with no mission.
 Its selected complete replay reproduced all **1,982** neural actions after
 reloading the model. This is below the starting checkpoint's mean 564, not an
-improvement claim. It ties the shared best score and therefore does not replace
-the existing 600-point bundle. Both live runs continue unchanged.
+improvement claim. It tied the then-current shared best score and therefore did
+not replace the existing 600-point bundle. Run 08 continues unchanged.
 
 After **1,204,224 additional actions**, the longer-rollout trial reached
 **620 points** at counter **6,638,336**. Ten complete validation games: mean
@@ -657,6 +670,41 @@ preserves weights, optimizer and the complete evaluation. A preceding round
 averaged 584, so the best single replay is not also the highest-mean checkpoint.
 The 600-point model and all older versions remain available. This is progress
 on reused validation seeds, not yet evidence of a stage clear or mission win.
+
+### Curriculum with ship-loss boundaries: run 09
+
+`defense-ppo-09-curriculum-life` resumes the preserved 620-point model at
+counter **6,638,336**. Only own-experience curriculum resets are enabled relative
+to that checkpoint: probability 0.5, same-run snapshot sharing, and eight
+protected boot workers. All PPO settings, including **256-action rollouts and
+ship-loss learning boundaries**, remain unchanged. The
+[configuration](results/defense/training/ppo-09-curriculum-life/resume-config.json)
+records this comparison. Run 08 remains active as the unchanged baseline.
+
+This is not a restart of the earlier failed curriculum's final policy. Run 07
+started from a weaker 460-point model, used 128-action rollouts and did not have
+ship-loss learning boundaries. Run 09 starts with an empty archive and fills it
+only from its own newly reached states; it loads no demonstrations or prior
+snapshot archive. The same screen-only input, actual score-delta reward,
+restored-segment bookkeeping and complete from-boot evaluation rules apply.
+The collector includes its isolated output, but restored practice segments
+remain ineligible to replace the best complete-game replay.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-curriculum-life-reproduction \
+  --resume results/defense/training/ppo-08-long-rollout/step-000006638336 \
+  --artifacts runs/defense-curriculum-life-reproduction/artifacts \
+  --curriculum-probability .5 --curriculum-share --curriculum-boot-envs 8
+```
+
+After **106,496 additional actions**, run 09's
+[first validation](results/defense/training/ppo-09-curriculum-life/first-validation.json)
+averaged **554**, median **560**, best **580**, all stage 1 and no mission.
+Its replay reproduced all **1,927** neural actions after reload. This is below
+the starting checkpoint's mean 574, not an improvement. Runtime checks after
+34 boot games and 20 restored segments found no protected-worker restores or
+segment reward-accounting violations. Both live runs continue unchanged; the
+verified 620-point shared best remains preserved.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
