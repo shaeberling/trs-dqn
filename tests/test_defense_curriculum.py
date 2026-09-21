@@ -1,3 +1,4 @@
+from collections import deque
 from dataclasses import replace
 import unittest
 from unittest.mock import patch
@@ -150,7 +151,8 @@ class DefenseCurriculumTests(unittest.TestCase):
 
     def test_vector_routing_strips_opaque_snapshots_and_protects_boot_worker(self):
         workers = VectorEnv(2, seed=12, game="defense", max_steps=0, curriculum=True,
-                            curriculum_probability=1, curriculum_share=True, curriculum_boot_envs=1)
+                            curriculum_probability=1, curriculum_share=True, curriculum_boot_envs=1,
+                            curriculum_lookback=8)
         try:
             self.assertEqual([r["curriculum_reset_enabled"] for r in workers.runtime()], [False, True])
             for _ in range(200):
@@ -160,19 +162,173 @@ class DefenseCurriculumTests(unittest.TestCase):
                     for result in results:
                         if "curriculum_archive_add" in result[4]:
                             self.assertEqual(result[4]["curriculum_archive_add"]["shared_with"], 1)
+                            self.assertEqual(result[4]["curriculum_archive_add"]["lookback_actions"], 8)
                     break
             else:
                 self.fail("No shared archive entry")
         finally:
             workers.close()
 
+    def test_lookback_uses_exact_earlier_own_state_and_never_crosses_ship_loss(self):
+        env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_share=True,
+                                   worker_id=0, curriculum_lookback=8)
+        visited = deque(maxlen=9)
+        entries, losses = 0, 0
+        try:
+            env.reset(12)
+            for _ in range(3000):
+                _, _, done, _, info = env.step(0)
+                if info["life_lost"]:
+                    losses += 1
+                    visited.clear()
+                    self.assertEqual(len(env.history), 0)
+                    self.assertNotIn("curriculum_archive_add", info)
+                elif not done:
+                    visited.append(capture(env))
+                self.assertLessEqual(len(env.history), 9)
+                if "_curriculum_snapshot" in info:
+                    entries += 1
+                    saved, expected = info["_curriculum_snapshot"], visited[0]
+                    self.assertEqual(saved.native, expected.native)
+                    np.testing.assert_array_equal(saved.frames, expected.frames)
+                    self.assertEqual(saved.source_action, env.total_actions-8)
+                    self.assertEqual(saved.lives, env.lives)
+                    self.assertEqual(saved.stage, env.stage)
+                    self.assertEqual(saved.progress_start_score, env.progress_start_score)
+                    event = info["curriculum_archive_add"]
+                    self.assertEqual(event["source_action"], saved.source_action)
+                    self.assertEqual(event["source_episode_steps"], saved.steps)
+                    self.assertEqual(event["score"], saved.score)
+                    self.assertEqual(event["progress_bin"], (saved.score-saved.progress_start_score)//20)
+                    self.assertEqual(event["lookback_actions"], 8)
+                    self.assertEqual(event["trigger_action"], env.total_actions)
+                    self.assertEqual(event["trigger_score"], env.score)
+                if done:
+                    break
+            self.assertEqual(losses, 4)
+            self.assertGreater(entries, 4)
+            env.reset(99)
+            self.assertEqual(len(env.history), 0)
+        finally:
+            env.close()
+
+    def test_lookback_peer_restore_uses_saved_score_not_later_trigger_reward(self):
+        producer = DefenseCurriculumEnv(curriculum_probability=1, curriculum_share=True,
+                                        worker_id=0, curriculum_lookback=8)
+        try:
+            producer.reset(12)
+            for _ in range(500):
+                info = producer.step(0)[4]
+                saved = info.get("_curriculum_snapshot")
+                if saved is not None and saved.score > 0:
+                    self.assertLess(saved.score, info["score"])
+                    break
+            else:
+                self.fail("No positive-score lookback snapshot reached")
+        finally:
+            producer.close()
+        env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_share=True,
+                                   worker_id=1, curriculum_lookback=8)
+        try:
+            env.reset(99)
+            env.receive_archive([saved])
+            self.assertIn((saved.stage, (saved.score-saved.progress_start_score)//20), env.archive)
+            restored = env.reset()
+            np.testing.assert_array_equal(restored, saved.frames)
+            self.assertEqual(capture(env).native, saved.native)
+            self.assertEqual(env.segment_start_score, saved.score)
+            self.assertFalse(env.full_game)
+            self.assertEqual(len(env.history), 0)
+            total = 0
+            for _ in range(3000):
+                _, reward, done, _, result = env.step(0)
+                total += reward
+                if done:
+                    break
+            self.assertTrue(done)
+            self.assertEqual(total, env.score-saved.score)
+            self.assertEqual(result["episode_reward"], total)
+            self.assertIsNone(game_rank(result))
+        finally:
+            env.close()
+
+    def test_lookback_stage_entry_is_immediate_and_clears_previous_history(self):
+        env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_share=True,
+                                   worker_id=0, curriculum_lookback=8)
+        try:
+            env.reset(12)
+            for _ in range(10):
+                env.step(0)
+            self.assertEqual(len(env.history), 9)
+            original = DefenseEnv.step
+
+            def bookkeeping_transition(current, action):
+                result = original(current, action)
+                # Test bookkeeping only: no fabricated game state is restored
+                # or used as training data, and no game bytes are changed.
+                current.stage = 2
+                current.highest_stage = 2
+                return result
+
+            with patch.object(DefenseEnv, "step", bookkeeping_transition):
+                info = env.step(0)[4]
+            saved = info["_curriculum_snapshot"]
+            self.assertEqual(len(env.history), 1)
+            self.assertEqual(saved.source_action, env.total_actions)
+            self.assertEqual(saved.native, capture(env).native)
+            self.assertEqual(info["curriculum_archive_add"]["entry_kind"], "stage_entry")
+            self.assertEqual(info["curriculum_archive_add"]["lookback_actions"], 0)
+        finally:
+            env.close()
+
+    def test_disabled_curriculum_does_not_capture_lookback_history(self):
+        env = DefenseCurriculumEnv(curriculum_probability=0, curriculum_lookback=8)
+        try:
+            with patch("rl.defense_curriculum.capture", side_effect=AssertionError("disabled archive")):
+                env.reset(12)
+                for _ in range(100):
+                    env.step(0)
+            self.assertFalse(env.history)
+            self.assertFalse(env.archive)
+        finally:
+            env.close()
+
+    def test_lookback_collection_does_not_change_gameplay_or_rewards(self):
+        actions = np.random.default_rng(12).integers(20, size=3000)
+        original = DefenseEnv(max_steps=0)
+        expected = []
+        try:
+            first = original.reset(12)
+            for action in actions:
+                result = original.step(int(action))
+                expected.append(result)
+                if result[2]:
+                    break
+            self.assertTrue(expected[-1][2])
+        finally:
+            original.close()
+        env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_lookback=8)
+        try:
+            np.testing.assert_array_equal(env.reset(12), first)
+            for action, reference in zip(actions, expected):
+                result = env.step(int(action))
+                np.testing.assert_array_equal(result[0], reference[0])
+                self.assertEqual(result[1:4], reference[1:4])
+                self.assertEqual({key: result[4][key] for key in reference[4]}, reference[4])
+            self.assertTrue(env.archive)
+        finally:
+            env.close()
+
     def test_invalid_settings(self):
         for config in (dict(curriculum_probability=float("nan")), dict(curriculum_probability=2),
                        dict(curriculum_bins=0), dict(curriculum_per_bin=0),
-                       dict(curriculum_score_interval=-1), dict(curriculum_share=True),
+                       dict(curriculum_score_interval=-1), dict(curriculum_lookback=-1),
+                       dict(curriculum_share=True),
                        dict(curriculum_share=True, worker_id=0, curriculum_probability=0)):
             with self.assertRaises(ValueError):
                 DefenseCurriculumEnv(**config)
+        with self.assertRaises(TypeError):
+            DefenseCurriculumEnv(curriculum_lookback=1.5)
 
 
 if __name__ == "__main__":

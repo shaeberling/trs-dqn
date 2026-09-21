@@ -61,6 +61,8 @@ def main():
     parser.add_argument("--curriculum-score-interval", type=int, default=20)
     parser.add_argument("--curriculum-per-bin", type=int, default=4)
     parser.add_argument("--curriculum-bins", type=int, default=16)
+    parser.add_argument("--curriculum-lookback", type=int, default=0,
+                        help="archive an own-play state this many actions before score progress; 0 disables")
     parser.add_argument("--curriculum-share", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--curriculum-boot-envs", type=int, default=0)
     args = parser.parse_args()
@@ -92,7 +94,8 @@ def main():
     if not 1 <= args.tstates <= 1_000_000:
         parser.error("tstates out of range")
     if (not np.isfinite(args.curriculum_probability) or not 0 <= args.curriculum_probability <= 1
-            or args.curriculum_score_interval < 0 or min(args.curriculum_per_bin, args.curriculum_bins) < 1
+            or min(args.curriculum_score_interval, args.curriculum_lookback) < 0
+            or min(args.curriculum_per_bin, args.curriculum_bins) < 1
             or not 0 <= args.curriculum_boot_envs < args.envs
             or (args.curriculum_share and not args.curriculum_probability)
             or (args.curriculum_boot_envs and not args.curriculum_share)):
@@ -190,6 +193,7 @@ def main():
             curriculum = dict(curriculum=True, curriculum_probability=args.curriculum_probability,
                               curriculum_score_interval=args.curriculum_score_interval,
                               curriculum_per_bin=args.curriculum_per_bin, curriculum_bins=args.curriculum_bins,
+                              curriculum_lookback=args.curriculum_lookback,
                               curriculum_share=args.curriculum_share,
                               curriculum_boot_envs=args.curriculum_boot_envs)
         workers = VectorEnv(args.envs, args.seed+steps, game="defense", tstates=args.tstates,

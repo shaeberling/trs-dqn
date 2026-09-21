@@ -5,6 +5,8 @@ began. No action script, hidden-state labels, demonstration files or bonuses.
 Complete-game evaluation always uses the ordinary DefenseEnv instead.
 """
 
+from collections import deque
+
 import numpy as np
 
 from .defense import DefenseEnv, ENVIRONMENT_VERSION, GAME_SHA256, positive_integer
@@ -14,12 +16,13 @@ from .defense_snapshot import DefenseSnapshot, capture, restore
 class DefenseCurriculumEnv(DefenseEnv):
     def __init__(self, seed=0, curriculum_probability=.5, curriculum_score_interval=20,
                  curriculum_per_bin=4, curriculum_bins=16, curriculum_share=False,
-                 worker_id=None, curriculum_reset=True, **config):
+                 worker_id=None, curriculum_reset=True, curriculum_lookback=0, **config):
         if not np.isfinite(curriculum_probability) or not 0 <= curriculum_probability <= 1:
             raise ValueError("invalid curriculum probability")
         self.interval = positive_integer(curriculum_score_interval, "score interval", allow_zero=True)
         self.per_bin = positive_integer(curriculum_per_bin, "entries per bin")
         self.bins = positive_integer(curriculum_bins, "bins per stage")
+        self.lookback = positive_integer(curriculum_lookback, "curriculum lookback", allow_zero=True)
         if worker_id is not None:
             worker_id = positive_integer(worker_id, "worker ID", allow_zero=True)
         if curriculum_share and (not curriculum_probability or worker_id is None):
@@ -30,6 +33,7 @@ class DefenseCurriculumEnv(DefenseEnv):
         self.curriculum_reset = curriculum_reset
         self.curriculum_rng = np.random.default_rng(np.random.SeedSequence([seed, 719]))
         self.archive, self.encounters = {}, {}
+        self.history = deque(maxlen=self.lookback+1)
         self.total_actions = 0
         self.progress_start_score = 0
 
@@ -59,6 +63,7 @@ class DefenseCurriculumEnv(DefenseEnv):
             bank[slot] = saved
 
     def reset(self, seed=None):
+        self.history.clear()
         if (seed is None and self.curriculum_reset and self.archive
                 and self.curriculum_rng.random() < self.curriculum_probability):
             stage = int(self.curriculum_rng.choice(sorted({k[0] for k in self.archive})))
@@ -107,6 +112,13 @@ class DefenseCurriculumEnv(DefenseEnv):
         if stage_entry or info["life_lost"]:
             self.progress_start_score = self.score
             self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score)
+        if self.curriculum_probability and self.lookback:
+            # Keep only actually visited states within this life and stage.
+            # Neither the policy nor the reward receives this opaque history.
+            if stage_entry or info["life_lost"] or self.done:
+                self.history.clear()
+            if not self.done and not info["life_lost"]:
+                self.history.append(capture(self))
         key = self._key(self.stage, self.score, self.progress_start_score)
         progress_entry = bool(self.interval and key != self.last_archive_key)
         self.last_archive_key = key
@@ -117,18 +129,33 @@ class DefenseCurriculumEnv(DefenseEnv):
                     episode_reward=float(self.score-self.segment_start_score))
         if (self.curriculum_probability and not self.done and not info["life_lost"]
                 and (stage_entry or progress_entry)):
+            saved = None
+            if self.lookback and not stage_entry:
+                # A new stage is always captured immediately. Ordinary score
+                # progress can select an earlier own-play state, giving a
+                # future reset more lead-in before the rewarding event.
+                if len(self.history) <= self.lookback:
+                    return obs, reward, terminal, truncated, info
+                saved = self.history[0]
+                key = self._key(saved.stage, saved.score, saved.progress_start_score)
             slot = self._reserve_slot(key)
             if slot is not None or self.curriculum_share:
-                saved = capture(self)
+                if saved is None:
+                    saved = capture(self)
                 if slot is not None:
                     self._install(key, saved, slot)
                 info["curriculum_archive_add"] = dict(
-                    stage=self.stage, score=self.score, progress=self.score-self.progress_start_score,
+                    stage=saved.stage, score=saved.score, progress=saved.score-saved.progress_start_score,
                     progress_bin=key[1], entry_kind="stage_entry" if stage_entry else "score_progress",
-                    source_action=self.total_actions, source_episode_steps=self.steps,
-                    source_full_game=self.full_game, retained=slot is not None, shared=self.curriculum_share,
+                    source_action=saved.source_action, source_episode_steps=saved.steps,
+                    source_full_game=saved.source_full_game, retained=slot is not None, shared=self.curriculum_share,
                     source_parent_worker=self.segment_source_worker,
                     source_parent_action=self.segment_source_action)
+                if self.lookback:
+                    info["curriculum_archive_add"].update(
+                        lookback_actions=self.total_actions-saved.source_action,
+                        trigger_action=self.total_actions, trigger_score=self.score,
+                        trigger_progress=self.score-self.progress_start_score)
                 if self.curriculum_share:
                     info["_curriculum_snapshot"] = saved
         if terminal or truncated:

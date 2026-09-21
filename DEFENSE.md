@@ -891,6 +891,44 @@ frozen model; the [verification record](results/defense/training/ppo-11-explorat
 is preserved. This is below its starting model's mean 9,981 and best 10,480;
 it does not replace the shared best. The experiment continues unchanged.
 
+### Optional earlier-state curriculum
+
+`--curriculum-lookback N` is disabled by default (`N=0`). With the option
+enabled, a score-progress event can archive a state actually visited **N
+actions earlier**, instead of the state at the reward event. The hypothesis
+is that a practice reset with more lead-in may help when a rewarding state is
+already close to a collision. It does not identify obstacles, select a route,
+or provide actions, demonstrations, fabricated states, or extra reward.
+
+The bounded opaque history contains at most `N+1` own-play snapshots per worker.
+It clears at resets, detected ship losses, stage changes and terminal outcomes;
+insufficient history is skipped. Newly reached stages are still archived
+immediately. Archive buckets and reset score baselines use the **saved state's
+own visible score**, not the later triggering score. Logs distinguish capture
+and trigger actions/scores. Neither this history nor those labels reach the
+policy. Snapshots and history are not loaded from demonstration files or
+checkpointed; fresh runs refill them through their own gameplay. Ordinary
+full-game evaluation still starts from boot without curriculum resets.
+
+All **184 tests** passed, including exact earlier-state provenance, peer restore
+and score accounting, life/stage boundary bookkeeping, protected-worker routing,
+bounded history, and a full-game comparison proving that collection alone does
+not change screens, rewards or outcomes. Stage-transition bookkeeping is unit
+tested; this is not a claim of an actual learned stage-2 reach.
+
+A separate [integration smoke run](results/defense/training/lookback-smoke-01/resume-config.json)
+used four workers, a 32-action lookback and **16,384 additional training
+actions**, then ten uncapped complete evaluation games. It collected 306 archive
+entries, including 23 from an active restored segment; no restored segment had
+finished when the bounded training smoke test ended. Full restored-episode
+reward accounting is separately covered by the native regression tests.
+Evaluation mean **9,854**, median **10,230**, best **10,260**, all stage 1 and
+no mission. Its [frozen replay](results/defense/training/lookback-smoke-01/replay/replay.html)
+reproduced all **2,433** neural actions. The log, model, optimizer, evaluation
+and replay bundle are preserved. This is an integration check, not evidence
+of improved performance; the smoke artifact source is excluded from the
+production collector.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
