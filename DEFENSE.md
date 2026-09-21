@@ -816,7 +816,7 @@ are preserved separately from the best-effort model. Its
 [complete log](results/defense/training/ppo-09-curriculum-life/metrics.jsonl) and
 [final resumable state](results/defense/training/ppo-09-curriculum-life/final-checkpoint/state.json)
 are archived. The successful score milestones remain available. The freed
-training slot now tests stronger exploration, while run 10 continues unchanged.
+training slot then tested stronger exploration, while run 10 continued unchanged.
 
 ### Longer-credit comparison: run 10
 
@@ -837,7 +837,7 @@ and refills from newly played states. There are no game/episode action caps
 or wall-clock limits. Three focused checks passed for analytic trace decay,
 episode-boundary isolation and optimizer-resume equivalence before launch.
 Run 09 initially continued unchanged as the reference experiment, and was later
-archived as described above. Run 10 remains active. Experiments write isolated
+archived as described above. Run 10 was later archived too. Experiments write isolated
 artifacts, with the single verification collector watching their sources.
 
 ```sh
@@ -853,7 +853,20 @@ Its local best replay exactly reproduced all **2,568** neural actions after
 reloading the weights; the [verification record](results/defense/training/ppo-10-long-credit/first-verification.json)
 is preserved. This first result is below its starting checkpoint's mean 9,981
 and best 10,480, so it does not replace the shared best or establish improvement.
-The experiment continues unchanged beyond this initial validation.
+The experiment continued unchanged beyond this initial validation.
+
+Run 10 stopped cleanly at **9,988,864**, after **1,646,592 additional actions**,
+**498 new complete boot games**, **375 completed restored segments** and
+**16 validation rounds**. It tied 10,480 but never exceeded it or reached stage 2.
+Its strongest ten-game mean was **10,473**, median **10,480**, best **10,480**,
+at counter **9,046,784**. That
+[resumable checkpoint](results/defense/training/ppo-10-long-credit/step-000009046784/state.json),
+the [full log](results/defense/training/ppo-10-long-credit/metrics.jsonl),
+[final model/optimizer](results/defense/training/ppo-10-long-credit/final-checkpoint/state.json)
+and [verified best replay](results/defense/training/ppo-10-long-credit/best-effort/replay.html)
+are preserved. The replay reproduces all **2,562** actions. This improved
+score consistency, not stage completion. Its freed slot now tests the
+earlier-state curriculum described below; run 11 continues unchanged.
 
 ### Stronger-exploration comparison: run 11
 
@@ -861,7 +874,7 @@ The experiment continues unchanged beyond this initial validation.
 counter **8,342,272** as run 10. Its only changed parameter relative to that
 parent is **entropy coefficient 0.002 to 0.01**, confirmed by comparing the
 [saved configuration](results/defense/training/ppo-11-exploration/resume-config.json).
-GAE lambda remains 0.95 here. Thus run 10 tests longer credit assignment and
+GAE lambda remains 0.95 here. Run 10 tested longer credit assignment and
 run 11 tests stronger exploration, each changing one parameter from their
 common preserved starting point. Neither intervention has yet established
 that it can clear the first stage.
@@ -928,6 +941,40 @@ reproduced all **2,433** neural actions. The log, model, optimizer, evaluation
 and replay bundle are preserved. This is an integration check, not evidence
 of improved performance; the smoke artifact source is excluded from the
 production collector.
+
+### Earlier-state curriculum: run 12
+
+`defense-ppo-12-lookback` resumes run 10's strongest-mean checkpoint at
+counter **9,046,784** (mean **10,473**, best **10,480**). Its only changed
+training parameter is **curriculum lookback 0 to 32 actions**; the
+[saved configuration](results/defense/training/ppo-12-lookback/resume-config.json)
+was compared with the parent checkpoint, treating the previously absent
+lookback option as its zero default. The curriculum source hash records the
+new, tested implementation. All other training and game settings are inherited,
+including GAE lambda 0.99, entropy 0.002, 32 workers, 256-action rollouts,
+eight protected boot workers, score-only reward and ordinary evaluation.
+
+The archive and bounded history start empty and fill only through new own play.
+No prior snapshot archive or diagnostic trace is loaded. The run has no action
+or wall-clock limit, and its isolated artifact source is included in the single
+verification collector. Run 11 remains active as the exploration comparison.
+This is an experiment aimed at the unresolved stage-1 bottleneck, not a claim
+that the lookback hypothesis has improved performance.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-lookback-reproduction \
+  --resume results/defense/training/ppo-10-long-credit/step-000009046784 \
+  --artifacts runs/defense-lookback-reproduction/artifacts --curriculum-lookback 32
+```
+
+After **106,496 additional actions**, run 12's
+[first validation](results/defense/training/ppo-12-lookback/first-validation.json)
+averaged **10,431**, median **10,470**, best **10,480**, all stage 1 and no mission.
+Its local replay reproduced all **2,544** neural actions; the
+[verification record](results/defense/training/ppo-12-lookback/first-verification.json)
+is preserved. This ties the shared best and is slightly below the starting
+mean of 10,473, so it does not establish improvement or replace the existing
+best-effort replay. The experiment continues unchanged.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
