@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **10,200 points**, with **2,495** neural
-actions exactly reverified; its ten-game mean is **7,019**, median **7,090**, all stage 1.
+The current standard-policy best is **10,280 points**, with **2,519** neural
+actions exactly reverified; its ten-game mean is **8,834**, median **9,115**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -730,6 +730,19 @@ intro or mission message. Its
 [resumable checkpoint](results/defense/training/ppo-09-curriculum-life/step-000007039744/state.json)
 and immutable replay bundle are preserved separately from the 2,950-point
 milestone. This remains a score improvement, not a verified stage clear.
+
+At counter **7,146,240**, after **507,904 additional actions**, run 09 reached
+**10,260 points**, with all **2,562** actions exactly verified from boot.
+Ten complete validation games: mean **8,169**, median **8,030**, best **10,260**,
+still all stage 1 and no mission. The
+[resumable checkpoint](results/defense/training/ppo-09-curriculum-life/step-000007146240/state.json)
+and complete replay bundle are preserved; both active experiments continue.
+
+At counter **7,244,544**, after **606,208 additional actions**, run 09 reached
+**10,280 points**, with all **2,519** actions exactly verified from boot.
+Ten complete validation games: mean **8,834**, median **9,115**, best **10,280**,
+still all stage 1 and no mission. The immutable replay bundle preserves its
+weights, evaluation, action trace and verification alongside the earlier milestones.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
