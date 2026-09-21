@@ -1479,6 +1479,16 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-moderate-weight-reprod
   --steps 0 --eval-every 100000
 ```
 
+Run 19's [first ten complete games](results/defense/training/ppo-19-moderate-weight-noise/first-validation.json),
+after **106,496** additional actions, averaged **9,728**, median **10,370**,
+best **10,480**, all stage 1 without a mission. Its
+[verification record](results/defense/training/ppo-19-moderate-weight-noise/first-verification.json)
+confirms **2,580** reproduced actions. The local first-evaluation checkpoint
+and immutable replay bundle have matching weights and validated manifests;
+the full calibration bundle is committed above. This early result is below
+its starting mean, not an improvement; training continues without replacing
+the global best on a tied score.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
