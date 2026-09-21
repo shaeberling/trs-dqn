@@ -1093,6 +1093,19 @@ Its local replay reproduced all **2,505** neural actions; the
 is retained. This ties the shared best score but is below the parent mean;
 it is not evidence of improvement. The full run continues unchanged.
 
+Run 13 subsequently stopped gracefully at counter **10,570,496**, after
+**1,523,712 additional actions**, 458 new completed boot games, 302 completed
+restored segments and 15 ten-game validations. It tied 10,480 but never
+exceeded it or reached stage 2. Its strongest mean was **10,422** (median
+10,445) at **9,849,600**, below its parent's mean of 10,473; the final
+validation mean was 10,271. The
+[full log](results/defense/training/ppo-13-screen-cells/metrics.jsonl),
+[final optimizer checkpoint](results/defense/training/ppo-13-screen-cells/final-checkpoint/state.json),
+[strongest-mean checkpoint](results/defense/training/ppo-13-screen-cells/step-000009849600/state.json)
+and [verified best replay](results/defense/training/ppo-13-screen-cells/best-effort/replay.html)
+are preserved. This tested screen-cell configuration did not resolve the
+observed bottleneck; the optional implementation remains available.
+
 ### Longer-return PPO: run 14
 
 `defense-ppo-14-long-horizon` replaces the stopped run 12, while run 13 continues.
@@ -1213,6 +1226,30 @@ three-learner monitoring found roughly 1,670 aggregate training actions/second,
 stable swap usage on the follow-up check and 37% reported free memory; these
 are short observations, not a hardware benchmark. All three trials continue,
 with the original verified best unchanged.
+
+### Stronger persistent exploration: run 16
+
+`defense-ppo-16-strong-bias-noise` replaces stopped run 13. It starts from
+exactly the same counter-**10,447,616** checkpoint as the continuing run 15,
+changing only **policy-bias noise standard deviation 1 → 2** relative to that
+trial. The [saved configuration](results/defense/training/ppo-16-strong-bias-noise/resume-config.json)
+was compared directly with run 15: apart from paths, that scalar is the sole
+difference. It uses the same tested implementation, 32 workers, eight protected
+boot workers, score-bin/lookback curriculum, ordinary score reward and uncapped
+complete-game evaluation. There are no total-action or wall-clock limits.
+
+The hypothesis is that larger, temporally consistent perturbations will sample
+more different behaviors than scale 1. This is not evidence of better play and
+may instead disrupt already learned behavior. Only a complete unperturbed
+evaluation and verified replay can promote the shared best. Runs 14 and 15
+continue unchanged, and the single collector includes run 16 while retaining
+the earlier artifact sources.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-strong-bias-reproduction \
+  --resume results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-strong-bias-reproduction/artifacts --policy-bias-noise 2
+```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
