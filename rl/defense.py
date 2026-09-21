@@ -175,7 +175,13 @@ class DefenseEnv:
                 if info["game_over"] or np.array_equal(previous, frame[0]):
                     break
             else:
-                raise RuntimeError("Defense HUD did not settle")
+                # A scrolling intro/wipe can keep changing row 0 without
+                # displaying any HUD at all. Unknown visible fields carry no
+                # reward and are retained from the last readable HUD below.
+                # Do not abort learning because an animation is still moving.
+                # Numeric HUDs must still stabilize; never accept a torn score.
+                if info["score"] is not None or info["lives"] is not None:
+                    raise RuntimeError(f"Defense numeric HUD did not settle: {frame[0].tobytes().hex()}")
         frame, info, terminal_settle = self._finish_terminal(frame, info)
         score = self.score if info["score"] is None else info["score"]
         if score < self.score:

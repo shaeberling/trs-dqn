@@ -186,8 +186,9 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-01/status.json` and `metrics.jsonl`.
-- Historical checkpoints: `runs/defense-ppo-01/step-*/`, including optimizer,
+- Live progress: `runs/defense-ppo-02/status.json` and `metrics.jsonl` (resumed
+  from run 01; see the experiment notes below).
+- Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
   [replay](results/defense/learned/best/replay.html) and
@@ -215,6 +216,25 @@ The goal remains to observe and verify the original game's mission-ending
 screen and subsequent behavior. The three-stage wrap in the binary is not
 permission to relabel a ship-loss GAME OVER as a victory or manufacture more
 levels. Keep improving until the successful completion sequence is observed.
+
+### Experiment log: initial training and recovery
+
+- `defense-ppo-01`: 531,200 sampled training actions before the strict HUD
+  settling check stopped a worker. The trainer saved policy/optimizer state
+  and closed its workers; this was not a completed training goal. Its full
+  [log](results/defense/training/ppo-01/metrics.jsonl) and
+  [configuration](results/defense/training/ppo-01/config.json) are preserved.
+- Best frozen checkpoint from that run: step 303,104, score **340**, 1,615
+  verified neural actions. Ten complete validation games: mean **310**, median
+  **300**, highest stage **1**, no completed mission.
+- The guard now permits continuously animated rows that contain no readable
+  score/lives, while still rejecting unstable numeric HUDs. It makes no change
+  to the timing or outputs of previously successful runs. Both archived learned
+  replays were re-executed after the fix: all actions, screens and rewards were
+  identical. The new run also records the environment source hash.
+- `defense-ppo-02`: resumes run 01's saved policy, optimizer and RNG at action
+  counter 531,200, with the same hyperparameters and a fresh set of from-boot
+  emulator episodes. No demonstrations or hidden-state gameplay inputs added.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
