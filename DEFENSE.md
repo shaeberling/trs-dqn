@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **620 points**, with **2,047** neural
-actions exactly reverified; its ten-game mean is **574**, median **580**, all stage 1.
+The current standard-policy best is **2,950 points**, with **2,008** neural
+actions exactly reverified; its ten-game mean is **1,055**, median **650**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -705,6 +705,21 @@ the starting checkpoint's mean 574, not an improvement. Runtime checks after
 34 boot games and 20 restored segments found no protected-worker restores or
 segment reward-accounting violations. Both live runs continue unchanged; the
 verified 620-point shared best remains preserved.
+
+At counter **6,941,440**, after **303,104 additional actions**, run 09 reached
+**2,950 points** in a complete ordinary from-boot validation game. Ten games:
+mean **1,055**, median **650**, best **2,950**, all stage 1, no mission. The
+collector reloaded the frozen weights and reproduced all **2,008** actions,
+screens and rewards before promoting the shared best. Independent trace checks
+confirmed an initial visible score of zero with four ships, total reward of
+2,950, and only stage-1 introduction text; this is not a restored practice
+segment or a claimed stage clear. The
+[resumable milestone](results/defense/training/ppo-09-curriculum-life/step-000006941440/state.json)
+preserves weights, optimizer and the complete evaluation. All older models
+and verified replays remain available, and both active runs continue unchanged.
+The visible reward trace contains thirty 20-point increments and awards of
+100, 750 and 1,500 points. The large score gain therefore does not by itself
+demonstrate a longer survival time or a later stage.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
