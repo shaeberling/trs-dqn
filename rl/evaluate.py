@@ -113,7 +113,7 @@ def categorical_policy(infer_logits, seed=0):
     def choose(obs, uniforms):
         logits = np.asarray(infer_logits(obs))
         probs = np.exp(logits-np.logaddexp.reduce(logits, axis=-1, keepdims=True))
-        return (uniforms[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, 5)
+        return (uniforms[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
 
     def sample(obs):
         return choose(obs, rng.random(len(obs)))

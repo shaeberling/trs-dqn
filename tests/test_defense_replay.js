@@ -27,7 +27,13 @@ assert.equal(read('actions.length'), read('metadata.verified_actions'));
 assert(read('actions.every(a => Number.isInteger(a) && a >= 0 && a < 20)'));
 assert(read('frames.every(f => f.length === 1024)'));
 assert(read('metadata.result.terminated'));
-assert.equal(read('metadata.trained_model'), false);
+assert.equal(typeof read('metadata.trained_model'), 'boolean');
+if (read('metadata.trained_model')) {
+  assert(html.includes('Trained screen-only neural policy'));
+  assert.match(read('metadata.checkpoint_sha256'), /^[0-9a-f]{64}$/);
+} else {
+  assert(html.includes('not a trained agent'));
+}
 const final = Buffer.from(read('frames.at(-1)')).toString('latin1');
 assert.equal(Number(final.slice(0, 16).trim()), read('metadata.result.score'));
 assert(final.slice(448, 512).includes('GAME OVER PLAYER 1'));

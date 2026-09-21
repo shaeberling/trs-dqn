@@ -21,14 +21,14 @@ def render_table():
 
 
 class QNetwork(nn.Module):
-    def __init__(self):
+    def __init__(self, action_count=6):
         super().__init__()
         self.conv = [nn.Conv2d(8, 16, 5, 2, 2),
                      nn.Conv2d(16, 32, 3, 2, 1),
                      nn.Conv2d(32, 32, 3, 2, 1)]
         self.hidden = nn.Linear(32*6*16, 256)
         self.value = nn.Linear(256, 1)
-        self.advantage = nn.Linear(256, 6)
+        self.advantage = nn.Linear(256, action_count)
         # A private attribute is not a model parameter in MLX.
         self._table = mx.array(render_table())
 

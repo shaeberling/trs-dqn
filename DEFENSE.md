@@ -5,9 +5,13 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
-Status: **playable, separate screen-only environment implemented, complete-game
-diagnostics and verified replays saved. No model has been trained for this game.**
-Breakdown's training code, frozen models, published site and results are unchanged.
+Status: **screen-only PPO training is running independently of Breakdown**, with
+parallel emulator workers, resumable checkpoints, complete-game validation and
+automatic verified best-effort replays. See the commands and monitoring paths
+below. A successful mission has not yet been verified.
+Breakdown's frozen models, published site and results are unchanged. Shared
+network/sampler code now supports configurable action counts while preserving
+the original six-action defaults.
 
 ## Play and inspect
 
@@ -160,13 +164,55 @@ finally:
     env.close()
 ```
 
-Recommended next implementation: a fresh 20-action MLX PPO policy on this Mac,
-parallel emulator processes, separate `runs/defense-*` checkpoints and logs,
-complete-game validation, and a model-driven recorder/verifier. Reuse the
+The new learner is a fresh 20-action MLX PPO policy on this Mac. It reuses the
 screen encoder/optimizer implementation, **not Breakdown's weights, six-action
 head, curriculum, level-ranking rules or game-specific evaluation**. The existing
-`rl.ppo` / `rl.train` CLI is still Breakdown-only; it has not been silently
-reconfigured to train Defense. No long training run has started.
+`rl.ppo` / `rl.train` CLI remains Breakdown-only. Defense has its own command:
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-ppo-01 \
+  --artifacts results/defense/learned --envs 32 --rollout 128 \
+  --batch-size 512 --epochs 4 --eval-every 100000 --eval-games 10 --eval-envs 10
+```
+
+The command defaults to unlimited training and complete, uncapped episodes.
+Reward is the actual visible score delta multiplied by a fixed 0.01 for the
+optimizer's units; there is no shaping or clipping. Ship loss is not a separate
+learning terminal by default. SIGINT/SIGTERM saves `latest` and exits cleanly.
+Resume with `--resume runs/defense-ppo-01/latest`; the optimizer and policy RNG
+are restored, while emulator episodes restart from boot (not exact trajectory
+continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
+fresh-test seeds to tune the model.
+
+- Live progress: `runs/defense-ppo-01/status.json` and `metrics.jsonl`.
+- Historical checkpoints: `runs/defense-ppo-01/step-*/`, including optimizer,
+  configuration, policy weights and each completed validation suite.
+- Stable best effort, once a validation candidate is verified:
+  [replay](results/defense/learned/best/replay.html) and
+  [weights](results/defense/learned/best/model.safetensors).
+- Every promotion appends an immutable bundle under `results/defense/learned/versions/`
+  and atomically switches the `best` symlink. Earlier versions are preserved.
+  Each contains weights, configuration, evaluation, SHA-256 manifest, action/
+  screen/reward trace, and a verification report.
+
+Selection prioritizes completed missions, then highest stage, then score, among
+**complete from-boot games only**. The stable best is a best single effort, not
+a claim of reliable mean performance. Before promotion, the frozen weights are
+reloaded and must exactly reproduce every neural action, reward and screen.
+No unverified or truncated replay replaces the best.
+
+Evaluate a frozen checkpoint independently (choose a new output path):
+
+```sh
+venv/bin/python -m rl.defense_evaluate \
+  results/defense/learned/best/model.safetensors \
+  --output runs/defense-fresh-evaluation.json --games 10 --seed 20000 --envs 10
+```
+
+The goal remains to observe and verify the original game's mission-ending
+screen and subsequent behavior. The three-stage wrap in the binary is not
+permission to relabel a ship-loss GAME OVER as a victory or manufacture more
+levels. Keep improving until the successful completion sequence is observed.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an

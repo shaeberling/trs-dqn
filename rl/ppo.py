@@ -59,12 +59,13 @@ def update_selection(result, target_level, best_mean, best_levels, *, game_win=F
 
 
 class PPO:
-    def __init__(self, seed=17, learning_rate=2.5e-4, entropy=0.01, reference_kl_weight=0):
+    def __init__(self, seed=17, learning_rate=2.5e-4, entropy=0.01, reference_kl_weight=0,
+                 action_count=6):
         if not np.isfinite(reference_kl_weight) or reference_kl_weight < 0:
             raise ValueError("reference KL weight must be finite and nonnegative")
         _load_backend()
         mx.random.seed(seed)
-        self.model = QNetwork()
+        self.model = QNetwork(action_count=action_count)
         self.optimizer = optim.Adam(learning_rate, eps=1e-5)
         self.optimizer.init(self.model.trainable_parameters())
         self.entropy = entropy
@@ -107,7 +108,7 @@ class PPO:
         logits, values = np.array(logits), np.array(values)
         logp = logits-np.logaddexp.reduce(logits, axis=-1, keepdims=True)
         probs = np.exp(logp)
-        actions = (rng.random(len(obs))[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, 5)
+        actions = (rng.random(len(obs))[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
         return actions.astype(np.int32), logp[np.arange(len(obs)), actions], values
 
     def policy(self, seed=0):
