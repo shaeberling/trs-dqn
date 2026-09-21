@@ -1,6 +1,6 @@
 """Defense-only evaluation, policy loading and verified best-effort publishing.
 
-All play comes from the model's screen-only categorical policy. No controller,
+All play comes from a learned screen-only policy. No controller,
 demonstration data, hidden-state reward, or Breakdown level semantics.
 """
 
@@ -27,6 +27,37 @@ def write_json(path, value):
 
 def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+DQN_ALGORITHM = "dueling-double-dqn-per-nstep"
+
+
+def policy_description(config, temperature=1.0):
+    algorithm = config.get("algorithm", "ppo")
+    if algorithm == DQN_ALGORITHM:
+        return "learned Q-values, greedy"
+    if algorithm != "ppo":
+        raise ValueError("Unsupported Defense policy algorithm")
+    return ("learned categorical, sampled" if temperature == 1 else
+            "learned categorical logits, temperature-scaled sampling")
+
+
+def greedy_policy(infer_values):
+    """Same evaluation protocol as categorical policies; no exploration/RNG draws."""
+    def sample(obs):
+        values = np.asarray(infer_values(obs))
+        if values.ndim != 2 or values.shape[0] != len(obs) or not np.isfinite(values).all():
+            raise ValueError("Invalid learned Q-values")
+        return values.argmax(axis=1)
+
+    def with_rngs(obs, rngs):
+        if len(obs) != len(rngs):
+            raise ValueError("provide one policy RNG per observation")
+        return sample(obs)
+
+    sample.reset_seed = lambda seed: None
+    sample.sample_with_rngs = with_rngs
+    return sample
 
 
 def game_rank(game):
@@ -56,6 +87,9 @@ def load_policy(checkpoint, *, temperature=1.0):
     import mlx.core as mx
     checkpoint = Path(checkpoint)
     config = json.loads((checkpoint.parent/"state.json").read_text())["config"]
+    if isinstance(temperature, bool) or not np.isfinite(temperature) or temperature <= 0:
+        raise ValueError("temperature must be finite and positive")
+    policy_description(config, temperature)  # Reject unknown algorithms, never guess.
     names = action_names(config.get("allow_enter", False))
     if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
             or config.get("environment_version") != ENVIRONMENT_VERSION
@@ -64,6 +98,11 @@ def load_policy(checkpoint, *, temperature=1.0):
     model = QNetwork(action_count=len(names))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
+    if config.get("algorithm") == DQN_ALGORITHM:
+        if temperature != 1:
+            raise ValueError("Temperature overrides do not apply to a greedy DQN policy")
+        predict = mx.compile(model, inputs=model.state)
+        return greedy_policy(lambda obs: np.array(predict(mx.array(obs)))), config
     predict = mx.compile(model.policy_value, inputs=model.state)
     return temperature_policy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
 
@@ -184,7 +223,7 @@ def publish_best(checkpoint, evaluation, output, *, should_stop=lambda: False, l
     write_json(bundle/"verification.json", verification)
     metadata = dict(game="Obstacle Run / Missile Defense", game_sha256=GAME_SHA256,
                     environment_version=ENVIRONMENT_VERSION, action_names=config["action_names"],
-                    policy="learned categorical, sampled", trained_model=True,
+                    policy=policy_description(config), trained_model=True,
                     verified_actions=len(actions), checkpoint_sha256=verification["checkpoint_sha256"],
                     tstates=config["tstates"], max_steps=config["eval_max_steps"], result=result,
                     events=events, training_steps=state["steps"])

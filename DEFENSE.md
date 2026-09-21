@@ -1654,6 +1654,17 @@ reused-validation comparison is a small local advantage for encoder transfer,
 not evidence of better final performance or lower total training cost: run 20
 also used an encoder pretrained for 10,447,616 actions. Both remain in stage 1.
 
+Later saved milestones are run 17's **1,370**-point effort at **4,603,904**
+actions ([mean 615, median 520](results/defense/training/ppo-17-fresh-seed/step-000004603904/evaluation.json),
+[2,002 verified replay actions](results/defense/training/ppo-17-fresh-seed/replay-1370/replay.html))
+and run 20's **580** at **1,802,240** new actions
+([mean 540, median 550](results/defense/training/ppo-20-encoder-transfer/step-000001802240/evaluation.json),
+[1,958 verified replay actions](results/defense/training/ppo-20-encoder-transfer/replay-580/replay.html)).
+Full model/optimizer bundles accompany both. The isolated 1,370 effort did not
+persist in subsequent run-17 batches, whose best scores returned to around 600;
+it is a capability observation, not reliable performance. Neither trial has
+advanced beyond stage 1, and both continue without changing the shared best.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
@@ -1790,6 +1801,87 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-short-action-check \
   --artifacts runs/defense-short-action-check/artifacts --tstates 50000 \
   --envs 4 --rollout 256 --batch-size 256 --curriculum-boot-envs 1 \
   --mlx-cache-mb 256 --eval-envs 4 --eval-every 16384 --steps 10464000
+```
+
+### Independent Double-DQN training path
+
+`python -m rl.defense_dqn` provides a separate value-learning alternative to
+the PPO trials. It reuses the repository's MLX dueling network, Double-Q target
+calculation, prioritized replay and n-step return code, generalized to Defense's
+20 actions while retaining Breakdown's six-action defaults. Method references:
+[Double DQN](https://arxiv.org/abs/1509.06461),
+[prioritized experience replay](https://arxiv.org/abs/1511.05952) and
+[dueling networks](https://arxiv.org/abs/1511.06581). This is not Rainbow, a
+bootstrapped ensemble, an exact paper reproduction or evidence of improvement.
+It tests a different learning/update process after the repeated PPO depth
+plateaus; no particular cause of those plateaus has been established.
+
+Fresh DQN training starts with random weights and uses **only its own new
+screen transitions**. It does not load PPO trajectories, evaluation traces,
+demonstrations, emulator snapshots or pretrained features. Uniform random
+epsilon-greedy exploration is training-only; complete-game evaluation and
+exported replays use the **greedy learned Q-values**. The policy loader checks
+the algorithm explicitly, rejects unsupported algorithms and refuses sampling-
+temperature overrides for DQN. PPO sampling behavior remains unchanged, and
+PPO/DQN optimizer resumes cannot be interchanged accidentally.
+
+Defaults are eight emulator workers, batch 64, a bounded **50,000-transition**
+buffer (409.6 MB for the two raw screen-stack arrays, plus small metadata),
+five-step returns, discount 0.997, learning rate 0.0001, score scale 0.01 and
+visible life boundaries. There is one optimizer update per 16 aggregate new
+actions and a target-network copy every 2,000 updates. Replay priorities use
+alpha 0.6; importance weights anneal from beta 0.4 to 1 over one million
+aggregate actions. Warmup fills 10,000 transitions with random actions;
+epsilon otherwise decays from 1 to 0.05 over one million actions after the
+initial warmup allowance. There is no reward clipping, survival bonus,
+intrinsic reward, scripted action sequence or training/evaluation action cap.
+
+Checkpoints preserve the online network, independent target network, Adam
+state, counters and RNG. Resume deliberately refills replay from new own
+experience and restarts emulator episodes; it is not exact trajectory
+continuation. The usual 10-game validation and reload-and-reproduce replay
+gates apply. Target weights and optimizer remain in the resumable checkpoint;
+watching the frozen policy requires only the online weights and its config.
+
+All **213 regression tests** passed, including Double-Q action-selection/target-
+evaluation arithmetic, 20-action updates, target isolation/synchronization,
+greedy-policy round trips without RNG draws, episode-boundary/truncation
+returns, malformed configuration rejection, real-emulator training/resume and
+exact zero-update restoration of online, target, Adam and RNG state. Existing
+PPO/Breakdown tests also passed; completed Breakdown artifacts are unchanged.
+
+An isolated [four-worker integration run](results/defense/training/dqn-smoke-01/config.json)
+started from random seed-97 weights and trained for **16,384 actions**. It used
+an 8,192-transition buffer, 1,024-transition warmup and target copies every
+256 updates; other learning defaults above were retained. Its
+[ten complete greedy games](results/defense/training/dqn-smoke-01/checkpoint/evaluation.json)
+averaged **328**, median **320**, best **360**, all stage 1 without a mission.
+Its [verified greedy replay](results/defense/training/dqn-smoke-01/replay/replay.html)
+reproduced **1,655** actions. Full online/target/optimizer state, logs and replay
+are preserved. The run exited normally and is excluded from the collector.
+This establishes end-to-end integration, not an advantage over PPO or progress
+beyond the existing best. It is not initialized from the earlier PPO models.
+
+`defense-dqn-22-fresh` now trains from random seed-97 weights with the full
+defaults above, **not** from the small integration checkpoint. Its
+[configuration](results/defense/training/dqn-22-fresh/config.json) preserves the
+exact source hashes. This is an additional eight-worker learner, not another
+32-worker PPO process; its fixed replay bound limits screen-storage growth.
+Before launch, macOS reported 43% system-wide memory free. Resource use is
+monitored alongside the three continuing PPO trials; no existing learner was
+stopped while it was making fresh progress. The sole restarted collector now
+includes this run and every previous source, but excludes the integration run.
+The unchanged global-best PPO replay was also reloaded and all **2,580** actions
+reproduced with the algorithm-aware loader before this launch. DQN has not yet
+surpassed that model or established a stage clear.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
+  --artifacts runs/defense-dqn-reproduction/artifacts
+# Later, resume with a fresh replay buffer from the saved online/target/Adam state:
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-continuation \
+  --artifacts runs/defense-dqn-continuation/artifacts \
+  --resume runs/defense-dqn-reproduction/latest
 ```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
