@@ -30,12 +30,15 @@ def sha256(path):
 
 
 DQN_ALGORITHM = "dueling-double-dqn-per-nstep"
+BOOTSTRAP_ALGORITHM = "bootstrapped-dueling-double-dqn-prior-per-nstep"
 
 
 def policy_description(config, temperature=1.0):
     algorithm = config.get("algorithm", "ppo")
     if algorithm == DQN_ALGORITHM:
         return "learned Q-values, greedy"
+    if algorithm == BOOTSTRAP_ALGORITHM:
+        return "learned bootstrap ensemble plus fixed priors, greedy mean Q-values"
     if algorithm != "ppo":
         raise ValueError("Unsupported Defense policy algorithm")
     return ("learned categorical, sampled" if temperature == 1 else
@@ -95,10 +98,14 @@ def load_policy(checkpoint, *, temperature=1.0):
             or config.get("environment_version") != ENVIRONMENT_VERSION
             or config.get("action_names") != list(names)):
         raise ValueError("Checkpoint is not compatible with this Defense environment")
-    model = QNetwork(action_count=len(names))
+    if config.get("algorithm") == BOOTSTRAP_ALGORITHM:
+        from .defense_bootstrap import BootstrapQ
+        model = BootstrapQ(len(names), config["bootstrap_heads"], config["bootstrap_prior_scale"])
+    else:
+        model = QNetwork(action_count=len(names))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
-    if config.get("algorithm") == DQN_ALGORITHM:
+    if config.get("algorithm") in (DQN_ALGORITHM, BOOTSTRAP_ALGORITHM):
         if temperature != 1:
             raise ValueError("Temperature overrides do not apply to a greedy DQN policy")
         predict = mx.compile(model, inputs=model.state)
