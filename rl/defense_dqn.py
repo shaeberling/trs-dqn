@@ -1,7 +1,8 @@
 """Independent screen-only Defense Double DQN with prioritized own-experience replay.
 
-No demonstrations, PPO trajectories, state resets, reward shaping or action
-controllers. Evaluation is greedy and always starts at the original game boot.
+No demonstrations, PPO trajectories, reward shaping or action controllers.
+Optional training resets use opaque states reached by this learner itself.
+Evaluation is greedy and always starts at the original game boot.
 """
 
 import argparse
@@ -61,6 +62,11 @@ def main():
     parser.add_argument("--eval-seed", type=int, default=10_000)
     parser.add_argument("--eval-max-steps", type=int, default=0)
     parser.add_argument("--mlx-cache-mb", type=int, default=512)
+    parser.add_argument("--curriculum-probability", type=float, default=0,
+                        help="training-only resets to this learner's own states; 0 disables")
+    parser.add_argument("--curriculum-share", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--curriculum-boot-envs", type=int, default=0)
+    parser.add_argument("--curriculum-lookback", type=int, default=0)
     args = parser.parse_args()
     prior = None
     if args.resume:
@@ -109,6 +115,13 @@ def main():
         parser.error("run already exists; choose a new directory or --resume")
     if args.artifacts.resolve() == args.run.resolve():
         parser.error("checkpoint and replay-artifact roots must be separate")
+    if (not np.isfinite(args.curriculum_probability) or not 0 <= args.curriculum_probability <= 1
+            or args.curriculum_lookback < 0 or not 0 <= args.curriculum_boot_envs < args.envs
+            or (args.curriculum_share and not args.curriculum_probability)
+            or (args.curriculum_boot_envs and not args.curriculum_share)):
+        parser.error("invalid own-experience curriculum settings")
+    if args.bootstrap_heads and args.curriculum_probability:
+        parser.error("own-state resets currently support ordinary DQN only")
 
     # MLX is main-process-only: spawned emulator workers never import it.
     import mlx.core as mx
@@ -138,6 +151,8 @@ def main():
             bootstrap_rng.bit_generator.state = prior["bootstrap_rng"]
         steps, updates, episodes = (prior[k] for k in ("steps", "updates", "episodes"))
     mx.eval(agent.state)
+    boot_episodes = prior.get("boot_episodes", episodes) if prior else 0
+    restored_segments = prior.get("restored_segments", 0) if prior else 0
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm=BOOTSTRAP_ALGORITHM if args.bootstrap_heads else DQN_ALGORITHM,
                   game_sha256=GAME_SHA256,
@@ -163,6 +178,18 @@ def main():
                       bootstrap_priority="mean absolute TD error over all heads",
                       bootstrap_resume="masks/replay refill; head redrawn for new boot game; priors restored from weights",
                       policy=policy_description(config), evaluation_policy=policy_description(config))
+    curriculum = {}
+    if args.curriculum_probability:
+        curriculum = dict(curriculum=True, curriculum_probability=args.curriculum_probability,
+                          curriculum_share=args.curriculum_share,
+                          curriculum_boot_envs=args.curriculum_boot_envs,
+                          curriculum_lookback=args.curriculum_lookback,
+                          curriculum_cells="score", curriculum_score_interval=20,
+                          curriculum_bins=16, curriculum_per_bin=4)
+        config.update({k: v for k, v in curriculum.items() if k != "curriculum"})
+        config.update(curriculum_archive_saved=False,
+                      curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
+                      snapshot_source_sha256=sha256(Path(__file__).with_name("defense_snapshot.py")))
     args.run.mkdir(parents=True, exist_ok=True)
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
     if args.bootstrap_heads:
@@ -172,6 +199,7 @@ def main():
         replay = Replay(args.capacity)
     buffers = [NStep(replay, args.n_step, args.gamma) for _ in range(args.envs)]
     recent = deque(maxlen=100)
+    recent_restored = deque(maxlen=100)
     started, start_steps = time.monotonic(), steps
     last_log = started
     next_eval, next_update = steps+args.eval_every, steps+args.train_every
@@ -181,6 +209,7 @@ def main():
 
     def state():
         saved = dict(steps=steps, updates=updates, episodes=episodes,
+                     boot_episodes=boot_episodes, restored_segments=restored_segments,
                      rng=rng.bit_generator.state, config=config)
         if args.bootstrap_heads:
             saved["bootstrap_rng"] = bootstrap_rng.bit_generator.state
@@ -203,7 +232,7 @@ def main():
     try:
         workers = VectorEnv(args.envs, args.seed+steps, game="defense", tstates=args.tstates,
                             max_steps=args.max_episode_steps, allow_enter=args.allow_enter,
-                            observation_stride=args.observation_stride)
+                            observation_stride=args.observation_stride, **curriculum)
         log(dict(event="workers_started", workers=workers.runtime()))
         observations = workers.observations
         last_metrics = {}
@@ -228,9 +257,17 @@ def main():
                 buffers[worker].append(observations[worker], int(actions[worker]),
                                        reward*args.reward_scale, obs, learning_terminal, truncated)
                 following.append(reset if reset is not None else obs)
+                if "curriculum_archive_add" in info:
+                    log(dict(event="curriculum_archive", worker=worker, action_counter=steps+worker+1,
+                             **info["curriculum_archive_add"]))
                 if terminal or truncated:
                     episodes += 1
-                    recent.append(info)
+                    if info.get("full_game", True):
+                        boot_episodes += 1
+                        recent.append(info)
+                    else:
+                        restored_segments += 1
+                        recent_restored.append(info["episode_reward"])
                     log(dict(event="episode", worker=worker, action_counter=steps+worker+1,
                              episode=episodes, **info,
                              **({"bootstrap_head": int(episode_heads[worker])} if args.bootstrap_heads else {})))
@@ -255,6 +292,10 @@ def main():
                 last_metrics = dict(loss=loss, mean_q=q, priority_beta=beta)
             if time.monotonic()-last_log >= 10:
                 log(dict(event="progress", steps=steps, episodes=episodes, updates=updates,
+                         boot_episodes=boot_episodes, restored_segments=restored_segments,
+                         recent_restored=dict(segments=len(recent_restored),
+                                              mean_new_score=float(np.mean(recent_restored))
+                                              if recent_restored else None),
                          replay_size=replay.size, epsilon=epsilon,
                          steps_per_second=(steps-start_steps)/(time.monotonic()-started),
                          recent={k: v for k, v in summarize(list(recent)).items() if k != "games"},

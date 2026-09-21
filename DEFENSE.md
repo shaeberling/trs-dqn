@@ -2051,7 +2051,9 @@ plateaus; no particular cause of those plateaus has been established.
 
 Fresh DQN training starts with random weights and uses **only its own new
 screen transitions**. It does not load PPO trajectories, evaluation traces,
-demonstrations, emulator snapshots or pretrained features. Uniform random
+demonstrations, stored emulator snapshots or pretrained features. The default
+has no state resets; the optional own-state mode below collects its own new
+states during training. Uniform random
 epsilon-greedy exploration is training-only; complete-game evaluation and
 exported replays use the **greedy learned Q-values**. The policy loader checks
 the algorithm explicitly, rejects unsupported algorithms and refuses sampling-
@@ -2185,6 +2187,44 @@ venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-continuation \
   --artifacts runs/defense-dqn-continuation/artifacts \
   --resume runs/defense-dqn-reproduction/latest
 ```
+
+### Ordinary DQN with its own reached-state resets
+
+Ordinary DQN can now enable the same opaque, own-experience reset mechanism
+used by PPO via `--curriculum-probability`, `--curriculum-share`,
+`--curriculum-boot-envs` and `--curriculum-lookback`. This initial integration
+uses score cells only: visible score gains within the current life, 20-point
+bins, 16 bins per stage and four retained states per bin. Boot-only workers
+share newly reached states but never restore one. The archive is initially
+empty, stays bounded, and is rebuilt on optimizer resume; native payloads are
+neither decoded nor fabricated, serialized into model weights, or policy input.
+No PPO trajectory, evaluation replay, demonstration or archived native state
+is loaded into DQN training.
+
+Only new visible-score differences enter n-step replay. At terminal/life
+boundaries, pending returns end at the actual final screen, not the next
+reset screen; restored starting score is not credited as reward. Boot-game
+counts and recent scores are separated from restored-segment counts and new
+segment reward. Full evaluation and replay verification still use the ordinary
+from-boot environment without curriculum options. Bootstrap-head exploration
+and these resets cannot yet be combined; the CLI rejects that combination.
+The default probability is zero and existing learners continue unchanged.
+
+All **240 regression tests** passed. New tests cover invalid combinations,
+terminal-screen/return isolation, separate segment bookkeeping, unchanged
+from-boot evaluation arguments, real own-state sharing, reserved boot workers,
+and optimizer resume with fresh archives/replay. Truncated unit-test episodes
+are bookkeeping checks, not evidence of actual game completion.
+
+A paired short check is running from ordinary DQN's **1,700,000** checkpoint.
+Each side permits **32,768** new actions, uses four workers, an 8,192-transition
+buffer refilled from new experience, 1,024 warmup transitions, and the parent's
+batch 64, n-step 5, gamma 0.997, target-copy interval 2,000 and 100,000-T-state
+action timing. One side enables 0.5 reset probability, shared score cells,
+one boot-only worker and lookback 32; the other keeps resets disabled. Both
+are excluded from the collector and evaluate ten complete games from boot.
+No longer reset-enabled DQN trial has been launched on the basis of this
+integration alone.
 
 ### Bootstrapped value exploration
 
