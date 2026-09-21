@@ -14,6 +14,10 @@ environment, complete-game diagnostic results and portable replays. A fresh
 PPO learner now runs via `python -m rl.defense_train` (20 actions by default,
 21 with optional policy-selected Enter); Breakdown's
 commands, model weights and results remain separate.
+An independent value-learning alternative is available through
+`python -m rl.defense_dqn`: Double DQN with prioritized own-experience replay,
+complete-game greedy evaluation and verified replays. See its settings and
+experimental results in [DEFENSE.md](DEFENSE.md).
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh

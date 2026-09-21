@@ -10,7 +10,7 @@ import numpy as np
 
 from .defense import ENVIRONMENT_VERSION, GAME_SHA256
 from .defense_learning import (evaluate, game_rank, load_policy, record_game, sha256,
-                              verify_policy_trace, write_json)
+                              verify_policy_trace, write_json, policy_description)
 from .defense_smoke import write_replay
 
 
@@ -90,8 +90,7 @@ def main():
     if sha256(args.checkpoint) != before:
         raise RuntimeError("Checkpoint changed during evaluation; use frozen weights")
     result.update(checkpoint_sha256=before, config=config,
-                  policy=("learned categorical, sampled" if args.temperature == 1 else
-                          "learned categorical logits, temperature-scaled sampling"),
+                  policy=policy_description(config, args.temperature),
                   temperature=args.temperature, evaluation_only=True,
                   promotion_eligible=False, evaluation_seed=args.seed,
                   evaluation_tstates=tstates, training_tstates=config["tstates"],

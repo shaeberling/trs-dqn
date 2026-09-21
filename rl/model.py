@@ -54,10 +54,10 @@ class QNetwork(nn.Module):
 
 
 class Learner:
-    def __init__(self, learning_rate=1e-4, seed=0):
+    def __init__(self, learning_rate=1e-4, seed=0, action_count=6):
         mx.random.seed(seed)
-        self.online = QNetwork()
-        self.target = QNetwork()
+        self.online = QNetwork(action_count=action_count)
+        self.target = QNetwork(action_count=action_count)
         self.target.update(tree_map(lambda x: mx.array(x), self.online.parameters()))
         self.optimizer = optim.Adam(learning_rate=learning_rate, eps=1e-5)
         self.optimizer.init(self.online.trainable_parameters())

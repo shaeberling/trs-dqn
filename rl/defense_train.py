@@ -86,7 +86,8 @@ def main():
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
         config = prior["config"]
-        if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
+        if (config.get("algorithm", "ppo") != "ppo"
+                or config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
                 or config.get("environment_version") != ENVIRONMENT_VERSION
                 or config.get("action_names") != list(action_names(config.get("allow_enter", False)))):
             parser.error("Resume requires a compatible Defense checkpoint")
