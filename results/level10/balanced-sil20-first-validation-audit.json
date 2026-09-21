@@ -1,0 +1,64 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil20/step-025251840",
+  "hashes": {
+    "model.safetensors": "6232b7f7b302ec5f89e72016ad9e544cb57bb38fde32e83229b24b959f504aa4",
+    "optimizer.npz": "b81a974d82c097d3aca649a793c115e9de79db143f52bb07723d6c259c1a4b76",
+    "state.json": "e8c28f3cc3e6d500f57db44ac298c69668ea193bf0c7872aa239183766cbd62c"
+  },
+  "all_seed_orders_termination_statistics_verified": true,
+  "saved_sil_rng_and_nonpersistent_replay_verified": true,
+  "matched_first_primary": {
+    "sil20": {
+      "path": "runs/level10-curriculum-balanced-sil20/step-025251840/evaluation.json",
+      "sha256": "6b97a701f8ad1db03d5242b7f201e1ea97f19059ef2085a64257f3d600c0ef9f",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 114.2,
+        "median_score": 108.5,
+        "best_score": 286,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 4,
+          "4": 2,
+          "5": 0
+        }
+      }
+    },
+    "sil4": {
+      "path": "runs/level10-curriculum-balanced-sil/step-025251840/evaluation.json",
+      "sha256": "449466fb95ba2dd50e144f439d3c77f113e9aaa5690ff68f7e044891e8c6fb47",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 98.6,
+        "median_score": 89.5,
+        "best_score": 264,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    "no_sil": {
+      "path": "runs/level10-curriculum-balanced-lr1e5-long/step-025251840/evaluation.json",
+      "sha256": "89cd5c4436c46de50d71ab50cbee3a779c25f50ff71353fd99512e2525e26aa0",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 133.3,
+        "median_score": 116,
+        "best_score": 306,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 7,
+          "4": 3,
+          "5": 1
+        }
+      }
+    }
+  },
+  "decision": "First SIL20 result improves mean and intermediate-level counts over matched SIL4, but trails no-SIL control and does not establish new depth. Continue the declared comparison; no secondary audit or reference promotion is justified. Existing level-6 depth reference and final seeds40000-40099 remain untouched."
+}

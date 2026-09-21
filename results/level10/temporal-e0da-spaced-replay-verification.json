@@ -1,0 +1,92 @@
+{
+  "recorded_at_utc": "2026-09-14 11:50:22 UTC",
+  "replay": "results/level10/temporal-e0da-spaced-primary-level8-replay.html",
+  "sha256": "22a947848a8beb86eac6e7b36d97015cd28ec81e141eb8aafe18d3bed8890cdb",
+  "metadata": {
+    "seed": 10015,
+    "checkpoint": "runs/level10-temporal-e0da-eval/model.safetensors",
+    "environment_version": "normalized-game-over-v2",
+    "checkpoint_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+    "policy": "learned categorical, sampled",
+    "deterministic_override": false,
+    "frames": 44326,
+    "tstates": 50000,
+    "observation_stride": 2,
+    "score": 543,
+    "level": 8,
+    "game_over": true,
+    "waiting": false,
+    "steps": 44325,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 543,
+    "start_tstates": 173912
+  },
+  "frames": 44326,
+  "actions": 44325,
+  "exact_primary_game_match": true,
+  "decoded_level_entries": [
+    {
+      "level": 1,
+      "frame": 0,
+      "score": 0
+    },
+    {
+      "level": 2,
+      "frame": 3395,
+      "score": 58
+    },
+    {
+      "level": 3,
+      "frame": 10906,
+      "score": 121
+    },
+    {
+      "level": 4,
+      "frame": 18841,
+      "score": 200
+    },
+    {
+      "level": 5,
+      "frame": 26069,
+      "score": 272
+    },
+    {
+      "level": 6,
+      "frame": 28223,
+      "score": 312
+    },
+    {
+      "level": 7,
+      "frame": 32093,
+      "score": 364
+    },
+    {
+      "level": 8,
+      "frame": 38298,
+      "score": 498
+    }
+  ],
+  "inspection": {
+    "path": "results/level10/temporal-e0da-spaced-policy-inspection.json",
+    "sha256": "f5cd7c19cdc4af552af5b6fe89c3b60e824b3a1dfe52be198c25d80cdcee7b1e",
+    "all_actions_verified": 44325,
+    "mismatches": 0,
+    "batch_size": 128,
+    "observation_stride": 2,
+    "tstates": 50000
+  },
+  "observed_exits": {
+    "record": {
+      "session": 85211,
+      "exit_code": 0
+    },
+    "inspect": {
+      "session": 92885,
+      "exit_code": 0
+    }
+  },
+  "decision": "Uncapped complete replay and all44325 actions verify the fixed50k/stride2 policy. All predeclared integration gates pass. Proceed to single50-game reused secondary audit; original-timing Level8 reference retained pending full70-game ranking. No final seeds or new learner."
+}

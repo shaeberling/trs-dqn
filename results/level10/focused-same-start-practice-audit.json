@@ -1,0 +1,159 @@
+{
+  "scope": "Changing-policy training diagnostics on repeated self-generated starts, not complete-game performance or a controlled causal estimate.",
+  "run": "runs/level10-curriculum-focused",
+  "through_action": 22535878,
+  "completed_practice_segments": 1404,
+  "by_origin": [
+    {
+      "source_worker": 6,
+      "source_action": 29587,
+      "start_score": 270,
+      "n": 397,
+      "first_50": {
+        "n": 50,
+        "reward": 1,
+        "actions": 132.2,
+        "end_action": 21994606
+      },
+      "last_50": {
+        "n": 50,
+        "reward": 3.5,
+        "actions": 160.58,
+        "start_action": 22434796
+      },
+      "best_reward": 26,
+      "best_actions": 665
+    },
+    {
+      "source_worker": 9,
+      "source_action": 32864,
+      "start_score": 295,
+      "n": 272,
+      "first_50": {
+        "n": 50,
+        "reward": 1,
+        "actions": 130.22,
+        "end_action": 22141079
+      },
+      "last_50": {
+        "n": 50,
+        "reward": 4.62,
+        "actions": 192.68,
+        "start_action": 22451645
+      },
+      "best_reward": 28,
+      "best_actions": 637
+    },
+    {
+      "source_worker": 11,
+      "source_action": 25635,
+      "start_score": 294,
+      "n": 558,
+      "first_50": {
+        "n": 50,
+        "reward": 1.06,
+        "actions": 127,
+        "end_action": 21886103
+      },
+      "last_50": {
+        "n": 50,
+        "reward": 3.42,
+        "actions": 156.66,
+        "start_action": 22451798
+      },
+      "best_reward": 14,
+      "best_actions": 484
+    },
+    {
+      "source_worker": 27,
+      "source_action": 37266,
+      "start_score": 288,
+      "n": 177,
+      "first_50": {
+        "n": 50,
+        "reward": 1.1,
+        "actions": 123.94,
+        "end_action": 22272341
+      },
+      "last_50": {
+        "n": 50,
+        "reward": 5.72,
+        "actions": 217.24,
+        "start_action": 22446402
+      },
+      "best_reward": 23,
+      "best_actions": 615
+    }
+  ],
+  "archive_entries": [
+    {
+      "wall_seconds": 880.38,
+      "event": "curriculum_archive",
+      "steps": 21820492,
+      "worker": 11,
+      "level": 5,
+      "score": 294,
+      "slot": 0,
+      "source_action": 25635,
+      "source_episode_steps": 15148,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 114575,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 963.74,
+      "event": "curriculum_archive",
+      "steps": 21946951,
+      "worker": 6,
+      "level": 5,
+      "score": 270,
+      "slot": 1,
+      "source_action": 29587,
+      "source_episode_steps": 12540,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 56331,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 1052.41,
+      "event": "curriculum_archive",
+      "steps": 22051818,
+      "worker": 9,
+      "level": 5,
+      "score": 295,
+      "slot": 2,
+      "source_action": 32864,
+      "source_episode_steps": 14602,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 48060,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 1147.48,
+      "event": "curriculum_archive",
+      "steps": 22192700,
+      "worker": 27,
+      "level": 5,
+      "score": 288,
+      "slot": 3,
+      "source_action": 37266,
+      "source_episode_steps": 15890,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 90215,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    }
+  ],
+  "validation_states_used": false
+}

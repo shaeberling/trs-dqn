@@ -1,0 +1,359 @@
+{
+  "recorded_at_utc": "2026-09-14 12:06:50 UTC",
+  "accounting": {
+    "run": "runs/level10-timing50k-stride2-sil4",
+    "through_steps": 31956992,
+    "terminal": false,
+    "all_origin_reward_source_and_logged_action_accounting_verified": true,
+    "all_primary_seeds_termination_statistics_verified": true,
+    "full_episode_boundaries": 20,
+    "complete_full_training_games": 20,
+    "practice_segments": 0,
+    "complete_practice_segments": 0,
+    "highest_complete_full_training": 4,
+    "highest_complete_practice": null,
+    "training_guards": [],
+    "publications": 3,
+    "checked_progress_records": 43,
+    "latest_progress": {
+      "wall_seconds": 555.65,
+      "event": "progress",
+      "steps": 31956992,
+      "episodes": 18596,
+      "steps_per_second": 1267.9,
+      "mean_score_100": 153.65,
+      "best_score_100": 278,
+      "highest_level_100": 4,
+      "complete_games_100": 20,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 18,
+        "3": 8,
+        "4": 6,
+        "5": 0
+      },
+      "level_reach_rates_100": {
+        "2": 0.9,
+        "3": 0.4,
+        "4": 0.3,
+        "5": 0
+      },
+      "actor_loss": -0.005919779934629332,
+      "value_loss": 0.08692890655947849,
+      "entropy": 0.28289284789934754,
+      "approx_kl": 0.0018696438755796407,
+      "rollout_action_origins": {
+        "from_boot": 7936,
+        "restored": 256
+      },
+      "training_action_origins": {
+        "from_boot": 702788,
+        "restored": 1724
+      },
+      "mlx_active_bytes": 9759572,
+      "mlx_cache_bytes": 415089604,
+      "mlx_peak_bytes": 2912020416,
+      "sil": {
+        "replay_size": 65536,
+        "pending_transitions": 91296,
+        "pending_screen_bytes": 373948416,
+        "replay_array_bytes": 270073856,
+        "completed_learning_segments": 106,
+        "discarded_truncated_segments": 0,
+        "dropped_prefix_transitions": 318718,
+        "committed_transitions": {
+          "from_boot": 294140,
+          "restored": 358
+        },
+        "updates": 328,
+        "rollout_updates": [
+          {
+            "loss": 0.020650306716561317,
+            "actor_loss": 0.19486355781555176,
+            "value_loss": 1.1639500856399536,
+            "positive_fraction": 0.5244140625,
+            "applied": true
+          },
+          {
+            "loss": 0.01860327646136284,
+            "actor_loss": 0.1753193587064743,
+            "value_loss": 1.0713398456573486,
+            "positive_fraction": 0.521484375,
+            "applied": true
+          },
+          {
+            "loss": 0.01828843168914318,
+            "actor_loss": 0.17158031463623047,
+            "value_loss": 1.1303991079330444,
+            "positive_fraction": 0.5380859375,
+            "applied": true
+          },
+          {
+            "loss": 0.02160016819834709,
+            "actor_loss": 0.20464128255844116,
+            "value_loss": 1.1360385417938232,
+            "positive_fraction": 0.5419921875,
+            "applied": true
+          }
+        ]
+      }
+    },
+    "primary_suites": [
+      {
+        "steps": 31506432,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 224.8,
+        "median_score": 225.5,
+        "best_score": 579,
+        "highest_complete_level": 8,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 12,
+          "4": 10,
+          "5": 7,
+          "6": 2,
+          "7": 2,
+          "8": 1
+        },
+        "raw_evaluation_sha256": "9272c8b87742f5b2337d03f192a00e63935fadec12035fc6837d162e904ae039"
+      }
+    ],
+    "best_primary_step": 31506432,
+    "summary": {
+      "complete_primary_suites": 1,
+      "primary_suites_reaching5": 1,
+      "primary_level5_games": 7,
+      "highest_frozen_level": 8
+    },
+    "worker_runtime": {
+      "wall_seconds": 0,
+      "event": "worker_runtime",
+      "steps": 31252480,
+      "workers": [
+        {
+          "pid": 97701,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97702,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97703,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97704,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97705,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97706,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97707,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97708,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97709,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97710,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97711,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97712,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97713,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97714,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97715,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97716,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 97717,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97718,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97719,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97720,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97721,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97722,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97723,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97724,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97725,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97727,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97728,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97729,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97730,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97731,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97732,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 97733,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        }
+      ]
+    },
+    "sil_accounting": {
+      "learning_suffixes_checked": 106,
+      "episode_suffix_coverages_checked": 20,
+      "committed_suffixes": 106,
+      "discarded_suffixes": 0,
+      "discarded_retained_transitions": 0,
+      "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+    }
+  },
+  "first_publications": [
+    {
+      "wall_seconds": 497.3,
+      "event": "curriculum_archive",
+      "steps": 31877428,
+      "worker": 19,
+      "level": 5,
+      "score": 278,
+      "slot": 0,
+      "source_action": 19530,
+      "source_episode_steps": 19530,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 50304,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 526.7,
+      "event": "curriculum_archive",
+      "steps": 31918119,
+      "worker": 6,
+      "level": 5,
+      "score": 271,
+      "slot": 1,
+      "source_action": 20802,
+      "source_episode_steps": 20802,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 125010,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 538.81,
+      "event": "curriculum_archive",
+      "steps": 31938420,
+      "worker": 19,
+      "level": 6,
+      "score": 318,
+      "slot": 0,
+      "source_action": 21436,
+      "source_episode_steps": 21436,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 50304,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    }
+  ],
+  "interpretation": "These are same-run entries reached from boot under changing training weights: levels5/6 are available for subsequent self-generated practice. They are not completed-game or frozen-policy depth milestones. No external snapshots or replay observations were imported. Continue the declared stage."
+}

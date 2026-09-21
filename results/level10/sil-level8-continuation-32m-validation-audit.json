@@ -1,0 +1,175 @@
+{
+  "checkpoint": "runs/level10-sil-level8-continuation/step-032002048",
+  "source_hashes_unchanged": true,
+  "sets": [
+    {
+      "path": "runs/level10-sil-level8-continuation/step-032002048/evaluation.json",
+      "sha256": "2880ad6f2e4304cff9192264958b2ee5eaa20de29fefbf2295e86bcf6d7156d8",
+      "summary": {
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 139.8,
+        "median_score": 121.5,
+        "best_score": 439,
+        "highest_complete_level": 7,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 6,
+          "4": 3,
+          "5": 1,
+          "6": 1,
+          "7": 1
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 439,
+          "level": 7,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14862,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 439,
+          "start_tstates": 33283,
+          "seed": 10000
+        }
+      ]
+    },
+    {
+      "path": "results/level10/validation-audit-sil-level8-continuation-32m.json",
+      "sha256": "b35a77ecb6a8c02fdf0d59a44dbe1eef537ec9b15595fb6881d2093ed44202e0",
+      "summary": {
+        "complete_games": 50,
+        "incomplete_games": 0,
+        "mean_score": 142.56,
+        "median_score": 121,
+        "best_score": 302,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 39,
+          "3": 17,
+          "4": 10,
+          "5": 3
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 278,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 10142,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 278,
+          "start_tstates": 190247,
+          "seed": 10101
+        },
+        {
+          "score": 289,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 11848,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 289,
+          "start_tstates": 97100,
+          "seed": 10112
+        },
+        {
+          "score": 285,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 15870,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 285,
+          "start_tstates": 171301,
+          "seed": 10119
+        }
+      ]
+    }
+  ],
+  "all_seeds_mode_termination_and_statistics_verified": true,
+  "all_games_complete": true,
+  "combined_reused_validation": {
+    "games": 70,
+    "mean_score": 141.77142857142857,
+    "median_score": 121,
+    "best_score": 439,
+    "highest_complete_level": 7,
+    "level_reach_counts": {
+      "2": 52,
+      "3": 23,
+      "4": 13,
+      "5": 4,
+      "6": 1,
+      "7": 1,
+      "8": 0
+    }
+  },
+  "session_id": 93838,
+  "exit_code": 0,
+  "reference": {
+    "checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+    "primary_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      8,
+      9,
+      15,
+      169.2
+    ],
+    "highest_verified": 8,
+    "primary_steps": 31252480,
+    "combined": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 178.81428571428572,
+      "median_score": 140,
+      "best_score": 555,
+      "highest_level": 8,
+      "highest_complete_level": 8,
+      "level_1_clears": 57,
+      "level_reach_counts": {
+        "2": 57,
+        "3": 36,
+        "4": 26,
+        "5": 16,
+        "6": 4,
+        "7": 2,
+        "8": 1
+      },
+      "level_reach_rates": {
+        "2": 0.8142857142857143,
+        "3": 0.5142857142857142,
+        "4": 0.37142857142857144,
+        "5": 0.22857142857142856,
+        "6": 0.05714285714285714,
+        "7": 0.02857142857142857,
+        "8": 0.014285714285714285
+      }
+    },
+    "replay": "results/level10/sil-continuation-31m25-secondary-level8-replay.html",
+    "model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05"
+  },
+  "decision": "Do not promote. All 70 reused games complete, but combined depth 7, mean 141.77 and four Level5 reaches trail the retained Level8 source (178.81 mean, sixteen Level5 reaches). Keep sampled decoding and live training unchanged; no fresh final-test use."
+}

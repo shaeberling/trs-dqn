@@ -1,0 +1,82 @@
+{
+  "recorded_at_utc": "2026-09-14 11:22:22 UTC",
+  "status": "predeclared_before_any_frozen_probe_games",
+  "purpose": "Separate finer action duration from shorter input history using one frozen learned policy; diagnostic only, not a training or promotion path.",
+  "checkpoint": "runs/level10-sil-level6-continuation/step-031252480/model.safetensors",
+  "checkpoint_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+  "state_sha256": "75e0bc0abc9c2b6cc74600f45fe6c42205ebca77be89f860b033d4ddfcd2ab6c",
+  "optimizer_sha256": "c651d98449d697686df92eaa2c623e6ef42433e9fca340383b556f0cf4bbda38",
+  "primary_evaluation_sha256": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e",
+  "implementation": "rl/temporal_probe.py",
+  "implementation_sha256": "2afb0baa41a000f143144c240c29c28dea845c065be732d657e29b2ef66c1607",
+  "tests": "tests/test_temporal_probe.py",
+  "tests_sha256": "e9da8b965ba28346f0d6892f57495aad10f95b6f9d523665bd9aa49db863c9f7",
+  "regression": {
+    "tests": 89,
+    "seconds": 7.214,
+    "exit_code": 0,
+    "session": 57358
+  },
+  "compatibility_gate": {
+    "seeds": [
+      10000,
+      10001
+    ],
+    "tstates": 100000,
+    "stride": 1,
+    "max_steps": 100000,
+    "envs": 2,
+    "require": "Exact full game dictionaries equal the archived source primary before running either arm.",
+    "output": "results/level10/temporal-e0da-compatibility.json"
+  },
+  "arms": [
+    {
+      "name": "50k-adjacent",
+      "tstates": 50000,
+      "observation_stride": 1,
+      "nominal_history_span_tstates": 150000,
+      "output": "results/level10/temporal-e0da-50k-adjacent.json"
+    },
+    {
+      "name": "50k-spaced",
+      "tstates": 50000,
+      "observation_stride": 2,
+      "nominal_history_span_tstates": 300000,
+      "output": "results/level10/temporal-e0da-50k-spaced.json"
+    }
+  ],
+  "arm_seeds": [
+    10000,
+    10001,
+    10002,
+    10003,
+    10004,
+    10005,
+    10006,
+    10007,
+    10008,
+    10009,
+    10010,
+    10011,
+    10012,
+    10013,
+    10014,
+    10015,
+    10016,
+    10017,
+    10018,
+    10019
+  ],
+  "max_steps_per_arm_game": 200000,
+  "envs": 10,
+  "nominal_guard_tstates": 10000000000,
+  "nominal_time_caveat": "HUD-settling T-states are additional; shorter decisions also change action RNG draw count and trajectory.",
+  "execution": "Run compatibility gate then adjacent then spaced; only one probe process at once alongside the sole unchanged cap128k learner. No early outcome selection, rate/history sweep, optimizer changes, imported trajectories, or final-test seeds.",
+  "policy": "Unmodified learned categorical sampling with each game's existing RNG; screen-only history adaptation, no scripted steering or serve overrides.",
+  "decision_rule": "Report all two-arm results and completion, mean/median/best, level counts. Any incomplete arm is disqualified as a whole. Even a complete improvement is diagnostic only until end-to-end training/evaluation/replay inspection support and standard revalidation; do not promote or touch fresh seeds.",
+  "memory_preflight": {
+    "swap_used_MiB": 9302.75,
+    "swapouts": 2609257,
+    "note": "Swapouts unchanged from 10:46:47 through 11:21; not a claim that swap allocation is low."
+  }
+}

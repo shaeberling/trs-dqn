@@ -1,0 +1,65 @@
+{
+  "scope": "Independent checks of raw fixed-seed validation games; all validation sets are reused and none are the fresh final test.",
+  "primary": {
+    "file": "results/level10/validation-balanced-lr1e5-23m25.json",
+    "checkpoint_sha256": "ec84a0b18295b9002529b66976860af46ba3664f157c29b65570206f62d2b596",
+    "complete_games": 20,
+    "seeds": [
+      10000,
+      10019
+    ],
+    "mean_score": 121.65,
+    "median_score": 124,
+    "best_score": 313,
+    "highest_level": 5,
+    "level_reach_counts": {
+      "2": 16,
+      "3": 4,
+      "4": 1,
+      "5": 1
+    }
+  },
+  "secondary": {
+    "file": "results/level10/validation-audit-balanced-lr1e5-23m25.json",
+    "checkpoint_sha256": "ec84a0b18295b9002529b66976860af46ba3664f157c29b65570206f62d2b596",
+    "complete_games": 50,
+    "seeds": [
+      10100,
+      10149
+    ],
+    "mean_score": 111,
+    "median_score": 109,
+    "best_score": 287,
+    "highest_level": 5,
+    "level_reach_counts": {
+      "2": 34,
+      "3": 8,
+      "4": 4,
+      "5": 1
+    }
+  },
+  "retained_reference_secondary": {
+    "file": "results/level10/validation-audit-curriculum-shared-21m.json",
+    "checkpoint_sha256": "53a59a8777b548898f0260b47aae9b6293b24cefe42dfd43a98f7134191049cc",
+    "complete_games": 50,
+    "seeds": [
+      10100,
+      10149
+    ],
+    "mean_score": 135.12,
+    "median_score": 121,
+    "best_score": 304,
+    "highest_level": 5,
+    "level_reach_counts": {
+      "2": 39,
+      "3": 15,
+      "4": 8,
+      "5": 2
+    }
+  },
+  "raw_game_statistics_verified": true,
+  "secondary_audit_exit_code": 0,
+  "reference_replaced": false,
+  "decision": "Retain the shared reference: this checkpoint has a lower secondary mean and fewer level-5 reaches. Continue the smaller-learning-rate training trial without promoting its first checkpoint.",
+  "fresh_final_test_seeds_used": false
+}

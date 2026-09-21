@@ -1,0 +1,210 @@
+{
+  "recorded_at_utc": "2026-09-14 09:23:23 UTC",
+  "status": "predeclared_before_secondary_evaluation",
+  "candidate": {
+    "checkpoint": "runs/level10-sil-level8-continuation/step-031752192",
+    "hashes": {
+      "model.safetensors": "0efced7029391a2b3028653894ffa9a37e0c5e4dde074d25ff5b289bd437163c",
+      "optimizer.npz": "0977c837773da42b980164dd038cfe4af6d6d76a135dcc57905feed0e9fa8437",
+      "state.json": "64a128bf72dab1f7e93d449069965c5b9945480977f90c0ff20feb8518ea43b7",
+      "evaluation.json": "a8417119af94e9558eeb4b9d71cb5e9234a844a382e819b1f198d8c8d4ce1f2a"
+    },
+    "summary": {
+      "mean_score": 175.1,
+      "median_score": 139.5,
+      "best_score": 356,
+      "highest_complete_level": 6,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 10,
+        "4": 7,
+        "5": 2,
+        "6": 1
+      }
+    },
+    "primary_rank": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      2,
+      7,
+      10,
+      17,
+      175.1
+    ],
+    "level6_games": [
+      {
+        "score": 356,
+        "level": 6,
+        "game_over": true,
+        "waiting": false,
+        "steps": 18480,
+        "terminated": true,
+        "truncated": false,
+        "life_lost": true,
+        "hud_settle_tstates": 0,
+        "episode_reward": 356,
+        "start_tstates": 135964,
+        "seed": 10018
+      }
+    ],
+    "configuration": {
+      "run": "runs/level10-sil-level8-continuation",
+      "initialize": null,
+      "resume": "runs/level10-sil-level6-continuation/step-031252480",
+      "steps": 36252480,
+      "additional_steps": 5000000,
+      "seed": 17,
+      "envs": 32,
+      "rollout": 128,
+      "batch_size": 256,
+      "epochs": 4,
+      "learning_rate": 0.00001,
+      "entropy": 0.001,
+      "gamma": 0.995,
+      "gae_lambda": 0.95,
+      "logit_scale": 10,
+      "life_terminal": true,
+      "eval_every": 250000,
+      "eval_games": 20,
+      "eval_envs": 20,
+      "eval_seed": 10000,
+      "eval_max_steps": 100000,
+      "target_level": 10,
+      "target_clears": 1,
+      "max_episode_steps": 100000,
+      "tstates": 100000,
+      "curriculum_probability": 0.95,
+      "curriculum_min_level": 5,
+      "curriculum_per_level": 8,
+      "curriculum_share": true,
+      "curriculum_boot_envs": 16,
+      "mlx_cache_mb": 512,
+      "sil_updates": 4,
+      "sil_capacity": 32768,
+      "sil_suffix_steps": 2048,
+      "sil_batch_size": 512,
+      "sil_loss_weight": 0.1,
+      "sil_value_weight": 0.01,
+      "sil_priority_alpha": 0.6,
+      "sil_priority_beta": 0.1,
+      "algorithm": "ppo",
+      "mlx": "0.32.2",
+      "device": {
+        "device_name": "Apple M4",
+        "max_recommended_working_set_size": 12713115648,
+        "memory_size": 17179869184,
+        "architecture": "applegpu_g16g",
+        "max_buffer_length": 9534832640,
+        "resource_limit": 499000
+      },
+      "environment_version": "normalized-game-over-v2",
+      "prior_training_actions": 500000,
+      "observation": "four raw 16x64 video-memory frames",
+      "reward": "screen score difference only",
+      "evaluation_policy": "sample learned categorical distribution; seeded",
+      "resume_checkpoint_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05"
+    },
+    "primary_metadata": {
+      "games_requested": 20,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 175.1,
+      "median_score": 139.5,
+      "best_score": 356,
+      "highest_level": 6,
+      "highest_complete_level": 6,
+      "level_1_clears": 17,
+      "level_reach_counts": {
+        "2": 17,
+        "3": 10,
+        "4": 7,
+        "5": 2,
+        "6": 1
+      },
+      "level_reach_rates": {
+        "2": 0.85,
+        "3": 0.5,
+        "4": 0.35,
+        "5": 0.1,
+        "6": 0.05
+      },
+      "epsilon": 0,
+      "tstates": 100000,
+      "max_steps": 100000,
+      "environment_version": "normalized-game-over-v2",
+      "eval_envs": 20,
+      "policy": "learned categorical, sampled"
+    }
+  },
+  "reason": "The new continuation's second complete primary outranks the selected reference's primary (one Level-6 versus zero), despite fewer Level-5 reaches. This is a screening trigger, not a promotion.",
+  "reference": {
+    "checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+    "primary_rank": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      6,
+      8,
+      9,
+      15,
+      169.2
+    ],
+    "highest_verified": 8,
+    "primary_steps": 31252480,
+    "combined": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 178.81428571428572,
+      "median_score": 140,
+      "best_score": 555,
+      "highest_level": 8,
+      "highest_complete_level": 8,
+      "level_1_clears": 57,
+      "level_reach_counts": {
+        "2": 57,
+        "3": 36,
+        "4": 26,
+        "5": 16,
+        "6": 4,
+        "7": 2,
+        "8": 1
+      },
+      "level_reach_rates": {
+        "2": 0.8142857142857143,
+        "3": 0.5142857142857142,
+        "4": 0.37142857142857144,
+        "5": 0.22857142857142856,
+        "6": 0.05714285714285714,
+        "7": 0.02857142857142857,
+        "8": 0.014285714285714285
+      }
+    },
+    "replay": "results/level10/sil-continuation-31m25-secondary-level8-replay.html",
+    "model_sha256": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05"
+  },
+  "secondary": {
+    "games": 50,
+    "seed_start": 10100,
+    "seed_end": 10149,
+    "envs": 20,
+    "max_steps": 100000,
+    "policy": "sampled; epsilon 0",
+    "output": "results/level10/validation-audit-sil-level8-continuation-31m75.json"
+  },
+  "selection": {
+    "require_all_games_complete": true,
+    "compare_combined_depth_and_later_level_counts": true,
+    "no_promotion_from_primary_alone": true,
+    "report_tradeoffs": true,
+    "verify_any_depth_milestone_with_full_uncapped_replay_and_actions": true
+  },
+  "training_unchanged": true,
+  "evaluation_states_used_for_training": false,
+  "fresh_final_seeds_unused": "40000-40099"
+}

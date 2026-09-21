@@ -1,0 +1,92 @@
+{
+  "recorded_at_utc": "2026-09-14 12:24:01 UTC",
+  "path": "results/level10/timing50k-stride2-sil4-32m-secondary-level8-replay.html",
+  "sha256": "68163e50a03c4b5466aa3df10a95b5260ab6516f57327ad9508facbf93e77f61",
+  "metadata": {
+    "seed": 10126,
+    "checkpoint": "runs/level10-timing50k-stride2-sil4/step-032006144/model.safetensors",
+    "environment_version": "normalized-game-over-v2",
+    "checkpoint_sha256": "0ac3de98f31dfa3c1f8ce514d6b762124ff4d9d0b1f294130feef947163e286a",
+    "policy": "learned categorical, sampled",
+    "deterministic_override": false,
+    "frames": 55423,
+    "tstates": 50000,
+    "observation_stride": 2,
+    "score": 572,
+    "level": 8,
+    "game_over": true,
+    "waiting": false,
+    "steps": 55422,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 572,
+    "start_tstates": 102646
+  },
+  "frames": 55423,
+  "actions": 55422,
+  "exact_secondary_game_match": true,
+  "decoded_level_entries": [
+    {
+      "level": 1,
+      "frame": 0,
+      "score": 0
+    },
+    {
+      "level": 2,
+      "frame": 6341,
+      "score": 64
+    },
+    {
+      "level": 3,
+      "frame": 12636,
+      "score": 130
+    },
+    {
+      "level": 4,
+      "frame": 18682,
+      "score": 202
+    },
+    {
+      "level": 5,
+      "frame": 22794,
+      "score": 281
+    },
+    {
+      "level": 6,
+      "frame": 24740,
+      "score": 320
+    },
+    {
+      "level": 7,
+      "frame": 30350,
+      "score": 370
+    },
+    {
+      "level": 8,
+      "frame": 36767,
+      "score": 514
+    }
+  ],
+  "inspection": {
+    "path": "results/level10/timing50k-stride2-sil4-32m-policy-inspection.json",
+    "sha256": "8abc82f2897d33f2b45506a3e759351c52140e98731b86c741148a9e7a689ae6",
+    "all_actions_verified": 55422,
+    "mismatches": 0,
+    "batch_size": 128,
+    "observation_stride": 2,
+    "tstates": 50000
+  },
+  "observed_exits": {
+    "record": {
+      "session": 61864,
+      "exit_code": 0
+    },
+    "inspect": {
+      "session": 85729,
+      "exit_code": 0
+    }
+  },
+  "decision": "Exact uncapped full-game reproduction and every seeded neural action verified. No heuristic overrides."
+}

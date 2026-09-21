@@ -1,0 +1,94 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-gae099/step-025751552/model.safetensors",
+  "checkpoint_sha256": "02ca26d14eca7afaf294abdedcf1a519fcf3df1065c6c9a56c7860dd0f634cc3",
+  "replay": "results/level10/balanced-gae099-25m75-secondary-replay.html",
+  "replay_sha256": "d9a2a1304dde5177a3e960ea6025f3b219f8cb9e01b4993f77c41559b1f80b03",
+  "seed": 10118,
+  "score": 286,
+  "level": 5,
+  "batch_size": 128,
+  "seeded_action_mismatches": 0,
+  "scope": "Post-hoc inference on one selected recorded game; not a performance estimate.",
+  "all": {
+    "actions": 13351,
+    "action_entropy_nats": 0.3020328562712524,
+    "direction_entropy_nats": 0.20040782020396825,
+    "serve_entropy_nats": 0.17597001230306494,
+    "mean_non_greedy_direction_probability": 0.08344628533213523,
+    "recorded_non_greedy_direction_fraction": 0.08478765635532919,
+    "mean_serve_probability": 0.5971773499132133,
+    "mean_recorded_action_probability": 0.8275997159286902
+  },
+  "playing": {
+    "actions": 13341,
+    "action_entropy_nats": 0.3018857878574885,
+    "direction_entropy_nats": 0.20025851262388958,
+    "serve_entropy_nats": 0.17578384552547432,
+    "mean_non_greedy_direction_probability": 0.0833490860432388,
+    "recorded_non_greedy_direction_fraction": 0.08477625365414887,
+    "mean_serve_probability": 0.5973014934883546,
+    "mean_recorded_action_probability": 0.8276726472555026
+  },
+  "waiting_for_serve": {
+    "actions": 10,
+    "action_entropy_nats": 0.4982368270736729,
+    "direction_entropy_nats": 0.3995990627869377,
+    "serve_entropy_nats": 0.42433511028671633,
+    "mean_non_greedy_direction_probability": 0.21311985664885924,
+    "recorded_non_greedy_direction_fraction": 0.1,
+    "mean_serve_probability": 0.4315574063171141,
+    "mean_recorded_action_probability": 0.730302032828331
+  },
+  "by_visible_level": {
+    "1": {
+      "actions": 2853,
+      "action_entropy_nats": 0.27812749695938327,
+      "direction_entropy_nats": 0.1881224104790759,
+      "serve_entropy_nats": 0.158494350152777,
+      "mean_non_greedy_direction_probability": 0.07922946904839033,
+      "recorded_non_greedy_direction_fraction": 0.08201892744479496,
+      "mean_serve_probability": 0.6453513648102016,
+      "mean_recorded_action_probability": 0.8385194449123962
+    },
+    "2": {
+      "actions": 3015,
+      "action_entropy_nats": 0.32395838757368056,
+      "direction_entropy_nats": 0.20797268172383637,
+      "serve_entropy_nats": 0.18502721105405326,
+      "mean_non_greedy_direction_probability": 0.08739922233168516,
+      "recorded_non_greedy_direction_fraction": 0.09021558872305141,
+      "mean_serve_probability": 0.576589245598438,
+      "mean_recorded_action_probability": 0.813659834899518
+    },
+    "3": {
+      "actions": 2843,
+      "action_entropy_nats": 0.2819691687454202,
+      "direction_entropy_nats": 0.18177935898763653,
+      "serve_entropy_nats": 0.17218852276252972,
+      "mean_non_greedy_direction_probability": 0.07441710622703969,
+      "recorded_non_greedy_direction_fraction": 0.07386563489271895,
+      "mean_serve_probability": 0.5697370411007926,
+      "mean_recorded_action_probability": 0.8383610332666428
+    },
+    "4": {
+      "actions": 4459,
+      "action_entropy_nats": 0.3139096005145754,
+      "direction_entropy_nats": 0.2138438144630005,
+      "serve_entropy_nats": 0.18141255065130785,
+      "mean_non_greedy_direction_probability": 0.08898906435240266,
+      "recorded_non_greedy_direction_fraction": 0.08813635344247589,
+      "mean_serve_probability": 0.6081504964885049,
+      "mean_recorded_action_probability": 0.8248800637072441
+    },
+    "5": {
+      "actions": 181,
+      "action_entropy_nats": 0.33617194077348916,
+      "direction_entropy_nats": 0.22964446826872886,
+      "serve_entropy_nats": 0.22587667611228368,
+      "mean_non_greedy_direction_probability": 0.08934228725641835,
+      "recorded_non_greedy_direction_fraction": 0.1270718232044199,
+      "mean_serve_probability": 0.34146578849014664,
+      "mean_recorded_action_probability": 0.7856508682826688
+    }
+  }
+}

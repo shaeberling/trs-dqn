@@ -1,0 +1,33 @@
+{
+  "tests": 129,
+  "test_exit_code": 0,
+  "test_session": 88006,
+  "disabled_smokes": {
+    "before": "runs/progress16-disabled-before-smoke",
+    "after": "runs/progress16-disabled-after-smoke",
+    "actions_each": 65536,
+    "both_exit_codes": 0,
+    "model_sha256": "47989fa2902ce2a8f38f8e036646cf294f549c36eed4164f82e6ecba132efd28",
+    "optimizer_sha256": "9942ee098f3ed88f867ae278ccdbcbcfb1fcd1c73618de9591e3d52f421a892c",
+    "nonconfig_state_and_learning_events_identical": true
+  },
+  "best_effort": {
+    "score": 598,
+    "level": 8,
+    "actions": 56764,
+    "seed": 10008,
+    "record_session": 99611,
+    "inspection_session": 89447,
+    "both_exit_codes": 0,
+    "mismatches": 0,
+    "stable_replay": "results/level10/best-effort/replay.html"
+  },
+  "selected": {
+    "score": 581,
+    "level": 8,
+    "actions": 52538,
+    "seed": 10120,
+    "stable_replay": "results/level10/best/replay.html"
+  },
+  "scope": "Unit/native tests and disabled compatibility smoke; no synthetic fixture or smoke selected a checkpoint or seeded a training archive."
+}

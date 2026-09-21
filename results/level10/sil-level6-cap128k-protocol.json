@@ -1,0 +1,92 @@
+{
+  "status": "conditional_predeclared_not_launched",
+  "date_utc": "2026-09-14",
+  "run": "runs/level10-sil-level6-cap128k",
+  "source": "runs/level10-curriculum-balanced-sil/step-028250112",
+  "source_steps": 28250112,
+  "source_hashes": {
+    "model.safetensors": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+    "optimizer.npz": "1710c133488cb2025d0b337a06d8a77877714fa4fb5589b37796b6f39c68e150",
+    "state.json": "a2b797d05b6b508096765a5401b6749a91b2d734cb5073f7b5148cc42966f5fd"
+  },
+  "rationale": "Prior measured FIFO retention was short (median full eviction44686.5 new actions for already-evicted SIL4 suffixes). Test a larger history of own score-reward experience without increasing the per-rollout auxiliary optimization dose. Longer retention may improve diversity/retention or may dilute useful recent experience; no benefit is assumed.",
+  "learning_change": {
+    "sil_capacity": {
+      "from": 32768,
+      "to": 131072
+    }
+  },
+  "fixed": {
+    "sil_updates": 4,
+    "sil_batch_size": 512,
+    "sil_suffix_steps": 2048,
+    "sil_loss_weight": 0.1,
+    "sil_value_weight": 0.01,
+    "sil_priority_alpha": 0.6,
+    "sil_priority_beta": 0.1,
+    "learning_rate": 0.00001,
+    "entropy": 0.001,
+    "gamma": 0.995,
+    "gae_lambda": 0.95,
+    "life_terminal": true,
+    "envs": 32,
+    "rollout": 128,
+    "batch_size": 256,
+    "epochs": 4,
+    "curriculum_probability": 0.95,
+    "curriculum_min_level": 5,
+    "curriculum_per_level": 8,
+    "curriculum_share": true,
+    "curriculum_boot_envs": 16,
+    "tstates": 100000,
+    "seed": 17,
+    "mlx_cache_mb": 512
+  },
+  "additional_steps": 5000000,
+  "configured_end_steps": 33250112,
+  "expected_rounded_end_steps": 33251328,
+  "comparator": "runs/level10-sil-level6-continuation, same frozen source, same fresh-buffer resume and unchanged learning settings except replay capacity; compare primary suites at matched action counts. SIL20 has a different source and is not this capacity comparator.",
+  "launch_conditions": [
+    "Finish and audit both currently active declared tranches before launch; preserve every checkpoint and archive terminal logs.",
+    "If a stronger audited depth checkpoint supersedes f58, review the new evidence and revise the source/comparison protocol before any launch.",
+    "Recheck source hashes, own-buffer reset path, and exact proposed configuration differences.",
+    "Run as the sole full learner initially. Check current free/compressed memory, swap trends and process liveness after both old learners exit; do not add a third learner or stop unrelated processes."
+  ],
+  "memory": {
+    "max_replay_and_pending_screen_bytes": 805306368,
+    "max_screen_mib": 768,
+    "extra_screen_bytes_vs_control": 402653184,
+    "excludes": "array/queue overhead, emulator workers, model, MLX cache/temporary buffers and other applications",
+    "precheck": {
+      "time_utc": "2026-09-14 07:40:59",
+      "memory_pressure_free_percent": 42,
+      "swap_used_mib": 8863.31
+    },
+    "interpretation": "Existing swap usage and observed paging require a fresh post-completion check; free percentage alone is not proof of ample usable RAM."
+  },
+  "initialization": "Restore source model, optimizer and saved learner/SIL RNGs. Curriculum archives, replay and pending suffixes start empty. No validation, old replay, demonstrations or external states are imported.",
+  "validation": {
+    "policy": "unchanged sampled learned categorical",
+    "primary": {
+      "seed": 10000,
+      "games": 20,
+      "envs": 20,
+      "every": 250000,
+      "max_steps": 100000
+    },
+    "secondary": {
+      "seed": 10100,
+      "games": 50,
+      "when": "only for a stronger complete primary depth candidate, as in existing protocol"
+    },
+    "final": {
+      "seed": 40000,
+      "games": 100,
+      "max_steps": 0,
+      "when": "only after freezing validation-selected displayed Level10; never for selection"
+    }
+  },
+  "nominal_replay_draws_per_new_action": 0.5,
+  "command": "caffeinate -i venv/bin/python -m rl.ppo --run runs/level10-sil-level6-cap128k --resume runs/level10-curriculum-balanced-sil/step-028250112 --additional-steps 5000000 --sil-updates 4 --sil-capacity 131072",
+  "verification": "Check run/source/config/worker roles, bounded storage and finite losses, all own-score suffix and restored-source/action accounting. A terminal budget is an assessment, not Level10 success."
+}

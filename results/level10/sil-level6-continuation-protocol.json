@@ -1,0 +1,51 @@
+{
+  "status": "conditional_predeclaration_not_launched",
+  "declared_utc": "2026-09-14 06:52:22 UTC",
+  "run": "runs/level10-sil-level6-continuation",
+  "source": "runs/level10-curriculum-balanced-sil/step-028250112",
+  "source_steps": 28250112,
+  "source_hashes": {
+    "model.safetensors": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+    "optimizer.npz": "1710c133488cb2025d0b337a06d8a77877714fa4fb5589b37796b6f39c68e150",
+    "state.json": "a2b797d05b6b508096765a5401b6749a91b2d734cb5073f7b5148cc42966f5fd"
+  },
+  "additional_steps": 5000000,
+  "configured_budget_end": 33250112,
+  "expected_rollout_rounded_end": 33251328,
+  "learning_settings": "Inherit all source settings unchanged, including SIL4, learning rate1e-5, entropy.001, gamma.995, lambda.95, life-terminal learning,32 workers/16 protected boots, own shared curriculum. No new method change.",
+  "resume": "Restore model, optimizer, learner RNG and SIL RNG. Curriculum archives, replay and pending suffixes are not persisted and start empty. This restarts emulator workers and does not preserve the live training trajectory.",
+  "rationale": "The validated 28.25M checkpoint reaches frozen level6 on both reused sets with an exactly reproduced complete replay. Four following complete primary suites through29.253632M miss level5. If the remaining tranche produces no stronger audited candidate, continue from the validated depth reference instead of unselected later weights.",
+  "launch_condition": "Wait for the current SIL4 tranche to finish at its planned action budget; verify terminal handle and complete log/state, review all primary suites and any stronger candidate's secondary audit. Launch only if this checkpoint remains the depth reference and level10 has not been attained. Use the freed SIL4 slot, leaving SIL20 unchanged; maximum two learners. If a stronger candidate emerges, review and record a revised source decision before launch.",
+  "validation": {
+    "primary_seeds": [
+      10000,
+      10019
+    ],
+    "games": 20,
+    "every_actions": 250000,
+    "max_steps": 100000,
+    "incomplete_disqualified": true,
+    "secondary_seeds": [
+      10100,
+      10149
+    ],
+    "fresh_final_seeds_reserved": [
+      40000,
+      40099
+    ]
+  },
+  "launch_checks": [
+    "Exact model/optimizer/state hashes and same-source settings.",
+    "CPU-only emulator workers and16 protected boot roles.",
+    "Finite PPO/SIL updates, own-score accounting, fresh archives/replay and bounded memory.",
+    "First complete validation and first same-run restored source checked independently."
+  ],
+  "not_training_input": [
+    "Recorded level6 replay",
+    "Validation observations or actions",
+    "Human or scripted demonstrations",
+    "Archive files"
+  ],
+  "command": "caffeinate -i venv/bin/python -m rl.ppo --run runs/level10-sil-level6-continuation --resume runs/level10-curriculum-balanced-sil/step-028250112 --additional-steps 5000000 --sil-updates 4",
+  "scope": "Continuation of the current validated depth direction, not a new same-source ablation or a final-test result. Level10 remains the objective."
+}

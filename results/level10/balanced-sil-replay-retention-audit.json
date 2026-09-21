@@ -1,0 +1,67 @@
+{
+  "run": "runs/level10-curriculum-balanced-sil",
+  "through_steps": 26631851,
+  "configured_rollout_actions": 4096,
+  "replay_batch_size": 512,
+  "replay_updates_per_rollout": 4,
+  "nominal_replay_draws_per_new_action": 0.5,
+  "replay_capacity": 32768,
+  "completed_suffixes": 1377,
+  "fully_evicted_suffixes": 1346,
+  "median_new_actions_until_full_eviction": 44686.5,
+  "median_wall_seconds_until_full_eviction": 57.72,
+  "representative_successful_practice_suffixes": [
+    {
+      "insertion": {
+        "wall_seconds": 787.06,
+        "event": "sil_segment",
+        "steps": 25612288,
+        "final_score": 505,
+        "worker": 31,
+        "retained_suffix_steps": 2048,
+        "dropped_prefix_steps": 967,
+        "full_game": false,
+        "initial_score": 374,
+        "score_reward_sum": 131.0,
+        "truncated": false,
+        "committed": true,
+        "first_return": 1.8712533713007866,
+        "max_return": 54.79078732206197
+      },
+      "first_overwrite_steps": 25653693,
+      "fully_evicted_steps": 25654790,
+      "first_overwrite_seconds": 56.64,
+      "fully_evicted_seconds": 56.91,
+      "new_actions_until_fully_evicted": 42502,
+      "nominal_replay_batches_with_whole_suffix_present": 44
+    },
+    {
+      "insertion": {
+        "wall_seconds": 880.89,
+        "event": "sil_segment",
+        "steps": 25685664,
+        "final_score": 528,
+        "worker": 31,
+        "retained_suffix_steps": 2048,
+        "dropped_prefix_steps": 245,
+        "full_game": false,
+        "initial_score": 508,
+        "score_reward_sum": 20.0,
+        "truncated": false,
+        "committed": true,
+        "first_return": 1.6780400812329095,
+        "max_return": 4.335673227012553
+      },
+      "first_overwrite_steps": 25737057,
+      "fully_evicted_steps": 25740275,
+      "first_overwrite_seconds": 67.21,
+      "fully_evicted_seconds": 72.24,
+      "new_actions_until_fully_evicted": 54611,
+      "nominal_replay_batches_with_whole_suffix_present": 52
+    }
+  ],
+  "latest_progress_steps": 26628096,
+  "latest_applied_updates": 1580,
+  "method": "Reconstruct FIFO indices from every committed training suffix. Publication times are observer log times. Nominal batch opportunities are derived from fixed rollout boundaries, not actual priority-sample identities.",
+  "limitations": "Does not measure exact sampling frequency, gradients, or prove insufficient learning. Excludes suffixes still resident, and current data differs from paper tasks/episode conventions."
+}

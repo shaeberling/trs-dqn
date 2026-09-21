@@ -1,0 +1,16 @@
+{
+  "published_at_utc": "2026-09-20T19:37:37.047666+00:00",
+  "url": "https://breakdown-learned-replay.saschah.chatgpt.site",
+  "project_id": "appgprj_6aa6056fc7408191a0f910b978d92591",
+  "version_id": "appgprj_6aa6056fc7408191a0f910b978d92591~appgver_b99640e7787c8191b15405bda27414c4",
+  "version_number": 2,
+  "deployment_id": "appgdep_6ab035cfd5ac8191a4ddb6fd90f5fe24",
+  "status": "succeeded",
+  "access_mode": "public",
+  "site_source_commit": "e15999df15d4f19bd542115b2d87202574c10cfd",
+  "replay": "results/level10/best/replay.html",
+  "replay_sha256": "b0754b173d5cbc33385b7ee9c527467ee7c43f0e776fa12f5d7201b904027b30",
+  "score": 585,
+  "verified_win": true,
+  "scope": "Existing public site updated with the verified winner. Only the separate Sites source repository was committed and pushed; the training repository was not committed or pushed. Prior site version remains saved."
+}

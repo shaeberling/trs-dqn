@@ -1,0 +1,32 @@
+{
+  "recorded_at_utc": "2026-09-17 06:29:43 UTC",
+  "run": "runs/level10-supervised-refkl01-v2",
+  "resume": "runs/level10-timing50k-stride2-min8-refkl01/step-035504128",
+  "source_hashes": {
+    "model.safetensors": "d42179006a1824c415160fd7dd77d20237a1d524a53d9d099133b887b3c1c490",
+    "optimizer.npz": "bfef5152d559ae9e8204d0f99fb08330a080a045080863106e83158e660e10b1",
+    "state.json": "3ea9bf49858d8beeecd6b99ef6dbba487d776e196cd7d8f02e7a1928c91d3792",
+    "evaluation.json": "9db9d244a46f5bd7d10b96179e1ed3ccab78c6a8ab98d4c1f5d53e906e7de460"
+  },
+  "baseline_secondary": "results/level10/validation-refkl01-35m5.json",
+  "purpose": "Prevent silently idle gaps between arbitrary8M-action batches while preserving verification and human stop controls.",
+  "learner": "One unchanged32-env PPO/SIL/reference-KL learner,16protected,50k/stride2; --steps0 removes the tranche cutoff, with additional_steps left at its non-inherited zero default. No automated hyperparameter search.",
+  "supervision": "Local Python process,15second heartbeat, owned-child liveness and code/space checks; no Codex/LLM/API calls or usage-limit override.",
+  "validation": "Each new complete20-game primary depth/count record is audited on50 reused secondary seeds. Promote only higher complete70-game rank plus exact uncapped replay and all neural actions verified. Learner may continue while its frozen checkpoint is audited.",
+  "final_gate": "Only after verified promoted Level10:stop learner, freeze exact weights, run100 uncapped fresh games40000–40099 once. No model selection using fresh games.",
+  "stop_rules": [
+    "operator STOP file or signal",
+    "runtime or identity failure",
+    "five consecutive complete primaries missingLevel5",
+    "less than5GiB disk free",
+    "15minutes without learner log events (fault watchdog only)",
+    "verifiedLevel10 plus100 complete fresh tests"
+  ],
+  "limitations": "Does not guarantee Level10 or invent new experiments; records needs_attention when review is necessary. Does not restart after a machine reboot or restore the app's usage-limited goal. Operator can resume goal via product controls.",
+  "launch_correction": {
+    "session": 19639,
+    "exit_code": 1,
+    "run": "runs/level10-supervised-refkl01",
+    "reason": "PPO rejected mutually exclusive --steps0 and --additional-steps0; no learner actions. Supervisor correctly detected exit and recorded needs_attention."
+  }
+}

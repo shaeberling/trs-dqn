@@ -1,0 +1,286 @@
+{
+  "candidates": [
+    {
+      "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-122503168",
+      "checkpoint_sha256": "994885bf769e1f0bc476f221cf9aecebaeb3ddd98fd2c39bc364befee7e2a935",
+      "combined": {
+        "games_requested": 70,
+        "complete_games": 70,
+        "incomplete_games": 0,
+        "mean_score": 285.95714285714286,
+        "median_score": 281,
+        "best_score": 576,
+        "highest_level": 8,
+        "highest_complete_level": 8,
+        "level_1_clears": 65,
+        "level_reach_counts": {
+          "2": 65,
+          "3": 54,
+          "4": 49,
+          "5": 38,
+          "6": 23,
+          "7": 14,
+          "8": 7
+        },
+        "level_reach_rates": {
+          "2": 0.9285714285714286,
+          "3": 0.7714285714285715,
+          "4": 0.7,
+          "5": 0.5428571428571428,
+          "6": 0.32857142857142857,
+          "7": 0.2,
+          "8": 0.1
+        },
+        "outcome_version": "original-eight-reserve-proof-v1",
+        "verified_wins": 1,
+        "verified_win_rate": 0.014285714285714285,
+        "outcome_assessed_games": 70,
+        "unverified_final_level_games": 6,
+        "missing_outcome_games": 0
+      },
+      "eligible": true,
+      "rank": [
+        1,
+        7,
+        14,
+        23,
+        38,
+        49,
+        54,
+        65,
+        285.95714285714286
+      ],
+      "truncated_games": [],
+      "winning_games": [
+        {
+          "score": 576,
+          "level": 8,
+          "game_over": true,
+          "waiting": false,
+          "steps": 42254,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 576,
+          "start_tstates": 128220,
+          "outcome_version": "original-eight-reserve-proof-v1",
+          "reserve_balls_visible": 1,
+          "game_won": true,
+          "win_status": "verified_win",
+          "seed": 10019
+        }
+      ]
+    },
+    {
+      "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-226500608",
+      "checkpoint_sha256": "b74d8f62e3414afef7e74fba504d35e5cb085c5dc3080e712562fafabe5b7d2c",
+      "combined": {
+        "games_requested": 70,
+        "complete_games": 70,
+        "incomplete_games": 0,
+        "mean_score": 298.9428571428571,
+        "median_score": 280,
+        "best_score": 585,
+        "highest_level": 8,
+        "highest_complete_level": 8,
+        "level_1_clears": 65,
+        "level_reach_counts": {
+          "2": 65,
+          "3": 54,
+          "4": 47,
+          "5": 39,
+          "6": 24,
+          "7": 20,
+          "8": 11
+        },
+        "level_reach_rates": {
+          "2": 0.9285714285714286,
+          "3": 0.7714285714285715,
+          "4": 0.6714285714285714,
+          "5": 0.5571428571428572,
+          "6": 0.34285714285714286,
+          "7": 0.2857142857142857,
+          "8": 0.15714285714285714
+        },
+        "outcome_version": "original-eight-reserve-proof-v1",
+        "verified_wins": 1,
+        "verified_win_rate": 0.014285714285714285,
+        "outcome_assessed_games": 70,
+        "unverified_final_level_games": 10,
+        "missing_outcome_games": 0
+      },
+      "eligible": true,
+      "rank": [
+        1,
+        11,
+        20,
+        24,
+        39,
+        47,
+        54,
+        65,
+        298.9428571428571
+      ],
+      "truncated_games": [],
+      "winning_games": [
+        {
+          "score": 585,
+          "level": 8,
+          "game_over": true,
+          "waiting": false,
+          "steps": 49159,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 585,
+          "start_tstates": 89846,
+          "outcome_version": "original-eight-reserve-proof-v1",
+          "reserve_balls_visible": 1,
+          "game_won": true,
+          "win_status": "verified_win",
+          "seed": 10001
+        }
+      ]
+    },
+    {
+      "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-222502912",
+      "checkpoint_sha256": "4d853b4646e5eefd2aa8727146c8b98eacab90248c535145fe6b795e5fc8064c",
+      "combined": {
+        "games_requested": 70,
+        "complete_games": 69,
+        "incomplete_games": 1,
+        "mean_score": 334.5652173913044,
+        "median_score": 310,
+        "best_score": 585,
+        "highest_level": 8,
+        "highest_complete_level": 8,
+        "level_1_clears": 67,
+        "level_reach_counts": {
+          "2": 67,
+          "3": 61,
+          "4": 54,
+          "5": 48,
+          "6": 29,
+          "7": 22,
+          "8": 13
+        },
+        "level_reach_rates": {
+          "2": 0.9710144927536232,
+          "3": 0.8840579710144928,
+          "4": 0.782608695652174,
+          "5": 0.6956521739130435,
+          "6": 0.42028985507246375,
+          "7": 0.3188405797101449,
+          "8": 0.18840579710144928
+        },
+        "outcome_version": "original-eight-reserve-proof-v1",
+        "verified_wins": 0,
+        "verified_win_rate": 0,
+        "outcome_assessed_games": 69,
+        "unverified_final_level_games": 13,
+        "missing_outcome_games": 0
+      },
+      "eligible": false,
+      "rank": null,
+      "truncated_games": [
+        {
+          "score": 413,
+          "level": 7,
+          "game_over": false,
+          "waiting": false,
+          "steps": 200000,
+          "terminated": false,
+          "truncated": true,
+          "life_lost": false,
+          "hud_settle_tstates": 0,
+          "episode_reward": 413,
+          "start_tstates": 97100,
+          "outcome_version": "original-eight-reserve-proof-v1",
+          "reserve_balls_visible": 0,
+          "game_won": false,
+          "win_status": "ongoing",
+          "seed": 10112
+        }
+      ],
+      "winning_games": []
+    }
+  ],
+  "selected": {
+    "checkpoint": "runs/level10-supervised-refkl01-v2/learner/step-226500608",
+    "checkpoint_sha256": "b74d8f62e3414afef7e74fba504d35e5cb085c5dc3080e712562fafabe5b7d2c",
+    "combined": {
+      "games_requested": 70,
+      "complete_games": 70,
+      "incomplete_games": 0,
+      "mean_score": 298.9428571428571,
+      "median_score": 280,
+      "best_score": 585,
+      "highest_level": 8,
+      "highest_complete_level": 8,
+      "level_1_clears": 65,
+      "level_reach_counts": {
+        "2": 65,
+        "3": 54,
+        "4": 47,
+        "5": 39,
+        "6": 24,
+        "7": 20,
+        "8": 11
+      },
+      "level_reach_rates": {
+        "2": 0.9285714285714286,
+        "3": 0.7714285714285715,
+        "4": 0.6714285714285714,
+        "5": 0.5571428571428572,
+        "6": 0.34285714285714286,
+        "7": 0.2857142857142857,
+        "8": 0.15714285714285714
+      },
+      "outcome_version": "original-eight-reserve-proof-v1",
+      "verified_wins": 1,
+      "verified_win_rate": 0.014285714285714285,
+      "outcome_assessed_games": 70,
+      "unverified_final_level_games": 10,
+      "missing_outcome_games": 0
+    },
+    "eligible": true,
+    "rank": [
+      1,
+      11,
+      20,
+      24,
+      39,
+      47,
+      54,
+      65,
+      298.9428571428571
+    ],
+    "truncated_games": [],
+    "winning_games": [
+      {
+        "score": 585,
+        "level": 8,
+        "game_over": true,
+        "waiting": false,
+        "steps": 49159,
+        "terminated": true,
+        "truncated": false,
+        "life_lost": true,
+        "hud_settle_tstates": 0,
+        "episode_reward": 585,
+        "start_tstates": 89846,
+        "outcome_version": "original-eight-reserve-proof-v1",
+        "reserve_balls_visible": 1,
+        "game_won": true,
+        "win_status": "verified_win",
+        "seed": 10001
+      }
+    ]
+  },
+  "protocol_completed": true,
+  "helper_exit_code": 1,
+  "helper_exit_explanation": "Final candidate secondary has one200k-action truncation; its valid output is retained and the entire70-game candidate is disqualified. No retries or replacement seeds.",
+  "fresh_test_seeds_used": false
+}

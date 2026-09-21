@@ -1,0 +1,37 @@
+{
+  "status": "predeclared_not_launched",
+  "date_utc": "2026-09-14",
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112/model.safetensors",
+  "checkpoint_sha256": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+  "rationale": "Epsilon0.01 completed all20 primary games but reached only Level4, below sampled source6. Pure argmax had a completed Level7 game but seven serve stalls. Test one predeclared lower-exploration counterpart at epsilon0.001 to assess the tradeoff; do not infer success or run an open-ended rate sweep.",
+  "method": {
+    "deterministic_override": true,
+    "epsilon": 0.001,
+    "description": "At every action independently of the screen or game status, select a uniformly random one of six actions with probability0.001; otherwise choose learned policy-logit argmax.",
+    "existing_cli": true,
+    "source": "https://doi.org/10.1038/nature14236",
+    "source_scope": "Generic epsilon-greedy evaluation is a published DQN mechanism (Mnih2015 used0.05). This is a lower-dose PPO-logit diagnostic, not a DQN replication."
+  },
+  "seeds": {
+    "start": 10000,
+    "end": 10019,
+    "role": "reused primary validation"
+  },
+  "games": 20,
+  "envs": 20,
+  "max_steps": 100000,
+  "tstates": 100000,
+  "output": "results/level10/epsilon0001-sil-28m25-diagnostic.json",
+  "launch_after": "Epsilon0.01 session76360 exited0 and was audited as weaker. Both learners remain unchanged.",
+  "selection_rule": "All20 games must finish GAME OVER without truncation. Compare the complete suite's descending level-reach rank against sampled f58 primary. Only a strictly stronger depth rank warrants a 50-game secondary diagnostic in exactly this same epsilon-greedy mode; no fresh final-test seeds for selection. Never relabel a result as sampled PPO or silently change the live training/validation protocol.",
+  "unchanged": [
+    "PPO+SIL training",
+    "sampled-policy reference and validation",
+    "screen-only model inputs",
+    "raw-score reward",
+    "committed Level-5 package",
+    "fresh40000-40099test reservation"
+  ],
+  "no_game_specific_rules": true,
+  "followup_limit": "This is the only planned lower-rate counterpart. If it is not stronger than sampled Level6 primary, retain sampled decoding and continue the declared training tranches."
+}

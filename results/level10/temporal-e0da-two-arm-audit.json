@@ -1,0 +1,125 @@
+{
+  "recorded_at_utc": "2026-09-14 11:30:39 UTC",
+  "protocol_sha256": "59f12b589d442c626ecabfaf9ec7668827c52d6b3bf35380a532b212908018c2",
+  "all_source_implementation_hashes_seeds_boots_termination_statistics_verified": true,
+  "results": [
+    {
+      "label": "original-100k-adjacent",
+      "path": "runs/level10-sil-level6-continuation/step-031252480/evaluation.json",
+      "sha256": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e",
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 169.2,
+      "median_score": 122.5,
+      "best_score": 328,
+      "highest_complete_level": 5,
+      "level_reach_counts": {
+        "2": 15,
+        "3": 9,
+        "4": 8,
+        "5": 6
+      },
+      "total_game_actions": 157727
+    },
+    {
+      "label": "50k-adjacent",
+      "path": "results/level10/temporal-e0da-50k-adjacent.json",
+      "sha256": "a67bc46c8864c868b43cb0a279f761e322c382434434b083a99803c35806bc9f",
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 144.7,
+      "median_score": 119.5,
+      "best_score": 255,
+      "highest_complete_level": 4,
+      "level_reach_counts": {
+        "2": 19,
+        "3": 9,
+        "4": 1,
+        "5": 0
+      },
+      "total_game_actions": 252338
+    },
+    {
+      "label": "50k-spaced",
+      "path": "results/level10/temporal-e0da-50k-spaced.json",
+      "sha256": "3d907356a3afee7577c7712f8bc4a69989bd3e56719f12ff7d41dafe46956cfe",
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 269.4,
+      "median_score": 276,
+      "best_score": 543,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 20,
+        "3": 18,
+        "4": 14,
+        "5": 10,
+        "6": 2,
+        "7": 2,
+        "8": 1
+      },
+      "total_game_actions": 580094
+    }
+  ],
+  "paired_descriptive_only": [
+    {
+      "spaced_versus": "original-100k-adjacent",
+      "score_wins": 17,
+      "score_ties": 0,
+      "score_losses": 3,
+      "mean_score_difference": 100.2
+    },
+    {
+      "spaced_versus": "50k-adjacent",
+      "score_wins": 18,
+      "score_ties": 0,
+      "score_losses": 2,
+      "mean_score_difference": 124.7
+    }
+  ],
+  "deepest_spaced_games": [
+    {
+      "score": 464,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 37386,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 464,
+      "start_tstates": 159234,
+      "seed": 10009
+    },
+    {
+      "score": 543,
+      "level": 8,
+      "game_over": true,
+      "waiting": false,
+      "steps": 44325,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 543,
+      "start_tstates": 173912,
+      "seed": 10015
+    }
+  ],
+  "observed_exits": {
+    "compatibility": {
+      "session": 59372,
+      "exit_code": 0
+    },
+    "adjacent": {
+      "session": 66316,
+      "exit_code": 0
+    },
+    "spaced": {
+      "session": 68803,
+      "exit_code": 0
+    }
+  },
+  "decision": "Both predeclared arms complete. The spaced-frame arm substantially improves these reused-primary score/depth/counts, warranting end-to-end observation-stride support and standard secondary validation. This is diagnostic evidence, not a new selected reference, fresh test, mastery claim, or proof of a single causal mechanism. Preserve e0da original-timing Level 8 and finish cap128k unchanged before shared-core edits."
+}

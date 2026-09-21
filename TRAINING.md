@@ -54,7 +54,7 @@ used to alter the model.
 
 ## Approach
 
-The agent uses only four consecutive 1 KiB video-memory screens. A fixed lookup
+The agent uses only four 1 KiB video-memory screens (consecutive by default). A fixed lookup
 table renders graphics exactly and encodes visible ASCII cells in a separate
 channel. Three convolutional layers and a dueling value/advantage head predict
 six key combinations: none, left, right, space, left+space, right+space.
@@ -68,8 +68,25 @@ Both use Adam and gradient clipping. The only reward is the change in the on-scr
 ends the game. `--life-terminal` optionally ends each training return on a lost
 ball (standard episodic-life DQN); it does not reset the game or choose a serve.
 The two reserve-ball icons are read from the screen to detect these boundaries.
+Do not hard-code three such boundaries per game: the verified Level-6 replay
+shows the visible reserve increasing from one to two during play and remaining
+there for 4,700 frames before the next decrease. The
+[screen observation audit](results/level10/reserve-icon-observation-audit.json)
+documents this without assuming a game-internal award rule or changing actions.
 Evaluation always plays the full game until GAME OVER. Time-limit truncations bootstrap
 from their final observation and are reported separately from complete games.
+
+PPO supports `--observation-stride N`, a positive integer counting actions
+between the four input screens. Stride 2 retains seven recent raw screens
+and selects offsets -6, -4, -2, 0; the network input remains four screens.
+With 50,000-T-state actions this preserves the nominal history span of the
+original 100,000/stride-1 configuration. Evaluation, watch and recording
+default to the checkpoint's stride, or 1 for legacy checkpoints. Replay
+metadata records actual spacing and inspection reconstructs that history;
+snapshots preserve intermediate raw frames and reject incompatible spacing.
+Changing stride resets PPO's validation-selection records. It does not add
+game-state inputs, reward shaping or action overrides. The fixed timing
+comparison and its validation gates are documented in [LEVEL10.md](LEVEL10.md).
 
 ## Setup on Apple Silicon
 
@@ -181,6 +198,14 @@ overridden on the command line. Each run records
 its exact configuration in `config.json` (and `resume-config.json`). Ctrl-C or
 SIGTERM asks the trainer to save at the next action batch and stop cleanly.
 
+PPO also checks stop requests inside evaluation: cancellation saves the learner
+and produces no selectable partial result. While a validation is running,
+ten-second progress records show unfinished seeds, step counts, scores, displayed
+levels, and serve-wait status. `rl.status` exposes this only for the current suite.
+For continuing training, a finite `--eval-max-steps` can prevent a failed policy
+from blocking all future updates; any incomplete suite is disqualified. Final
+test games and a claimed target replay must still finish at actual GAME OVER.
+
 ## Evaluate complete games
 
 ```sh
@@ -196,6 +221,16 @@ score, highest level, and number of games clearing level 1. It records the
 checkpoint SHA-256. `--max-steps 0` runs each game until the visible GAME OVER
 message; finite limits are available for diagnostics, but truncated games are
 never counted as complete and make the command exit unsuccessfully.
+
+Optional `--envs 8` evaluates several games in separate emulator processes with
+batched neural inference. Each PPO game keeps its original independent random
+stream, and output games stay in seed order. Defaults remain serial (`--envs 1`);
+random-baseline and watch modes require serial execution. PPO training exposes
+the same option as `--eval-envs 8`. Changing this count resets inherited
+validation selection records, since batched floating-point inference is not
+assumed identical on every possible trajectory. The complete 20-game check at
+the level-10 experiment's 18,501,632-action checkpoint matched every historical
+serial game record exactly; see [LEVEL10.md](LEVEL10.md) for measurements.
 
 The emulator has an optional stop on a specific **visible screen string**.
 This prevents a model-selected held SPACE from dismissing GAME OVER and starting
@@ -376,3 +411,263 @@ trained categorical sampling policy. No serving or paddle heuristics were
 introduced. Training on this M4 Mac Mini ran around 1,900 actions/second late
 in the run. Historical logs, including weaker checkpoints and the HUD parser
 failure, are retained rather than presenting only successful trials.
+
+## Optional self-generated curriculum
+
+PPO accepts `--curriculum-probability 0.5 --curriculum-min-level 2
+--curriculum-per-level 8` for a training-only start-state curriculum. The default
+probability is zero (disabled). Rebuild the existing emulator with `make` first.
+Each training worker stores opaque snapshots only at level entries reached by
+its own live policy, then may revisit them on automatic episode reset. It cannot
+load states from replays, validation, or test games. All policy inputs remain
+four screen frames, every action is learned, and reward is only newly earned
+score. See [experiment design and checks](LEVEL10.md#self-generated-start-state-curriculum).
+
+Restored segments are labelled `full_game=false`, logged as `curriculum_episode`,
+and excluded from full-game scores and target success. `rl.status` reports their
+counts separately. Validation, recording, and final testing still start from
+the normal boot screen; they never enable this curriculum. Worker archives are
+in memory only and rebuild after resume; model/optimizer checkpoints do not
+preserve them or ongoing emulator trajectories.
+
+With `--curriculum-share`, workers additionally receive level-entry snapshots
+newly reached by peers in the same training run. Sharing is disabled by default
+and requires positive curriculum probability. The scheduler removes opaque
+payloads before returning observations/metadata to the learner; receipt does not
+change an active game. A later automatic reset may choose a peer entry, and its
+recorded source worker/action identifies provenance. There is no archive-file
+loading option. Validation never enables this path.
+
+`--curriculum-boot-envs 16 --envs 32` reserves the first 16 training workers
+for ordinary from-boot games. They still discover and share archive entries,
+but never restore one. The remaining workers use the configured reset
+probability. This guarantees at least half the action samples in every rollout
+come from from-boot trajectories, regardless of restored-segment duration.
+The default is zero (the original mixed-reset behavior on every worker).
+Reservation requires shared curriculum and must leave at least one unreserved
+worker. This changes only training starts, never policy actions or evaluation.
+Startup runtime records show each curriculum worker's reset role. New progress
+records include exact `rollout_action_origins` and `training_action_origins`
+(the latter is cumulative since this process started, not since the entire
+checkpoint lineage began); stop records retain the cumulative counts.
+
+On memory-constrained hosts, `--mlx-cache-mb 512` sets MLX's reusable free-buffer
+cache target without changing the network or PPO objective. Excess buffers may
+remain until subsequent allocation; this is not an instantaneous memory ceiling.
+`-1` (the default) preserves
+MLX's default cache setting. Progress and stop records include MLX active, cached,
+and peak allocation bytes. These do not include all process or system memory;
+also monitor host memory pressure when scheduling concurrent learners.
+
+PPO defers loading MLX until learner construction/main execution so spawned
+emulator-only workers do not initialize the GPU backend. A startup
+`worker_runtime` record reports each worker PID and whether MLX is loaded;
+it performs no emulation step and consumes no gameplay RNG.
+
+## Optional checkpoint-averaging diagnostic
+
+`rl.average` uniformly averages finite FP32 weights from distinct checkpoints
+with identical PPO run configurations. Choose the input window before viewing
+its validation outcomes, then evaluate the resulting single network separately:
+
+```sh
+venv/bin/python -m rl.average \
+  runs/level10-curriculum-balanced-lr1e5/step-024002560/model.safetensors \
+  runs/level10-curriculum-balanced-lr1e5/step-024252416/model.safetensors \
+  runs/level10-curriculum-balanced-lr1e5/step-024502272/model.safetensors \
+  runs/level10-curriculum-balanced-lr1e5/step-024752128/model.safetensors \
+  runs/level10-curriculum-balanced-lr1e5/step-025001984/model.safetensors \
+  --output runs/level10-balanced-lr1e5-average
+venv/bin/python -m rl.evaluate \
+  runs/level10-balanced-lr1e5-average/model.safetensors \
+  --games 20 --envs 20 --seed 10000 --max-steps 100000 \
+  --output results/level10/validation-balanced-lr1e5-average.json
+```
+
+The output directory must be new. Source weights are unchanged; their hashes,
+steps, and equal weights are recorded in the output state. This is evaluation
+only: it adds no training actions, inherits no performance claim, contains no
+optimizer/RNG state, and PPO rejects it as a resume source. Resume learning from
+an original learner checkpoint. This exploratory averaging recipe did not
+improve the level-10 experiment: 20/20 complete, mean 112.25, highest level 4.
+
+## Optional own-experience self-imitation
+
+`--sil-updates 4` adds opt-in [Self-Imitation Learning](https://proceedings.mlr.press/v80/oh18b/oh18b.pdf)
+after each PPO rollout. It replays only this process's live training observations,
+actions, and score rewards. Positive `return - value` weights the policy loss;
+a one-sided value loss shares the existing optimizer. No validation/replay files
+are imported, and inference remains the same single screen-only network.
+
+Defaults: replay capacity 32,768, retained suffix 2,048 actions per worker,
+batch size 512, loss weight 0.1, value weight 0.01, priority exponent 0.6,
+priority correction 0.1. These are exposed as `--sil-capacity`,
+`--sil-suffix-steps`, `--sil-batch-size`, `--sil-loss-weight`,
+`--sil-value-weight`, `--sil-priority-alpha`, and `--sil-priority-beta`.
+The default `--sil-updates 0` allocates no replay/collector and consumes no
+additional RNG. This is an experimental adaptation, not a proven improvement.
+
+The update count is per whole rollout, not per worker. With 32 workers and
+128 steps, four batches of 512 give **0.5 nominal replay draws per new action**;
+20 batches give 2.5. Increasing this changes the auxiliary optimization dose
+relative to PPO. Priorities affect sampling, not FIFO eviction, and nominal
+draw counts do not establish how often a specific transition supplies a
+positive-advantage gradient.
+
+Only a real learning terminal (life loss when enabled, otherwise game over)
+commits a suffix with exact discounted future score rewards. Old prefix states
+may be dropped to bound memory; this does not create a terminal or shorten
+the future return of retained states. Any truncated segment is discarded,
+including its PPO bootstrap. At 32 workers the default screen-storage bound
+is 384 MiB plus small array/queue overhead; model/GPU memory is additional.
+
+`sil_segment` logs are learning-boundary records, not complete-game results.
+They expose suffix length, dropped prefix, visible initial/final score, and
+new-score sum. Progress records include replay occupancy, origin counts,
+positive-advantage fractions, and applied auxiliary updates. An all-zero batch
+skips Adam entirely, including its momentum update. Primary PPO remains compiled;
+the auxiliary path uses ordinary lazy MLX operations with explicit evaluation.
+
+Checkpoints save model, optimizer, action RNG, and a separate SIL sampling RNG.
+SIL replay and pending trajectories are in-memory only and start empty on resume;
+unfinished suffixes are never committed at shutdown. This limitation is recorded
+as `sil_replay_saved=false`. Existing frozen models remain compatible.
+
+## Optional training-only self-reference penalty
+
+`--reference-policy PATH/model.safetensors --reference-kl-weight 0.1` adds
+`weight * mean KL(reference || learner)` to PPO on the current learner's
+rollout screens. The reference must be this agent's own RL-trained PPO model
+with matching environment version, action timing and screen-history stride.
+This adapts the student-trajectory auxiliary objective in
+[Kickstarting Deep Reinforcement Learning](https://arxiv.org/abs/1803.03835),
+with a fixed weight rather than the paper's population-based schedule.
+
+The reference is frozen and queried once per rollout in bounded batches;
+six detached log-probabilities per observation are reused across PPO epochs.
+It never selects actions, supplies trajectories or changes score rewards.
+SIL's loss is unchanged. All live actions and restored-state discoveries still
+come from the learner, and no validation/replay data enters training. The
+penalty is experimental: it may help retention or constrain further learning.
+
+Default weight zero with no reference retains the historical update path.
+Progress logs expose mean PPO-minibatch `reference_kl` only when enabled.
+This is measured during PPO updates, not after the subsequent SIL updates.
+Checkpoints retain the
+reference path, SHA-256 and weight; resume verifies identity before GPU or
+worker initialization. Resuming regularized training needs that reference
+file; evaluating or replaying the saved learner does not. Inference remains
+the same single screen-only categorical policy, with no reference dependency.
+
+## Continuous local supervision
+
+**Authorized target: beat all eight original levels.** The original game ends
+after the eighth; see the [exact-binary audit](results/level10/game-level-cap-audit.json).
+The prior Level-10 run stopped cleanly at 120,102,912 actions. The revised
+all-eight goal is now verified and its 100-game fresh test is complete; all
+processes have exited. See [ALL_EIGHT.md](ALL_EIGHT.md). Reaching Level8
+does not count as winning. The CLI now requires `--game-win`.
+
+`rl.outcome` proves a win using only terminal video: `GAME OVER`, level8 and
+at least one visible reserve ball (HUD columns30–34). Both loss branches
+exhaust lives; the reserve HUD is already empty on the last life. Victory
+does not decrement lives. Binary-contract tests verify those paths. This is
+a sufficient, conservative proof, not a complete classifier: last-ball Level8
+endings are reported as `unverified_final_level`, not asserted losses or wins.
+The verified win rate is therefore a lower bound. No live non-video memory,
+CPU state, score threshold or policy override is used. The separate
+`outcome_version` identifies this reporting; observations/stepping/rewards and
+the existing environment version are unchanged.
+
+The local supervisor avoids idle gaps at arbitrary action budgets. It starts
+one declared learner with `--steps 0`, keeps a15-second heartbeat, and audits
+each new complete primary win/depth/count record on the reused50-game secondary
+set. Promotion requires a better complete70-game rank, an uncapped replay,
+and exact verification of every recorded neural action. The learner can
+continue while a frozen checkpoint is audited. No hyperparameters are tuned
+automatically and no teacher/validation/replay trajectories enter training.
+
+Historical launch command for the now-stopped progress4 trial (not an active
+run or instruction to restart it):
+
+```bash
+caffeinate -i venv/bin/python -m rl.supervise \
+  --run runs/all-eight-supervised-progress4 \
+  --resume runs/level10-supervised-refkl01-v2/learner/step-116006912 \
+  --baseline runs/level10-supervised-refkl01-v2/learner/step-116006912 \
+  --baseline-primary results/level10/all-eight-baseline-primary.json \
+  --baseline-secondary results/level10/all-eight-baseline-secondary.json \
+  --baseline-selection results/level10/all-eight-baseline-selection.json \
+  --game-win --curriculum-score-interval 4 \
+  --artifacts results/level10/best \
+  --effort-artifacts results/level10/best-effort
+```
+
+The run directory must be new; check for an existing process before launching
+this example, and do not launch a duplicate or reuse a stopped directory.
+Check `status.json` in that directory for phase, PIDs, heartbeat, actual latest
+learner step/log age, and selected validation results. `learner/metrics.jsonl`
+is the normal training log. `selected.json` and `audits/` hold automatic
+selection records; `learner-output.log` and per-audit logs retain subprocess
+output. A file lock prevents two supervisor instances. An old heartbeat does
+not prove a process is still alive; check its PID too.
+
+Create a file named `STOP` in that exact run directory to request a graceful
+stop. The supervisor also stops for runtime/identity errors, fewer than5GiB
+free disk space,15 minutes without a learner log event, or five consecutive
+complete primary suites missing Level5. The log watchdog is a fault detector,
+not a wall-clock training limit. It records `needs_attention` with a reason
+and preserves checkpoints; it never silently deletes data or changes methods.
+
+Verified full-game wins rank before depth counts or mean score. Only a promoted
+checkpoint with a complete70-game audit and an uncapped, action-verified winning
+replay can stop learning, freeze exact weights in `frozen-winner/`, and run100 uncapped
+fresh games on seeds40000–40099. Those results never select the model. It
+records an exclusive final-test-start marker to prevent accidental retries.
+The replay's outcome is recomputed directly from its final screen, not trusted
+from JSON. A practice-state win never counts as a full-game victory. The
+learner continues after a primary win until the supervisor finishes its audit.
+The September20 final test used seeds40000–40099 once and completed all100
+games naturally. Those seeds are no longer fresh. Any future independent
+test requires a newly declared seed set before evaluation, not a retry of
+this result. No fresh-test games entered training or model selection.
+
+This process uses the Mac's normal Python/MLX runtime, not a Codex agent or
+API. It cannot restore a usage-limited chat goal, send chat updates, or restart
+after a machine reboot. Resume automatic agent follow-up with the app's goal
+progress controls; the local supervisor continues independently while its
+process is alive. The failed first launch (both mutually exclusive budget
+flags passed) is preserved in `runs/level10-supervised-refkl01`; it performed
+no training. The corrected launcher passes only `--steps 0` and has a real
+CLI regression test.
+
+### Progress archives and always-available replays
+
+`--curriculum-score-interval 16` adds training-only snapshots after16 newly
+earned visible score points since the last archive opportunity in an eligible
+level. Zero (the default) preserves the level-entry-only behavior. Boot,
+restore and level change rebase the offset. The bounded per-level reservoir,
+same-run peer provenance, fresh score rewards and protected boot workers are
+unchanged. Snapshots are never policy inputs or demonstrations. This is the
+September19 experiment, now paused without a selected-model improvement.
+The user-authorized all-eight trial uses interval4 for finer late-level practice,
+with the same reservoir and protected workers; it is not yet proven better.
+
+`--artifacts` exports every verified validation-selected improvement;
+`--effort-artifacts` separately records new complete-game level/score records
+from primary/secondary validation, even if that checkpoint is not selected.
+Both keep immutable `versions/<model-hash>-<replay-hash>/` bundles and a stable
+standalone `replay.html`. `current.json` identifies the current version and
+checksums. Older versions are retained. Copy a replay HTML file to share it;
+it includes its frames, font and actions, with no model or network dependency.
+The original public replay is not changed by these local exports.
+
+To inspect a recorded screen without running new gameplay:
+
+```bash
+venv/bin/python -m rl.replay_frames results/level10/best/replay.html \
+  --frames 44743 50470 52538 --output results/level10/replay-diagnostic.png
+```
+
+Frame indices above belong to the September19 selected replay; choose valid
+indices from the current replay metadata if the stable file has advanced.

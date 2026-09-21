@@ -1,0 +1,93 @@
+{
+  "steps": 27500544,
+  "all_three_seed_termination_statistics_verified": true,
+  "sets": {
+    "sil20": {
+      "path": "runs/level10-curriculum-balanced-sil20/step-027500544/evaluation.json",
+      "sha256": "1e6125f7e709b941f3025743bf2575537138538d157b86a50bb202ef2f63c452",
+      "summary": {
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 126.4,
+        "median_score": 116,
+        "best_score": 305,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 13,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 5,
+          "4": 3,
+          "5": 2
+        },
+        "level_reach_rates": {
+          "2": 0.65,
+          "3": 0.25,
+          "4": 0.15,
+          "5": 0.1
+        }
+      }
+    },
+    "sil4": {
+      "path": "runs/level10-curriculum-balanced-sil/step-027500544/evaluation.json",
+      "sha256": "5dd944ef5c6ab5dea5f2dc50e3b1f446f2d1fdde9857ef7c1e088464e6f5919f",
+      "summary": {
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 134.5,
+        "median_score": 117,
+        "best_score": 315,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 14,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 6,
+          "4": 3,
+          "5": 3
+        },
+        "level_reach_rates": {
+          "2": 0.7,
+          "3": 0.3,
+          "4": 0.15,
+          "5": 0.15
+        }
+      }
+    },
+    "no_sil": {
+      "path": "runs/level10-curriculum-balanced-lr1e5-long/step-027500544/evaluation.json",
+      "sha256": "d6c002c300eae8c93a2d65ec3f321859889496321d5592f024f97d4a5bd991e3",
+      "summary": {
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 148.55,
+        "median_score": 125,
+        "best_score": 286,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 17,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 6,
+          "4": 5,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.85,
+          "3": 0.3,
+          "4": 0.25,
+          "5": 0
+        }
+      }
+    }
+  },
+  "sil20_checkpoint_hashes": {
+    "model.safetensors": "a5ca8497ac3ef16b1f69ce8e388e83e413bddd550d21865b5ea5fdff00388ac4",
+    "optimizer.npz": "f537d3ed462dfc8801d6fb102e01ee52af566adf9f93f2b08472ef1963a4a914",
+    "state.json": "77ba485103a2753a88f5d0268ebb9fda202780ab55b77e87aaa7a72d009ec321"
+  },
+  "decision": "SIL20 first complete primary to reach5 (two games), below matched SIL4 three reaches and below retained frozen Level6 source depth. No promotion or secondary audit; continue declared budgets and preserve sampled policy/final-test reservation."
+}

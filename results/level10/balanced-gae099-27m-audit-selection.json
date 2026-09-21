@@ -1,0 +1,38 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-gae099/step-027000832",
+  "sha256": "74444a0ed2f13a1f780cf9eff6645d3f3e5d57562f985a631869d29ecfb49cc7",
+  "selected_primary": {
+    "wall_seconds": 2445.27,
+    "event": "validation",
+    "steps": 27000832,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 134.1,
+    "median_score": 120.5,
+    "best_score": 268,
+    "highest_level": 5,
+    "highest_complete_level": 5,
+    "level_1_clears": 15,
+    "level_reach_counts": {
+      "2": 15,
+      "3": 8,
+      "4": 3,
+      "5": 1
+    },
+    "level_reach_rates": {
+      "2": 0.75,
+      "3": 0.4,
+      "4": 0.15,
+      "5": 0.05
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "criterion": "Highest complete level-reach-count rank, descending displayed levels 10 through 2, then mean; among this trial only",
+  "primary_suites": 15
+}

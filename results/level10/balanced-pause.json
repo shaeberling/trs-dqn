@@ -1,0 +1,114 @@
+{
+  "run": "runs/level10-curriculum-balanced",
+  "start_steps": 23003136,
+  "stop": {
+    "wall_seconds": 5895.86,
+    "event": "stopped",
+    "steps": 28815360,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 4066736,
+      "restored": 1745488
+    },
+    "mlx_active_bytes": 9798508,
+    "mlx_cache_bytes": 725635088,
+    "mlx_peak_bytes": 1446170048
+  },
+  "additional_actions": 5812224,
+  "validation_suites": 23,
+  "complete_suites": 22,
+  "incomplete_suites": 1,
+  "highest_complete_validation_level": 5,
+  "final_validation": {
+    "wall_seconds": 5822.35,
+    "event": "validation",
+    "steps": 28753920,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 71.15,
+    "median_score": 66.5,
+    "best_score": 114,
+    "highest_level": 2,
+    "highest_complete_level": 2,
+    "level_1_clears": 10,
+    "level_reach_counts": {
+      "2": 10,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.5,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "validation_since_last_level5": 19,
+  "complete_from_boot_training_games": 943,
+  "highest_complete_from_boot_training_level": 5,
+  "full_training_games_beyond5": [],
+  "practice": {
+    "segments": 2827,
+    "peer_segments": 2698,
+    "highest_level": 8,
+    "by_start_level": [
+      {
+        "level": 5,
+        "segments": 985,
+        "actions": 252159,
+        "new_reward": 6828,
+        "max_level": 6
+      },
+      {
+        "level": 6,
+        "segments": 703,
+        "actions": 498940,
+        "new_reward": 16065,
+        "max_level": 7
+      },
+      {
+        "level": 7,
+        "segments": 567,
+        "actions": 611924,
+        "new_reward": 28006,
+        "max_level": 8
+      },
+      {
+        "level": 8,
+        "segments": 572,
+        "actions": 365224,
+        "new_reward": 2401,
+        "max_level": 8
+      }
+    ]
+  },
+  "training_guard_hits": 0,
+  "archive_publications": 74,
+  "origins_and_reward_differences_verified": true,
+  "protected_workers_never_restored": true,
+  "logged_rollout_and_cumulative_action_checks_passed": true,
+  "latest_hashes": {
+    "model.safetensors": "fc4bb0959fbfbff0e36ec3f58747fb7258a3c0c31382c6532a088e9d2d3d2507",
+    "optimizer.npz": "38f339d41824378c3fe51ee0cc316e0a568fe54d6fb9d7f3cc0e08b789d3c510",
+    "state.json": "57636d11cb163d5558e5ef58d4e44111a66f84c5de7ac0041b9021b495f24f17"
+  },
+  "log": {
+    "path": "logs/level10-curriculum-balanced.jsonl",
+    "lines": 4362,
+    "bytes": 2330130,
+    "sha256": "737b20e49e7d1171a3fe9168da4084b870a5e2de2fc034e11c8558ef894c116a",
+    "byte_identical": true
+  },
+  "retained_reference": "runs/level10-curriculum-shared/step-021000192",
+  "final_test_seeds_used": false,
+  "reason": "Adaptive graceful pause after 19 consecutive complete validations missed level 5; latest three reached only level 2. Retain checkpoints and prioritize the smaller-rate continuation.",
+  "exit_code": 0
+}

@@ -1,0 +1,60 @@
+{
+  "recorded_at_utc": "2026-09-14 10:29:08 UTC",
+  "protocol": "results/level10/sil-level8-cap128k-protocol.json",
+  "preflight": {
+    "source_hashes": {
+      "model.safetensors": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+      "optimizer.npz": "c651d98449d697686df92eaa2c623e6ef42433e9fca340383b556f0cf4bbda38",
+      "state.json": "75e0bc0abc9c2b6cc74600f45fe6c42205ebca77be89f860b033d4ddfcd2ab6c",
+      "evaluation.json": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e"
+    },
+    "fixed_config_learning_differences": {
+      "sil_capacity": [
+        32768,
+        131072
+      ]
+    },
+    "saved_learner_and_sil_rng_present": true,
+    "source_replay_saved": false,
+    "comparator_terminal_and_audited": true,
+    "archived_log": {
+      "lines": 5428,
+      "bytes": 2584730,
+      "sha256": "f1a14c1cda6e5674c9dc34760fcf63d6ef00435e76d2f6860a389807a9e006fc"
+    },
+    "raw_and_archived_log_identical": true,
+    "new_run_absent_before_launch": true,
+    "configured_end_steps": 36252480,
+    "expected_rounded_end_steps": 36253696,
+    "command": "caffeinate -i venv/bin/python -m rl.ppo --run runs/level10-sil-level8-cap128k --resume runs/level10-sil-level6-continuation/step-031252480 --additional-steps 5000000 --sil-updates 4 --sil-capacity 131072"
+  },
+  "completed_comparator_audit": "results/level10/sil-level8-continuation-completion.json",
+  "source_review": {
+    "selected_checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+    "level10_unmet": true,
+    "no_stronger_selected_source": true,
+    "all_six_comparator_secondary_evaluators_terminal": true,
+    "all_prior_learners_terminal": true,
+    "pgrep_before_launch_exit_code": 1
+  },
+  "memory_samples": [
+    {
+      "at_utc": "2026-09-14 10:27:38 UTC",
+      "free_percentage": 47,
+      "swap_used_mib": 8986.81,
+      "swapins": 1364409,
+      "swapouts": 2575213,
+      "compressor_pages": 375587
+    },
+    {
+      "at_utc": "2026-09-14 10:28:24 UTC",
+      "free_percentage": 48,
+      "swap_used_mib": 8986.81,
+      "swapins": 1364449,
+      "swapouts": 2575213,
+      "compressor_pages": 362731
+    }
+  ],
+  "memory_interpretation": "No new swap-outs across the post-exit samples; swap used stable. Larger buffer adds a bounded384MiB of maximum screen storage. Start as sole learner and monitor actual memory; free percentage is not a physical-RAM estimate.",
+  "decision": "Launch the predeclared same-source131072-vs32768capacity comparison, all other learning/validation settings fixed. Restore model/optimizer/learner+SILRNG; fresh curriculum/replay/pending. Final seeds40000-40099 remain unused."
+}

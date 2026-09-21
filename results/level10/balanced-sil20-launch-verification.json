@@ -1,0 +1,387 @@
+{
+  "run": "runs/level10-curriculum-balanced-sil20",
+  "session": 38676,
+  "pid": 95320,
+  "source_hashes": {
+    "model.safetensors": "a68d536f2a5492e2a707e12ac8ccb0518de1b7b0a820e8ec879292c9291f2458",
+    "optimizer.npz": "232a75db92718e6f002811e6e3de02e33e8fb103590817a332c1199a2fa39097",
+    "state.json": "01702aecfc86b35a285fc4d4cf00ba152daf79357f33a9b25b31ea513c148bdf"
+  },
+  "only_config_differences": {
+    "run": {
+      "sil4": "runs/level10-curriculum-balanced-sil",
+      "sil20": "runs/level10-curriculum-balanced-sil20"
+    },
+    "sil_updates": {
+      "sil4": 4,
+      "sil20": 20
+    }
+  },
+  "through_steps": 25070889,
+  "worker_runtime": {
+    "wall_seconds": 0,
+    "event": "worker_runtime",
+    "steps": 25006080,
+    "workers": [
+      {
+        "pid": 95327,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95328,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95329,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95330,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95331,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95332,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95333,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95334,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95335,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95336,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95337,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95338,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95339,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95340,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95341,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95342,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 95343,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95344,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95345,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95347,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95348,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95349,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95350,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95351,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95353,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95354,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95355,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95356,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95357,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95358,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95359,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 95360,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      }
+    ]
+  },
+  "segments_score_checked": 52,
+  "logged_origins_action_accounting_bounds_and_losses_verified": true,
+  "latest_progress": {
+    "wall_seconds": 104.43,
+    "event": "progress",
+    "steps": 25063424,
+    "episodes": 16273,
+    "steps_per_second": 549.1,
+    "mean_score_100": 50.142857142857146,
+    "best_score_100": 57,
+    "highest_level_100": 1,
+    "complete_games_100": 7,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "level_reach_rates_100": {
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    "actor_loss": -0.007043689096462913,
+    "value_loss": 0.14739832491613925,
+    "entropy": 0.29412836488336325,
+    "approx_kl": 0.0010227597667835653,
+    "rollout_action_origins": {
+      "from_boot": 4096,
+      "restored": 0
+    },
+    "training_action_origins": {
+      "from_boot": 57344,
+      "restored": 0
+    },
+    "mlx_active_bytes": 9759492,
+    "mlx_cache_bytes": 473167656,
+    "mlx_peak_bytes": 1577597648,
+    "sil": {
+      "replay_size": 25871,
+      "pending_transitions": 31473,
+      "pending_screen_bytes": 128913408,
+      "replay_array_bytes": 135036928,
+      "completed_learning_segments": 41,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 0,
+      "committed_transitions": {
+        "from_boot": 25871,
+        "restored": 0
+      },
+      "updates": 260,
+      "rollout_updates": [
+        {
+          "loss": 0.036844056099653244,
+          "actor_loss": 0.3512214720249176,
+          "value_loss": 1.7219104766845703,
+          "positive_fraction": 0.7421875,
+          "applied": true
+        },
+        {
+          "loss": 0.029757607728242874,
+          "actor_loss": 0.27995428442955017,
+          "value_loss": 1.7621784210205078,
+          "positive_fraction": 0.75,
+          "applied": true
+        },
+        {
+          "loss": 0.033895526081323624,
+          "actor_loss": 0.3210607171058655,
+          "value_loss": 1.789452314376831,
+          "positive_fraction": 0.759765625,
+          "applied": true
+        },
+        {
+          "loss": 0.03141222149133682,
+          "actor_loss": 0.2962661385536194,
+          "value_loss": 1.7856065034866333,
+          "positive_fraction": 0.76953125,
+          "applied": true
+        },
+        {
+          "loss": 0.03559470549225807,
+          "actor_loss": 0.3375317454338074,
+          "value_loss": 1.8415310382843018,
+          "positive_fraction": 0.791015625,
+          "applied": true
+        },
+        {
+          "loss": 0.038080163300037384,
+          "actor_loss": 0.36135804653167725,
+          "value_loss": 1.944356918334961,
+          "positive_fraction": 0.802734375,
+          "applied": true
+        },
+        {
+          "loss": 0.03506607562303543,
+          "actor_loss": 0.3310142159461975,
+          "value_loss": 1.9646512269973755,
+          "positive_fraction": 0.806640625,
+          "applied": true
+        },
+        {
+          "loss": 0.03418678045272827,
+          "actor_loss": 0.3220441937446594,
+          "value_loss": 1.982362151145935,
+          "positive_fraction": 0.8203125,
+          "applied": true
+        },
+        {
+          "loss": 0.03495929390192032,
+          "actor_loss": 0.3292338252067566,
+          "value_loss": 2.0359106063842773,
+          "positive_fraction": 0.83984375,
+          "applied": true
+        },
+        {
+          "loss": 0.02799271047115326,
+          "actor_loss": 0.25905582308769226,
+          "value_loss": 2.087127208709717,
+          "positive_fraction": 0.83984375,
+          "applied": true
+        },
+        {
+          "loss": 0.03683274984359741,
+          "actor_loss": 0.34669166803359985,
+          "value_loss": 2.1635825634002686,
+          "positive_fraction": 0.84375,
+          "applied": true
+        },
+        {
+          "loss": 0.04154382646083832,
+          "actor_loss": 0.39384526014328003,
+          "value_loss": 2.159299373626709,
+          "positive_fraction": 0.8671875,
+          "applied": true
+        },
+        {
+          "loss": 0.039211705327034,
+          "actor_loss": 0.37022948265075684,
+          "value_loss": 2.188755750656128,
+          "positive_fraction": 0.857421875,
+          "applied": true
+        },
+        {
+          "loss": 0.03509998321533203,
+          "actor_loss": 0.32884109020233154,
+          "value_loss": 2.215874671936035,
+          "positive_fraction": 0.86328125,
+          "applied": true
+        },
+        {
+          "loss": 0.03348902612924576,
+          "actor_loss": 0.31250959634780884,
+          "value_loss": 2.2380638122558594,
+          "positive_fraction": 0.880859375,
+          "applied": true
+        },
+        {
+          "loss": 0.039036281406879425,
+          "actor_loss": 0.3677947521209717,
+          "value_loss": 2.256805181503296,
+          "positive_fraction": 0.880859375,
+          "applied": true
+        },
+        {
+          "loss": 0.0351811982691288,
+          "actor_loss": 0.3293275833129883,
+          "value_loss": 2.248439073562622,
+          "positive_fraction": 0.890625,
+          "applied": true
+        },
+        {
+          "loss": 0.035900384187698364,
+          "actor_loss": 0.3362363278865814,
+          "value_loss": 2.276750326156616,
+          "positive_fraction": 0.908203125,
+          "applied": true
+        },
+        {
+          "loss": 0.041860949248075485,
+          "actor_loss": 0.3956879675388336,
+          "value_loss": 2.2921502590179443,
+          "positive_fraction": 0.89453125,
+          "applied": true
+        },
+        {
+          "loss": 0.04238910228013992,
+          "actor_loss": 0.40067869424819946,
+          "value_loss": 2.321230411529541,
+          "positive_fraction": 0.896484375,
+          "applied": true
+        }
+      ]
+    }
+  },
+  "validation_complete": false,
+  "scope": "Launch and initial own-training checks, not performance evidence. Common source/RNG restore path unchanged; replay/curriculum buffers begin empty. All collected suffixes so far are from boot; verify restored sources when this trial first generates/reuses its own archives."
+}

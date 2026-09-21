@@ -1,0 +1,111 @@
+{
+  "scope": "Integration verification only. Neither diagnostic checkpoint is a performance candidate or source for further training.",
+  "tests_passed": 59,
+  "source_checkpoint": "runs/level10-entropy001/step-020500480",
+  "source_checkpoint_sha256": "510ce9632f744301f3a0f2b9c100b4c5c070afa88f1dbc466324c7c411d9fb70",
+  "local_refactor": {
+    "run": "runs/curriculum-local-refactor-smoke",
+    "log": "logs/curriculum-local-refactor-smoke.jsonl",
+    "exit_code": 0,
+    "additional_actions": 65536,
+    "reference": "runs/curriculum-smoke",
+    "model_bytes_equal": true,
+    "optimizer_bytes_equal": true,
+    "rng_and_counters_equal": true,
+    "stop": {
+      "wall_seconds": 117.77,
+      "event": "stopped",
+      "steps": 20566016,
+      "target_met": false,
+      "mlx_active_bytes": 9769648,
+      "mlx_cache_bytes": 1269972756,
+      "mlx_peak_bytes": 1277348132
+    }
+  },
+  "shared_smoke": {
+    "run": "runs/curriculum-shared-smoke",
+    "log": "logs/curriculum-shared-smoke.jsonl",
+    "exit_code": 0,
+    "additional_actions": 65536,
+    "publications": 10,
+    "peers_per_publication": 3,
+    "segments": 5,
+    "peer_sourced_segments": 3,
+    "all_origins_match_earlier_same_run_publication": true,
+    "all_rewards_are_new_score_only": true,
+    "private_payload_logged": false,
+    "best_mean": -1,
+    "best_level_rank": null,
+    "stop": {
+      "wall_seconds": 127.42,
+      "event": "stopped",
+      "steps": 20566016,
+      "target_met": false,
+      "mlx_active_bytes": 9769648,
+      "mlx_cache_bytes": 725635088,
+      "mlx_peak_bytes": 771105268
+    },
+    "examples": [
+      {
+        "worker": 0,
+        "segment_source_worker": 1,
+        "segment_source_action": 6694,
+        "segment_start_level": 2,
+        "segment_start_score": 64,
+        "score": 97,
+        "episode_reward": 33,
+        "full_game": false
+      },
+      {
+        "worker": 1,
+        "segment_source_worker": 3,
+        "segment_source_action": 7527,
+        "segment_start_level": 2,
+        "segment_start_score": 63,
+        "score": 115,
+        "episode_reward": 52,
+        "full_game": false
+      },
+      {
+        "worker": 0,
+        "segment_source_worker": 0,
+        "segment_source_action": 3556,
+        "segment_start_level": 2,
+        "segment_start_score": 65,
+        "score": 102,
+        "episode_reward": 37,
+        "full_game": false
+      },
+      {
+        "worker": 3,
+        "segment_source_worker": 1,
+        "segment_source_action": 6694,
+        "segment_start_level": 2,
+        "segment_start_score": 64,
+        "score": 120,
+        "episode_reward": 56,
+        "full_game": false
+      },
+      {
+        "worker": 2,
+        "segment_source_worker": 2,
+        "segment_source_action": 5608,
+        "segment_start_level": 2,
+        "segment_start_score": 61,
+        "score": 110,
+        "episode_reward": 49,
+        "full_game": false
+      }
+    ]
+  },
+  "method_comparison": {
+    "control": "runs/level10-curriculum",
+    "trial": "runs/level10-curriculum-shared",
+    "config_differences_with_default_normalization": [
+      "run",
+      "curriculum_share"
+    ],
+    "external_archive_import": false,
+    "validation_curriculum_enabled": false
+  }
+}

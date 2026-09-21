@@ -1,0 +1,31 @@
+{
+  "scope": "Read-only analysis of one selected complete validation replay; not training data or a performance estimate.",
+  "replay": "results/level10/level-5-validation-replay.html",
+  "replay_sha256": "323aa07345132f45b158ca27169c29bcf713ff8cb35aaa4479ecfa0d6c764e9b",
+  "checkpoint_sha256": "c656c9e515a007360f9bfa7bb549594a50d7d60dcaf7230b94defef5d240a3d5",
+  "seed": 10011,
+  "score": 282,
+  "actions": 14525,
+  "reward_sum": 282,
+  "negative_rewards": 0,
+  "positive_score_actions": 251,
+  "max_consecutive_zero_reward_actions": 1983,
+  "median_zero_reward_run": 38.0,
+  "p95_zero_reward_run": 132.25,
+  "nominal_longest_gap_seconds": 111.77624458874459,
+  "discount_weight_after_longest_gap_gamma_0995": 0.00004821355096399936,
+  "discount_weight_after_longest_gap_gamma_0999": 0.1375191413843754,
+  "longest_gap": {
+    "action_indexing": "zero-based; next reward action excluded from the zero-reward range",
+    "first_zero_reward_action": 6858,
+    "next_reward_action": 8841,
+    "start_level": 2,
+    "end_level": 2,
+    "score_during_gap": 131,
+    "next_reward": 1,
+    "waiting_frames_in_gap": 0,
+    "visible_reserve_decreases_in_gap": 0,
+    "reserve_count_start": 1,
+    "reserve_count_end": 1
+  }
+}

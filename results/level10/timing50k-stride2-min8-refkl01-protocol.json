@@ -1,0 +1,42 @@
+{
+  "recorded_at_utc": "2026-09-15 06:06:08 UTC",
+  "run": "runs/level10-timing50k-stride2-min8-refkl01",
+  "control": "runs/level10-timing50k-stride2-min8",
+  "resume_source": "runs/level10-timing50k-stride2-sil4/step-032006144",
+  "reference_policy": "runs/level10-timing50k-stride2-sil4/step-032006144/model.safetensors",
+  "reference_sha256": "0ac3de98f31dfa3c1f8ce514d6b762124ff4d9d0b1f294130feef947163e286a",
+  "reference_kl_weight": 0.1,
+  "additional_actions": 8000000,
+  "learning_rate": 0.000005,
+  "curriculum_min_level": 8,
+  "only_learning_change": "PPO adds 0.1 * mean KL(frozen own source policy || learner) on current learner rollout screens. SIL objective unchanged. Reference never acts or updates; no teacher trajectories imported.",
+  "rationale": "Focused control lost primary mean272.4→120.3 and cleared none of548 Level8 practice segments. Test whether regularizing drift retains useful behavior; forgetting is a hypothesis, not an established cause.",
+  "source_method": {
+    "title": "Kickstarting Deep Reinforcement Learning",
+    "url": "https://arxiv.org/abs/1803.03835",
+    "adaptation": "Fixed single self-reference coefficient and PPO, not the paper's IMPALA/PBT schedule; KL differs from teacher cross-entropy by constant teacher entropy."
+  },
+  "unchanged": "32env/16protected; 50ktstates/stride2; 256rollout/512batch/4epochs; entropy0.001; gamma/lambda/SIL inherited; archives and replay start empty; score-only reward, learner categorical actions, no validation/replay imports.",
+  "gates": [
+    "Before/after disabled 65536-action smoke byte-identical model/optimizer and all nonconfig learner state; deliberately guarded validation is not selection.",
+    "Analytic KL/gradient, frozen reference, no reference at inference, CLI validation/hash identity, anchored optimizer resume, full test suite.",
+    "Enabled 65536-action smoke finite KL/loss, source weights immutable, CPU-only workers, source/reward/accounting; smoke weights never resumed."
+  ],
+  "primary": {
+    "every": 500000,
+    "games": 20,
+    "seed": 10000,
+    "max_steps": 200000,
+    "envs": 20,
+    "qualifier": "All20 complete and depth/count rank exceeds selected32M reference."
+  },
+  "secondary": {
+    "games": 50,
+    "seed": 10100,
+    "only_after_qualifier": true,
+    "promotion": "All70 complete, declared rank improves, full uncapped replay and every seeded neural action verified."
+  },
+  "stop": "Target10 or rounded8M action budget; runtime/nonfinite/memory faults; review after five consecutive complete primaries without Level5.",
+  "final_tests": "Seeds40000–40099 remain unused until frozen verified Level10; 100 complete uncapped games after selection.",
+  "not_a_sweep": true
+}

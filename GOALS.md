@@ -16,6 +16,15 @@ fresh wall, and so on. A game ends after three lost balls.
 Report performance as the mean, median, and best score over a fixed set of
 complete games (at least 10), along with the highest level reached.
 
+The current user-confirmed completion target is to **beat all eight original
+levels**, without extending or modifying the game. The original game ends
+after level 8; reaching that level alone does not count as a win. Preserve a
+full, verified learned-policy winning replay, then evaluate the frozen
+validation-selected model on 100 fresh complete games. Report verified wins
+and unresolved final-level outcomes separately; never infer victory from a
+score threshold or a nonexistent displayed level 9/10. See TRAINING.md for
+the screen-only outcome proof and its conservative last-ball limitation.
+
 ## The rules
 
 1. **The agent must learn.** Its play must come from a trained model, not

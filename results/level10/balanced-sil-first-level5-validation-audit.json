@@ -1,0 +1,52 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-025501696",
+  "hashes": {
+    "model.safetensors": "159ce59a011150c7347bbe12ea1b53c934da63be97f83093c24828576f948bf3",
+    "optimizer.npz": "fde54ac59b79643fa1b53f0c0ebdcd92b2a2b612715c09d41a5fdeeec1deb333",
+    "state.json": "045c0220742c5caa956468821402d0bd3aa33a9b7217ba2717e9ded04f6eb3ff"
+  },
+  "all_seeds_termination_statistics_verified": true,
+  "summary": {
+    "complete_games": 20,
+    "mean_score": 127.2,
+    "median_score": 117.0,
+    "best_score": 285,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 14,
+      "3": 5,
+      "4": 3,
+      "5": 1
+    }
+  },
+  "control_summary": {
+    "complete_games": 20,
+    "mean_score": 100.35,
+    "median_score": 104.0,
+    "best_score": 226,
+    "highest_complete_level": 4,
+    "level_reach_counts": {
+      "2": 11,
+      "3": 3,
+      "4": 1,
+      "5": 0
+    }
+  },
+  "level5_games": [
+    {
+      "score": 280,
+      "level": 5,
+      "game_over": true,
+      "waiting": false,
+      "steps": 14481,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 280.0,
+      "start_tstates": 159234,
+      "seed": 10009
+    }
+  ],
+  "scope": "First complete SIL level-5 primary; mixed with weaker first checkpoint, no overall reference promotion or final-test use."
+}

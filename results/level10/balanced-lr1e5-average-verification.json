@@ -1,0 +1,80 @@
+{
+  "recipe": "Predeclared equal-weight last five scheduled checkpoints; no validation filtering",
+  "sources": [
+    {
+      "checkpoint": "/Users/sascha/source/trs-dqn/runs/level10-curriculum-balanced-lr1e5/step-024002560/model.safetensors",
+      "sha256": "56d26d4d6e946f8786ab495c6a6647204f35d5be535365c989d23675ad691449",
+      "steps": 24002560
+    },
+    {
+      "checkpoint": "/Users/sascha/source/trs-dqn/runs/level10-curriculum-balanced-lr1e5/step-024252416/model.safetensors",
+      "sha256": "d3d2ebdc3411667f924302f8fcd63ea57374e167e6e55fde5ecd0e984e85f505",
+      "steps": 24252416
+    },
+    {
+      "checkpoint": "/Users/sascha/source/trs-dqn/runs/level10-curriculum-balanced-lr1e5/step-024502272/model.safetensors",
+      "sha256": "bc30ade0992812a6fb76f0043e7e13b017f62fbd22b021b5c09ad92a6d3212a6",
+      "steps": 24502272
+    },
+    {
+      "checkpoint": "/Users/sascha/source/trs-dqn/runs/level10-curriculum-balanced-lr1e5/step-024752128/model.safetensors",
+      "sha256": "cfb755b7cc0afc5d0d60fb6dd1bbb90ec7adf34bf1ac86c0f3986f2e0c14d370",
+      "steps": 24752128
+    },
+    {
+      "checkpoint": "/Users/sascha/source/trs-dqn/runs/level10-curriculum-balanced-lr1e5/step-025001984/model.safetensors",
+      "sha256": "c069b14b33397100a0dfe0fb3b2005e277f3ea64134676b5649cf0c918716e01",
+      "steps": 25001984
+    }
+  ],
+  "weights": [
+    0.2,
+    0.2,
+    0.2,
+    0.2,
+    0.2
+  ],
+  "source_hashes_verified": true,
+  "model_sha256": "5e743982b17d4d61fe91ec836bdbeb9a2aeeedc9be8a5c041d6dc745bb3c02cc",
+  "validation": {
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 112.25,
+    "median_score": 108,
+    "best_score": 262,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 14,
+    "level_reach_counts": {
+      "2": 14,
+      "3": 3,
+      "4": 1,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.7,
+      "3": 0.15,
+      "4": 0.05,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "checkpoint": "runs/level10-balanced-lr1e5-average/model.safetensors",
+    "deterministic_override": false,
+    "policy": "learned categorical, sampled",
+    "checkpoint_sha256": "5e743982b17d4d61fe91ec836bdbeb9a2aeeedc9be8a5c041d6dc745bb3c02cc"
+  },
+  "all_statistics_independently_recomputed": true,
+  "exact_primary_seed_order": true,
+  "evaluation_exit_code": 0,
+  "tests_passed": 71,
+  "evaluation_only": true,
+  "additional_training_actions": 0,
+  "resume_rejected_before_run_creation": true,
+  "decision": "No improvement in complete-game depth; do not promote or resume this diagnostic",
+  "final_test_seeds_used": false
+}

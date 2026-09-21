@@ -1,0 +1,22 @@
+{
+  "checkpoint": "runs/level10-entropy001-long/step-022253568/model.safetensors",
+  "checkpoint_sha256": "c2b56f88cc21c6978f8abf2873abbd85a2d228957d3d11426e3b6b52e5194b21",
+  "replay": "results/level10/serve-stall-diagnostic.html",
+  "replay_sha256": "f66cc1b88b8611cfdc48fb22b4a932261f15a1a65bd0fd9f324681f6a13b48fb",
+  "seed": 10010,
+  "score": 292,
+  "level": 5,
+  "steps": 25000,
+  "terminated": false,
+  "truncated": true,
+  "visible_message": "PASS BALL",
+  "identical_final_frames": 11066,
+  "action_order": ["none", "left", "right", "space", "left+space", "right+space"],
+  "logits": [-10.034217834472656, 10.165339469909668, -4.735883712768555, -5.721524238586426, 15.62994384765625, -3.1637978553771973],
+  "probabilities": [7.118056144506113e-12, 0.0042161657474935055, 1.423635098696252e-9, 5.313002260365352e-10, 0.9957841634750366, 6.857204581933729e-9],
+  "sampler_effective_probabilities": [7.118056144506113e-12, 0.004216165740375449, 1.3969838619232178e-9, 4.656612873077393e-10, 0.9957838323898613, 0.0],
+  "effective_space_probability": 0.9957838328555226,
+  "effective_no_space_probability": 0.004216167144477367,
+  "action_counts_last_10000": [0, 54, 0, 0, 9946, 0],
+  "scope": "Read-only inspection of an incomplete diagnostic recording; not a performance result. No probe actions or training updates were used."
+}

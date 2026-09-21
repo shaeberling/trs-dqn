@@ -1,0 +1,73 @@
+{
+  "run": "runs/level10-curriculum-balanced-lr1e5",
+  "start_steps": 23003136,
+  "game": {
+    "wall_seconds": 832.52,
+    "event": "episode",
+    "score": 334,
+    "level": 6,
+    "game_over": true,
+    "waiting": false,
+    "steps": 23549758,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 334,
+    "start_tstates": 4347,
+    "full_game": true,
+    "segment_start_score": 0,
+    "segment_start_level": 1,
+    "segment_source_worker": null,
+    "segment_source_action": null,
+    "curriculum_archive_counts": {
+      "5": 2,
+      "6": 3
+    },
+    "worker": 29,
+    "episode_steps": 17082,
+    "episode": 15628
+  },
+  "earlier_same_worker_ends": 0,
+  "same_game_publications": [
+    {
+      "wall_seconds": 794.52,
+      "event": "curriculum_archive",
+      "steps": 23503102,
+      "worker": 29,
+      "level": 5,
+      "score": 289,
+      "slot": 0,
+      "source_action": 15624,
+      "source_episode_steps": 15624,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 4347,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    },
+    {
+      "wall_seconds": 826.64,
+      "event": "curriculum_archive",
+      "steps": 23541086,
+      "worker": 29,
+      "level": 6,
+      "score": 328,
+      "slot": 1,
+      "source_action": 16811,
+      "source_episode_steps": 16811,
+      "source_full_game": true,
+      "source_start_level": 1,
+      "start_tstates": 4347,
+      "retained": true,
+      "shared": true,
+      "shared_with": 31
+    }
+  ],
+  "scope": "Changing-policy full training game from boot, not a frozen checkpoint evaluation or the Level-10 objective.",
+  "initial_from_boot_game_alignment_verified": true,
+  "restored_start_used": false,
+  "frozen_validation_highest_still": 5,
+  "fresh_final_test_seeds_used": false
+}

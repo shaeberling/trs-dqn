@@ -1,0 +1,56 @@
+{
+  "recorded_at_utc": "2026-09-14 12:45:52 UTC",
+  "path": "results/level10/temperature-32m-unit-compatibility.json",
+  "sha256": "e97f649790706aa612df959c9da839f8f29d882dab9c16891eaa677bf5723aa9",
+  "exact_baseline_game_dictionaries": true,
+  "games": [
+    {
+      "score": 272,
+      "level": 4,
+      "game_over": true,
+      "waiting": false,
+      "steps": 29564,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 272,
+      "start_tstates": 33283,
+      "seed": 10000
+    },
+    {
+      "score": 250,
+      "level": 4,
+      "game_over": true,
+      "waiting": false,
+      "steps": 23870,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 250,
+      "start_tstates": 89846,
+      "seed": 10001
+    }
+  ],
+  "model_sha256": "0ac3de98f31dfa3c1f8ce514d6b762124ff4d9d0b1f294130feef947163e286a",
+  "observed_exit": {
+    "session": 52533,
+    "exit_code": 0
+  },
+  "unit_tests": {
+    "session": 40992,
+    "exit_code": 0,
+    "tests": 5
+  },
+  "full_tests": {
+    "session": 38032,
+    "exit_code": 0,
+    "tests": 101,
+    "wall_seconds": 10.127
+  },
+  "module_sha256": "a9ad5e43e99c2131c58834d3524438c7f6edbd4b923ea2fac5ef42a26c008758",
+  "tests_sha256": "e1f14ede07e13443ad9bcd4981c383f1548ca6fceec99d3722e21f435a452aae",
+  "protocol_sha256": "9b03cc56b08b78e8a7cc75d42bb7d74865769e4cd127ed640706f3f549422809",
+  "decision": "Compatibility/test gates pass; proceed to the sole predeclared0.8-temperature primary diagnostic."
+}

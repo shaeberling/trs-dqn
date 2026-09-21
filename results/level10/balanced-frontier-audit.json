@@ -1,0 +1,296 @@
+{
+  "through_action": 24857908,
+  "first_entries": [
+    {
+      "publication": {
+        "wall_seconds": 1033.53,
+        "event": "curriculum_archive",
+        "steps": 23840516,
+        "worker": 3,
+        "level": 5,
+        "score": 284,
+        "slot": 0,
+        "source_action": 26169,
+        "source_episode_steps": 13346,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 186945,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 1057.53,
+          "event": "episode",
+          "score": 310,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 23861764,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 310,
+          "start_tstates": 186945,
+          "full_game": true,
+          "segment_start_score": 0,
+          "segment_start_level": 1,
+          "segment_source_worker": null,
+          "segment_source_action": null,
+          "curriculum_archive_counts": {
+            "5": 1
+          },
+          "worker": 3,
+          "episode_steps": 14010,
+          "episode": 15705
+        }
+      ],
+      "parent_entries": []
+    },
+    {
+      "publication": {
+        "wall_seconds": 1564.07,
+        "event": "curriculum_archive",
+        "steps": 24362781,
+        "worker": 28,
+        "level": 6,
+        "score": 323,
+        "slot": 0,
+        "source_action": 42489,
+        "source_episode_steps": 1279,
+        "source_full_game": false,
+        "source_start_level": 5,
+        "start_tstates": 186945,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 1572.11,
+          "event": "curriculum_episode",
+          "score": 329,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 24371389,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 45,
+          "start_tstates": 186945,
+          "full_game": false,
+          "segment_start_score": 284,
+          "segment_start_level": 5,
+          "segment_source_worker": 3,
+          "segment_source_action": 26169,
+          "curriculum_archive_counts": {
+            "5": 1,
+            "6": 1
+          },
+          "worker": 28,
+          "episode_steps": 1548,
+          "episode": 16089
+        }
+      ],
+      "parent_entries": [
+        {
+          "wall_seconds": 1033.53,
+          "event": "curriculum_archive",
+          "steps": 23840516,
+          "worker": 3,
+          "level": 5,
+          "score": 284,
+          "slot": 0,
+          "source_action": 26169,
+          "source_episode_steps": 13346,
+          "source_full_game": true,
+          "source_start_level": 1,
+          "start_tstates": 186945,
+          "retained": true,
+          "shared": true,
+          "shared_with": 31
+        }
+      ]
+    },
+    {
+      "publication": {
+        "wall_seconds": 1819.73,
+        "event": "curriculum_archive",
+        "steps": 24654112,
+        "worker": 31,
+        "level": 7,
+        "score": 380,
+        "slot": 0,
+        "source_action": 51593,
+        "source_episode_steps": 2202,
+        "source_full_game": false,
+        "source_start_level": 6,
+        "start_tstates": 186945,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 1831.02,
+          "event": "curriculum_episode",
+          "score": 412,
+          "level": 7,
+          "game_over": true,
+          "waiting": false,
+          "steps": 24672704,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 89,
+          "start_tstates": 186945,
+          "full_game": false,
+          "segment_start_score": 323,
+          "segment_start_level": 6,
+          "segment_source_worker": 28,
+          "segment_source_action": 42489,
+          "curriculum_archive_counts": {
+            "5": 1,
+            "6": 2,
+            "7": 3
+          },
+          "worker": 31,
+          "episode_steps": 2783,
+          "episode": 16338
+        }
+      ],
+      "parent_entries": [
+        {
+          "wall_seconds": 1564.07,
+          "event": "curriculum_archive",
+          "steps": 24362781,
+          "worker": 28,
+          "level": 6,
+          "score": 323,
+          "slot": 0,
+          "source_action": 42489,
+          "source_episode_steps": 1279,
+          "source_full_game": false,
+          "source_start_level": 5,
+          "start_tstates": 186945,
+          "retained": true,
+          "shared": true,
+          "shared_with": 31
+        }
+      ]
+    },
+    {
+      "publication": {
+        "wall_seconds": 1959.87,
+        "event": "curriculum_archive",
+        "steps": 24844436,
+        "worker": 19,
+        "level": 8,
+        "score": 523,
+        "slot": 0,
+        "source_action": 57541,
+        "source_episode_steps": 4214,
+        "source_full_game": false,
+        "source_start_level": 7,
+        "start_tstates": 186945,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      "source_episodes": [
+        {
+          "wall_seconds": 1968.21,
+          "event": "curriculum_episode",
+          "score": 525,
+          "level": 8,
+          "game_over": true,
+          "waiting": false,
+          "steps": 24857908,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 145,
+          "start_tstates": 186945,
+          "full_game": false,
+          "segment_start_score": 380,
+          "segment_start_level": 7,
+          "segment_source_worker": 31,
+          "segment_source_action": 51593,
+          "curriculum_archive_counts": {
+            "5": 2,
+            "6": 2,
+            "7": 6,
+            "8": 2
+          },
+          "worker": 19,
+          "episode_steps": 4635,
+          "episode": 16423
+        }
+      ],
+      "parent_entries": [
+        {
+          "wall_seconds": 1819.73,
+          "event": "curriculum_archive",
+          "steps": 24654112,
+          "worker": 31,
+          "level": 7,
+          "score": 380,
+          "slot": 0,
+          "source_action": 51593,
+          "source_episode_steps": 2202,
+          "source_full_game": false,
+          "source_start_level": 6,
+          "start_tstates": 186945,
+          "retained": true,
+          "shared": true,
+          "shared_with": 31
+        }
+      ]
+    }
+  ],
+  "all_rollout_counters_valid": true,
+  "protected_restored_segments": 0,
+  "latest_validation": {
+    "wall_seconds": 1898.86,
+    "event": "validation",
+    "steps": 24752128,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 111.9,
+    "median_score": 118,
+    "best_score": 248,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 14,
+    "level_reach_counts": {
+      "2": 14,
+      "3": 3,
+      "4": 1,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.7,
+      "3": 0.15,
+      "4": 0.05,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "run": "runs/level10-curriculum-balanced",
+  "scope": "First level entries from this run's own changing-policy training. Restored segments do not satisfy frozen from-boot performance milestones.",
+  "first_source_episode_alignment_verified": true,
+  "parent_provenance_and_new_rewards_verified": true,
+  "final_test_seeds_used": false
+}

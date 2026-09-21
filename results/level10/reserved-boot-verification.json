@@ -1,0 +1,90 @@
+{
+  "scope": "Implementation checks, not performance candidates. Synthetic unit fixtures never enter real training.",
+  "tests_passed": 64,
+  "source_model_sha256": "510ce9632f744301f3a0f2b9c100b4c5c070afa88f1dbc466324c7c411d9fb70",
+  "default_compatibility": {
+    "reference": "runs/curriculum-shared-smoke/latest",
+    "actual": "runs/curriculum-origin-logging-smoke/latest",
+    "model_and_optimizer_byte_identical": true,
+    "learner_rng_steps_and_episodes_identical": true
+  },
+  "checks": [
+    {
+      "run": "runs/curriculum-origin-logging-smoke",
+      "exit_code": 0,
+      "actions": 65536,
+      "reserved_boot_workers": 0,
+      "reset_probability": 0.5,
+      "origin_counts": {
+        "from_boot": 52451,
+        "restored": 13085
+      },
+      "complete_practice_segments": 5,
+      "collector_sourced_complete_segments": 0,
+      "protected_boot_games_with_populated_archives": 0,
+      "minimum_logged_boot_actions_per_rollout": 128,
+      "actions_per_rollout": 512,
+      "worker_roles_and_no_gpu_imports_verified": true,
+      "practice_origins_and_new_reward_verified": true,
+      "diagnostic_validations": [
+        {
+          "complete_games": 0,
+          "incomplete_games": 2
+        }
+      ],
+      "log": "logs/curriculum-origin-logging-smoke.jsonl"
+    },
+    {
+      "run": "runs/curriculum-reserved-boot-smoke",
+      "exit_code": 0,
+      "actions": 65536,
+      "reserved_boot_workers": 2,
+      "reset_probability": 0.5,
+      "origin_counts": {
+        "from_boot": 62738,
+        "restored": 2798
+      },
+      "complete_practice_segments": 0,
+      "collector_sourced_complete_segments": 0,
+      "protected_boot_games_with_populated_archives": 8,
+      "minimum_logged_boot_actions_per_rollout": 384,
+      "actions_per_rollout": 512,
+      "worker_roles_and_no_gpu_imports_verified": true,
+      "practice_origins_and_new_reward_verified": true,
+      "diagnostic_validations": [
+        {
+          "complete_games": 0,
+          "incomplete_games": 2
+        }
+      ],
+      "log": "logs/curriculum-reserved-boot-smoke.jsonl"
+    },
+    {
+      "run": "runs/curriculum-reserved-boot-prob1-smoke",
+      "exit_code": 0,
+      "actions": 65536,
+      "reserved_boot_workers": 2,
+      "reset_probability": 1,
+      "origin_counts": {
+        "from_boot": 46359,
+        "restored": 19177
+      },
+      "complete_practice_segments": 7,
+      "collector_sourced_complete_segments": 3,
+      "protected_boot_games_with_populated_archives": 6,
+      "minimum_logged_boot_actions_per_rollout": 256,
+      "actions_per_rollout": 512,
+      "worker_roles_and_no_gpu_imports_verified": true,
+      "practice_origins_and_new_reward_verified": true,
+      "diagnostic_validations": [
+        {
+          "complete_games": 0,
+          "incomplete_games": 2
+        }
+      ],
+      "log": "logs/curriculum-reserved-boot-prob1-smoke.jsonl"
+    }
+  ],
+  "policy_actions_rewards_observations_unchanged": true,
+  "final_test_seeds_used": false
+}

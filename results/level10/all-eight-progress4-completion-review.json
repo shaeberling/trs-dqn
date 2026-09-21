@@ -1,0 +1,341 @@
+{
+  "run": "runs/all-eight-supervised-progress4/learner",
+  "through_steps": 116506624,
+  "terminal": true,
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "all_primary_seeds_termination_statistics_verified": true,
+  "full_episode_boundaries": 9,
+  "complete_full_training_games": 9,
+  "practice_segments": 0,
+  "complete_practice_segments": 0,
+  "highest_complete_full_training": 3,
+  "highest_complete_practice": null,
+  "training_guards": [],
+  "publications": 0,
+  "checked_progress_records": 30,
+  "latest_progress": {
+    "wall_seconds": 419.84,
+    "event": "progress",
+    "steps": 116498432,
+    "episodes": 25471,
+    "steps_per_second": 1170.7,
+    "mean_score_100": 113.33333333333333,
+    "best_score_100": 200,
+    "highest_level_100": 3,
+    "complete_games_100": 9,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 7,
+      "3": 1,
+      "4": 0,
+      "5": 0
+    },
+    "level_reach_rates_100": {
+      "2": 0.7777777777777778,
+      "3": 0.1111111111111111,
+      "4": 0,
+      "5": 0
+    },
+    "actor_loss": -0.0038635324672213756,
+    "value_loss": 0.060707430355250835,
+    "entropy": 0.26386394910514355,
+    "approx_kl": 0.00039401610320055624,
+    "reference_kl": 0.03420104429824278,
+    "rollout_action_origins": {
+      "from_boot": 8192,
+      "restored": 0
+    },
+    "training_action_origins": {
+      "from_boot": 491520,
+      "restored": 0
+    },
+    "mlx_active_bytes": 13020776,
+    "mlx_cache_bytes": 418338600,
+    "mlx_peak_bytes": 2915281620,
+    "sil": {
+      "replay_size": 65536,
+      "pending_transitions": 113013,
+      "pending_screen_bytes": 462901248,
+      "replay_array_bytes": 270073856,
+      "completed_learning_segments": 47,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 251062,
+      "committed_transitions": {
+        "from_boot": 127445,
+        "restored": 0
+      },
+      "updates": 224,
+      "rollout_updates": [
+        {
+          "loss": 0.01526832114905119,
+          "actor_loss": 0.14589567482471466,
+          "value_loss": 0.6787538528442383,
+          "positive_fraction": 0.5322265625,
+          "applied": true
+        },
+        {
+          "loss": 0.018524089828133583,
+          "actor_loss": 0.17824450135231018,
+          "value_loss": 0.6996394395828247,
+          "positive_fraction": 0.5302734375,
+          "applied": true
+        },
+        {
+          "loss": 0.019753651693463326,
+          "actor_loss": 0.19035720825195312,
+          "value_loss": 0.7179304957389832,
+          "positive_fraction": 0.5537109375,
+          "applied": true
+        },
+        {
+          "loss": 0.017837366089224815,
+          "actor_loss": 0.17090030014514923,
+          "value_loss": 0.7473357915878296,
+          "positive_fraction": 0.5625,
+          "applied": true
+        }
+      ]
+    }
+  },
+  "primary_suites": [],
+  "best_primary_step": null,
+  "summary": {
+    "complete_primary_suites": 0,
+    "primary_suites_reaching5": 0,
+    "primary_level5_games": 0,
+    "highest_frozen_level": null
+  },
+  "worker_runtime": {
+    "wall_seconds": 0.01,
+    "event": "worker_runtime",
+    "steps": 116006912,
+    "workers": [
+      {
+        "pid": 33195,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33196,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33197,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33198,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33199,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33200,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33201,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33202,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33203,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33204,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33205,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33206,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33207,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33208,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33209,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33210,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 33211,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33212,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33213,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33214,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33215,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33216,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33217,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33218,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33219,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33220,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33221,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33222,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33223,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33224,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33225,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 33226,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      }
+    ]
+  },
+  "stop": {
+    "wall_seconds": 583.76,
+    "event": "stopped",
+    "steps": 116506624,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 499712,
+      "restored": 0
+    },
+    "mlx_active_bytes": 13020856,
+    "mlx_cache_bytes": 511584072,
+    "mlx_peak_bytes": 2915281620,
+    "sil": {
+      "replay_size": 65536,
+      "pending_transitions": 110627,
+      "pending_screen_bytes": 453128192,
+      "replay_array_bytes": 270073856,
+      "completed_learning_segments": 48,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 257544,
+      "committed_transitions": {
+        "from_boot": 131541,
+        "restored": 0
+      },
+      "updates": 228
+    }
+  },
+  "additional_actions": 499712,
+  "final_hashes": {
+    "model.safetensors": "484a3646a271a4323dd83323415c4cf6bb70e92b76d5dee1e4be047c8779a909",
+    "optimizer.npz": "52b8150ce6b4e0ef51a91ad13c4f87062a1054fdb2a43beb868c2cf2a9976f6a",
+    "state.json": "07bb8b016a634ce022ed1e7cdf89548047a98273668b663280903566ebead856"
+  },
+  "log": {
+    "lines": 107,
+    "bytes": 94834,
+    "sha256": "a41d89d1ba3754b81621bf971a7a1f55b1d643ce1df810dfe12ca59d83663c50"
+  },
+  "sil_accounting": {
+    "learning_suffixes_checked": 48,
+    "episode_suffix_coverages_checked": 9,
+    "committed_suffixes": 48,
+    "discarded_suffixes": 0,
+    "discarded_retained_transitions": 0,
+    "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+  },
+  "saved_sil_rng_and_nonpersistent_replay_verified": true,
+  "verified_full_training_wins": 0,
+  "verified_practice_wins": 0,
+  "unverified_full_level8_endings": 0,
+  "unverified_practice_level8_endings": 0,
+  "publication_kinds": {},
+  "recent_publications": [],
+  "stop_reason": "Historical screen-proven winner discovered. Pause for frozen-policy selection/replay verification/fresh testing; not a time or action-budget limit.",
+  "first_validation_cancelled_by_operator": true,
+  "no_training_archives_published": true,
+  "no_performance_claim_for_spacing4": true,
+  "supervisor_exit_code": 1,
+  "supervisor_exit_reason": "Intentional operator InterruptedError",
+  "first_checkpoint_identity": {
+    "first_checkpoint_byte_identical_to_progress16_before_first_archive": true,
+    "hashes": {
+      "model.safetensors": "484a3646a271a4323dd83323415c4cf6bb70e92b76d5dee1e4be047c8779a909",
+      "optimizer.npz": "52b8150ce6b4e0ef51a91ad13c4f87062a1054fdb2a43beb868c2cf2a9976f6a"
+    }
+  }
+}

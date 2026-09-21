@@ -1,0 +1,61 @@
+{
+  "scope": "Changing-policy training diagnostics, not frozen-policy performance.",
+  "run": "runs/level10-curriculum",
+  "through_action": 21348066,
+  "archive_by_level": [
+    {
+      "level": 2,
+      "adds": 83,
+      "workers": 32
+    },
+    {
+      "level": 3,
+      "adds": 36,
+      "workers": 27
+    },
+    {
+      "level": 4,
+      "adds": 12,
+      "workers": 12
+    },
+    {
+      "level": 5,
+      "adds": 3,
+      "workers": 2
+    }
+  ],
+  "segments_by_start": [
+    {
+      "start_level": 2,
+      "segments": 48,
+      "mean_reward": 84.95833333333333,
+      "mean_actions": 3932.4583333333335,
+      "highest_level": 5,
+      "truncated": 0
+    },
+    {
+      "start_level": 3,
+      "segments": 11,
+      "mean_reward": 57.81818181818182,
+      "mean_actions": 1966.4545454545455,
+      "highest_level": 4,
+      "truncated": 0
+    },
+    {
+      "start_level": 4,
+      "segments": 6,
+      "mean_reward": 50.166666666666664,
+      "mean_actions": 2203.5,
+      "highest_level": 5,
+      "truncated": 0
+    },
+    {
+      "start_level": 5,
+      "segments": 1,
+      "mean_reward": 3,
+      "mean_actions": 217,
+      "highest_level": 5,
+      "truncated": 0
+    }
+  ]
+}

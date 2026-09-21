@@ -1,0 +1,36 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112/model.safetensors",
+  "checkpoint_sha256": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+  "result": "results/level10/argmax-sil-28m25-diagnostic.json",
+  "result_sha256": "3f04dc5e0315cdb6967c319a11695fc0d2850d53d5ddcb732ffbc4651e0fa068",
+  "session": 98396,
+  "exit_code": 1,
+  "verified": [
+    "seed10000-10019order",
+    "summary recomputed from game records",
+    "checkpoint hash",
+    "epsilon0 and deterministic override",
+    "max_steps50000",
+    "suite rank is None"
+  ],
+  "complete_games": 13,
+  "incomplete_games": 7,
+  "incomplete_seeds": [
+    10002,
+    10003,
+    10005,
+    10006,
+    10015,
+    10016,
+    10017
+  ],
+  "all_incomplete_waiting": true,
+  "completed_level7_game": {
+    "seed": 10013,
+    "score": 486,
+    "level": 7,
+    "steps": 18798,
+    "start_tstates": 93902
+  },
+  "decision": "Disqualified incomplete suite. Do not claim a selectable Level-7 policy or use completed-only statistics as complete-suite performance. Sampled Level-6 reference unchanged."
+}

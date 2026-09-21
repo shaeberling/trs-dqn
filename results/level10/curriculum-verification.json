@@ -1,0 +1,120 @@
+{
+  "scope": "Integration diagnostics only; no smoke checkpoint is a performance candidate or source for continued training.",
+  "source_checkpoint": "runs/level10-entropy001/step-020500480",
+  "source_checkpoint_sha256": "510ce9632f744301f3a0f2b9c100b4c5c070afa88f1dbc466324c7c411d9fb70",
+  "native_library_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+  "compatibility": {
+    "result": "snapshot-native-compatibility-validation.json",
+    "sha256": "aba328fb0c301ff42c15580b4dd72590d73e398f98643c42d58fbe69d44630b2",
+    "all_twenty_per_game_records_equal_to_prior": true,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 132.6,
+    "median_score": 124.5,
+    "best_score": 274,
+    "highest_complete_level": 5
+  },
+  "smoke": {
+    "log": "logs/curriculum-smoke.jsonl",
+    "exit_code": 0,
+    "additional_actions": 65536,
+    "start_steps": 20500480,
+    "stop": {
+      "wall_seconds": 196.23,
+      "event": "stopped",
+      "steps": 20566016,
+      "target_met": false
+    },
+    "archive_additions": 10,
+    "archive_levels": [
+      2,
+      3
+    ],
+    "full_games": 10,
+    "segments": [
+      {
+        "steps": 20542410,
+        "episode_steps": 1287,
+        "score": 90,
+        "level": 2,
+        "full_game": false,
+        "segment_start_score": 58,
+        "segment_start_level": 2,
+        "episode_reward": 32
+      },
+      {
+        "steps": 20545323,
+        "episode_steps": 3325,
+        "score": 129,
+        "level": 2,
+        "full_game": false,
+        "segment_start_score": 61,
+        "segment_start_level": 2,
+        "episode_reward": 68
+      },
+      {
+        "steps": 20565845,
+        "episode_steps": 1487,
+        "score": 99,
+        "level": 2,
+        "full_game": false,
+        "segment_start_score": 65,
+        "segment_start_level": 2,
+        "episode_reward": 34
+      }
+    ],
+    "all_segment_rewards_are_new_score_only": true,
+    "best_mean": -1,
+    "best_level_rank": null,
+    "validation_smoke_only": [
+      {
+        "wall_seconds": 48.05,
+        "event": "validation",
+        "steps": 20512768,
+        "games_requested": 2,
+        "complete_games": 0,
+        "incomplete_games": 2,
+        "mean_score": null,
+        "median_score": null,
+        "best_score": null,
+        "highest_level": 1,
+        "highest_complete_level": 1,
+        "level_1_clears": 0,
+        "level_reach_counts": {
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": null,
+          "3": null,
+          "4": null,
+          "5": null
+        },
+        "epsilon": 0,
+        "tstates": 100000,
+        "max_steps": 12,
+        "environment_version": "normalized-game-over-v2",
+        "eval_envs": 2,
+        "policy": "learned categorical, sampled"
+      }
+    ]
+  },
+  "cache_smoke": {
+    "log": "logs/curriculum-cache-smoke.jsonl",
+    "exit_code": 0,
+    "additional_actions": 4096,
+    "configured_cache_mib": 512,
+    "stop": {
+      "wall_seconds": 14.52,
+      "event": "stopped",
+      "steps": 20504576,
+      "target_met": false,
+      "mlx_active_bytes": 9769644,
+      "mlx_cache_bytes": 725635088,
+      "mlx_peak_bytes": 758540276
+    },
+    "note": "The free-cache target is not an instantaneous allocation ceiling; MLX reclaims on subsequent allocation. Counters exclude other process/system memory."
+  }
+}

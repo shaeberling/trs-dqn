@@ -1,0 +1,36 @@
+{
+  "status": "predeclared_not_launched",
+  "date_utc": "2026-09-14",
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112/model.safetensors",
+  "checkpoint_sha256": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+  "rationale": "Argmax diagnostic has one completed Level-7 game (seed10013, score486) but seven persistent waiting states; that unfinished suite cannot qualify. Test a globally uniform epsilon-greedy learned policy, not a status-conditioned serve fallback.",
+  "method": {
+    "deterministic_override": true,
+    "epsilon": 0.01,
+    "description": "At every action, independently of the screen or game status, use a uniformly random one of six actions with probability0.01; otherwise choose the learned policy-logit argmax.",
+    "existing_cli": true,
+    "source": "https://doi.org/10.1038/nature14236",
+    "source_scope": "Mnih et al. 2015 used epsilon-greedy DQN evaluation at epsilon0.05. This diagnostic borrows the generic exploration mechanism at preselected epsilon0.01 for PPO-trained logits; not a replication of DQN or proof of improvement."
+  },
+  "seeds": {
+    "start": 10000,
+    "end": 10019,
+    "role": "reused primary validation"
+  },
+  "games": 20,
+  "envs": 20,
+  "max_steps": 100000,
+  "tstates": 100000,
+  "output": "results/level10/epsilon001-sil-28m25-diagnostic.json",
+  "launch_after": "Terminal completion of argmax diagnostic98396; do not stop either active learner.",
+  "selection_rule": "All20 games must finish GAME OVER without truncation. Compare the complete suite's descending level-reach rank against sampled f58 primary. Only a strictly stronger depth rank warrants a 50-game secondary diagnostic in exactly this same epsilon-greedy mode; no fresh final-test seeds for selection. Never relabel a result as sampled PPO or silently change the live training/validation protocol.",
+  "unchanged": [
+    "PPO+SIL training",
+    "sampled-policy reference and validation",
+    "screen-only model inputs",
+    "raw-score reward",
+    "committed Level-5 package",
+    "fresh40000-40099test reservation"
+  ],
+  "no_game_specific_rules": true
+}

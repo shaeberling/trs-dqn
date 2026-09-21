@@ -1,0 +1,54 @@
+{
+  "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112",
+  "hashes": {
+    "model.safetensors": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+    "optimizer.npz": "1710c133488cb2025d0b337a06d8a77877714fa4fb5589b37796b6f39c68e150",
+    "state.json": "a2b797d05b6b508096765a5401b6749a91b2d734cb5073f7b5148cc42966f5fd",
+    "evaluation.json": "11fdcc3a2371f0e36cf3237f5c92b5c2afa4eb8efd7a76ae30967e27410b3b39"
+  },
+  "summary": {
+    "complete_games": 20,
+    "mean_score": 130.25,
+    "median_score": 112.5,
+    "best_score": 326,
+    "highest_complete_level": 6,
+    "level_reach_counts": {
+      "2": 12,
+      "3": 6,
+      "4": 4,
+      "5": 2,
+      "6": 1
+    }
+  },
+  "earlier_sil_primary_suites": 12,
+  "first_frozen_level6_in_sil": true,
+  "selection_reason": "One complete frozen-policy primary level-6 game, exceeding the previous level-5 frontier. Audit larger reused secondary set and reproduce the exact primary game before reporting the milestone as replay-verified. Level 10 remains the goal.",
+  "level6_games": [
+    {
+      "score": 326,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 15034,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 326,
+      "start_tstates": 72093,
+      "seed": 10006
+    }
+  ],
+  "all_primary_seed_termination_statistics_verified": true,
+  "secondary_seeds": [
+    10100,
+    10149
+  ],
+  "replay_seed": 10006,
+  "replay_max_steps": 0,
+  "fresh_final_seeds_unused": [
+    40000,
+    40099
+  ],
+  "reference_pending_audit": "runs/level10-curriculum-balanced-lr1e5-long/step-028504064"
+}

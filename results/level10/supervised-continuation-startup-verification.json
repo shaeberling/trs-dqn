@@ -1,0 +1,355 @@
+{
+  "recorded_at_utc": "2026-09-17 06:35:24 UTC",
+  "session": 98423,
+  "supervisor_pid": 3280,
+  "learner_pid": 3283,
+  "run": "runs/level10-supervised-refkl01-v2",
+  "configuration": {
+    "all_learning_settings_match_selected_source": true,
+    "absolute_and_additional_limits_both_zero": true,
+    "learner_config_sha256": "8e3069aabdc9f1da975b46e469101485e5ff56cd835c943ea9a5d80f15881342",
+    "supervisor_code_sha256": "a147330cfc8b5168e1a5ac53d192e022b4a5242d8af1acf189e03ba3612c723a",
+    "supervisor_tests_sha256": "3761c087fcdc214d846b5f05a4cb2b5e9a4c4d212a4dbbc4c3dbe103f34f8e9d",
+    "source_and_reference_hashes_verified": true,
+    "status": {
+      "updated_at_utc": "2026-09-17T06:35:14.784167+00:00",
+      "phase": "training",
+      "supervisor_pid": 3280,
+      "learner_pid": 3283,
+      "learner_running": true,
+      "steps": 35687404,
+      "learner_last_event": "sil_segment",
+      "learner_log_age_seconds": 3.9,
+      "latest_primary": null,
+      "highest_complete_training": 1,
+      "highest_restored_practice": null,
+      "selected_checkpoint": "runs/level10-timing50k-stride2-min8-refkl01/step-035504128",
+      "selected_validation": {
+        "games_requested": 70,
+        "complete_games": 70,
+        "incomplete_games": 0,
+        "mean_score": 218.5857142857143,
+        "median_score": 197,
+        "best_score": 576,
+        "highest_level": 8,
+        "highest_complete_level": 8,
+        "level_1_clears": 64,
+        "level_reach_counts": {
+          "2": 64,
+          "3": 41,
+          "4": 32,
+          "5": 23,
+          "6": 10,
+          "7": 7,
+          "8": 4
+        },
+        "level_reach_rates": {
+          "2": 0.9142857142857143,
+          "3": 0.5857142857142857,
+          "4": 0.45714285714285713,
+          "5": 0.32857142857142857,
+          "6": 0.14285714285714285,
+          "7": 0.1,
+          "8": 0.05714285714285714
+        }
+      },
+      "consecutive_complete_primaries_without5": 0
+    }
+  },
+  "initial_accounting": {
+    "run": "runs/level10-supervised-refkl01-v2/learner",
+    "through_steps": 35694614,
+    "terminal": false,
+    "all_origin_reward_source_and_logged_action_accounting_verified": true,
+    "all_primary_seeds_termination_statistics_verified": true,
+    "full_episode_boundaries": 5,
+    "complete_full_training_games": 5,
+    "practice_segments": 0,
+    "complete_practice_segments": 0,
+    "highest_complete_full_training": 1,
+    "highest_complete_practice": null,
+    "training_guards": [],
+    "publications": 0,
+    "checked_progress_records": 11,
+    "latest_progress": {
+      "wall_seconds": 143.9,
+      "event": "progress",
+      "steps": 35684352,
+      "episodes": 18794,
+      "steps_per_second": 1252.4,
+      "mean_score_100": 54.4,
+      "best_score_100": 65,
+      "highest_level_100": 1,
+      "complete_games_100": 5,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      },
+      "level_reach_rates_100": {
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      },
+      "actor_loss": -0.0028999250644119456,
+      "value_loss": 0.09604843985289335,
+      "entropy": 0.2641803831793368,
+      "approx_kl": 0.0004711428155133035,
+      "reference_kl": 0.016295213557896204,
+      "rollout_action_origins": {
+        "from_boot": 8192,
+        "restored": 0
+      },
+      "training_action_origins": {
+        "from_boot": 180224,
+        "restored": 0
+      },
+      "mlx_active_bytes": 13020776,
+      "mlx_cache_bytes": 418243552,
+      "mlx_peak_bytes": 2915279572,
+      "sil": {
+        "replay_size": 65536,
+        "pending_transitions": 89471,
+        "pending_screen_bytes": 366473216,
+        "replay_array_bytes": 270073856,
+        "completed_learning_segments": 38,
+        "discarded_truncated_segments": 0,
+        "dropped_prefix_transitions": 20658,
+        "committed_transitions": {
+          "from_boot": 70095,
+          "restored": 0
+        },
+        "updates": 72,
+        "rollout_updates": [
+          {
+            "loss": 0.011706331744790077,
+            "actor_loss": 0.11079151928424835,
+            "value_loss": 0.6271795630455017,
+            "positive_fraction": 0.412109375,
+            "applied": true
+          },
+          {
+            "loss": 0.01364737655967474,
+            "actor_loss": 0.12995991110801697,
+            "value_loss": 0.651384711265564,
+            "positive_fraction": 0.427734375,
+            "applied": true
+          },
+          {
+            "loss": 0.0170280858874321,
+            "actor_loss": 0.16344738006591797,
+            "value_loss": 0.6833480000495911,
+            "positive_fraction": 0.4375,
+            "applied": true
+          },
+          {
+            "loss": 0.012901310808956623,
+            "actor_loss": 0.12224453687667847,
+            "value_loss": 0.6768576502799988,
+            "positive_fraction": 0.4267578125,
+            "applied": true
+          }
+        ]
+      }
+    },
+    "primary_suites": [],
+    "best_primary_step": null,
+    "summary": {
+      "complete_primary_suites": 0,
+      "primary_suites_reaching5": 0,
+      "primary_level5_games": 0,
+      "highest_frozen_level": null
+    },
+    "worker_runtime": {
+      "wall_seconds": 0,
+      "event": "worker_runtime",
+      "steps": 35504128,
+      "workers": [
+        {
+          "pid": 3287,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3288,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3289,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3290,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3291,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3292,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3293,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3294,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3295,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3296,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3297,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3298,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3299,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3300,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3301,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3302,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 3303,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3304,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3305,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3306,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3307,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3312,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3313,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3314,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3315,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3316,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3317,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3318,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3319,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3320,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3321,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 3322,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        }
+      ]
+    },
+    "sil_accounting": {
+      "learning_suffixes_checked": 41,
+      "episode_suffix_coverages_checked": 5,
+      "committed_suffixes": 41,
+      "discarded_suffixes": 0,
+      "discarded_retained_transitions": 0,
+      "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+    }
+  },
+  "tests": {
+    "count": 119,
+    "session": 30335,
+    "exit_code": 0,
+    "seconds": 9.916
+  },
+  "failed_launch_preserved": {
+    "session": 19639,
+    "exit_code": 1,
+    "run": "runs/level10-supervised-refkl01",
+    "reason": "PPO rejected mutually exclusive --steps0 and --additional-steps0; no learner actions. Supervisor correctly detected exit and recorded needs_attention."
+  },
+  "decision": "Continuous learner is genuinely advancing under the local supervisor; no arbitrary tranche cutoff. Audits/promotions/final tests follow declared gates. Preserve checkpoint/teacher/public replay and report usage-limited chat separately."
+}

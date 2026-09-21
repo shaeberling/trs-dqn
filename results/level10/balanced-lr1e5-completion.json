@@ -1,0 +1,255 @@
+{
+  "run": "runs/level10-curriculum-balanced-lr1e5",
+  "start_steps": 23003136,
+  "stop": {
+    "wall_seconds": 2694,
+    "event": "stopped",
+    "steps": 25006080,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 1459894,
+      "restored": 543050
+    },
+    "mlx_active_bytes": 9798508,
+    "mlx_cache_bytes": 725649936,
+    "mlx_peak_bytes": 1446168000
+  },
+  "additional_actions": 2002944,
+  "validation_suites": 8,
+  "complete_suites": 7,
+  "incomplete_suites": 1,
+  "highest_complete_validation_level": 5,
+  "final_validation": {
+    "wall_seconds": 2689.29,
+    "event": "validation",
+    "steps": 25001984,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 135.8,
+    "median_score": 123,
+    "best_score": 272,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 15,
+    "level_reach_counts": {
+      "2": 15,
+      "3": 6,
+      "4": 4,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.75,
+      "3": 0.3,
+      "4": 0.2,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "validation_since_last_level5": 3,
+  "complete_from_boot_training_games": 219,
+  "highest_complete_from_boot_training_level": 7,
+  "full_training_games_beyond5": [
+    {
+      "wall_seconds": 832.52,
+      "event": "episode",
+      "score": 334,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 23549758,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 334,
+      "start_tstates": 4347,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "5": 2,
+        "6": 3
+      },
+      "worker": 29,
+      "episode_steps": 17082,
+      "episode": 15628
+    },
+    {
+      "wall_seconds": 2262.3,
+      "event": "episode",
+      "score": 411,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 24690917,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 411,
+      "start_tstates": 37452,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "5": 7,
+        "6": 8,
+        "7": 8,
+        "8": 3
+      },
+      "worker": 4,
+      "episode_steps": 17018,
+      "episode": 16098
+    }
+  ],
+  "practice": {
+    "segments": 494,
+    "peer_segments": 450,
+    "highest_level": 8,
+    "by_start_level": [
+      {
+        "level": 5,
+        "segments": 151,
+        "actions": 121208,
+        "new_reward": 2439,
+        "max_level": 7
+      },
+      {
+        "level": 6,
+        "segments": 157,
+        "actions": 204997,
+        "new_reward": 4216,
+        "max_level": 8
+      },
+      {
+        "level": 7,
+        "segments": 124,
+        "actions": 147346,
+        "new_reward": 4477,
+        "max_level": 8
+      },
+      {
+        "level": 8,
+        "segments": 62,
+        "actions": 57920,
+        "new_reward": 721,
+        "max_level": 8
+      }
+    ]
+  },
+  "training_guard_hits": 0,
+  "archive_publications": 63,
+  "origins_and_reward_differences_verified": true,
+  "protected_workers_never_restored": true,
+  "logged_rollout_and_cumulative_action_checks_passed": true,
+  "latest_hashes": {
+    "model.safetensors": "a68d536f2a5492e2a707e12ac8ccb0518de1b7b0a820e8ec879292c9291f2458",
+    "optimizer.npz": "232a75db92718e6f002811e6e3de02e33e8fb103590817a332c1199a2fa39097",
+    "state.json": "01702aecfc86b35a285fc4d4cf00ba152daf79357f33a9b25b31ea513c148bdf"
+  },
+  "log": {
+    "path": "logs/level10-curriculum-balanced-lr1e5.jsonl",
+    "lines": 1001,
+    "bytes": 549496,
+    "sha256": "a30f6472d7323653ecd5d88f33034e2a31ea91a73904f02a023b71942b8e8ec6",
+    "byte_identical": true
+  },
+  "retained_reference": "runs/level10-curriculum-shared/step-021000192",
+  "final_test_seeds_used": false,
+  "reason": "Initial two-million-action tranche completed. Full changing-policy training reached level 7 but frozen validation did not. Extend final resumable learner, not the average; keep audited reference unchanged.",
+  "terminal_observation": "Terminal stopped record and saved state agree; process absent on pgrep. Original session handle closed before exit status could be re-read.",
+  "level7_alignment_audit": {
+    "previous_episode": {
+      "wall_seconds": 1568.68,
+      "event": "episode",
+      "score": 60,
+      "level": 1,
+      "game_over": true,
+      "waiting": false,
+      "steps": 24146341,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 60,
+      "start_tstates": 67078,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "5": 4,
+        "6": 8,
+        "7": 8
+      },
+      "worker": 4,
+      "episode_steps": 2763,
+      "episode": 15884
+    },
+    "entries": [
+      {
+        "wall_seconds": 2105.15,
+        "event": "curriculum_archive",
+        "steps": 24558437,
+        "worker": 4,
+        "level": 5,
+        "score": 277,
+        "slot": 6,
+        "source_action": 48604,
+        "source_episode_steps": 12878,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 37452,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 2143.47,
+        "event": "curriculum_archive",
+        "steps": 24590181,
+        "worker": 4,
+        "level": 6,
+        "score": 317,
+        "slot": 6,
+        "source_action": 49596,
+        "source_episode_steps": 13870,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 37452,
+        "retained": true,
+        "shared": true,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 2230.24,
+        "event": "curriculum_archive",
+        "steps": 24665605,
+        "worker": 4,
+        "level": 7,
+        "score": 370,
+        "slot": null,
+        "source_action": 51953,
+        "source_episode_steps": 16227,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 37452,
+        "retained": false,
+        "shared": true,
+        "shared_with": 31
+      }
+    ],
+    "exact_alignment": true
+  }
+}

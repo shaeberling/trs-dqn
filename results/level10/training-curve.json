@@ -1,0 +1,1412 @@
+[
+  {
+    "run": "results/level10/logs/level10-continuation.jsonl",
+    "prior_training_actions": 500000,
+    "validation": [
+      {
+        "wall_seconds": 216.49,
+        "event": "validation",
+        "steps": 17752064,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 74.05,
+        "median_score": 62.5,
+        "best_score": 123,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 8,
+        "level_reach_counts": {
+          "2": 8,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.4,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 422.54,
+        "event": "validation",
+        "steps": 18001920,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 76.45,
+        "median_score": 60.5,
+        "best_score": 177,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 6,
+        "level_reach_counts": {
+          "2": 6,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.3,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 618.4,
+        "event": "validation",
+        "steps": 18251776,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 69.5,
+        "median_score": 55.0,
+        "best_score": 245,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 4,
+        "level_reach_counts": {
+          "2": 4,
+          "3": 1,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.2,
+          "3": 0.05,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 930.23,
+        "event": "validation",
+        "steps": 18501632,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 72.85,
+        "median_score": 60.5,
+        "best_score": 129,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 7,
+        "level_reach_counts": {
+          "2": 7,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.35,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1247.69,
+        "event": "validation",
+        "steps": 18751488,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 71.6,
+        "median_score": 58.0,
+        "best_score": 128,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 6,
+        "level_reach_counts": {
+          "2": 6,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.3,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1614.52,
+        "event": "validation",
+        "steps": 19001344,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 94.65,
+        "median_score": 96.5,
+        "best_score": 147,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 12,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.6,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1876.53,
+        "event": "validation",
+        "steps": 19251200,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 65.45,
+        "median_score": 60.5,
+        "best_score": 109,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 5,
+        "level_reach_counts": {
+          "2": 5,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.25,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2136.09,
+        "event": "validation",
+        "steps": 19501056,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 68.2,
+        "median_score": 60.5,
+        "best_score": 121,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 6,
+        "level_reach_counts": {
+          "2": 6,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.3,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      }
+    ],
+    "latest_progress": {
+      "wall_seconds": 2181.91,
+      "event": "progress",
+      "steps": 19570688,
+      "episodes": 13134,
+      "steps_per_second": 948.0,
+      "mean_score_100": 69.97,
+      "best_score_100": 127,
+      "highest_level_100": 2,
+      "complete_games_100": 100,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 35,
+        "3": 0,
+        "4": 0,
+        "5": 0
+      },
+      "level_reach_rates_100": {
+        "2": 0.35,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0
+      },
+      "actor_loss": -0.021069099675514735,
+      "value_loss": 0.0677193229785189,
+      "entropy": 0.44707068195566535,
+      "approx_kl": 0.01819074206832738
+    }
+  },
+  {
+    "run": "results/level10/logs/level10-lr5e5.jsonl",
+    "prior_training_actions": 500000,
+    "validation": [
+      {
+        "wall_seconds": 335.46,
+        "event": "validation",
+        "steps": 17752064,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 83.3,
+        "median_score": 81.0,
+        "best_score": 120,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 10,
+        "level_reach_counts": {
+          "2": 10,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.5,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 732.92,
+        "event": "validation",
+        "steps": 18001920,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 96.25,
+        "median_score": 97.5,
+        "best_score": 239,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 11,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 1,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.55,
+          "3": 0.05,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1108.81,
+        "event": "validation",
+        "steps": 18251776,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 109.75,
+        "median_score": 121.5,
+        "best_score": 180,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 15,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 2,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.75,
+          "3": 0.1,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1505.93,
+        "event": "validation",
+        "steps": 18501632,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 125.35,
+        "median_score": 117.0,
+        "best_score": 282,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 16,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 4,
+          "4": 2,
+          "5": 1
+        },
+        "level_reach_rates": {
+          "2": 0.8,
+          "3": 0.2,
+          "4": 0.1,
+          "5": 0.05
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1744.03,
+        "event": "validation",
+        "steps": 18751488,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 117.8,
+        "median_score": 122.5,
+        "best_score": 233,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 17,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 3,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.85,
+          "3": 0.15,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1991.15,
+        "event": "validation",
+        "steps": 19001344,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 127.8,
+        "median_score": 120.0,
+        "best_score": 258,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 16,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 6,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.8,
+          "3": 0.3,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2239.74,
+        "event": "validation",
+        "steps": 19251200,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 124.45,
+        "median_score": 123.5,
+        "best_score": 210,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 18,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 4,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.9,
+          "3": 0.2,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2480.76,
+        "event": "validation",
+        "steps": 19501056,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 127.5,
+        "median_score": 124.5,
+        "best_score": 252,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 17,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 5,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.85,
+          "3": 0.25,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      }
+    ],
+    "latest_progress": {
+      "wall_seconds": 2483.52,
+      "event": "progress",
+      "steps": 19505152,
+      "episodes": 12913,
+      "steps_per_second": 806.5,
+      "mean_score_100": 110.68,
+      "best_score_100": 299,
+      "highest_level_100": 5,
+      "complete_games_100": 100,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 74,
+        "3": 11,
+        "4": 5,
+        "5": 2
+      },
+      "level_reach_rates_100": {
+        "2": 0.74,
+        "3": 0.11,
+        "4": 0.05,
+        "5": 0.02
+      },
+      "actor_loss": -0.019492520092171617,
+      "value_loss": 0.07916002772981301,
+      "entropy": 0.43943623127415776,
+      "approx_kl": 0.007049190724501386
+    }
+  },
+  {
+    "run": "results/level10/logs/level10-lr5e5-extended.jsonl",
+    "prior_training_actions": 500000,
+    "validation": [
+      {
+        "wall_seconds": 218.61,
+        "event": "validation",
+        "steps": 18751488,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 86.55,
+        "median_score": 74.0,
+        "best_score": 158,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 10,
+        "level_reach_counts": {
+          "2": 10,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.5,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 453.6,
+        "event": "validation",
+        "steps": 19001344,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 118.25,
+        "median_score": 118.5,
+        "best_score": 254,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 17,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 3,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.85,
+          "3": 0.15,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 665.7,
+        "event": "validation",
+        "steps": 19251200,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 84.8,
+        "median_score": 74.0,
+        "best_score": 135,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 11,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.55,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 868.25,
+        "event": "validation",
+        "steps": 19501056,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 71.85,
+        "median_score": 63.5,
+        "best_score": 118,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 5,
+        "level_reach_counts": {
+          "2": 5,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.25,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1078.1,
+        "event": "validation",
+        "steps": 19750912,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 86.15,
+        "median_score": 97.0,
+        "best_score": 126,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 12,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.6,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1298.06,
+        "event": "validation",
+        "steps": 20000768,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 107.9,
+        "median_score": 118.0,
+        "best_score": 199,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 16,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 2,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.8,
+          "3": 0.1,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1623.71,
+        "event": "validation",
+        "steps": 20250624,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 94.6,
+        "median_score": 93.5,
+        "best_score": 196,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 12,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.6,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1949.99,
+        "event": "validation",
+        "steps": 20500480,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 101.65,
+        "median_score": 113.5,
+        "best_score": 182,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 14,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.7,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      }
+    ],
+    "latest_progress": {
+      "wall_seconds": 2052.84,
+      "event": "progress",
+      "steps": 20668416,
+      "episodes": 13180,
+      "steps_per_second": 1055.5,
+      "mean_score_100": 116.3,
+      "best_score_100": 282,
+      "highest_level_100": 5,
+      "complete_games_100": 100,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 71,
+        "3": 19,
+        "4": 8,
+        "5": 1
+      },
+      "level_reach_rates_100": {
+        "2": 0.71,
+        "3": 0.19,
+        "4": 0.08,
+        "5": 0.01
+      },
+      "actor_loss": -0.015799595588759985,
+      "value_loss": 0.13305390492314473,
+      "entropy": 0.3944979873485863,
+      "approx_kl": 0.007254768386701471
+    }
+  },
+  {
+    "run": "results/level10/logs/level10-entropy001.jsonl",
+    "prior_training_actions": 500000,
+    "validation": [
+      {
+        "wall_seconds": 319.45,
+        "event": "validation",
+        "steps": 18751488,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 83.15,
+        "median_score": 65.5,
+        "best_score": 135,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 9,
+        "level_reach_counts": {
+          "2": 9,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.45,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 655.11,
+        "event": "validation",
+        "steps": 19001344,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 109.05,
+        "median_score": 95.0,
+        "best_score": 286,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 11,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 4,
+          "4": 2,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.55,
+          "3": 0.2,
+          "4": 0.1,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1008.17,
+        "event": "validation",
+        "steps": 19251200,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 96.65,
+        "median_score": 93.0,
+        "best_score": 277,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 11,
+        "level_reach_counts": {
+          "2": 11,
+          "3": 1,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.55,
+          "3": 0.05,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1356.88,
+        "event": "validation",
+        "steps": 19501056,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 95.05,
+        "median_score": 111.0,
+        "best_score": 134,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 12,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.6,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1758.71,
+        "event": "validation",
+        "steps": 19750912,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 113.4,
+        "median_score": 114.0,
+        "best_score": 196,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 15,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 3,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.75,
+          "3": 0.15,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2097.23,
+        "event": "validation",
+        "steps": 20000768,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 126.75,
+        "median_score": 120.0,
+        "best_score": 276,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 14,
+        "level_reach_counts": {
+          "2": 14,
+          "3": 6,
+          "4": 3,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.7,
+          "3": 0.3,
+          "4": 0.15,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2466.66,
+        "event": "validation",
+        "steps": 20250624,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 119.4,
+        "median_score": 107.0,
+        "best_score": 256,
+        "highest_level": 4,
+        "highest_complete_level": 4,
+        "level_1_clears": 16,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 6,
+          "4": 1,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.8,
+          "3": 0.3,
+          "4": 0.05,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2846.24,
+        "event": "validation",
+        "steps": 20500480,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 132.6,
+        "median_score": 124.5,
+        "best_score": 274,
+        "highest_level": 5,
+        "highest_complete_level": 5,
+        "level_1_clears": 16,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 5,
+          "4": 2,
+          "5": 1
+        },
+        "level_reach_rates": {
+          "2": 0.8,
+          "3": 0.25,
+          "4": 0.1,
+          "5": 0.05
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      }
+    ],
+    "latest_progress": {
+      "wall_seconds": 2851.15,
+      "event": "progress",
+      "steps": 20504576,
+      "episodes": 13100,
+      "steps_per_second": 702.5,
+      "mean_score_100": 124.91,
+      "best_score_100": 296,
+      "highest_level_100": 5,
+      "complete_games_100": 100,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 74,
+        "3": 25,
+        "4": 14,
+        "5": 2
+      },
+      "level_reach_rates_100": {
+        "2": 0.74,
+        "3": 0.25,
+        "4": 0.14,
+        "5": 0.02
+      },
+      "actor_loss": -0.015623903251253068,
+      "value_loss": 0.10376514354720712,
+      "entropy": 0.3542717485688627,
+      "approx_kl": 0.009020972731377697
+    }
+  },
+  {
+    "run": "results/level10/logs/level10-gamma999.jsonl",
+    "prior_training_actions": 500000,
+    "validation": [
+      {
+        "wall_seconds": 324.28,
+        "event": "validation",
+        "steps": 18751488,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 72.3,
+        "median_score": 61.0,
+        "best_score": 115,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 9,
+        "level_reach_counts": {
+          "2": 9,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.45,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 656.44,
+        "event": "validation",
+        "steps": 19001344,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 89.35,
+        "median_score": 92.0,
+        "best_score": 129,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 15,
+        "level_reach_counts": {
+          "2": 15,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.75,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1005.81,
+        "event": "validation",
+        "steps": 19251200,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 86.45,
+        "median_score": 66.5,
+        "best_score": 188,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 9,
+        "level_reach_counts": {
+          "2": 9,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.45,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1319.22,
+        "event": "validation",
+        "steps": 19501056,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 91.6,
+        "median_score": 97.5,
+        "best_score": 127,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 13,
+        "level_reach_counts": {
+          "2": 13,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.65,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1568.04,
+        "event": "validation",
+        "steps": 19750912,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 74.35,
+        "median_score": 62.0,
+        "best_score": 125,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 7,
+        "level_reach_counts": {
+          "2": 7,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.35,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 1905.69,
+        "event": "validation",
+        "steps": 20000768,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 104.6,
+        "median_score": 121.0,
+        "best_score": 199,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 16,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 2,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.8,
+          "3": 0.1,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2233.26,
+        "event": "validation",
+        "steps": 20250624,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 106.9,
+        "median_score": 117.0,
+        "best_score": 134,
+        "highest_level": 2,
+        "highest_complete_level": 2,
+        "level_1_clears": 17,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.85,
+          "3": 0.0,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      },
+      {
+        "wall_seconds": 2711.3,
+        "event": "validation",
+        "steps": 20500480,
+        "games_requested": 20,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 93.3,
+        "median_score": 105.0,
+        "best_score": 168,
+        "highest_level": 3,
+        "highest_complete_level": 3,
+        "level_1_clears": 12,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 1,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates": {
+          "2": 0.6,
+          "3": 0.05,
+          "4": 0.0,
+          "5": 0.0
+        },
+        "epsilon": 0.0,
+        "tstates": 100000,
+        "max_steps": 0,
+        "environment_version": "normalized-game-over-v2",
+        "policy": "learned categorical, sampled"
+      }
+    ],
+    "latest_progress": {
+      "wall_seconds": 2716.23,
+      "event": "progress",
+      "steps": 20504576,
+      "episodes": 13194,
+      "steps_per_second": 737.4,
+      "mean_score_100": 91.31,
+      "best_score_100": 166,
+      "highest_level_100": 3,
+      "complete_games_100": 100,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 66,
+        "3": 4,
+        "4": 0,
+        "5": 0
+      },
+      "level_reach_rates_100": {
+        "2": 0.66,
+        "3": 0.04,
+        "4": 0.0,
+        "5": 0.0
+      },
+      "actor_loss": -0.00960505215334706,
+      "value_loss": 0.35660799755714834,
+      "entropy": 0.35232208715751767,
+      "approx_kl": 0.011543249829628621
+    }
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "checkpoint": "runs/level10-curriculum-focused/step-022503424/model.safetensors",
+  "checkpoint_sha256": "ccf950617d24a7ca8bc1bcc2dd9592e464399a9d06051c987e4b61fe818444fe",
+  "replay": "results/level10/focused-22m5-validation-replay.html",
+  "replay_sha256": "cabcabbc137beb1d2e59782873e0466837e380bcf59a77072f8845294a79ce71",
+  "recording_exit_code": 0,
+  "seed": 10016,
+  "score": 282,
+  "level": 5,
+  "frames": 11139,
+  "actions": 11138,
+  "terminated": true,
+  "truncated": false,
+  "exact_validation_game_match": true,
+  "decoded_final_screen_game_over": true,
+  "level5_entry_frame": 10952,
+  "level5_entry_score": 278,
+  "level5_actions": 186,
+  "level5_new_points": 4,
+  "scope": "Selected complete validation game; not an estimate of average level-5 survival and never training data."
+}

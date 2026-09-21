@@ -1,0 +1,142 @@
+{
+  "candidate": "runs/level10-timing50k-stride2-min8-refkl01/step-035504128",
+  "hash": "d42179006a1824c415160fd7dd77d20237a1d524a53d9d099133b887b3c1c490",
+  "secondary": {
+    "games_requested": 50,
+    "complete_games": 50,
+    "incomplete_games": 0,
+    "mean_score": 209.64,
+    "median_score": 197,
+    "best_score": 552,
+    "highest_level": 8,
+    "highest_complete_level": 8,
+    "level_1_clears": 47,
+    "level_reach_counts": {
+      "2": 47,
+      "3": 30,
+      "4": 23,
+      "5": 16,
+      "6": 5,
+      "7": 3,
+      "8": 1
+    },
+    "level_reach_rates": {
+      "2": 0.94,
+      "3": 0.6,
+      "4": 0.46,
+      "5": 0.32,
+      "6": 0.1,
+      "7": 0.06,
+      "8": 0.02
+    },
+    "epsilon": 0,
+    "tstates": 50000,
+    "max_steps": 200000,
+    "environment_version": "normalized-game-over-v2",
+    "observation_stride": 2,
+    "eval_envs": 20,
+    "checkpoint": "runs/level10-timing50k-stride2-min8-refkl01/step-035504128/model.safetensors",
+    "deterministic_override": false,
+    "policy": "learned categorical, sampled",
+    "checkpoint_sha256": "d42179006a1824c415160fd7dd77d20237a1d524a53d9d099133b887b3c1c490"
+  },
+  "combined": {
+    "games_requested": 70,
+    "complete_games": 70,
+    "incomplete_games": 0,
+    "mean_score": 218.5857142857143,
+    "median_score": 197,
+    "best_score": 576,
+    "highest_level": 8,
+    "highest_complete_level": 8,
+    "level_1_clears": 64,
+    "level_reach_counts": {
+      "2": 64,
+      "3": 41,
+      "4": 32,
+      "5": 23,
+      "6": 10,
+      "7": 7,
+      "8": 4
+    },
+    "level_reach_rates": {
+      "2": 0.9142857142857143,
+      "3": 0.5857142857142857,
+      "4": 0.45714285714285713,
+      "5": 0.32857142857142857,
+      "6": 0.14285714285714285,
+      "7": 0.1,
+      "8": 0.05714285714285714
+    }
+  },
+  "previous_combined": {
+    "games_requested": 70,
+    "complete_games": 70,
+    "incomplete_games": 0,
+    "mean_score": 254.84285714285716,
+    "median_score": 261,
+    "best_score": 572,
+    "highest_level": 8,
+    "highest_complete_level": 8,
+    "level_1_clears": 66,
+    "level_reach_counts": {
+      "2": 66,
+      "3": 57,
+      "4": 45,
+      "5": 26,
+      "6": 11,
+      "7": 8,
+      "8": 3
+    },
+    "level_reach_rates": {
+      "2": 0.9428571428571428,
+      "3": 0.8142857142857143,
+      "4": 0.6428571428571429,
+      "5": 0.37142857142857144,
+      "6": 0.15714285714285714,
+      "7": 0.11428571428571428,
+      "8": 0.04285714285714286
+    }
+  },
+  "rank": [
+    0,
+    0,
+    4,
+    7,
+    10,
+    23,
+    32,
+    41,
+    64,
+    218.5857142857143
+  ],
+  "previous_rank": [
+    0,
+    0,
+    3,
+    8,
+    11,
+    26,
+    45,
+    57,
+    66,
+    254.84285714285716
+  ],
+  "replay_game": {
+    "score": 576,
+    "level": 8,
+    "game_over": true,
+    "waiting": false,
+    "steps": 49715,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 576,
+    "start_tstates": 128220,
+    "seed": 10019
+  },
+  "previous_secondary_path": "results/level10/validation-audit-timing50k-stride2-sil4-32m.json",
+  "previous_secondary_sha256": "6ac958eb4578abed910bd8bdcc16cf9e6efcf941ce7f00ce54342316f50d4805",
+  "all70_seed_sets_verified": true
+}

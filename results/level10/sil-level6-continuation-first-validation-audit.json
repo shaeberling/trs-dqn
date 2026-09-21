@@ -1,0 +1,64 @@
+{
+  "checkpoint": "runs/level10-sil-level6-continuation/step-028504064",
+  "hashes": {
+    "model.safetensors": "236d3d06cc7c8ae6d2b3cf4f85c000a66301606e2864709e6f76c642471fffd0",
+    "optimizer.npz": "39700efdeb0631d26e27a4199d9c2d9ce39723d53738bd49f1a17ef1b1157d2e",
+    "state.json": "2ee0d3c22277c2824083bb409157d070b6e68480f47efe81a6f27f3df0f11dd7"
+  },
+  "all_seed_termination_statistics_and_saved_sil_state_verified": true,
+  "sets": {
+    "continuation": {
+      "path": "runs/level10-sil-level6-continuation/step-028504064/evaluation.json",
+      "sha256": "b102e4bd7d040a27e7c44164d6395dde7875ad7c2b2a164b3a760cf913593c20",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 93.2,
+        "median_score": 65,
+        "best_score": 286,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 8,
+          "3": 2,
+          "4": 1,
+          "5": 0
+        }
+      }
+    },
+    "source": {
+      "path": "results/level10/validation-balanced-sil-28m25.json",
+      "sha256": "11fdcc3a2371f0e36cf3237f5c92b5c2afa4eb8efd7a76ae30967e27410b3b39",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 130.25,
+        "median_score": 112.5,
+        "best_score": 326,
+        "highest_complete_level": 6,
+        "level_reach_counts": {
+          "2": 12,
+          "3": 6,
+          "4": 4,
+          "5": 2,
+          "6": 1
+        }
+      }
+    },
+    "previous_uninterrupted": {
+      "path": "runs/level10-curriculum-balanced-sil/step-028504064/evaluation.json",
+      "sha256": "197d5c5019b966a3a92270d653a84efc1e81889fd8c4cceb007085aceba9f898",
+      "summary": {
+        "complete_games": 20,
+        "mean_score": 128.5,
+        "median_score": 120.5,
+        "best_score": 282,
+        "highest_complete_level": 4,
+        "level_reach_counts": {
+          "2": 16,
+          "3": 6,
+          "4": 1,
+          "5": 0
+        }
+      }
+    }
+  },
+  "decision": "First resumed-checkpoint primary is weaker than the source and previous uninterrupted run at the same action count. Retain the verified Level-6 source; do not promote or run another secondary audit. Continue the declared tranche. Fresh worker trajectories and replay/curriculum buffers differ from the uninterrupted run, so this is not a method-only ablation or proof of a restart penalty. Final seeds40000-40099 unused."
+}

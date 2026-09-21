@@ -1,0 +1,42 @@
+{
+  "checkpoint": "runs/level10-sil-level8-continuation/step-034000896",
+  "hashes": {
+    "model.safetensors": "8adf053bae76e24ce21c1f6d9753dea5b21825f0d5b8b1b316e4cbb1678dcee6",
+    "optimizer.npz": "6ec2da485c4369214f4d9ec4dcf624caffb2e49a49cff3b6b4cce3c433157b9e",
+    "state.json": "ca5f53391c3a4e73e374dcc8ae16b0f9dc2e0382e789421e212983cf8e53975d",
+    "evaluation.json": "82d68ce90ae879d2fa09c37df8b76ee989bfb4bdc48b570aa11e8eeabdacedb4"
+  },
+  "summary_completed_only": {
+    "complete_games": 19,
+    "incomplete_games": 1,
+    "mean_score": 131.10526315789474,
+    "median_score": 119,
+    "best_score": 284,
+    "highest_complete_level": 5,
+    "level_reach_counts": {
+      "2": 13,
+      "3": 5,
+      "4": 3,
+      "5": 1
+    }
+  },
+  "guards": [
+    {
+      "score": 265,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 100000,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 265,
+      "start_tstates": 72093,
+      "seed": 10006
+    }
+  ],
+  "all_seeds_statistics_and_termination_verified": true,
+  "decision": "Disqualify the whole primary suite; no secondary audit, no promotion, no final-test use. Learner continues unchanged.",
+  "recorded_at_utc": "2026-09-14 09:54:20 UTC"
+}

@@ -1,0 +1,42 @@
+{
+  "checked_at_utc": "2026-09-20 06:59:50 UTC",
+  "tests": {
+    "count": 141,
+    "exit_code": 0,
+    "last_session": 14912
+  },
+  "compatibility": {
+    "actions": 65536,
+    "model_and_optimizer_byte_identical": {
+      "model.safetensors": "47989fa2902ce2a8f38f8e036646cf294f549c36eed4164f82e6ecba132efd28",
+      "optimizer.npz": "9942ee098f3ed88f867ae278ccdbcbcfb1fcd1c73618de9591e3d52f421a892c"
+    },
+    "changed_state_fields": [
+      "config",
+      "best_level_rank"
+    ],
+    "other_state_including_rng_identical": true
+  },
+  "preserved_replays": [
+    {
+      "score": 581,
+      "level": 8,
+      "steps": 52538,
+      "outcome_version": "original-eight-reserve-proof-v1",
+      "game_won": false,
+      "win_status": "unverified_final_level",
+      "reserve_balls_visible": 0
+    },
+    {
+      "score": 598,
+      "level": 8,
+      "steps": 56764,
+      "outcome_version": "original-eight-reserve-proof-v1",
+      "game_won": false,
+      "win_status": "unverified_final_level",
+      "reserve_balls_visible": 0
+    }
+  ],
+  "scope": "Outcome reporting, supervisor gates and a compatibility diagnostic, not evidence of an actual victory. No smoke weights or synthetic fixture states enter performance training. Existing game/emulator unchanged this turn.",
+  "fresh_test_seeds_used": false
+}

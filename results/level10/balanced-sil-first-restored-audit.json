@@ -1,0 +1,461 @@
+{
+  "run": "runs/level10-curriculum-balanced-sil",
+  "through_steps": 25467278,
+  "first_own_archive": {
+    "wall_seconds": 469.09,
+    "event": "curriculum_archive",
+    "steps": 25384446,
+    "worker": 29,
+    "level": 5,
+    "score": 287,
+    "slot": 0,
+    "source_action": 11824,
+    "source_episode_steps": 11824,
+    "source_full_game": true,
+    "source_start_level": 1,
+    "start_tstates": 114870,
+    "retained": true,
+    "shared": true,
+    "shared_with": 31
+  },
+  "source_full_training_game": {
+    "wall_seconds": 474.75,
+    "event": "episode",
+    "score": 291,
+    "level": 5,
+    "game_over": true,
+    "waiting": false,
+    "steps": 25390302,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 291.0,
+    "start_tstates": 114870,
+    "full_game": true,
+    "segment_start_score": 0,
+    "segment_start_level": 1,
+    "segment_source_worker": null,
+    "segment_source_action": null,
+    "curriculum_archive_counts": {
+      "5": 1
+    },
+    "worker": 29,
+    "episode_steps": 12007,
+    "episode": 16329
+  },
+  "first_practice": {
+    "wall_seconds": 474.59,
+    "event": "curriculum_episode",
+    "score": 288,
+    "level": 5,
+    "game_over": true,
+    "waiting": false,
+    "steps": 25389557,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 1.0,
+    "start_tstates": 114870,
+    "full_game": false,
+    "segment_start_score": 287,
+    "segment_start_level": 5,
+    "segment_source_worker": 29,
+    "segment_source_action": 11824,
+    "curriculum_archive_counts": {
+      "5": 1
+    },
+    "worker": 20,
+    "episode_steps": 137,
+    "episode": 16327
+  },
+  "first_practice_learning_segments": [
+    {
+      "wall_seconds": 474.43,
+      "event": "sil_segment",
+      "steps": 25388949,
+      "final_score": 288,
+      "worker": 20,
+      "retained_suffix_steps": 118,
+      "dropped_prefix_steps": 0,
+      "full_game": false,
+      "initial_score": 287,
+      "score_reward_sum": 1.0,
+      "truncated": false,
+      "committed": true,
+      "first_return": 0.6149486215357263,
+      "max_return": 1.0
+    },
+    {
+      "wall_seconds": 474.59,
+      "event": "sil_segment",
+      "steps": 25389557,
+      "final_score": 288,
+      "worker": 20,
+      "retained_suffix_steps": 19,
+      "dropped_prefix_steps": 0,
+      "full_game": false,
+      "initial_score": 288,
+      "score_reward_sum": 0.0,
+      "truncated": false,
+      "committed": true,
+      "first_return": 0.0,
+      "max_return": 0.0
+    }
+  ],
+  "practice_episodes_checked": [
+    {
+      "worker": 20,
+      "end_steps": 25389557,
+      "learning_segments": 2,
+      "episode_steps": 137,
+      "new_reward": 1.0
+    },
+    {
+      "worker": 24,
+      "end_steps": 25395417,
+      "learning_segments": 2,
+      "episode_steps": 182,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 29,
+      "end_steps": 25396158,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 16,
+      "end_steps": 25398321,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 20,
+      "end_steps": 25400053,
+      "learning_segments": 2,
+      "episode_steps": 328,
+      "new_reward": 8.0
+    },
+    {
+      "worker": 24,
+      "end_steps": 25401241,
+      "learning_segments": 2,
+      "episode_steps": 182,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 29,
+      "end_steps": 25401982,
+      "learning_segments": 2,
+      "episode_steps": 182,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 16,
+      "end_steps": 25404241,
+      "learning_segments": 2,
+      "episode_steps": 185,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 20,
+      "end_steps": 25405941,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25406418,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 29,
+      "end_steps": 25407838,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 16,
+      "end_steps": 25410609,
+      "learning_segments": 2,
+      "episode_steps": 199,
+      "new_reward": 2.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25412306,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 23,
+      "end_steps": 25414808,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 16,
+      "end_steps": 25416497,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25418162,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 23,
+      "end_steps": 25419096,
+      "learning_segments": 2,
+      "episode_steps": 134,
+      "new_reward": 1.0
+    },
+    {
+      "worker": 26,
+      "end_steps": 25422907,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 20,
+      "end_steps": 25422965,
+      "learning_segments": 2,
+      "episode_steps": 532,
+      "new_reward": 34.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25424018,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 18,
+      "end_steps": 25427539,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 21,
+      "end_steps": 25428566,
+      "learning_segments": 2,
+      "episode_steps": 208,
+      "new_reward": 3.0
+    },
+    {
+      "worker": 26,
+      "end_steps": 25428731,
+      "learning_segments": 2,
+      "episode_steps": 182,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 20,
+      "end_steps": 25428789,
+      "learning_segments": 2,
+      "episode_steps": 182,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 21,
+      "end_steps": 25434518,
+      "learning_segments": 2,
+      "episode_steps": 186,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 20,
+      "end_steps": 25434645,
+      "learning_segments": 2,
+      "episode_steps": 183,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 23,
+      "end_steps": 25439224,
+      "learning_segments": 2,
+      "episode_steps": 629,
+      "new_reward": 35.0
+    },
+    {
+      "worker": 21,
+      "end_steps": 25440406,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 21,
+      "end_steps": 25446294,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25448754,
+      "learning_segments": 2,
+      "episode_steps": 773,
+      "new_reward": 38.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25453106,
+      "learning_segments": 2,
+      "episode_steps": 136,
+      "new_reward": 1.0
+    },
+    {
+      "worker": 24,
+      "end_steps": 25458553,
+      "learning_segments": 2,
+      "episode_steps": 1791,
+      "new_reward": 37.0
+    },
+    {
+      "worker": 30,
+      "end_steps": 25458783,
+      "learning_segments": 1,
+      "episode_steps": 321,
+      "new_reward": 14.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25458994,
+      "learning_segments": 2,
+      "episode_steps": 184,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 24,
+      "end_steps": 25462777,
+      "learning_segments": 2,
+      "episode_steps": 132,
+      "new_reward": 1.0
+    },
+    {
+      "worker": 16,
+      "end_steps": 25463633,
+      "learning_segments": 2,
+      "episode_steps": 1473,
+      "new_reward": 52.0
+    },
+    {
+      "worker": 30,
+      "end_steps": 25464735,
+      "learning_segments": 2,
+      "episode_steps": 186,
+      "new_reward": 4.0
+    },
+    {
+      "worker": 17,
+      "end_steps": 25466642,
+      "learning_segments": 1,
+      "episode_steps": 239,
+      "new_reward": 8.0
+    }
+  ],
+  "all_sil_score_sums_checked": 330,
+  "latest_progress": {
+    "wall_seconds": 567.75,
+    "event": "progress",
+    "steps": 25460736,
+    "episodes": 16377,
+    "steps_per_second": 800.8,
+    "mean_score_100": 110.18181818181819,
+    "best_score_100": 291,
+    "highest_level_100": 5,
+    "complete_games_100": 77,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 53,
+      "3": 11,
+      "4": 4,
+      "5": 1
+    },
+    "level_reach_rates_100": {
+      "2": 0.6883116883116883,
+      "3": 0.14285714285714285,
+      "4": 0.05194805194805195,
+      "5": 0.012987012987012988
+    },
+    "actor_loss": -0.008141442551277578,
+    "value_loss": 0.13899771077558398,
+    "entropy": 0.30390383303165436,
+    "approx_kl": 0.0013163253279344644,
+    "rollout_action_origins": {
+      "from_boot": 2688,
+      "restored": 1408
+    },
+    "training_action_origins": {
+      "from_boot": 436702,
+      "restored": 17954
+    },
+    "mlx_active_bytes": 9759572,
+    "mlx_cache_bytes": 473130792,
+    "mlx_peak_bytes": 1577597728,
+    "sil": {
+      "replay_size": 32768,
+      "pending_transitions": 38989,
+      "pending_screen_bytes": 159698944,
+      "replay_array_bytes": 135036928,
+      "completed_learning_segments": 321,
+      "discarded_truncated_segments": 0,
+      "dropped_prefix_transitions": 123805,
+      "committed_transitions": {
+        "from_boot": 281368,
+        "restored": 10494
+      },
+      "updates": 440,
+      "rollout_updates": [
+        {
+          "loss": 0.013617308810353279,
+          "actor_loss": 0.12866270542144775,
+          "value_loss": 0.7510376572608948,
+          "positive_fraction": 0.451171875,
+          "applied": true
+        },
+        {
+          "loss": 0.01669694297015667,
+          "actor_loss": 0.15892872214317322,
+          "value_loss": 0.8040705323219299,
+          "positive_fraction": 0.43359375,
+          "applied": true
+        },
+        {
+          "loss": 0.02169334515929222,
+          "actor_loss": 0.20910075306892395,
+          "value_loss": 0.7832688093185425,
+          "positive_fraction": 0.45703125,
+          "applied": true
+        },
+        {
+          "loss": 0.011858352459967136,
+          "actor_loss": 0.11021965742111206,
+          "value_loss": 0.8363865613937378,
+          "positive_fraction": 0.453125,
+          "applied": true
+        }
+      ]
+    }
+  },
+  "all_practice_sources_life_boundaries_new_rewards_and_logged_action_bounds_verified": true,
+  "scope": "Own restored training and SIL collection verification; not a frozen-policy milestone or performance estimate."
+}

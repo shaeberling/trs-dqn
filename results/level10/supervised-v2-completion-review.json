@@ -1,0 +1,941 @@
+{
+  "run": "runs/level10-supervised-refkl01-v2/learner",
+  "through_steps": 236003328,
+  "terminal": true,
+  "all_origin_reward_source_and_logged_action_accounting_verified": true,
+  "all_primary_seeds_termination_statistics_verified": true,
+  "full_episode_boundaries": 4411,
+  "complete_full_training_games": 4395,
+  "practice_segments": 11649,
+  "complete_practice_segments": 11644,
+  "highest_complete_full_training": 8,
+  "highest_complete_practice": 8,
+  "training_guards": [
+    {
+      "wall_seconds": 5438.07,
+      "event": "episode",
+      "score": 258,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 41904108,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 258,
+      "start_tstates": 72413,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 5
+      },
+      "worker": 11,
+      "episode_steps": 200000,
+      "episode": 19292
+    },
+    {
+      "wall_seconds": 6024.4,
+      "event": "episode",
+      "score": 128,
+      "level": 3,
+      "game_over": false,
+      "waiting": true,
+      "steps": 42555319,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 128,
+      "start_tstates": 178799,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 7
+      },
+      "worker": 22,
+      "episode_steps": 200000,
+      "episode": 19342
+    },
+    {
+      "wall_seconds": 12700.58,
+      "event": "episode",
+      "score": 255,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 50500325,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 255,
+      "start_tstates": 146266,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 4,
+      "episode_steps": 200000,
+      "episode": 20051
+    },
+    {
+      "wall_seconds": 19083.43,
+      "event": "episode",
+      "score": 252,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 57787685,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 252,
+      "start_tstates": 97038,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 4,
+      "episode_steps": 200000,
+      "episode": 20679
+    },
+    {
+      "wall_seconds": 20122.47,
+      "event": "episode",
+      "score": 62,
+      "level": 2,
+      "game_over": false,
+      "waiting": true,
+      "steps": 59010640,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 62,
+      "start_tstates": 13377,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 15,
+      "episode_steps": 200000,
+      "episode": 20791
+    },
+    {
+      "wall_seconds": 31203.89,
+      "event": "curriculum_episode",
+      "score": 583,
+      "level": 8,
+      "game_over": false,
+      "waiting": true,
+      "steps": 71845366,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 55,
+      "start_tstates": 143250,
+      "full_game": false,
+      "segment_start_score": 528,
+      "segment_start_level": 8,
+      "segment_source_worker": 7,
+      "segment_source_action": 92918,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 21,
+      "episode_steps": 200000,
+      "episode": 21862
+    },
+    {
+      "wall_seconds": 48306.46,
+      "event": "episode",
+      "score": 392,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 91373838,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 392,
+      "start_tstates": 56270,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 13,
+      "episode_steps": 200000,
+      "episode": 23507
+    },
+    {
+      "wall_seconds": 65543.45,
+      "event": "episode",
+      "score": 255,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 111114214,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 255,
+      "start_tstates": 28898,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 5,
+      "episode_steps": 200000,
+      "episode": 25097
+    },
+    {
+      "wall_seconds": 82814.29,
+      "event": "episode",
+      "score": 261,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 130525453,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 261,
+      "start_tstates": 138383,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 12,
+      "episode_steps": 200000,
+      "episode": 26618
+    },
+    {
+      "wall_seconds": 87290.27,
+      "event": "episode",
+      "score": 460,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 135511830,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 460,
+      "start_tstates": 49792,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 21,
+      "episode_steps": 200000,
+      "episode": 26996
+    },
+    {
+      "wall_seconds": 105503.65,
+      "event": "curriculum_episode",
+      "score": 551,
+      "level": 8,
+      "game_over": false,
+      "waiting": false,
+      "steps": 156277052,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 51,
+      "start_tstates": 41662,
+      "full_game": false,
+      "segment_start_score": 500,
+      "segment_start_level": 8,
+      "segment_source_worker": 18,
+      "segment_source_action": 2065409,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 27,
+      "episode_steps": 200000,
+      "episode": 28578
+    },
+    {
+      "wall_seconds": 107384.33,
+      "event": "episode",
+      "score": 392,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 158368592,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 392,
+      "start_tstates": 87775,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 15,
+      "episode_steps": 200000,
+      "episode": 28747
+    },
+    {
+      "wall_seconds": 109016.38,
+      "event": "episode",
+      "score": 449,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 160275113,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 449,
+      "start_tstates": 112022,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 8,
+      "episode_steps": 200000,
+      "episode": 28895
+    },
+    {
+      "wall_seconds": 112538.66,
+      "event": "curriculum_episode",
+      "score": 559,
+      "level": 8,
+      "game_over": false,
+      "waiting": false,
+      "steps": 164293749,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 42,
+      "start_tstates": 172073,
+      "full_game": false,
+      "segment_start_score": 517,
+      "segment_start_level": 8,
+      "segment_source_worker": 4,
+      "segment_source_action": 2728884,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 20,
+      "episode_steps": 200000,
+      "episode": 29187
+    },
+    {
+      "wall_seconds": 123148.64,
+      "event": "episode",
+      "score": 415,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 176215448,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 415,
+      "start_tstates": 140348,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 23,
+      "episode_steps": 200000,
+      "episode": 30103
+    },
+    {
+      "wall_seconds": 130906.67,
+      "event": "episode",
+      "score": 445,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 185021903,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 445,
+      "start_tstates": 130568,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 14,
+      "episode_steps": 200000,
+      "episode": 30810
+    },
+    {
+      "wall_seconds": 138269.76,
+      "event": "episode",
+      "score": 464,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 193434695,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 464,
+      "start_tstates": 95539,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 6,
+      "episode_steps": 200000,
+      "episode": 31487
+    },
+    {
+      "wall_seconds": 144765.34,
+      "event": "curriculum_episode",
+      "score": 556,
+      "level": 8,
+      "game_over": false,
+      "waiting": false,
+      "steps": 200919003,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 38,
+      "start_tstates": 159125,
+      "full_game": false,
+      "segment_start_score": 518,
+      "segment_start_level": 8,
+      "segment_source_worker": 1,
+      "segment_source_action": 4627255,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 26,
+      "episode_steps": 200000,
+      "episode": 32080
+    },
+    {
+      "wall_seconds": 150156.78,
+      "event": "episode",
+      "score": 456,
+      "level": 7,
+      "game_over": false,
+      "waiting": false,
+      "steps": 207031875,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 456,
+      "start_tstates": 76253,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 2,
+      "episode_steps": 200000,
+      "episode": 32512
+    },
+    {
+      "wall_seconds": 151211.43,
+      "event": "curriculum_episode",
+      "score": 557,
+      "level": 8,
+      "game_over": false,
+      "waiting": false,
+      "steps": 208260921,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 50,
+      "start_tstates": 115593,
+      "full_game": false,
+      "segment_start_score": 507,
+      "segment_start_level": 8,
+      "segment_source_worker": 13,
+      "segment_source_action": 2290148,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 24,
+      "episode_steps": 200000,
+      "episode": 32604
+    },
+    {
+      "wall_seconds": 152746.49,
+      "event": "episode",
+      "score": 256,
+      "level": 4,
+      "game_over": false,
+      "waiting": true,
+      "steps": 210008236,
+      "terminated": false,
+      "truncated": true,
+      "life_lost": false,
+      "hud_settle_tstates": 0,
+      "episode_reward": 256,
+      "start_tstates": 101762,
+      "full_game": true,
+      "segment_start_score": 0,
+      "segment_start_level": 1,
+      "segment_source_worker": null,
+      "segment_source_action": null,
+      "curriculum_archive_counts": {
+        "8": 8
+      },
+      "worker": 11,
+      "episode_steps": 200000,
+      "episode": 32736
+    }
+  ],
+  "publications": 324,
+  "checked_progress_records": 12430,
+  "latest_progress": {
+    "wall_seconds": 175702.83,
+    "event": "progress",
+    "steps": 236003328,
+    "episodes": 34849,
+    "steps_per_second": 1141.1,
+    "mean_score_100": 295.61,
+    "best_score_100": 576,
+    "highest_level_100": 8,
+    "complete_games_100": 100,
+    "incomplete_games_100": 0,
+    "level_reach_counts_100": {
+      "2": 97,
+      "3": 85,
+      "4": 68,
+      "5": 60,
+      "6": 29,
+      "7": 24,
+      "8": 8
+    },
+    "level_reach_rates_100": {
+      "2": 0.97,
+      "3": 0.85,
+      "4": 0.68,
+      "5": 0.6,
+      "6": 0.29,
+      "7": 0.24,
+      "8": 0.08
+    },
+    "actor_loss": -0.004860328517679591,
+    "value_loss": 0.04082407400710508,
+    "entropy": 0.2869988731108606,
+    "approx_kl": 0.00045910053586339927,
+    "reference_kl": 0.043597794545348734,
+    "rollout_action_origins": {
+      "from_boot": 4352,
+      "restored": 3840
+    },
+    "training_action_origins": {
+      "from_boot": 117886582,
+      "restored": 82612618
+    },
+    "mlx_active_bytes": 13020860,
+    "mlx_cache_bytes": 418338600,
+    "mlx_peak_bytes": 2915296040,
+    "sil": {
+      "replay_size": 65536,
+      "pending_transitions": 94490,
+      "pending_screen_bytes": 387031040,
+      "replay_array_bytes": 270073856,
+      "completed_learning_segments": 33152,
+      "discarded_truncated_segments": 21,
+      "dropped_prefix_transitions": 98414167,
+      "committed_transitions": {
+        "from_boot": 46841138,
+        "restored": 55063389
+      },
+      "updates": 97884,
+      "rollout_updates": [
+        {
+          "loss": 0.02377464435994625,
+          "actor_loss": 0.19869843125343323,
+          "value_loss": 3.9048023223876953,
+          "positive_fraction": 0.5556640625,
+          "applied": true
+        },
+        {
+          "loss": 0.024631833657622337,
+          "actor_loss": 0.20893710851669312,
+          "value_loss": 3.738123893737793,
+          "positive_fraction": 0.564453125,
+          "applied": true
+        },
+        {
+          "loss": 0.028176292777061462,
+          "actor_loss": 0.24260926246643066,
+          "value_loss": 3.9153666496276855,
+          "positive_fraction": 0.564453125,
+          "applied": true
+        },
+        {
+          "loss": 0.027321264147758484,
+          "actor_loss": 0.23362958431243896,
+          "value_loss": 3.9583048820495605,
+          "positive_fraction": 0.56640625,
+          "applied": true
+        }
+      ]
+    }
+  },
+  "primary_suites": [
+    {
+      "steps": 234504192,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 273.7,
+      "median_score": 266.5,
+      "best_score": 585,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 18,
+        "3": 15,
+        "4": 13,
+        "5": 9,
+        "6": 7,
+        "7": 3,
+        "8": 2
+      },
+      "raw_evaluation_sha256": "1d53847441434df4d4997e96ea8d03c9e92df9758888ce27eabfbed19fa98e14"
+    },
+    {
+      "steps": 235003904,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 250.35,
+      "median_score": 272,
+      "best_score": 514,
+      "highest_complete_level": 7,
+      "level_reach_counts": {
+        "2": 18,
+        "3": 15,
+        "4": 13,
+        "5": 10,
+        "6": 4,
+        "7": 2
+      },
+      "raw_evaluation_sha256": "f25f9ce04cfb4ed61e00d92b7cf9acff5917ce3c3e6ab4a0a11b2c5bd529c359"
+    },
+    {
+      "steps": 235503616,
+      "complete_games": 19,
+      "incomplete_games": 1,
+      "mean_score": 269.2631578947368,
+      "median_score": 263,
+      "best_score": 560,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 19,
+        "3": 13,
+        "4": 12,
+        "5": 9,
+        "6": 6,
+        "7": 2,
+        "8": 1
+      },
+      "raw_evaluation_sha256": "397c720942b0612229a74de708052ff429f471eb4eba64ea7be5a7a17a1e53fc"
+    }
+  ],
+  "best_primary_step": 122503168,
+  "summary": {
+    "complete_primary_suites": 363,
+    "primary_suites_reaching5": 363,
+    "primary_level5_games": 3614,
+    "highest_frozen_level": 8
+  },
+  "worker_runtime": {
+    "wall_seconds": 0,
+    "event": "worker_runtime",
+    "steps": 35504128,
+    "workers": [
+      {
+        "pid": 3287,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3288,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3289,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3290,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3291,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3292,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3293,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3294,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3295,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3296,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3297,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3298,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3299,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3300,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3301,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3302,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": false
+      },
+      {
+        "pid": 3303,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3304,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3305,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3306,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3307,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3312,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3313,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3314,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3315,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3316,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3317,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3318,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3319,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3320,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3321,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      },
+      {
+        "pid": 3322,
+        "mlx_loaded": false,
+        "curriculum_reset_enabled": true
+      }
+    ]
+  },
+  "stop": {
+    "wall_seconds": 175807.4,
+    "event": "stopped",
+    "steps": 236003328,
+    "target_met": false,
+    "training_action_origins": {
+      "from_boot": 117886582,
+      "restored": 82612618
+    },
+    "mlx_active_bytes": 13020860,
+    "mlx_cache_bytes": 511584152,
+    "mlx_peak_bytes": 2915296040,
+    "sil": {
+      "replay_size": 65536,
+      "pending_transitions": 94490,
+      "pending_screen_bytes": 387031040,
+      "replay_array_bytes": 270073856,
+      "completed_learning_segments": 33152,
+      "discarded_truncated_segments": 21,
+      "dropped_prefix_transitions": 98414167,
+      "committed_transitions": {
+        "from_boot": 46841138,
+        "restored": 55063389
+      },
+      "updates": 97884
+    }
+  },
+  "additional_actions": 200499200,
+  "final_hashes": {
+    "model.safetensors": "b488f041878d5e8481159193e938e67db701a2167fb6729b1e83f56da6b94521",
+    "optimizer.npz": "e2a077c9cdeb5789f50f0d941272d15da5b97c90b6a4027f1b872a5552f16d16",
+    "state.json": "9200f4da9262188f56e5fd31ad44fabf42392c10f4ab590481e89aff20abedd0"
+  },
+  "log": {
+    "lines": 65145,
+    "bytes": 44815923,
+    "sha256": "078e1d415b3fbffc229c7c05b3006c9b69024201f73db4e791c725ac0d1a5077"
+  },
+  "sil_accounting": {
+    "learning_suffixes_checked": 33173,
+    "episode_suffix_coverages_checked": 16060,
+    "committed_suffixes": 33152,
+    "discarded_suffixes": 21,
+    "discarded_retained_transitions": 86016,
+    "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+  },
+  "saved_sil_rng_and_nonpersistent_replay_verified": true,
+  "primary_suite_count": 400,
+  "review": {
+    "reason": "Depth plateau: approximately120M further actions after last selected-model improvement; noLevel8clear in11644complete practice segments.",
+    "intentional_operator_stop": true,
+    "supervisor_exit_code": 1,
+    "learner_saved_terminal_checkpoint": true,
+    "final_validation_cancelled_by_operator": true,
+    "archived_log": "results/level10/logs/level10-supervised-refkl01-v2.jsonl"
+  }
+}

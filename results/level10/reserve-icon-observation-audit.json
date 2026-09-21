@@ -1,0 +1,107 @@
+{
+  "replays": [
+    {
+      "replay": "results/level10/balanced-sil-28m25-primary-level6-replay.html",
+      "sha256": "ad150bf0aaad7a2fdabb2adbafb791056c7ac7fc026c1ed26eef8d5622eb3a34",
+      "initial_reserve": 2,
+      "final_reserve": 0,
+      "reserve_changes": [
+        {
+          "frame": 3934,
+          "previous": 2,
+          "now": 1,
+          "score": 118,
+          "level": 2,
+          "game_over": false,
+          "waiting": false
+        },
+        {
+          "frame": 9113,
+          "previous": 1,
+          "now": 2,
+          "score": 181,
+          "level": 3,
+          "game_over": false,
+          "waiting": false
+        },
+        {
+          "frame": 13813,
+          "previous": 2,
+          "now": 1,
+          "score": 283,
+          "level": 5,
+          "game_over": false,
+          "waiting": true
+        },
+        {
+          "frame": 13827,
+          "previous": 1,
+          "now": 0,
+          "score": 283,
+          "level": 5,
+          "game_over": false,
+          "waiting": false
+        }
+      ],
+      "downward_changes": 3,
+      "game_over": true
+    },
+    {
+      "replay": "results/level10/balanced-lr1e5-long-28m5-secondary-replay.html",
+      "sha256": "ed9491bd8aa95ebac8d37102b4c75165c47d1570938adb5d7b76beacf58ad7a2",
+      "initial_reserve": 2,
+      "final_reserve": 0,
+      "reserve_changes": [
+        {
+          "frame": 16324,
+          "previous": 2,
+          "now": 1,
+          "score": 296,
+          "level": 5,
+          "game_over": false,
+          "waiting": false
+        },
+        {
+          "frame": 16341,
+          "previous": 1,
+          "now": 0,
+          "score": 296,
+          "level": 5,
+          "game_over": false,
+          "waiting": true
+        }
+      ],
+      "downward_changes": 2,
+      "game_over": true
+    },
+    {
+      "replay": "results/level5/replay.html",
+      "sha256": "e290a0c4efd8bbc55c947d7a86292efbb76bbd187e245aabfe04889745d46d6c",
+      "initial_reserve": 2,
+      "final_reserve": 0,
+      "reserve_changes": [
+        {
+          "frame": 13690,
+          "previous": 2,
+          "now": 1,
+          "score": 265,
+          "level": 4,
+          "game_over": false,
+          "waiting": true
+        },
+        {
+          "frame": 14183,
+          "previous": 1,
+          "now": 0,
+          "score": 271,
+          "level": 4,
+          "game_over": false,
+          "waiting": false
+        }
+      ],
+      "downward_changes": 2,
+      "game_over": true
+    }
+  ],
+  "interpretation": "The visible reserve in the verified f58 replay rises from1 to2 and stays there for4700 frames before the next decrease. A fixed three-learning-boundary assumption is contradicted by these observations. This check finds no reason to change the existing screen-based reserve-decrease detector; it does not establish the game-internal award rule or verify every possible redraw. Training/evaluation inputs and logic unchanged."
+}

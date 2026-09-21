@@ -1,0 +1,35 @@
+{
+  "scope": "Matched protected-boot comparison startup and pre-archive compatibility; not a new performance milestone",
+  "run": "runs/level10-curriculum-balanced",
+  "control": "runs/level10-curriculum-focused-long",
+  "source_checkpoint": "runs/level10-curriculum-focused/step-023003136",
+  "source_model_sha256": "4983ca8d163732e2d21c4f3357a27746c7fb27bc31e03518339e5a94c3b46929",
+  "configuration_differences": {
+    "run": ["runs/level10-curriculum-focused-long", "runs/level10-curriculum-balanced"],
+    "curriculum_boot_envs": [0, 16]
+  },
+  "control_absent_boot_envs_normalized_to_zero": true,
+  "both_archives_empty_at_start": true,
+  "training_workers": 32,
+  "reserved_worker_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+  "worker_roles_verified_from_runtime": true,
+  "all_worker_mlx_loaded_false": true,
+  "startup_origin_check_step": 23064576,
+  "startup_action_origins": {"from_boot": 61440, "restored": 0},
+  "first_validation_checkpoint": {
+    "steps": 23252992,
+    "model_sha256": "78a6be23b929076fecf36a97823a24771c65d541626abfdd92f0e54fdf61dc21",
+    "model_optimizer_and_evaluation_files_byte_identical_to_control": true,
+    "learner_rng_counters_and_best_selection_state_identical": true,
+    "complete_games": 20,
+    "mean_score": 113,
+    "median_score": 119.5,
+    "best_score": 234,
+    "highest_level": 4,
+    "level_reach_counts": {"2": 14, "3": 4, "4": 1, "5": 0},
+    "archive_not_yet_populated": true
+  },
+  "additional_byte_identical_model_optimizer_evaluation_checkpoints": [23502848, 23752704],
+  "all_three_checked_checkpoints_precede_first_training_archive_entry": true,
+  "final_test_seeds_used": false
+}

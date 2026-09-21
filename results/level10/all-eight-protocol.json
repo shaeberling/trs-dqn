@@ -1,0 +1,13 @@
+{
+  "user_authorized_goal": "Beat all eight original levels; do not modify the game.",
+  "source": "runs/level10-supervised-refkl01-v2/learner/step-116006912",
+  "game_sha256": "0eada4c36fbdb135ca14f390cdb3e01a3a3da121a1328a531fcc6c1e2e931ee6",
+  "outcome_method": "Conservative screen-only proof: terminal GAME OVER at displayed level 8 with at least one visible reserve ball in HUD columns 30 through 34. Both loss branches enter GAME OVER only at zero lives, following a prior zero-reserve HUD. Victory does not decrement lives. Last-ball level-8 endings are explicitly unverified, never presumed wins or losses.",
+  "outcome_limit": "This proves a sufficient condition for winning, not every possible last-ball win. Unverified endings must be exposed in reports and retained for replay review. No internal live memory or CPU state enters the detector, model or reward.",
+  "measurement_only_change": "Add outcome metadata without changing observations, actions, emulator stepping, score rewards or existing learning terminals. Keep old environment identity for trajectory compatibility; use a separate outcome-version field.",
+  "selection": "Complete reused validation only; verified full-game wins first, then existing depth/count/mean rank. Twenty primary seeds 10000-10019 and fifty secondary seeds 10100-10149. A restored practice win is never a full-game win.",
+  "completion": "A validation-selected checkpoint with at least one verified original-game victory across 70 complete reused games, an uncapped winning replay with every neural action verified and outcome recomputed from its final screen, followed by 100 fresh complete games on untouched seeds 40000-40099. Fresh results never select weights.",
+  "preservation": "Keep all existing stable replay bundles; a verified winning replay outranks a higher-scoring nonwinning replay. Retain previous immutable versions.",
+  "implementation_gates": "Synthetic positive/ambiguous/negative outcome fixtures; exact static verification of both loss branches, reserve HUD renderer and final-level branch; old replay outcomes; full unit suite; disabled versus enabled 65536-action compatibility smoke; rerun selected baseline on reused validation with explicit outcome metadata before training.",
+  "next_training_change": "If baseline has no verified win, resume the selected checkpoint with within-level archive spacing 4 instead of 16. Same 8-state per-level reservoir and 16 protected boot workers. All other learner settings unchanged. Review the first four million new actions, not a wall-clock stop limit. Keep monitoring and adapting until completion or a genuine external blocker."
+}

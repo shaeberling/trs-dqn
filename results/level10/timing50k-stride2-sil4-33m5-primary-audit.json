@@ -1,0 +1,64 @@
+{
+  "checkpoint": "runs/level10-timing50k-stride2-sil4/step-033505280",
+  "hashes": {
+    "model.safetensors": "54e385157c75f6fd69b4449eafe06f0843c05b4178279cd8559bdac46a633047",
+    "optimizer.npz": "eca2d341a74d84a2b3a0e7b706e86708647feee2882ec8312ccb904cb85550c5",
+    "state.json": "d3b182a7a2b74e6b653b68d595456441a61593c8147212e93380c12f353d6a50",
+    "evaluation.json": "159d7bae8456561bfd65c96785acf692a5ea6b37cea9e6925c742ba25bcb7763"
+  },
+  "all_games_complete": true,
+  "mean_score": 197.45,
+  "median_score": 155,
+  "best_score": 561,
+  "highest_complete_level": 8,
+  "level_reach_counts": {
+    "2": 18,
+    "3": 10,
+    "4": 8,
+    "5": 5,
+    "6": 2,
+    "7": 1,
+    "8": 1
+  },
+  "rank": [
+    0,
+    0,
+    1,
+    1,
+    2,
+    5,
+    8,
+    10,
+    18,
+    197.45
+  ],
+  "selected_reference_primary_rank": [
+    0,
+    0,
+    2,
+    3,
+    4,
+    11,
+    16,
+    17,
+    19,
+    279.3
+  ],
+  "decision": "Does not qualify for secondary audit; reference retained.",
+  "deepest_games": [
+    {
+      "score": 561,
+      "level": 8,
+      "game_over": true,
+      "waiting": false,
+      "steps": 44210,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 561,
+      "start_tstates": 188429,
+      "seed": 10017
+    }
+  ]
+}

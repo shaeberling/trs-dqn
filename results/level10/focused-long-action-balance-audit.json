@@ -1,0 +1,32 @@
+{
+  "scope": "Exact action-origin reconstruction from closed episode intervals where coverage is complete; no policy inputs or actions changed.",
+  "through_action": 25312398,
+  "windows": [
+    {
+      "first_action": 23840516,
+      "last_action": 24002560,
+      "total_actions": 162045,
+      "classified_actions": 162045,
+      "unclassified_open_episode_actions": 0,
+      "counts": {
+        "from_boot": 103378,
+        "restored": 58667
+      },
+      "restored_fraction_among_classified": 0.3620414082507945,
+      "fully_observed": true
+    },
+    {
+      "first_action": 24002561,
+      "last_action": 24252416,
+      "total_actions": 249856,
+      "classified_actions": 249856,
+      "unclassified_open_episode_actions": 0,
+      "counts": {
+        "from_boot": 57516,
+        "restored": 192340
+      },
+      "restored_fraction_among_classified": 0.7698034067622951,
+      "fully_observed": true
+    }
+  ]
+}

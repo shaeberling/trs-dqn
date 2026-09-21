@@ -1,0 +1,57 @@
+{
+  "replay": "results/level10/balanced-sil-28m25-primary-level6-replay.html",
+  "replay_sha256": "ad150bf0aaad7a2fdabb2adbafb791056c7ac7fc026c1ed26eef8d5622eb3a34",
+  "record_exit_code": 0,
+  "all_evaluation_game_fields_match": true,
+  "decoded_initial_and_final_screens_verified": true,
+  "metadata": {
+    "seed": 10006,
+    "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112/model.safetensors",
+    "environment_version": "normalized-game-over-v2",
+    "checkpoint_sha256": "f58fb1f033105b148b8418d513f15c170c05c908f4594a64fb9b9b876c28e471",
+    "policy": "learned categorical, sampled",
+    "deterministic_override": false,
+    "frames": 15035,
+    "tstates": 100000,
+    "score": 326,
+    "level": 6,
+    "game_over": true,
+    "waiting": false,
+    "steps": 15034,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 326,
+    "start_tstates": 72093
+  },
+  "level_entries": {
+    "1": {
+      "frame": 0,
+      "score": 0
+    },
+    "2": {
+      "frame": 1973,
+      "score": 63
+    },
+    "3": {
+      "frame": 7702,
+      "score": 132
+    },
+    "4": {
+      "frame": 10515,
+      "score": 208
+    },
+    "5": {
+      "frame": 13648,
+      "score": 279
+    },
+    "6": {
+      "frame": 14709,
+      "score": 319
+    }
+  },
+  "level6_actions": 325,
+  "level6_new_points": 7,
+  "scope": "Selected complete reused-primary-validation game, learned screen-only policy. Not independent performance evidence, not training input, not level 10."
+}

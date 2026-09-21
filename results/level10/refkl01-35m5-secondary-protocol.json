@@ -1,0 +1,43 @@
+{
+  "recorded_at_utc": "2026-09-17 06:15:55 UTC",
+  "candidate": "runs/level10-timing50k-stride2-min8-refkl01/step-035504128",
+  "hashes": {
+    "model.safetensors": "d42179006a1824c415160fd7dd77d20237a1d524a53d9d099133b887b3c1c490",
+    "optimizer.npz": "bfef5152d559ae9e8204d0f99fb08330a080a045080863106e83158e660e10b1",
+    "state.json": "3ea9bf49858d8beeecd6b99ef6dbba487d776e196cd7d8f02e7a1928c91d3792",
+    "evaluation.json": "9db9d244a46f5bd7d10b96179e1ed3ccab78c6a8ab98d4c1f5d53e906e7de460"
+  },
+  "selection": "Only complete primary exceeding selected32M depth/count rank; best of16 complete primaries. Selected before reading new secondary outcomes.",
+  "primary_rank": [
+    0,
+    0,
+    3,
+    4,
+    5,
+    7,
+    9,
+    11,
+    17,
+    240.95
+  ],
+  "reference_primary_rank": [
+    0,
+    0,
+    2,
+    3,
+    4,
+    11,
+    16,
+    17,
+    19,
+    279.3
+  ],
+  "games": 50,
+  "seed": 10100,
+  "envs": 20,
+  "tstates": 50000,
+  "observation_stride": 2,
+  "max_steps": 200000,
+  "output": "results/level10/validation-refkl01-35m5.json",
+  "promotion_rule": "Require all70 games complete and higher combined rank; verify a full uncapped replay and all policy actions before promotion. Reusedvalidation only; fresh40000–40099 untouched."
+}

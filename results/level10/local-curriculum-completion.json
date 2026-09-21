@@ -1,0 +1,91 @@
+{
+  "run": "runs/level10-curriculum",
+  "exit_code": 0,
+  "reason": "Completed the two-million-action local-archive comparison without a complete validation level-5 reach. Preserve the run; compare peer sharing to increase rare-state practice.",
+  "start_steps": 20500480,
+  "stop": {
+    "wall_seconds": 1970.14,
+    "event": "stopped",
+    "steps": 22503424,
+    "target_met": false,
+    "mlx_active_bytes": 9798508,
+    "mlx_cache_bytes": 508923648,
+    "mlx_peak_bytes": 1446162880
+  },
+  "additional_actions": 2002944,
+  "validation_suites": 8,
+  "complete_suites": 7,
+  "incomplete_suites": 1,
+  "highest_complete_validation_level": 4,
+  "best_complete_mean": 143.95,
+  "final_validation": {
+    "wall_seconds": 1970.13,
+    "event": "validation",
+    "steps": 22503424,
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 126.4,
+    "median_score": 115.5,
+    "best_score": 278,
+    "highest_level": 4,
+    "highest_complete_level": 4,
+    "level_1_clears": 14,
+    "level_reach_counts": {
+      "2": 14,
+      "3": 5,
+      "4": 3,
+      "5": 0
+    },
+    "level_reach_rates": {
+      "2": 0.7,
+      "3": 0.25,
+      "4": 0.15,
+      "5": 0
+    },
+    "epsilon": 0,
+    "tstates": 100000,
+    "max_steps": 100000,
+    "environment_version": "normalized-game-over-v2",
+    "eval_envs": 20,
+    "policy": "learned categorical, sampled"
+  },
+  "complete_from_boot_training_games": 244,
+  "highest_complete_from_boot_training_level": 5,
+  "training_guard_hits": 0,
+  "practice_by_start_level": [
+    {
+      "start_level": 2,
+      "segments": 107,
+      "mean_new_reward": 81.91588785046729,
+      "mean_actions": 3798.822429906542,
+      "highest_level": 5
+    },
+    {
+      "start_level": 3,
+      "segments": 55,
+      "mean_new_reward": 78.34545454545454,
+      "mean_actions": 3118.4363636363637,
+      "highest_level": 5
+    },
+    {
+      "start_level": 4,
+      "segments": 32,
+      "mean_new_reward": 55.59375,
+      "mean_actions": 1996.53125,
+      "highest_level": 5
+    },
+    {
+      "start_level": 5,
+      "segments": 8,
+      "mean_new_reward": 1.375,
+      "mean_actions": 151.75,
+      "highest_level": 5
+    }
+  ],
+  "latest_model_sha256": "190257463dfa8aaf9a54f06a96106d55c338b868b719c45d8aff98b7e43e4661",
+  "latest_optimizer_sha256": "4393f052618dfb8eb1ac65e3c12dbeb914100a917807f84bcb32d32aef66a231",
+  "latest_state_sha256": "d0c6b6c9a9583c27b84a45bc46a70bcc554e3346fcd7b4f0d0fb5a54665783ca",
+  "log": "logs/level10-curriculum.jsonl",
+  "final_test_seeds_used": false
+}

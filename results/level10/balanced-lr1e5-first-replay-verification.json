@@ -1,0 +1,55 @@
+{
+  "metadata": {
+    "seed": 10005,
+    "checkpoint": "runs/level10-curriculum-balanced-lr1e5/step-023252992/model.safetensors",
+    "environment_version": "normalized-game-over-v2",
+    "checkpoint_sha256": "ec84a0b18295b9002529b66976860af46ba3664f157c29b65570206f62d2b596",
+    "policy": "learned categorical, sampled",
+    "deterministic_override": false,
+    "frames": 12207,
+    "tstates": 100000,
+    "score": 313,
+    "level": 5,
+    "game_over": true,
+    "waiting": false,
+    "steps": 12206,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 313,
+    "start_tstates": 67063
+  },
+  "replay_sha256": "ba3c38ab9f47799c2f68ae2b9c1f6a7634da3ed30db66ed9133e327ad8bb8123",
+  "exact_validation_record_match": true,
+  "entries": [
+    {
+      "level": 1,
+      "frame": 0,
+      "score": 0
+    },
+    {
+      "level": 2,
+      "frame": 2620,
+      "score": 61
+    },
+    {
+      "level": 3,
+      "frame": 5325,
+      "score": 127
+    },
+    {
+      "level": 4,
+      "frame": 8710,
+      "score": 208
+    },
+    {
+      "level": 5,
+      "frame": 11712,
+      "score": 279
+    }
+  ],
+  "level5_actions": 494,
+  "level5_new_points": 34,
+  "scope": "Complete selected validation replay, not a performance estimate or training input."
+}

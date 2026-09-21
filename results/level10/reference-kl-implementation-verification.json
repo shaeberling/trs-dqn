@@ -1,0 +1,268 @@
+{
+  "recorded_at_utc": "2026-09-15 06:13:28 UTC",
+  "disabled": {
+    "before": "runs/reference-kl-disabled-before-smoke",
+    "after": "runs/reference-kl-disabled-after-smoke",
+    "additional_actions": 65536,
+    "model_optimizer_byte_identical": true,
+    "all_nonconfig_saved_state_identical": true,
+    "all_learning_episode_archive_validation_events_exactly_equal": true,
+    "hashes": {
+      "model.safetensors": "0fdbb59965c736c64a3b61cbf9a7592e994886f9e9922cbf37eee7e3dff309cf",
+      "optimizer.npz": "0db0e453d5d42c3b2ddd877769093425daec0c8834c71f93b4fedad02c74e70d"
+    },
+    "before_state_sha256": "55ca7d11b07295bc0eaf817941260d5cbacefe65530bd3c31c4243a023ebfbf5",
+    "after_state_sha256": "9cc178f012f7ba4d8189e40f26345a09d06b354d4d19dfaaf3d612c2dd552198",
+    "disabled_settings": {
+      "reference_policy": null,
+      "reference_kl_weight": 0
+    },
+    "diagnostic_validation_only": true,
+    "smoke_is_not_a_training_source": true
+  },
+  "enabled": {
+    "accounting": {
+      "run": "runs/reference-kl-enabled-smoke",
+      "through_steps": 32071680,
+      "terminal": true,
+      "all_origin_reward_source_and_logged_action_accounting_verified": true,
+      "all_primary_seeds_termination_statistics_verified": true,
+      "full_episode_boundaries": 1,
+      "complete_full_training_games": 1,
+      "practice_segments": 0,
+      "complete_practice_segments": 0,
+      "highest_complete_full_training": 2,
+      "highest_complete_practice": null,
+      "training_guards": [],
+      "publications": 0,
+      "checked_progress_records": 9,
+      "latest_progress": {
+        "wall_seconds": 95.12,
+        "event": "progress",
+        "steps": 32071680,
+        "episodes": 18600,
+        "steps_per_second": 689,
+        "mean_score_100": 105,
+        "best_score_100": 105,
+        "highest_level_100": 2,
+        "complete_games_100": 1,
+        "incomplete_games_100": 0,
+        "level_reach_counts_100": {
+          "2": 1,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "level_reach_rates_100": {
+          "2": 1,
+          "3": 0,
+          "4": 0,
+          "5": 0
+        },
+        "actor_loss": -0.0012477541458792984,
+        "value_loss": 0.023429850349202752,
+        "entropy": 0.2806934006512165,
+        "approx_kl": 0.00003537138400133699,
+        "reference_kl": 0.009717053500935435,
+        "rollout_action_origins": {
+          "from_boot": 1024,
+          "restored": 0
+        },
+        "training_action_origins": {
+          "from_boot": 65536,
+          "restored": 0
+        },
+        "mlx_active_bytes": 13020668,
+        "mlx_cache_bytes": 415096800,
+        "mlx_peak_bytes": 2915306088,
+        "sil": {
+          "replay_size": 26018,
+          "pending_transitions": 11921,
+          "pending_screen_bytes": 48828416,
+          "replay_array_bytes": 270073856,
+          "completed_learning_segments": 9,
+          "discarded_truncated_segments": 0,
+          "dropped_prefix_transitions": 27597,
+          "committed_transitions": {
+            "from_boot": 26018,
+            "restored": 0
+          },
+          "updates": 232,
+          "rollout_updates": [
+            {
+              "loss": 0.02888697385787964,
+              "actor_loss": 0.26240599155426025,
+              "value_loss": 2.646373987197876,
+              "positive_fraction": 0.7666015625,
+              "applied": true
+            },
+            {
+              "loss": 0.03273962810635567,
+              "actor_loss": 0.29895684123039246,
+              "value_loss": 2.843944787979126,
+              "positive_fraction": 0.79296875,
+              "applied": true
+            },
+            {
+              "loss": 0.0340082161128521,
+              "actor_loss": 0.30971258878707886,
+              "value_loss": 3.036957263946533,
+              "positive_fraction": 0.8046875,
+              "applied": true
+            },
+            {
+              "loss": 0.03657793626189232,
+              "actor_loss": 0.3335331976413727,
+              "value_loss": 3.224614143371582,
+              "positive_fraction": 0.837890625,
+              "applied": true
+            }
+          ]
+        }
+      },
+      "primary_suites": [
+        {
+          "steps": 32014336,
+          "complete_games": 0,
+          "incomplete_games": 2,
+          "mean_score": null,
+          "median_score": null,
+          "best_score": null,
+          "highest_complete_level": 1,
+          "level_reach_counts": {
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "808fde5ceb43674e83c5ec354af7a432fefaabe5458623f970e86b16023442d8"
+        },
+        {
+          "steps": 32047104,
+          "complete_games": 0,
+          "incomplete_games": 2,
+          "mean_score": null,
+          "median_score": null,
+          "best_score": null,
+          "highest_complete_level": 1,
+          "level_reach_counts": {
+            "2": 0,
+            "3": 0,
+            "4": 0,
+            "5": 0
+          },
+          "raw_evaluation_sha256": "808fde5ceb43674e83c5ec354af7a432fefaabe5458623f970e86b16023442d8"
+        }
+      ],
+      "best_primary_step": null,
+      "summary": {
+        "complete_primary_suites": 0,
+        "primary_suites_reaching5": 0,
+        "primary_level5_games": 0,
+        "highest_frozen_level": null
+      },
+      "worker_runtime": {
+        "wall_seconds": 0,
+        "event": "worker_runtime",
+        "steps": 32006144,
+        "workers": [
+          {
+            "pid": 31349,
+            "mlx_loaded": false,
+            "curriculum_reset_enabled": false
+          },
+          {
+            "pid": 31350,
+            "mlx_loaded": false,
+            "curriculum_reset_enabled": false
+          },
+          {
+            "pid": 31351,
+            "mlx_loaded": false,
+            "curriculum_reset_enabled": true
+          },
+          {
+            "pid": 31352,
+            "mlx_loaded": false,
+            "curriculum_reset_enabled": true
+          }
+        ]
+      },
+      "stop": {
+        "wall_seconds": 95.12,
+        "event": "stopped",
+        "steps": 32071680,
+        "target_met": false,
+        "training_action_origins": {
+          "from_boot": 65536,
+          "restored": 0
+        },
+        "mlx_active_bytes": 13020668,
+        "mlx_cache_bytes": 415096800,
+        "mlx_peak_bytes": 2915306088,
+        "sil": {
+          "replay_size": 26018,
+          "pending_transitions": 11921,
+          "pending_screen_bytes": 48828416,
+          "replay_array_bytes": 270073856,
+          "completed_learning_segments": 9,
+          "discarded_truncated_segments": 0,
+          "dropped_prefix_transitions": 27597,
+          "committed_transitions": {
+            "from_boot": 26018,
+            "restored": 0
+          },
+          "updates": 232
+        }
+      },
+      "additional_actions": 65536,
+      "final_hashes": {
+        "model.safetensors": "60ab6a01b28b2cd1e34c46262e1243a03c811f7f1b0dcde8208b668737755647",
+        "optimizer.npz": "ff8efc0e6f2469a878812d31ec97751e4c7348737702b5c52e59f86c48e33df7",
+        "state.json": "f6328202b787ce5f07e24e80018df5b15d4f827b675ab69966c442c945292ae4"
+      },
+      "log": {
+        "lines": 26,
+        "bytes": 22720,
+        "sha256": "f92565b59abd6171193a9d4b3d466c9a0944252f8ee73304676d8f8a02058b76"
+      },
+      "sil_accounting": {
+        "learning_suffixes_checked": 9,
+        "episode_suffix_coverages_checked": 1,
+        "committed_suffixes": 9,
+        "discarded_suffixes": 0,
+        "discarded_retained_transitions": 0,
+        "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+      },
+      "saved_sil_rng_and_nonpersistent_replay_verified": true
+    },
+    "source_policy_sha256_verified": "0ac3de98f31dfa3c1f8ce514d6b762124ff4d9d0b1f294130feef947163e286a",
+    "reference_kl_range": [
+      0.0012814590736525133,
+      0.01041045889724046
+    ],
+    "reference_kl_last": 0.009717053500935435,
+    "incomplete_smoke_validation_cannot_select": true,
+    "code_hashes": {
+      "rl/ppo.py": "9f4d7a55d274c5bb418c6a4e8d49291522ecb027af361912b7e1cddb966e0310",
+      "rl/reference.py": "4a92670ffead4033e4a8fa60769e20c03f9158d610914bb89c1ef22076978b05",
+      "rl/sil.py": "f4a4b8f28466f157adce7295b50009ae20cc3e77fa0f1331c518ec2e29828e87",
+      "tests/test_reference.py": "906bba5a5e3b9a819ba20c6abfe58654cd0f08f9eb70fbd24352afef6e487012",
+      "libtrs.so": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828"
+    },
+    "session": 71647,
+    "exit_code": 0
+  },
+  "unit_tests": {
+    "count": 5,
+    "session": 19035,
+    "exit_code": 0
+  },
+  "full_tests": {
+    "count": 108,
+    "session": 60500,
+    "exit_code": 0,
+    "seconds": 11.15
+  },
+  "decision": "All implementation gates pass. Launch predeclared single-reference0.1 matched8M-action comparison from original32M source, never diagnostic weights; preserve existing references and unused final tests."
+}

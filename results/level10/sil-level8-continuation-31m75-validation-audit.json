@@ -1,0 +1,111 @@
+{
+  "checkpoint": "runs/level10-sil-level8-continuation/step-031752192",
+  "source_hashes_unchanged": true,
+  "sets": [
+    {
+      "path": "runs/level10-sil-level8-continuation/step-031752192/evaluation.json",
+      "sha256": "a8417119af94e9558eeb4b9d71cb5e9234a844a382e819b1f198d8c8d4ce1f2a",
+      "summary": {
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 175.1,
+        "median_score": 139.5,
+        "best_score": 356,
+        "highest_complete_level": 6,
+        "level_reach_counts": {
+          "2": 17,
+          "3": 10,
+          "4": 7,
+          "5": 2,
+          "6": 1
+        }
+      },
+      "guards": [],
+      "later_games": [
+        {
+          "score": 356,
+          "level": 6,
+          "game_over": true,
+          "waiting": false,
+          "steps": 18480,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 356,
+          "start_tstates": 135964,
+          "seed": 10018
+        },
+        {
+          "score": 295,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 13050,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 295,
+          "start_tstates": 128220,
+          "seed": 10019
+        }
+      ]
+    },
+    {
+      "path": "results/level10/validation-audit-sil-level8-continuation-31m75.json",
+      "sha256": "5a4ec619e42b53b58a859f21b5802daa795642a98c038d8ca8f687249e7efed1",
+      "summary": {
+        "complete_games": 49,
+        "incomplete_games": 1,
+        "mean_score": 124.55102040816327,
+        "median_score": 113,
+        "best_score": 309,
+        "highest_complete_level": 5,
+        "level_reach_counts": {
+          "2": 35,
+          "3": 13,
+          "4": 6,
+          "5": 1
+        }
+      },
+      "guards": [
+        {
+          "score": 22,
+          "level": 1,
+          "game_over": false,
+          "waiting": true,
+          "steps": 100000,
+          "terminated": false,
+          "truncated": true,
+          "life_lost": false,
+          "hud_settle_tstates": 0,
+          "episode_reward": 22,
+          "start_tstates": 103345,
+          "seed": 10135
+        }
+      ],
+      "later_games": [
+        {
+          "score": 309,
+          "level": 5,
+          "game_over": true,
+          "waiting": false,
+          "steps": 14539,
+          "terminated": true,
+          "truncated": false,
+          "life_lost": true,
+          "hud_settle_tstates": 0,
+          "episode_reward": 309,
+          "start_tstates": 279,
+          "seed": 10137
+        }
+      ]
+    }
+  ],
+  "all_seeds_mode_termination_and_statistics_verified": true,
+  "all_games_complete": false,
+  "session_id": 21296,
+  "exit_code": 1,
+  "decision": "Disqualified secondary suite: one waiting serve guard. No reference promotion, no full 70-game performance estimate, no final-test use. Retain verified e0da Level8 checkpoint."
+}

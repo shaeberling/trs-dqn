@@ -1,0 +1,72 @@
+{
+  "status": "predeclared_not_launched",
+  "declared_utc": "2026-09-14 05:57:42 UTC",
+  "run": "runs/level10-curriculum-balanced-sil20",
+  "source": "runs/level10-curriculum-balanced-lr1e5/latest",
+  "source_steps": 25006080,
+  "source_hashes": {
+    "model.safetensors": "a68d536f2a5492e2a707e12ac8ccb0518de1b7b0a820e8ec879292c9291f2458",
+    "optimizer.npz": "232a75db92718e6f002811e6e3de02e33e8fb103590817a332c1199a2fa39097",
+    "state.json": "01702aecfc86b35a285fc4d4cf00ba152daf79357f33a9b25b31ea513c148bdf"
+  },
+  "additional_steps": 5000000,
+  "configured_budget_end": 30006080,
+  "expected_rollout_rounded_end": 30007296,
+  "comparison": "One-factor replay-update-dose comparison with the current four-update SIL run; also compare the no-SIL lineage at matched action counts. Not a continuation from SIL's selected validation checkpoint.",
+  "learning_change": {
+    "sil_updates": {
+      "control": 4,
+      "trial": 20
+    }
+  },
+  "fixed_sil_settings": {
+    "sil_batch_size": 512,
+    "sil_capacity": 32768,
+    "sil_suffix_steps": 2048,
+    "sil_loss_weight": 0.1,
+    "sil_value_weight": 0.01,
+    "sil_priority_alpha": 0.6,
+    "sil_priority_beta": 0.1
+  },
+  "all_other_learning_and_curriculum_settings": "Same common source and same inherited settings as the four-update SIL run, including 32 environments, 16 protected boot workers, rollout 128, learning rate 1e-5, gamma .995, GAE lambda .95, life terminals, entropy .001, and raw score rewards only.",
+  "fresh_in_memory_buffers": true,
+  "nominal_replay_draws_per_new_action": {
+    "control": 0.5,
+    "trial": 2.5
+  },
+  "rationale": "The FIFO audit finds median full eviction after 44,686.5 newly generated actions among completed suffixes already evicted. Current four-by-512 replay updates per 4096 new actions yield only 0.5 nominal replay draws/action. Test increased replay optimization without changing capacity, retained history, reward, observation, or inference.",
+  "caveats": [
+    "Not evidence of a buffer implementation bug or a guarantee of better play.",
+    "Nominal replay draws do not measure distinct sampled states, positive-advantage gradients, or exact learning.",
+    "More auxiliary updates also increase optimization relative to PPO; paper task and episode conventions differ.",
+    "SIL can reinforce suboptimal behavior; original paper's Breakout result was not an improvement.",
+    "Bounded histories discard prefix experiences; this experiment deliberately leaves that limitation unchanged."
+  ],
+  "launch_condition": "First confirm and review the original long continuation's completed tranche, then use its freed slot. Maximum two simultaneous performance learners. If frozen depth changes before launch, review the candidate first; do not start an unnecessary comparison after attaining the goal.",
+  "validation": {
+    "primary_seeds": [
+      10000,
+      10019
+    ],
+    "games": 20,
+    "every_actions": 250000,
+    "max_actions_per_game": 100000,
+    "incomplete_suites_disqualified": true,
+    "selection": "Existing lexicographic complete-game reach counts from level 10 down through level 2, then mean score. Audit promising frozen candidates on reused secondary seeds 10100-10149 before changing the reference.",
+    "fresh_final_seeds_untouched": [
+      40000,
+      40099
+    ]
+  },
+  "launch_checks": [
+    "Exact model/optimizer/state hashes and RNG restoration.",
+    "Only declared config differences versus SIL4, fresh buffers, CPU-only workers and protected reset roles.",
+    "Finite PPO/SIL losses, bounded buffers, action-origin totals, actual live handle, throughput and memory pressure.",
+    "Only own live training experience; no evaluation or replay imports."
+  ],
+  "sources": [
+    "https://proceedings.mlr.press/v80/oh18b/oh18b.pdf",
+    "https://proceedings.mlr.press/v80/oh18b/oh18b-supp.pdf"
+  ],
+  "command": "caffeinate -i venv/bin/python -m rl.ppo --run runs/level10-curriculum-balanced-sil20 --resume runs/level10-curriculum-balanced-lr1e5/latest --additional-steps 5000000 --gae-lambda 0.95 --sil-updates 20 --sil-batch-size 512 --sil-capacity 32768 --sil-suffix-steps 2048 --sil-loss-weight 0.1 --sil-value-weight 0.01 --sil-priority-alpha 0.6 --sil-priority-beta 0.1"
+}

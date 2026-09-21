@@ -1,0 +1,81 @@
+{
+  "status": "predeclared_not_launched",
+  "date_utc": "2026-09-14",
+  "checkpoint": "runs/level10-sil-level6-continuation/step-031252480",
+  "hashes": {
+    "model.safetensors": "e0da769e9cfd3bff2ee5c60273d4da4c07482389a14fc748d530569aeca7ec05",
+    "optimizer.npz": "c651d98449d697686df92eaa2c623e6ef42433e9fca340383b556f0cf4bbda38",
+    "state.json": "75e0bc0abc9c2b6cc74600f45fe6c42205ebca77be89f860b033d4ddfcd2ab6c",
+    "evaluation.json": "40f498ac891efbbc1646f0d9233fa66f4c4a392189ccca2f5ea81704faa4d30e"
+  },
+  "primary_summary": {
+    "games_requested": 20,
+    "complete_games": 20,
+    "incomplete_games": 0,
+    "mean_score": 169.2,
+    "median_score": 122.5,
+    "best_score": 328,
+    "highest_level": 5,
+    "highest_complete_level": 5,
+    "level_1_clears": 15,
+    "level_reach_counts": {
+      "2": 15,
+      "3": 9,
+      "4": 8,
+      "5": 6
+    },
+    "level_reach_rates": {
+      "2": 0.75,
+      "3": 0.45,
+      "4": 0.4,
+      "5": 0.3
+    }
+  },
+  "reason": "Supplemental later-level consistency audit: six of20 primary games reach5, versus two for each preserved reference. This candidate does NOT beat the f58 primary's deepest-level rank (f58 reaches6). Explicitly inspect consistency rather than silently treating it as a new depth winner; the learner's normal selection ranking is unchanged.",
+  "protocol_change": "One supplemental secondary-validation audit beyond the strict deepest-primary-rank trigger. This does not change actions, training, validation seeds, completeness gates or the Level10 goal.",
+  "secondary": {
+    "games": 50,
+    "seed": 10100,
+    "envs": 20,
+    "max_steps": 100000,
+    "tstates": 100000,
+    "policy": "unchanged sampled categorical learned network"
+  },
+  "output": "results/level10/validation-audit-sil-continuation-31m25.json",
+  "comparisons": {
+    "depth_reference": {
+      "checkpoint": "runs/level10-curriculum-balanced-sil/step-028250112",
+      "primary": "results/level10/validation-balanced-sil-28m25.json",
+      "secondary": "results/level10/validation-audit-balanced-sil-28m25.json"
+    },
+    "consistency_and_mean_reference": {
+      "checkpoint": "runs/level10-curriculum-balanced-lr1e5-long/step-028504064",
+      "primary": "results/level10/validation-balanced-lr1e5-long-28m5.json",
+      "secondary": "results/level10/validation-audit-balanced-lr1e5-long-28m5.json"
+    }
+  },
+  "decision_rules": [
+    "Require all50 secondary games complete without truncation; otherwise no selection claim.",
+    "Keep f58 as depth reference unless complete secondary/new-depth evidence justifies explicit review and full replay verification.",
+    "To replace the old Level5-consistency reference, require strictly more than its four secondary Level5 games as well as the already stronger primary count. Report any mean-score/depth tradeoff; do not conflate consistency and highest-mean roles.",
+    "If evidence is weaker or mixed without meeting those criteria, do not promote or generate another selected replay; continue existing training budgets.",
+    "Any detected Level10 remains subject to freeze, uncapped replay and100 fresh complete final games with no reselection."
+  ],
+  "unchanged": [
+    "both live training runs",
+    "sampled decoding",
+    "screen-only inputs and raw-score reward",
+    "no validation/replay data in training",
+    "committed packages",
+    "fresh40000-40099 final-test reservation"
+  ],
+  "live_handles_verified": [
+    16165,
+    38676
+  ],
+  "observer": "Only status-observer cell993 was terminated to allow this review; both learner handles re-polled live afterward.",
+  "memory_precheck": {
+    "memory_pressure_free_percent": 40,
+    "helper_limit": "One20-worker evaluator only, no third full learner."
+  }
+}

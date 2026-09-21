@@ -1,0 +1,238 @@
+{
+  "recorded_at_utc": "2026-09-14 12:15:53 UTC",
+  "protocol_sha256": "26fbfe58ceeaf5e3b2efd14d03319c5f3aaefa29730d15a6e9551671dd11e8b8",
+  "all_source_timing_seeds_boots_flags_and_statistics_verified": true,
+  "primary": {
+    "path": "results/level10/validation-timing50k-stride2-sil4-32m.json",
+    "sha256": "53bd7b0a2edf694550523a29b2581a6d43224933c28394d44144629602e2c25b",
+    "summary": {
+      "games_requested": 20,
+      "complete_games": 20,
+      "incomplete_games": 0,
+      "mean_score": 279.3,
+      "median_score": 271,
+      "best_score": 558,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 19,
+        "3": 17,
+        "4": 16,
+        "5": 11,
+        "6": 4,
+        "7": 3,
+        "8": 2,
+        "9": 0,
+        "10": 0
+      }
+    }
+  },
+  "secondary": {
+    "path": "results/level10/validation-audit-timing50k-stride2-sil4-32m.json",
+    "sha256": "6ac958eb4578abed910bd8bdcc16cf9e6efcf941ce7f00ce54342316f50d4805",
+    "summary": {
+      "games_requested": 50,
+      "complete_games": 50,
+      "incomplete_games": 0,
+      "mean_score": 245.06,
+      "median_score": 256,
+      "best_score": 572,
+      "highest_complete_level": 8,
+      "level_reach_counts": {
+        "2": 47,
+        "3": 40,
+        "4": 29,
+        "5": 15,
+        "6": 7,
+        "7": 5,
+        "8": 1,
+        "9": 0,
+        "10": 0
+      }
+    }
+  },
+  "combined": {
+    "games_requested": 70,
+    "complete_games": 70,
+    "incomplete_games": 0,
+    "mean_score": 254.84285714285716,
+    "median_score": 261,
+    "best_score": 572,
+    "highest_complete_level": 8,
+    "level_reach_counts": {
+      "2": 66,
+      "3": 57,
+      "4": 45,
+      "5": 26,
+      "6": 11,
+      "7": 8,
+      "8": 3,
+      "9": 0,
+      "10": 0
+    }
+  },
+  "reference": {
+    "games_requested": 70,
+    "complete_games": 70,
+    "incomplete_games": 0,
+    "mean_score": 233.38571428571427,
+    "median_score": 244.5,
+    "best_score": 543,
+    "highest_complete_level": 8,
+    "level_reach_counts": {
+      "2": 70,
+      "3": 54,
+      "4": 44,
+      "5": 21,
+      "6": 6,
+      "7": 3,
+      "8": 1,
+      "9": 0,
+      "10": 0
+    }
+  },
+  "combined_rank": [
+    0,
+    0,
+    3,
+    8,
+    11,
+    26,
+    45,
+    57,
+    66,
+    254.84285714285716
+  ],
+  "reference_rank": [
+    0,
+    0,
+    1,
+    3,
+    6,
+    21,
+    44,
+    54,
+    70,
+    233.38571428571427
+  ],
+  "qualifies_for_replay_verification": true,
+  "secondary_guards": [],
+  "deepest_secondary_games": [
+    {
+      "score": 572,
+      "level": 8,
+      "game_over": true,
+      "waiting": false,
+      "steps": 55422,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 572,
+      "start_tstates": 102646,
+      "seed": 10126
+    },
+    {
+      "score": 361,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 34237,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 361,
+      "start_tstates": 159948,
+      "seed": 10127
+    },
+    {
+      "score": 509,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 30133,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 509,
+      "start_tstates": 90186,
+      "seed": 10128
+    },
+    {
+      "score": 428,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 34554,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 428,
+      "start_tstates": 193857,
+      "seed": 10129
+    },
+    {
+      "score": 328,
+      "level": 6,
+      "game_over": true,
+      "waiting": false,
+      "steps": 34927,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 328,
+      "start_tstates": 150263,
+      "seed": 10146
+    },
+    {
+      "score": 395,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 31893,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 395,
+      "start_tstates": 174889,
+      "seed": 10147
+    },
+    {
+      "score": 466,
+      "level": 7,
+      "game_over": true,
+      "waiting": false,
+      "steps": 42206,
+      "terminated": true,
+      "truncated": false,
+      "life_lost": true,
+      "hud_settle_tstates": 0,
+      "episode_reward": 466,
+      "start_tstates": 112380,
+      "seed": 10148
+    }
+  ],
+  "selected_showcase": {
+    "score": 572,
+    "level": 8,
+    "game_over": true,
+    "waiting": false,
+    "steps": 55422,
+    "terminated": true,
+    "truncated": false,
+    "life_lost": true,
+    "hud_settle_tstates": 0,
+    "episode_reward": 572,
+    "start_tstates": 102646,
+    "seed": 10126
+  },
+  "observed_exit": {
+    "session": 24318,
+    "exit_code": 0
+  },
+  "decision": "All70 games complete and the predeclared depth/count rank improves. Record selected seed10126 uncapped and verify every action before promotion. This is reused-validation evidence: highest level remains8 and early-level consistency falls66/70 versus70/70. Keep current reference until replay gate passes; no Level9/10 or final tests."
+}

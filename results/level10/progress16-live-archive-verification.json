@@ -1,0 +1,472 @@
+{
+  "observed_at_utc": "2026-09-19T07:52:13Z",
+  "run": "runs/level10-supervised-progress16/learner",
+  "session_id": 99933,
+  "supervisor_pid": 7587,
+  "learner_pid": 7593,
+  "scope": "First real score-progress publications and one verified restored-parent publication. These are training-only states, not complete-game or frozen-policy milestones.",
+  "accounting": {
+    "run": "runs/level10-supervised-progress16/learner",
+    "through_steps": 117291131,
+    "terminal": false,
+    "all_origin_reward_source_and_logged_action_accounting_verified": true,
+    "all_primary_seeds_termination_statistics_verified": true,
+    "full_episode_boundaries": 35,
+    "complete_full_training_games": 35,
+    "practice_segments": 0,
+    "complete_practice_segments": 0,
+    "highest_complete_full_training": 7,
+    "highest_complete_practice": null,
+    "training_guards": [],
+    "publications": 6,
+    "checked_progress_records": 78,
+    "latest_progress": {
+      "wall_seconds": 1160.2,
+      "event": "progress",
+      "steps": 117276672,
+      "episodes": 25496,
+      "steps_per_second": 1094.4,
+      "mean_score_100": 213.52941176470588,
+      "best_score_100": 386,
+      "highest_level_100": 7,
+      "complete_games_100": 34,
+      "incomplete_games_100": 0,
+      "level_reach_counts_100": {
+        "2": 30,
+        "3": 24,
+        "4": 15,
+        "5": 13,
+        "6": 5,
+        "7": 1
+      },
+      "level_reach_rates_100": {
+        "2": 0.8823529411764706,
+        "3": 0.7058823529411765,
+        "4": 0.4411764705882353,
+        "5": 0.38235294117647056,
+        "6": 0.14705882352941177,
+        "7": 0.029411764705882353
+      },
+      "actor_loss": -0.004174436326138675,
+      "value_loss": 0.06856793450424448,
+      "entropy": 0.2780469669960439,
+      "approx_kl": 0.0006597667415917385,
+      "reference_kl": 0.04104963634745218,
+      "rollout_action_origins": {
+        "from_boot": 7680,
+        "restored": 512
+      },
+      "training_action_origins": {
+        "from_boot": 1266100,
+        "restored": 3660
+      },
+      "mlx_active_bytes": 13020856,
+      "mlx_cache_bytes": 415089604,
+      "mlx_peak_bytes": 2915281700,
+      "sil": {
+        "replay_size": 65536,
+        "pending_transitions": 107804,
+        "pending_screen_bytes": 441565184,
+        "replay_array_bytes": 270073856,
+        "completed_learning_segments": 156,
+        "discarded_truncated_segments": 0,
+        "dropped_prefix_transitions": 716847,
+        "committed_transitions": {
+          "from_boot": 445109,
+          "restored": 0
+        },
+        "updates": 604,
+        "rollout_updates": [
+          {
+            "loss": 0.009797352366149426,
+            "actor_loss": 0.0936158299446106,
+            "value_loss": 0.4357690215110779,
+            "positive_fraction": 0.41796875,
+            "applied": true
+          },
+          {
+            "loss": 0.011817548424005508,
+            "actor_loss": 0.113665372133255,
+            "value_loss": 0.45101112127304077,
+            "positive_fraction": 0.4267578125,
+            "applied": true
+          },
+          {
+            "loss": 0.009621886536478996,
+            "actor_loss": 0.09155810624361038,
+            "value_loss": 0.46607542037963867,
+            "positive_fraction": 0.44140625,
+            "applied": true
+          },
+          {
+            "loss": 0.011961239390075207,
+            "actor_loss": 0.11482278257608414,
+            "value_loss": 0.4789607524871826,
+            "positive_fraction": 0.451171875,
+            "applied": true
+          }
+        ]
+      }
+    },
+    "primary_suites": [
+      {
+        "steps": 116506624,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 272.65,
+        "median_score": 282.5,
+        "best_score": 524,
+        "highest_complete_level": 8,
+        "level_reach_counts": {
+          "2": 19,
+          "3": 17,
+          "4": 16,
+          "5": 11,
+          "6": 4,
+          "7": 1,
+          "8": 1
+        },
+        "raw_evaluation_sha256": "e28abe89081619f18b69b71bbbf276628330f1f1b744f91ae8a2aab132d87bec"
+      },
+      {
+        "steps": 117006336,
+        "complete_games": 20,
+        "incomplete_games": 0,
+        "mean_score": 253.35,
+        "median_score": 267,
+        "best_score": 566,
+        "highest_complete_level": 8,
+        "level_reach_counts": {
+          "2": 18,
+          "3": 14,
+          "4": 12,
+          "5": 6,
+          "6": 4,
+          "7": 3,
+          "8": 1
+        },
+        "raw_evaluation_sha256": "6ff5c62b1bde2ed5f8df4eab35193242fdfa98b679bd4b1044a2cb3a59a3906b"
+      }
+    ],
+    "best_primary_step": 117006336,
+    "summary": {
+      "complete_primary_suites": 2,
+      "primary_suites_reaching5": 2,
+      "primary_level5_games": 17,
+      "highest_frozen_level": 8
+    },
+    "worker_runtime": {
+      "wall_seconds": 0,
+      "event": "worker_runtime",
+      "steps": 116006912,
+      "workers": [
+        {
+          "pid": 7595,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7596,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7597,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7598,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7599,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7600,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7601,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7602,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7603,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7604,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7605,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7606,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7607,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7608,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7609,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7610,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": false
+        },
+        {
+          "pid": 7611,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7612,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7613,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7614,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7615,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7616,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7617,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7618,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7619,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7620,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7621,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7622,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7623,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7624,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7625,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        },
+        {
+          "pid": 7626,
+          "mlx_loaded": false,
+          "curriculum_reset_enabled": true
+        }
+      ]
+    },
+    "sil_accounting": {
+      "learning_suffixes_checked": 159,
+      "episode_suffix_coverages_checked": 35,
+      "committed_suffixes": 159,
+      "discarded_suffixes": 0,
+      "discarded_retained_transitions": 0,
+      "all_source_scores_learning_boundary_offsets_pending_and_prefix_counts_verified": true
+    },
+    "publication_kinds": {
+      "level_entry": 2,
+      "score_progress": 4
+    },
+    "recent_publications": [
+      {
+        "wall_seconds": 1039.75,
+        "event": "curriculum_archive",
+        "steps": 117128699,
+        "worker": 26,
+        "level": 8,
+        "score": 518,
+        "slot": 0,
+        "source_action": 35056,
+        "source_episode_steps": 35056,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 131852,
+        "retained": true,
+        "shared": true,
+        "entry_kind": "level_entry",
+        "progress_since_previous_archive": 2,
+        "source_start_score": 0,
+        "source_parent_worker": null,
+        "source_parent_action": null,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 1058.34,
+        "event": "curriculum_archive",
+        "steps": 117147698,
+        "worker": 17,
+        "level": 8,
+        "score": 513,
+        "slot": 1,
+        "source_action": 35650,
+        "source_episode_steps": 35650,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 70559,
+        "retained": true,
+        "shared": true,
+        "entry_kind": "level_entry",
+        "progress_since_previous_archive": 4,
+        "source_start_score": 0,
+        "source_parent_worker": null,
+        "source_parent_action": null,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 1122.77,
+        "event": "curriculum_archive",
+        "steps": 117234907,
+        "worker": 26,
+        "level": 8,
+        "score": 534,
+        "slot": 2,
+        "source_action": 38375,
+        "source_episode_steps": 38375,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 131852,
+        "retained": true,
+        "shared": true,
+        "entry_kind": "score_progress",
+        "progress_since_previous_archive": 16,
+        "source_start_score": 0,
+        "source_parent_worker": null,
+        "source_parent_action": null,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 1128.81,
+        "event": "curriculum_archive",
+        "steps": 117239570,
+        "worker": 17,
+        "level": 8,
+        "score": 529,
+        "slot": 3,
+        "source_action": 38521,
+        "source_episode_steps": 38521,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 70559,
+        "retained": true,
+        "shared": true,
+        "entry_kind": "score_progress",
+        "progress_since_previous_archive": 16,
+        "source_start_score": 0,
+        "source_parent_worker": null,
+        "source_parent_action": null,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 1167.11,
+        "event": "curriculum_archive",
+        "steps": 117290389,
+        "worker": 20,
+        "level": 8,
+        "score": 534,
+        "slot": 4,
+        "source_action": 40109,
+        "source_episode_steps": 2446,
+        "source_full_game": false,
+        "source_start_level": 8,
+        "start_tstates": 131852,
+        "retained": true,
+        "shared": true,
+        "entry_kind": "score_progress",
+        "progress_since_previous_archive": 16,
+        "source_start_score": 518,
+        "source_parent_worker": 26,
+        "source_parent_action": 35056,
+        "shared_with": 31
+      },
+      {
+        "wall_seconds": 1167.18,
+        "event": "curriculum_archive",
+        "steps": 117291131,
+        "worker": 26,
+        "level": 8,
+        "score": 550,
+        "slot": 5,
+        "source_action": 40132,
+        "source_episode_steps": 40132,
+        "source_full_game": true,
+        "source_start_level": 1,
+        "start_tstates": 131852,
+        "retained": true,
+        "shared": true,
+        "entry_kind": "score_progress",
+        "progress_since_previous_archive": 16,
+        "source_start_score": 0,
+        "source_parent_worker": null,
+        "source_parent_action": null,
+        "shared_with": 31
+      }
+    ]
+  }
+}
