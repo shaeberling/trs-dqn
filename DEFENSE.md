@@ -1875,6 +1875,18 @@ The unchanged global-best PPO replay was also reloaded and all **2,580** actions
 reproduced with the algorithm-aware loader before this launch. DQN has not yet
 surpassed that model or established a stage clear.
 
+Run 22's [first ten complete greedy games](results/defense/training/dqn-22-fresh/step-000000100000/evaluation.json)
+at **100,000** fresh actions and **5,624** optimizer updates all scored **280**
+(mean/median/best 280), with no stage advance or mission. Its
+[first verified replay](results/defense/training/dqn-22-fresh/first-replay/replay.html)
+reproduced **1,570** actions. Online/target weights and Adam state are preserved.
+Training epsilon was still approximately **0.9145** at this checkpoint; greedy
+evaluation contains none of that random exploration. This is an early baseline,
+not an improvement over the integration run or PPO. Once the 50,000-transition
+buffer filled, swap use remained near **5.45 GB** and the other learners
+continued progressing; MLX's reported DQN peak was about **296 MB** (excluding
+the NumPy replay buffer and emulator processes). Resource use remains monitored.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
   --artifacts runs/defense-dqn-reproduction/artifacts
