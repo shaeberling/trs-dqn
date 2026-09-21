@@ -1152,6 +1152,18 @@ mission. Its replay reproduced all **2,580** neural actions; the
 is preserved. This is below its parent's mean and does not establish a gain.
 The original shared best remains unchanged, and both full trials continue.
 
+Run 14 subsequently stopped gracefully at **12,512,000**, after **2,064,384
+additional actions**, 600 new completed boot games, 407 completed restored
+segments and 20 ten-game validations. It never exceeded 10,480 or reached
+stage 2. Its strongest mean was **10,458**, median 10,460, at **10,775,296**;
+the final validation mean was 9,170. The
+[full log](results/defense/training/ppo-14-long-horizon/metrics.jsonl),
+[final optimizer checkpoint](results/defense/training/ppo-14-long-horizon/final-checkpoint/state.json),
+[strongest-mean checkpoint](results/defense/training/ppo-14-long-horizon/step-000010775296/state.json)
+and [verified best replay](results/defense/training/ppo-14-long-horizon/best-effort/replay.html)
+are retained. The tested longer-return configuration did not resolve this
+trial's bottleneck; this does not rule out other horizons or longer training.
+
 ### Optional persistent policy-bias exploration
 
 `--policy-bias-noise STD` defaults to zero. When enabled, each training worker
@@ -1258,6 +1270,35 @@ Its [verification record](results/defense/training/ppo-16-strong-bias-noise/firs
 confirms all **2,531** replay actions. This is below the common parent's mean
 10,474 and run 15's first mean 10,440; no improvement is established. The
 trial continues, and the existing shared best has not been replaced.
+
+### Independent initialization: run 17
+
+`defense-ppo-17-fresh-seed` replaces stopped run 14. The checkpoint ancestry of
+the continuing noise trials runs through 12 → 10 → 9 → 8 → 6 → 2 → 1, ending
+at the original seed-41 initialization. Run 17 instead starts at **counter 0**
+with **seed 73**, random network weights, a fresh optimizer and empty
+own-experience archives. It loads no previous model or gameplay data. This
+tests a new learning trajectory, not a continuation or a claim of immediate
+improvement over the already trained models.
+
+It uses the established 32-worker, 256-action-rollout settings: entropy 0.002,
+discount 0.997, GAE lambda 0.99, ship-loss learning boundaries, score-bin
+curriculum with 32-action lookback, 50% resets for eligible workers and eight
+protected boot-only workers. Policy-bias noise and SIL are disabled. Input,
+reward and the original game remain unchanged; complete evaluation uses the
+same ten validation seeds. The [configuration](results/defense/training/ppo-17-fresh-seed/config.json)
+records all settings. There are no action or wall-clock limits, and this
+fresh model needs time to learn the early game again. The two established
+noise trials continue alongside it; the collector includes all three and
+preserves the existing best until a better verified result exists.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-fresh-seed-reproduction \
+  --artifacts runs/defense-fresh-seed-reproduction/artifacts --seed 73 \
+  --rollout 256 --entropy .002 --gae-lambda .99 --life-terminal \
+  --curriculum-probability .5 --curriculum-share --curriculum-boot-envs 8 \
+  --curriculum-lookback 32
+```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
