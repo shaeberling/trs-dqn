@@ -1623,6 +1623,16 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-encoder-transfer-repro
   --curriculum-lookback 32
 ```
 
+Run 20's [first ten complete games](results/defense/training/ppo-20-encoder-transfer/step-000000106496/evaluation.json)
+at **106,496 additional actions** averaged **302**, median **300**, best **320**,
+all stage 1. Its [replay](results/defense/training/ppo-20-encoder-transfer/first-replay/replay.html)
+verified **1,603** neural actions, and the full optimizer/model bundle is
+preserved. Run 17's corresponding first mean was 308 with the same 320 best;
+this early single-seed comparison establishes **no transfer advantage**.
+The decision heads are learning anew, and the source encoder's 10,447,616
+earlier actions must not be omitted when discussing training cost. Both
+fresh-policy trials continue without replacing the stronger global model.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
