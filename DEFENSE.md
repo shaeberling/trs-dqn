@@ -9,8 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **500 points**, with **1,901** neural
-actions exactly reverified; its ten-game mean is **462**, median **460**, all stage 1.
+The current standard-policy best is **560 points**, with **1,975** neural
+actions exactly reverified; its ten-game mean is **506**, median **510**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -372,6 +372,15 @@ The optional recorder refuses incomplete suites, changed weights, existing
 output directories and temporal overrides; it never promotes a diagnostic
 into the live learner's best-artifact directory.
 
+A later temperature-0.5 check on the frozen **500-point** model (counter
+4,434,688) used the same ten validation seeds. Mean changed from **462 to 464**,
+median stayed **460**, and best changed from **500 to 520**, all stage 1.
+The [separate diagnostic replay](results/defense/sampling-probes/step-4434688-temperature-050/replay.html)
+reproduced all **1,837** neural actions after reload. This small mean change
+does not establish a useful sampling improvement, and the subsequently trained
+standard-policy 560-point model is stronger. The diagnostic remains separate
+from the shared best; its weights are the unchanged older 500-point model.
+
 ### Lower-entropy continuation
 
 `defense-ppo-05-low-entropy` resumes the original 20-action checkpoint at
@@ -478,6 +487,14 @@ also preserves its optimizer and full evaluation. This is **3,301,376 additional
 actions** since its starting checkpoint, not training from scratch at that
 counter. The earlier 460-point model and every prior replay remain archived.
 
+Continuing unchanged, run 06 reached **560 points** at counter **4,733,696**
+(**3,600,384 additional actions**). Ten complete validation games: mean **506**,
+median **510**, best **560**, all stage 1, no mission. The collector verified
+every one of the **1,975** neural actions/screens/rewards before promotion.
+Its [resumable checkpoint](results/defense/training/ppo-06-life-boundary/step-000004733696/state.json)
+preserves weights, optimizer and the complete evaluation. The 500-point bundle
+and all earlier milestones remain available.
+
 ### Own-experience curriculum: run 07
 
 `rl.defense_snapshot` adapts the existing native snapshot API to Defense's
@@ -552,7 +569,7 @@ preserves model, optimizer and the complete ten-game evaluation. This improves
 consistency on reused validation seeds, not fresh-test performance: every game
 remained in stage 1, with no mission completed. This did not replace the shared
 best single-effort replay because its best score only tied the original
-460-point model. Run 06 subsequently set the 500-point best described above.
+460-point model. Run 06 subsequently set the 560-point best described above.
 Both active experiments continue unchanged.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
