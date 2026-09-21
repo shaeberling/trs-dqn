@@ -206,12 +206,35 @@ fresh-test seeds to tune the model.
   and atomically switches the `best` symlink. Earlier versions are preserved.
   Each contains weights, configuration, evaluation, SHA-256 manifest, action/
   screen/reward trace, and a verification report.
+- With concurrent learners, the single `rl.defense_collect` process owns that
+  shared archive. Its status/log live in `runs/defense-collector/`. The learner
+  processes write only to their separate experiment artifact roots.
 
 Selection prioritizes completed missions, then highest stage, then score, among
 **complete from-boot games only**. The stable best is a best single effort, not
 a claim of reliable mean performance. Before promotion, the frozen weights are
 reloaded and must exactly reproduce every neural action, reward and screen.
 No unverified or truncated replay replaces the best.
+
+The collector checks the isolated archives every 30 seconds, pins an immutable
+source version, checks its checksums, and invokes the same full frozen-policy
+verification before a stronger candidate can replace the global best. It does
+not promote sampling diagnostics, change training, or push to GitHub. A
+destination lock prevents duplicate collectors. Do not simultaneously point a
+trainer directly at the shared archive while this collector owns it.
+
+```sh
+venv/bin/python -u -m rl.defense_collect \
+  --source runs/defense-ppo-05-low-entropy/artifacts \
+  --source runs/defense-ppo-06-life-boundary/artifacts \
+  --output results/defense/learned --run runs/defense-collector --interval 30
+```
+
+The collector passed an isolated end-to-end check: it reloaded run 06's frozen
+380-point policy and reproduced all 1,679 actions/screens/rewards before
+publishing into the smoke-test directory. A second collector targeting the
+live destination was rejected. The production collector is now running; it
+leaves the existing global best untouched when source ranks are tied or lower.
 
 Evaluate a frozen checkpoint independently (choose a new output path):
 

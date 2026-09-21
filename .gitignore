@@ -6,3 +6,4 @@ logs.csv
 runs-*.out
 # Separate checkout used to publish the replay through Sites.
 replay-site/
+results/defense/learned/.collector.lock
