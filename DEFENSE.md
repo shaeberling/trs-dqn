@@ -40,6 +40,13 @@ no-op choices, those nine with Space, and the two side-fire combinations.
 Some actions have equivalent effects in a particular stage. There is no
 stage-aware controller choosing or overriding policy actions.
 
+An optional **21st action, Enter**, is available with `--allow-enter`. The
+neural policy alone chooses whether to press it; there is no automatic intro
+skipper. It can dismiss stage introductions, but it cannot trigger CLEAR+BREAK
+or select a new game. Existing 20-action checkpoints keep their original
+action mapping and timing. A different action profile requires a fresh run,
+not loading an incompatible optimizer/head into an existing checkpoint.
+
 ## Evidence and game identity
 
 The supplied ZIP contains `command.CMD` and `disk_0.dmk`, not assembly source.
@@ -186,8 +193,8 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-02/status.json` and `metrics.jsonl` (resumed
-  from run 01; see the experiment notes below).
+- Live progress: `runs/defense-ppo-03-enter/status.json` and `metrics.jsonl`
+  (the optional learned-Enter experiment; see notes below).
 - Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -235,6 +242,29 @@ levels. Keep improving until the successful completion sequence is observed.
 - `defense-ppo-02`: resumes run 01's saved policy, optimizer and RNG at action
   counter 531,200, with the same hyperparameters and a fresh set of from-boot
   emulator episodes. No demonstrations or hidden-state gameplay inputs added.
+- Run 02 was subsequently checkpointed and paused cleanly at **1,542,912**
+  cumulative actions. No stage 2 was observed. Its best frozen checkpoint,
+  step **1,133,312**, reached **380** points (1,658 verified neural actions);
+  ten-game mean **358**, median **360**, highest stage **1**. Later validation
+  fell back to mean 294. All intermediate checkpoints remain in `runs/`, and
+  its [complete log](results/defense/training/ppo-02/metrics.jsonl) is preserved.
+- A [temporal probe](results/defense/temporal-probes/defense-temporal-932608-400k.json)
+  held each frozen-model action for 400,000 rather than 100,000 T-states. On
+  the same ten validation seeds, mean changed from 318 to 320 and best stayed
+  340; neither protocol reached stage 2. This does not establish improvement.
+  The [400k no-input check](results/defense/temporal-probes/noop-400k.json) still
+  scored 280 and lost all four ships in ten complete games.
+- `defense-ppo-03-enter` is a **fresh 21-action model**, not a resumed
+  incompatible 20-action optimizer. Start command is the training command
+  above with `--run runs/defense-ppo-03-enter --allow-enter`. All other
+  hyperparameters remain the same. Its action counter starts at zero; the
+  earlier 1,542,912 actions are separate prior experiment compute.
+- The Enter-control test reduced a no-input game from about 1,535 to **1,043**
+  decisions without changing its score (280), number of ship losses (four),
+  or loss ending. All three between-life stage-1 intros were still observed
+  in sampled screen frames, even with Enter continuously held. A 64-action
+  GPU smoke test completed model reload and exact 21-action replay verification.
+  This is an efficiency hypothesis to test through learning, not a mission win.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an

@@ -1,0 +1,457 @@
+{
+  "game": "Obstacle Run / Missile Defense",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "action_names": [
+    "NOOP",
+    "UP",
+    "DOWN",
+    "LEFT",
+    "RIGHT",
+    "UP+LEFT",
+    "UP+RIGHT",
+    "DOWN+LEFT",
+    "DOWN+RIGHT",
+    "SPACE",
+    "UP+SPACE",
+    "DOWN+SPACE",
+    "LEFT+SPACE",
+    "RIGHT+SPACE",
+    "UP+LEFT+SPACE",
+    "UP+RIGHT+SPACE",
+    "DOWN+LEFT+SPACE",
+    "DOWN+RIGHT+SPACE",
+    "LEFT+RIGHT",
+    "LEFT+RIGHT+SPACE"
+  ],
+  "policy": "noop",
+  "trained_model": false,
+  "verified_actions": 385,
+  "tstates": 400000,
+  "max_steps": 30000,
+  "result": {
+    "seed": 100,
+    "policy": "noop",
+    "score": 280,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 385,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 280.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 952000,
+    "start_tstates": 153377,
+    "ship_losses": [
+      {
+        "step": 36,
+        "remaining": 3
+      },
+      {
+        "step": 153,
+        "remaining": 2
+      },
+      {
+        "step": 270,
+        "remaining": 1
+      },
+      {
+        "step": 385,
+        "remaining": 0
+      }
+    ]
+  },
+  "games": [
+    {
+      "seed": 100,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 153377,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 101,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 62053,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 102,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 88616,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 103,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 110523,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 104,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 140707,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 105,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 55689,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 106,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 109704,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 107,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 21079,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 108,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 902,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    },
+    {
+      "seed": 109,
+      "policy": "noop",
+      "score": 280,
+      "lives": 0,
+      "stage": 1,
+      "game_over": true,
+      "mission_complete": false,
+      "highest_stage": 1,
+      "missions_completed": 0,
+      "mission_completed": false,
+      "life_lost": true,
+      "steps": 385,
+      "terminated": true,
+      "truncated": false,
+      "episode_reward": 280.0,
+      "hud_settle_tstates": 0,
+      "terminal_settle_tstates": 952000,
+      "start_tstates": 111071,
+      "ship_losses": [
+        {
+          "step": 36,
+          "remaining": 3
+        },
+        {
+          "step": 153,
+          "remaining": 2
+        },
+        {
+          "step": 270,
+          "remaining": 1
+        },
+        {
+          "step": 385,
+          "remaining": 0
+        }
+      ]
+    }
+  ],
+  "complete_games": 10,
+  "mean_score": 280.0,
+  "median_score": 280.0,
+  "best_score": 280,
+  "highest_stage": 1
+}

@@ -7,7 +7,7 @@ from unittest.mock import patch
 import mlx.core as mx
 import numpy as np
 
-from rl.defense import ACTION_NAMES, ENVIRONMENT_VERSION, GAME_SHA256
+from rl.defense import ACTION_NAMES, ENVIRONMENT_VERSION, GAME_SHA256, action_names
 from rl.defense_learning import game_rank, load_policy, publish_best, summarize
 from rl.evaluate import categorical_policy
 from rl.ppo import PPO
@@ -50,6 +50,25 @@ class DefenseLearningTests(unittest.TestCase):
             return values
         policy = categorical_policy(logits)
         np.testing.assert_array_equal(policy(np.zeros((3, 4, 16, 64))), [19]*3)
+
+    def test_optional_enter_profile_survives_checkpoint_roundtrip(self):
+        agent = PPO(seed=42, action_count=21)
+        obs = np.full((16, 4, 16, 64), 128, np.uint8)
+        self.assertEqual(agent.predict(mx.array(obs))[0].shape, (16, 21))
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)
+            config = dict(game="defense", game_sha256=GAME_SHA256, allow_enter=True,
+                          environment_version=ENVIRONMENT_VERSION, action_names=list(action_names(True)))
+            agent.save(path, dict(config=config, steps=0))
+            loaded, loaded_config = load_policy(path/"model.safetensors")
+            self.assertTrue(loaded_config["allow_enter"])
+            original = agent.policy(3)
+            loaded.reset_seed(3)
+            np.testing.assert_array_equal(original(obs), loaded(obs))
+            config["allow_enter"] = False
+            (path/"state.json").write_text(json.dumps(dict(config=config)))
+            with self.assertRaises(ValueError):
+                load_policy(path/"model.safetensors")
 
     def test_vector_defense_workers_have_no_gpu_and_match_serial(self):
         from rl.defense import DefenseEnv
