@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256
+from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256, validate_observation_stride
 from .defense_learning import (BOOTSTRAP_ALGORITHM, DQN_ALGORITHM, evaluate, greedy_policy,
                                policy_description, publish_best, sha256, summarize, write_json)
 from .replay import NStep, Replay
@@ -52,6 +52,8 @@ def main():
     parser.add_argument("--target-every", type=int, default=2000,
                         help="optimizer updates per target-network copy")
     parser.add_argument("--tstates", type=int, default=100_000)
+    parser.add_argument("--observation-stride", type=int, default=1,
+                        help="policy sees four visible frames spaced this many actions apart")
     parser.add_argument("--max-episode-steps", type=int, default=0)
     parser.add_argument("--eval-every", type=int, default=100_000)
     parser.add_argument("--eval-games", type=int, default=10)
@@ -94,6 +96,10 @@ def main():
         parser.error("invalid optimizer, discount, reward scale or epsilon")
     if not 1 <= args.tstates <= 1_000_000:
         parser.error("tstates out of range")
+    try:
+        validate_observation_stride(args.observation_stride)
+    except ValueError as error:
+        parser.error(str(error))
     if (args.bootstrap_heads < 0 or args.bootstrap_heads == 1
             or not np.isfinite(args.bootstrap_probability) or not 0 < args.bootstrap_probability <= 1
             or not np.isfinite(args.bootstrap_prior_scale) or args.bootstrap_prior_scale < 0
@@ -196,7 +202,8 @@ def main():
     log(dict(event="start", steps=steps, config=config))
     try:
         workers = VectorEnv(args.envs, args.seed+steps, game="defense", tstates=args.tstates,
-                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter)
+                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter,
+                            observation_stride=args.observation_stride)
         log(dict(event="workers_started", workers=workers.runtime()))
         observations = workers.observations
         last_metrics = {}
@@ -265,7 +272,7 @@ def main():
                 result = evaluate(policy, range(args.eval_seed, args.eval_seed+args.eval_games),
                                   tstates=args.tstates, max_steps=args.eval_max_steps,
                                   envs=args.eval_envs, log=log, should_stop=lambda: stop,
-                                  allow_enter=args.allow_enter)
+                                  allow_enter=args.allow_enter, observation_stride=args.observation_stride)
                 write_json(directory/"evaluation.json", result)
                 log(dict(event="validation", steps=steps,
                          **{k: v for k, v in result.items() if k != "games"}))

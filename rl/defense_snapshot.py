@@ -37,6 +37,7 @@ class DefenseSnapshot:
     environment_version: str = ENVIRONMENT_VERSION
     progress_start_score: int = 0
     life_steps: int = 0
+    observation_stride: int = 1
 
 
 def capture(env):
@@ -54,7 +55,7 @@ def capture(env):
         env.tstates, env.max_steps, len(env.actions), getattr(env, "worker_id", None),
         getattr(env, "total_actions", env.steps), getattr(env, "full_game", True),
         progress_start_score=getattr(env, "progress_start_score", 0),
-        life_steps=getattr(env, "life_steps", 0))
+        life_steps=getattr(env, "life_steps", 0), observation_stride=env.observation_stride)
 
 
 def restore(env, saved):
@@ -63,7 +64,10 @@ def restore(env, saved):
             or not env.trs.no_ui or env.trs.original_speed
             or (env.tstates, env.max_steps, len(env.actions)) !=
                (saved.tstates, saved.max_steps, saved.action_count)
-            or saved.frames.shape != (4, 16, 64) or saved.frames.dtype != np.uint8
+            or not isinstance(saved.observation_stride, (int, np.integer))
+            or isinstance(saved.observation_stride, (bool, np.bool_))
+            or saved.observation_stride != env.observation_stride
+            or saved.frames.shape != (3*env.observation_stride+1, 16, 64) or saved.frames.dtype != np.uint8
             or not 1 <= saved.lives <= 4 or not 1 <= saved.stage <= saved.highest_stage <= 3
             or min(saved.score, saved.steps, saved.missions, saved.source_action) < 0
             or not isinstance(saved.life_steps, (int, np.integer))
@@ -86,4 +90,4 @@ def restore(env, saved):
         env.progress_start_score = saved.progress_start_score
     if hasattr(env, "life_steps"):
         env.life_steps = saved.life_steps
-    return np.stack(env.frames)
+    return env.observation()

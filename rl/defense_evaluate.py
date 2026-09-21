@@ -28,7 +28,8 @@ def record_probe(checkpoint, evaluation, output):
     candidate = max(evaluation["games"], key=game_rank)
     frames, actions, rewards, result, events = record_game(
         policy, candidate["seed"], tstates=config["tstates"], max_steps=0,
-        allow_enter=config.get("allow_enter", False))
+        allow_enter=config.get("allow_enter", False),
+        observation_stride=config.get("observation_stride", 1))
     if result != candidate:
         raise RuntimeError("probe replay differs from evaluation")
     verification = verify_policy_trace(checkpoint, frames, actions, rewards, result,
@@ -41,7 +42,7 @@ def record_probe(checkpoint, evaluation, output):
                     evaluation_only=True, promotion_eligible=False,
                     checkpoint_sha256=evaluation["checkpoint_sha256"],
                     verified_actions=len(actions), tstates=config["tstates"], max_steps=0,
-                    result=result, events=events)
+                    result=result, events=events, observation_stride=config.get("observation_stride", 1))
     output.mkdir(parents=True, exist_ok=False)
     for name in ("model.safetensors", "state.json"):
         shutil.copy2(checkpoint.parent/name, output/name)
@@ -86,7 +87,8 @@ def main():
         parser.error("probe replay requires original checkpoint timing")
     result = evaluate(policy, range(args.seed, args.seed+args.games), tstates=tstates,
                       max_steps=args.max_steps, envs=args.envs, log=lambda row: print(row, flush=True),
-                      allow_enter=config.get("allow_enter", False))
+                      allow_enter=config.get("allow_enter", False),
+                      observation_stride=config.get("observation_stride", 1))
     if sha256(args.checkpoint) != before:
         raise RuntimeError("Checkpoint changed during evaluation; use frozen weights")
     result.update(checkpoint_sha256=before, config=config,
@@ -94,7 +96,8 @@ def main():
                   temperature=args.temperature, evaluation_only=True,
                   promotion_eligible=False, evaluation_seed=args.seed,
                   evaluation_tstates=tstates, training_tstates=config["tstates"],
-                  temporal_override=tstates != config["tstates"])
+                  temporal_override=tstates != config["tstates"],
+                  observation_stride=config.get("observation_stride", 1))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     write_json(args.output, result)
     print({k: v for k, v in result.items() if k not in ("games", "config")})

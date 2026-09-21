@@ -121,11 +121,15 @@ class DefenseCurriculumEnv(DefenseEnv):
                     or not 0 <= saved.progress_start_score <= saved.score
                     or not isinstance(saved.life_steps, (int, np.integer))
                     or isinstance(saved.life_steps, (bool, np.bool_)) or saved.life_steps < 0
-                    or saved.frames.shape != (4, 16, 64) or saved.frames.dtype != np.uint8):
+                    or not isinstance(saved.observation_stride, (int, np.integer))
+                    or isinstance(saved.observation_stride, (bool, np.bool_))
+                    or saved.observation_stride != self.observation_stride
+                    or saved.frames.shape != (3*self.observation_stride+1, 16, 64)
+                    or saved.frames.dtype != np.uint8):
                 raise ValueError("invalid same-run Defense peer snapshot")
         for saved in entries:
             key = self._key(saved.stage, saved.score, saved.progress_start_score,
-                            saved.frames, saved.life_steps)
+                            saved.frames[::saved.observation_stride], saved.life_steps)
             slot = self._reserve_slot(key)
             if slot is not None:
                 self._install(key, saved, slot)
@@ -172,7 +176,7 @@ class DefenseCurriculumEnv(DefenseEnv):
                     return obs, reward, terminal, truncated, info
                 saved = self.history[0]
                 key = self._key(saved.stage, saved.score, saved.progress_start_score,
-                                saved.frames, saved.life_steps)
+                                saved.frames[::saved.observation_stride], saved.life_steps)
             slot = self._reserve_slot(key)
             if slot is not None or self.curriculum_share:
                 if saved is None:

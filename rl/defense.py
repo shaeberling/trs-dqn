@@ -17,6 +17,7 @@ import numpy as np
 from main import CONFIGS
 from trs import TRS, Key
 from trs.native import wrapper
+from .env import validate_observation_stride
 
 VIDEO = 0x3C00
 ENVIRONMENT_VERSION = "obstacle-run-screen-v1"
@@ -82,7 +83,8 @@ def positive_integer(value, name, *, allow_zero=False):
 
 
 class DefenseEnv:
-    def __init__(self, seed=0, tstates=100_000, max_steps=30_000, allow_enter=False):
+    def __init__(self, seed=0, tstates=100_000, max_steps=30_000, allow_enter=False,
+                 observation_stride=1):
         # Optional learned menu action. No detection-triggered key injection:
         # only the selected policy action may press Enter after reset.
         self.actions = action_set(allow_enter)
@@ -90,6 +92,7 @@ class DefenseEnv:
         if self.tstates > 1_000_000:
             raise ValueError("tstates must be <= 1,000,000 to sample transition messages")
         self.max_steps = positive_integer(max_steps, "max_steps", allow_zero=True)
+        self.observation_stride = validate_observation_stride(observation_stride)
         self.rng = np.random.default_rng(seed)
         if hashlib.sha256(Path(CONFIGS["defense"]["cmd"]).read_bytes()).hexdigest() != GAME_SHA256:
             raise RuntimeError("Defense executable differs from the audited game")
@@ -97,8 +100,12 @@ class DefenseEnv:
         self.video = np.ctypeslib.as_array(self.trs.ram.ram)[VIDEO:VIDEO+1024].reshape(16, 64)
         wrapper.z80_set_video_stop.argtypes = (ctypes.c_ushort, ctypes.c_char_p, ctypes.c_int)
         wrapper.z80_set_video_text_stop.argtypes = (ctypes.c_ushort, ctypes.c_char_p, ctypes.c_int)
-        self.frames = deque(maxlen=4)
+        self.frames = deque(maxlen=3*self.observation_stride+1)
         self.done = True
+
+    def observation(self):
+        """Four visible frames; retain intervening frames for future stacks/restores."""
+        return np.stack(list(self.frames)[::self.observation_stride])
 
     def _wait(self, predicate, limit, quantum=100_000):
         for _ in range(limit // quantum):
@@ -130,12 +137,12 @@ class DefenseEnv:
                    screen_info(v)["lives"] == 4, 50_000_000, quantum=50_000)
         wrapper.z80_set_video_text_stop(GAME_OVER_ADDRESS, GAME_OVER_TEXT, len(GAME_OVER_TEXT))
         self.frames.clear()
-        self.frames.extend(self.video.copy() for _ in range(4))
+        self.frames.extend(self.video.copy() for _ in range(self.frames.maxlen))
         self.score, self.lives, self.stage, self.highest_stage = 0, 4, 1, 1
         self.steps, self.missions = 0, 0
         self._mission_visible = False
         self.done = False
-        return np.stack(self.frames)
+        return self.observation()
 
     def _finish_terminal(self, frame, info):
         terminal_settle = 0
@@ -230,7 +237,7 @@ class DefenseEnv:
                     episode_reward=float(self.score), hud_settle_tstates=settle,
                     terminal_settle_tstates=terminal_settle,
                     start_tstates=self.start_tstates)
-        return np.stack(self.frames), reward, terminated, truncated, info
+        return self.observation(), reward, terminated, truncated, info
 
     def close(self):
         self.trs.keyboard.all_keys_up()

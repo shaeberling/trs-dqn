@@ -13,7 +13,7 @@ import time
 
 import numpy as np
 
-from .defense import action_names, DefenseEnv, ENVIRONMENT_VERSION, GAME_SHA256
+from .defense import action_names, DefenseEnv, ENVIRONMENT_VERSION, GAME_SHA256, validate_observation_stride
 from .defense_smoke import write_replay
 from .vector import VectorEnv
 
@@ -93,6 +93,7 @@ def load_policy(checkpoint, *, temperature=1.0):
     if isinstance(temperature, bool) or not np.isfinite(temperature) or temperature <= 0:
         raise ValueError("temperature must be finite and positive")
     policy_description(config, temperature)  # Reject unknown algorithms, never guess.
+    validate_observation_stride(config.get("observation_stride", 1))
     names = action_names(config.get("allow_enter", False))
     if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
             or config.get("environment_version") != ENVIRONMENT_VERSION
@@ -115,13 +116,13 @@ def load_policy(checkpoint, *, temperature=1.0):
 
 
 def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
-             should_stop=lambda: False, allow_enter=False):
+             should_stop=lambda: False, allow_enter=False, observation_stride=1):
     seeds = list(seeds)
     if not seeds or len(set(seeds)) != len(seeds):
         raise ValueError("Validation requires distinct seeds")
     count = min(envs, len(seeds))
     workers = VectorEnv(count, seeds[0], game="defense", tstates=tstates, max_steps=max_steps,
-                        allow_enter=allow_enter)
+                        allow_enter=allow_enter, observation_stride=observation_stride)
     games = [None] * len(seeds)
     rngs = [np.random.default_rng(s + 1_000_000) for s in seeds]
     pending = iter(range(count, len(seeds)))
@@ -158,8 +159,10 @@ def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
     return summarize(games)
 
 
-def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False, allow_enter=False):
-    env = DefenseEnv(tstates=tstates, max_steps=max_steps, allow_enter=allow_enter)
+def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False, allow_enter=False,
+                observation_stride=1):
+    env = DefenseEnv(tstates=tstates, max_steps=max_steps, allow_enter=allow_enter,
+                     observation_stride=observation_stride)
     policy.reset_seed(seed+1_000_000)
     try:
         obs = env.reset(seed)
@@ -187,7 +190,8 @@ def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_
     policy, config = load_policy(checkpoint, temperature=temperature)
     actual = record_game(policy, result["seed"], tstates=config["tstates"],
                          max_steps=config["eval_max_steps"], should_stop=should_stop,
-                         allow_enter=config.get("allow_enter", False))
+                         allow_enter=config.get("allow_enter", False),
+                         observation_stride=config.get("observation_stride", 1))
     for expected, found in zip((frames, actions, rewards), actual[:3], strict=True):
         np.testing.assert_array_equal(found, expected)
     if actual[3] != result:
@@ -195,6 +199,7 @@ def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_
     if game_rank(result) is None:
         raise ValueError("An incomplete replay cannot replace the best complete game")
     return dict(verified=True, verified_actions=len(actions), temperature=temperature,
+                observation_stride=config.get("observation_stride", 1),
                 checkpoint_sha256=sha256(checkpoint), game_sha256=GAME_SHA256,
                 environment_version=ENVIRONMENT_VERSION,
                 method="reload weights; reproduce every policy action, reward and screen from boot")
@@ -215,7 +220,8 @@ def publish_best(checkpoint, evaluation, output, *, should_stop=lambda: False, l
     policy, config = load_policy(checkpoint)
     frames, actions, rewards, result, events = record_game(
         policy, candidate["seed"], tstates=config["tstates"], max_steps=config["eval_max_steps"],
-        should_stop=should_stop, allow_enter=config.get("allow_enter", False))
+        should_stop=should_stop, allow_enter=config.get("allow_enter", False),
+        observation_stride=config.get("observation_stride", 1))
     if candidate != result:
         raise RuntimeError("Recorded best effort disagrees with parallel evaluation")
     verification = verify_policy_trace(checkpoint, frames, actions, rewards, result,
@@ -233,7 +239,8 @@ def publish_best(checkpoint, evaluation, output, *, should_stop=lambda: False, l
                     policy=policy_description(config), trained_model=True,
                     verified_actions=len(actions), checkpoint_sha256=verification["checkpoint_sha256"],
                     tstates=config["tstates"], max_steps=config["eval_max_steps"], result=result,
-                    events=events, training_steps=state["steps"])
+                    events=events, training_steps=state["steps"],
+                    observation_stride=config.get("observation_stride", 1))
     np.savez_compressed(bundle/"trace.npz", frames=frames, actions=actions, rewards=rewards,
                         metadata=json.dumps(metadata))
     write_replay(bundle/"replay.html", frames, actions, metadata)

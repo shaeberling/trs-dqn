@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from .defense import action_names, screen_info, ENVIRONMENT_VERSION, GAME_SHA256
+from .defense import action_names, screen_info, ENVIRONMENT_VERSION, GAME_SHA256, validate_observation_stride
 from .defense_learning import evaluate, publish_best, sha256, summarize, write_json
 from .ppo import PPO, gae
 from .vector import VectorEnv
@@ -49,6 +49,8 @@ def main():
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False,
                         help="add Enter as a learned action; never automatically skip an intro")
     parser.add_argument("--tstates", type=int, default=100_000)
+    parser.add_argument("--observation-stride", type=int, default=1,
+                        help="policy sees four visible frames spaced this many actions apart")
     parser.add_argument("--max-episode-steps", type=int, default=0)
     parser.add_argument("--eval-every", type=int, default=100_000)
     parser.add_argument("--eval-games", type=int, default=10)
@@ -105,6 +107,10 @@ def main():
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
         parser.error("tstates out of range")
+    try:
+        validate_observation_stride(args.observation_stride)
+    except ValueError as error:
+        parser.error(str(error))
     if (not np.isfinite(args.curriculum_probability) or not 0 <= args.curriculum_probability <= 1
             or min(args.curriculum_score_interval, args.curriculum_lookback) < 0
             or min(args.curriculum_per_bin, args.curriculum_bins, args.curriculum_screen_interval,
@@ -264,7 +270,8 @@ def main():
                               curriculum_share=args.curriculum_share,
                               curriculum_boot_envs=args.curriculum_boot_envs)
         workers = VectorEnv(args.envs, args.seed+steps, game="defense", tstates=args.tstates,
-                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter, **curriculum)
+                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter,
+                            observation_stride=args.observation_stride, **curriculum)
         obs = workers.observations
         log(dict(event="workers_started", workers=workers.runtime()))
         agent.save(args.run/"latest", state())
@@ -380,7 +387,8 @@ def main():
                 log(dict(event="validation_start", steps=steps, checkpoint=str(directory)))
                 result = evaluate(agent.policy(), range(args.eval_seed, args.eval_seed+args.eval_games),
                                   tstates=args.tstates, max_steps=args.eval_max_steps, envs=args.eval_envs,
-                                  log=log, should_stop=lambda: stop, allow_enter=args.allow_enter)
+                                  log=log, should_stop=lambda: stop, allow_enter=args.allow_enter,
+                                  observation_stride=args.observation_stride)
                 write_json(directory/"evaluation.json", result)
                 log(dict(event="validation", steps=steps,
                          **{k: v for k, v in result.items() if k != "games"}))
