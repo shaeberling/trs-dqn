@@ -1139,6 +1139,44 @@ mission. Its replay reproduced all **2,580** neural actions; the
 is preserved. This is below its parent's mean and does not establish a gain.
 The original shared best remains unchanged, and both full trials continue.
 
+### Optional persistent policy-bias exploration
+
+`--policy-bias-noise STD` defaults to zero. When enabled, each training worker
+draws independent zero-mean Gaussian offsets for the learned actor's output
+bias parameters. The offsets persist across actions and rollout boundaries,
+and are redrawn on a visible ship loss or episode boundary. They do not choose
+an action, identify an obstacle, or encode a route. The learned screen-dependent
+logits plus the sampled parameter offsets define the categorical policy.
+
+The method is a restricted adaptation of
+[parameter-space exploration](https://arxiv.org/abs/1706.01905): only output
+biases are perturbed, with a fixed user-selected scale. It is not the paper's
+whole-network, adaptive-scale algorithm. PPO retains each sample's offset and
+uses that same offset in the updated log probability, ratio, entropy and KL
+calculation. Noise is not optimized as a parameter. The value baseline remains
+screen-only and unperturbed, which may increase estimation error/variance.
+The separate noise RNG is saved; resume restarts emulator episodes and draws
+fresh offsets from that RNG. No additional observation or reward is supplied.
+Combining this option with the separate SIL path is rejected as untested.
+
+Evaluation and published replays use the **unperturbed learned model**. Thus a
+good noisy training episode cannot replace the standard-policy best on its
+own. All **198 tests** passed, covering persistent and selective redraws, RNG
+resume, zero-noise equivalence, matching sampling/learning likelihoods, finite
+updates and unchanged ordinary sampling. Existing full runs 13 and 14 started
+before this implementation and continue without policy-bias noise.
+
+A separate [four-worker integration run](results/defense/training/bias-noise-smoke-01/resume-config.json)
+used standard deviation 1 for **16,384 new actions**, starting from run 12's
+strongest-mean model. Four boot games and one restored segment completed; the
+noise RNG and optimizer are retained in the
+[checkpoint](results/defense/training/bias-noise-smoke-01/checkpoint/state.json).
+Its [ten unperturbed complete evaluation games](results/defense/training/bias-noise-smoke-01/checkpoint/evaluation.json)
+averaged **10,201**, median **10,460**, best **10,480**, all stage 1. All **2,482**
+actions of its [replay](results/defense/training/bias-noise-smoke-01/replay/replay.html)
+were reproduced. This validates integration, not improved performance; the
+smoke artifact source is excluded from the production collector.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
