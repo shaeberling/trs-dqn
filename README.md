@@ -10,8 +10,9 @@ watch mode are documented in [TRAINING.md](TRAINING.md).
 
 For **Obstacle Run / Missile Defense** (the existing `--game defense`), see
 [DEFENSE.md](DEFENSE.md): controls, binary audit, a separate screen-only
-environment, complete-game diagnostic results and portable replays. This new
-game has not been trained yet; Breakdown's commands and models remain separate.
+environment, complete-game diagnostic results and portable replays. A fresh
+20-action PPO learner now runs via `python -m rl.defense_train`; Breakdown's
+commands, model weights and results remain separate.
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh
