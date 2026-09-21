@@ -1379,6 +1379,34 @@ both noise options disabled. Its full checkpoint and verified replay are also
 preserved. These single-seed checks do not establish general causality or
 predict the outcome with the normal 32-worker training setup.
 
+A subsequent [32-worker calibration](results/defense/training/weight-noise-calibration-01/resume-config.json)
+used noise SD **0.005**, the same parent, and the parent's normal rollout 256,
+batch 512, eight boot-only workers and all other learning settings. After
+**32,768 new actions** (four rollouts), its ten complete unperturbed games
+averaged **10,453**, median **10,460**, best **10,480**, still stage 1.
+Its [replay](results/defense/training/weight-noise-calibration-01/replay/replay.html)
+reproduced **2,553** actions. This retained the parent's performance much
+better than the four-worker check; it is not an improvement or evidence that
+noise helps exploration. The complete calibration log, optimizer and replay
+bundle are preserved separately and excluded from automatic promotion.
+
+`defense-ppo-18-weight-noise` continues from that calibration's optimizer at
+counter **10,480,384**, with no training or episode action limit and complete
+ten-game evaluations every 100,000 training actions (rounded to rollout
+boundaries). Its [configuration](results/defense/training/ppo-18-weight-noise/resume-config.json)
+retains noise SD 0.005 and the normal 32-worker settings. Resume restores the
+policy, optimizer and RNGs but restarts emulator episodes and its own-state
+archive; it draws fresh life perturbations. Evaluation remains unperturbed.
+The sole collector includes this run alongside all previous sources, and
+only verified strictly better efforts can replace the shared best.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-weight-noise-reproduction \
+  --resume results/defense/training/weight-noise-calibration-01/checkpoint \
+  --artifacts runs/defense-weight-noise-reproduction/artifacts \
+  --steps 0 --eval-every 100000
+```
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
