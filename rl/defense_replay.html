@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Obstacle Run — diagnostic replay</title>
+<style>
+body{background:#101820;color:#e0ecec;font:16px system-ui;margin:30px auto;max-width:850px;padding:0 16px}
+canvas{display:block;width:min(100%,768px);height:auto;image-rendering:pixelated;background:black;margin:20px 0}
+button,select{font:inherit;padding:8px;margin-right:8px}input{width:100%}pre{white-space:pre-wrap;color:#a8bcc7}
+</style>
+<h1>Obstacle Run / Missile Defense</h1>
+<p>Emulator integration test — random/no-op actions, <strong>not a trained agent</strong>.
+The recorded action sequence has been rerun and every resulting screen checked.</p>
+<canvas id="screen" width="512" height="416" aria-label="Original game screen"></canvas>
+<button id="play">Play</button><select id="speed" aria-label="Playback speed"><option value="1">1×</option><option value="4">4×</option><option value="16">16×</option></select>
+<span id="position"></span><p><input id="seek" aria-label="Replay frame" type="range" min="0" value="0"></p>
+<p>Playback timing approximates the selected action duration; short HUD-settling waits are omitted.</p>
+<details><summary>Run details and limitations</summary><pre id="metadata"></pre></details>
+<script>
+const metadata=__META__, actions=__ACTIONS__;
+const raw=Uint8Array.from(atob('__FRAMES__'),c=>c.charCodeAt(0));
+const view=new DataView(raw.buffer), frames=[raw.slice(0,1024)];
+let offset=1024;
+while(offset<raw.length){const n=view.getUint16(offset,true);offset+=2;const frame=frames.at(-1).slice();
+ for(let i=0;i<n;i++){const index=view.getUint16(offset,true);frame[index]=raw[offset+2];offset+=3;}frames.push(frame);}
+const canvas=document.getElementById('screen'), ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;
+const seek=document.getElementById('seek'), play=document.getElementById('play'), speed=document.getElementById('speed');
+const atlas=new Image();let index=0, playing=false, previous=0, elapsed=0;
+seek.max=frames.length-1;
+document.getElementById('metadata').textContent=JSON.stringify(metadata,null,2);
+function render(){const frame=frames[index];for(let i=0;i<1024;i++){const c=frame[i];ctx.drawImage(atlas,c%16*8,Math.floor(c/16)*26,8,26,i%64*8,Math.floor(i/64)*26,8,26);}
+ seek.value=index;document.getElementById('position').textContent=`Frame ${index} / ${frames.length-1} · ${index?metadata.action_names[actions[index-1]]:'START'}`;}
+atlas.onload=render;atlas.src='data:image/png;base64,__ATLAS__';
+play.onclick=()=>{playing=!playing;if(playing&&index===frames.length-1)index=0;elapsed=0;previous=0;play.textContent=playing?'Pause':'Play';render();};
+seek.oninput=()=>{index=Number(seek.value);render();};
+function tick(now){if(playing&&atlas.complete){if(previous)elapsed+=(now-previous)*Number(speed.value);const duration=metadata.tstates/1774080*1000;
+ while(elapsed>=duration&&index<frames.length-1){elapsed-=duration;index++;}render();
+ if(index===frames.length-1){playing=false;play.textContent='Play';}}
+ previous=now;requestAnimationFrame(tick);}requestAnimationFrame(tick);
+</script></html>
