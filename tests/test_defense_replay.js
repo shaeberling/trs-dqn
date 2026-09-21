@@ -24,7 +24,7 @@ vm.runInContext(script, context);
 const read = expression => vm.runInContext(expression, context);
 assert.equal(read('frames.length'), read('metadata.result.steps + 1'));
 assert.equal(read('actions.length'), read('metadata.verified_actions'));
-assert(read('actions.every(a => Number.isInteger(a) && a >= 0 && a < 20)'));
+assert(read('actions.every(a => Number.isInteger(a) && a >= 0 && a < metadata.action_names.length)'));
 assert(read('frames.every(f => f.length === 1024)'));
 assert(read('metadata.result.terminated'));
 assert.equal(typeof read('metadata.trained_model'), 'boolean');

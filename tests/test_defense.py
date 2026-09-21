@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import numpy as np
 
-from rl.defense import (ACTIONS, ACTION_NAMES, DefenseEnv, GAME_SHA256,
+from rl.defense import (ACTIONS, ACTION_NAMES, DefenseEnv, GAME_SHA256, action_set,
                         GAME_OVER_TEXT, screen_info)
 from rl.defense_smoke import verify_trace, write_replay
 from rl.defense_audit import audit
@@ -62,6 +62,39 @@ class DefenseTests(unittest.TestCase):
         self.assertIn((Key.UP, Key.RIGHT, Key.SPACE), ACTIONS)
         for keys in ACTIONS:
             self.assertFalse(set(keys) & {Key.ENTER, Key.CLEAR, Key.BREAK, Key._1, Key._2})
+
+    def test_optional_enter_is_a_selected_action_not_an_automatic_controller(self):
+        self.assertEqual(action_set(True), ACTIONS + ((Key.ENTER,),))
+        env = DefenseEnv(allow_enter=True)
+        try:
+            env.reset(12)
+            losses = 0
+            intro_entries = 0
+            intro_visible = False
+            for _ in range(3000):
+                obs, _, done, truncated, info = env.step(20)
+                visible = screen_info(obs[-1])["stage"] is not None
+                intro_entries += visible and not intro_visible
+                intro_visible = visible
+                losses += info["life_lost"]
+                if done or truncated:
+                    break
+            self.assertTrue(done)
+            self.assertFalse(truncated)
+            self.assertEqual(losses, 4)
+            self.assertEqual(intro_entries, 3)
+            self.assertEqual(info["score"], 280)
+            enter_steps = info["steps"]
+            env.reset(12)
+            for _ in range(3000):
+                _, _, done, truncated, info = env.step(0)
+                if done or truncated:
+                    break
+            self.assertTrue(done)
+            self.assertEqual(info["score"], 280)
+            self.assertLess(enter_steps, info["steps"])
+        finally:
+            env.close()
 
     def test_reset_and_complete_game_all_four_ships(self):
         env = DefenseEnv()

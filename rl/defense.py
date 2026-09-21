@@ -27,6 +27,18 @@ DIRECTIONS = ((), (Key.UP,), (Key.DOWN,), (Key.LEFT,), (Key.RIGHT,),
 ACTIONS = DIRECTIONS + tuple(keys + (Key.SPACE,) for keys in DIRECTIONS) + (
     (Key.LEFT, Key.RIGHT), (Key.LEFT, Key.RIGHT, Key.SPACE))
 ACTION_NAMES = tuple("+".join(key.name for key in keys) or "NOOP" for keys in ACTIONS)
+
+
+def action_set(allow_enter=False):
+    if not isinstance(allow_enter, (bool, np.bool_)):
+        raise ValueError("allow_enter must be a boolean")
+    return ACTIONS + ((Key.ENTER,),) if allow_enter else ACTIONS
+
+
+def action_names(allow_enter=False):
+    return tuple("+".join(key.name for key in keys) or "NOOP" for keys in action_set(allow_enter))
+
+
 TEXT_TABLE = bytes(c if 32 <= c < 127 else 32 for c in range(256))
 GAME_OVER_ADDRESS = 0x3DD7
 GAME_OVER_TEXT = b"GAME OVER PLAYER 1"
@@ -70,7 +82,10 @@ def positive_integer(value, name, *, allow_zero=False):
 
 
 class DefenseEnv:
-    def __init__(self, seed=0, tstates=100_000, max_steps=30_000):
+    def __init__(self, seed=0, tstates=100_000, max_steps=30_000, allow_enter=False):
+        # Optional learned menu action. No detection-triggered key injection:
+        # only the selected policy action may press Enter after reset.
+        self.actions = action_set(allow_enter)
         self.tstates = positive_integer(tstates, "tstates")
         if self.tstates > 1_000_000:
             raise ValueError("tstates must be <= 1,000,000 to sample transition messages")
@@ -128,7 +143,8 @@ class DefenseEnv:
             # The first GAME OVER draw precedes the last score/lives HUD update
             # (death animation at 7079 -> 7084). Finish only that animation,
             # keeping the selected keys, until the visible zero-ship HUD is
-            # complete. No restart/menu key exists in the gameplay action set.
+            # complete. No restart/abort combination exists in either action
+            # profile; optional Enter skips intros, not this death animation.
             wrapper.z80_set_video_stop(0, b"", 0)
             for _ in range(100):
                 self.trs.run_for_tstates(50_000)
@@ -154,10 +170,10 @@ class DefenseEnv:
         if isinstance(action, (bool, np.bool_)):
             raise ValueError(action)
         action = operator.index(action)
-        if not 0 <= action < len(ACTIONS):
+        if not 0 <= action < len(self.actions):
             raise ValueError(action)
         self.trs.keyboard.all_keys_up()
-        for key in ACTIONS[action]:
+        for key in self.actions[action]:
             self.trs.keyboard.key_down(key)
         self.trs.run_for_tstates(self.tstates)
         frame = self.video.copy()

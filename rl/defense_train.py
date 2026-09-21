@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from .defense import ACTIONS, ACTION_NAMES, ENVIRONMENT_VERSION, GAME_SHA256
+from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256
 from .defense_learning import evaluate, publish_best, sha256, summarize, write_json
 from .ppo import PPO, gae
 from .vector import VectorEnv
@@ -39,6 +39,8 @@ def main():
     parser.add_argument("--reward-scale", type=float, default=.01,
                         help="constant units conversion; no shaping or clipping")
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False,
+                        help="add Enter as a learned action; never automatically skip an intro")
     parser.add_argument("--tstates", type=int, default=100_000)
     parser.add_argument("--max-episode-steps", type=int, default=0)
     parser.add_argument("--eval-every", type=int, default=100_000)
@@ -60,8 +62,10 @@ def main():
         config = prior["config"]
         if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
                 or config.get("environment_version") != ENVIRONMENT_VERSION
-                or config.get("action_names") != list(ACTION_NAMES)):
+                or config.get("action_names") != list(action_names(config.get("allow_enter", False)))):
             parser.error("Resume requires a compatible Defense checkpoint")
+        if args.allow_enter != config.get("allow_enter", False):
+            parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
         if not (args.resume/"optimizer.npz").exists():
             parser.error("Resume requires an original learner checkpoint with optimizer state")
     if min(args.envs, args.rollout, args.batch_size, args.epochs, args.eval_every,
@@ -84,7 +88,7 @@ def main():
     from mlx.utils import tree_unflatten
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
     agent = PPO(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
-                action_count=len(ACTIONS))
+                action_count=len(action_names(args.allow_enter)))
     rng = np.random.default_rng(args.seed)
     steps, episodes = 0, 0
     if prior:
@@ -104,7 +108,7 @@ def main():
     config.update(game="defense", algorithm="ppo", game_sha256=GAME_SHA256,
                   native_sha256=sha256("libtrs.so"), environment_version=ENVIRONMENT_VERSION,
                   environment_source_sha256=sha256(Path(__file__).with_name("defense.py")),
-                  action_names=list(ACTION_NAMES), observation="four raw 16x64 video-memory frames",
+                  action_names=list(action_names(args.allow_enter)), observation="four raw 16x64 video-memory frames",
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
@@ -137,7 +141,7 @@ def main():
     log(dict(event="start", steps=steps, config=config))
     try:
         workers = VectorEnv(args.envs, args.seed+steps, game="defense", tstates=args.tstates,
-                            max_steps=args.max_episode_steps)
+                            max_steps=args.max_episode_steps, allow_enter=args.allow_enter)
         obs = workers.observations
         log(dict(event="workers_started", workers=workers.runtime()))
         agent.save(args.run/"latest", state())
@@ -210,7 +214,7 @@ def main():
                 log(dict(event="validation_start", steps=steps, checkpoint=str(directory)))
                 result = evaluate(agent.policy(), range(args.eval_seed, args.eval_seed+args.eval_games),
                                   tstates=args.tstates, max_steps=args.eval_max_steps, envs=args.eval_envs,
-                                  log=log, should_stop=lambda: stop)
+                                  log=log, should_stop=lambda: stop, allow_enter=args.allow_enter)
                 write_json(directory/"evaluation.json", result)
                 log(dict(event="validation", steps=steps,
                          **{k: v for k, v in result.items() if k != "games"}))

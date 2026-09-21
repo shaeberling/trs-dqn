@@ -13,7 +13,7 @@ import time
 
 import numpy as np
 
-from .defense import ACTIONS, ACTION_NAMES, DefenseEnv, ENVIRONMENT_VERSION, GAME_SHA256
+from .defense import action_names, DefenseEnv, ENVIRONMENT_VERSION, GAME_SHA256
 from .defense_smoke import write_replay
 from .vector import VectorEnv
 
@@ -56,11 +56,12 @@ def load_policy(checkpoint):
     import mlx.core as mx
     checkpoint = Path(checkpoint)
     config = json.loads((checkpoint.parent/"state.json").read_text())["config"]
+    names = action_names(config.get("allow_enter", False))
     if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
             or config.get("environment_version") != ENVIRONMENT_VERSION
-            or config.get("action_names") != list(ACTION_NAMES)):
+            or config.get("action_names") != list(names)):
         raise ValueError("Checkpoint is not compatible with this Defense environment")
-    model = QNetwork(action_count=len(ACTIONS))
+    model = QNetwork(action_count=len(names))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
     predict = mx.compile(model.policy_value, inputs=model.state)
@@ -68,12 +69,13 @@ def load_policy(checkpoint):
 
 
 def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
-             should_stop=lambda: False):
+             should_stop=lambda: False, allow_enter=False):
     seeds = list(seeds)
     if not seeds or len(set(seeds)) != len(seeds):
         raise ValueError("Validation requires distinct seeds")
     count = min(envs, len(seeds))
-    workers = VectorEnv(count, seeds[0], game="defense", tstates=tstates, max_steps=max_steps)
+    workers = VectorEnv(count, seeds[0], game="defense", tstates=tstates, max_steps=max_steps,
+                        allow_enter=allow_enter)
     games = [None] * len(seeds)
     rngs = [np.random.default_rng(s + 1_000_000) for s in seeds]
     pending = iter(range(count, len(seeds)))
@@ -110,8 +112,8 @@ def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
     return summarize(games)
 
 
-def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False):
-    env = DefenseEnv(tstates=tstates, max_steps=max_steps)
+def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False, allow_enter=False):
+    env = DefenseEnv(tstates=tstates, max_steps=max_steps, allow_enter=allow_enter)
     policy.reset_seed(seed+1_000_000)
     try:
         obs = env.reset(seed)
@@ -137,7 +139,8 @@ def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_
     """Reload frozen weights and re-run every neural action and screen from boot."""
     policy, config = load_policy(checkpoint)
     actual = record_game(policy, result["seed"], tstates=config["tstates"],
-                         max_steps=config["eval_max_steps"], should_stop=should_stop)
+                         max_steps=config["eval_max_steps"], should_stop=should_stop,
+                         allow_enter=config.get("allow_enter", False))
     for expected, found in zip((frames, actions, rewards), actual[:3], strict=True):
         np.testing.assert_array_equal(found, expected)
     if actual[3] != result:
@@ -165,7 +168,7 @@ def publish_best(checkpoint, evaluation, output, *, should_stop=lambda: False, l
     policy, config = load_policy(checkpoint)
     frames, actions, rewards, result, events = record_game(
         policy, candidate["seed"], tstates=config["tstates"], max_steps=config["eval_max_steps"],
-        should_stop=should_stop)
+        should_stop=should_stop, allow_enter=config.get("allow_enter", False))
     if candidate != result:
         raise RuntimeError("Recorded best effort disagrees with parallel evaluation")
     verification = verify_policy_trace(checkpoint, frames, actions, rewards, result,
@@ -179,7 +182,7 @@ def publish_best(checkpoint, evaluation, output, *, should_stop=lambda: False, l
     write_json(bundle/"evaluation.json", evaluation)
     write_json(bundle/"verification.json", verification)
     metadata = dict(game="Obstacle Run / Missile Defense", game_sha256=GAME_SHA256,
-                    environment_version=ENVIRONMENT_VERSION, action_names=ACTION_NAMES,
+                    environment_version=ENVIRONMENT_VERSION, action_names=config["action_names"],
                     policy="learned categorical, sampled", trained_model=True,
                     verified_actions=len(actions), checkpoint_sha256=verification["checkpoint_sha256"],
                     tstates=config["tstates"], max_steps=config["eval_max_steps"], result=result,

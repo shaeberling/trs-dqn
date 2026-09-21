@@ -1,7 +1,9 @@
 # Defense / Obstacle Run learned policy
 
 Training is from scratch using only four consecutive original screen frames.
-The categorical policy has 20 keyboard actions. No Breakdown weights, scripted
+The original categorical policy has 20 keyboard actions; a separate optional
+21-action experiment adds policy-selected Enter. Check the selected bundle's
+configuration for its exact action profile. No Breakdown weights, scripted
 controller, expert demonstrations or hidden-state inputs are used.
 
 Stable local artifacts (updated only after exact frozen-policy re-execution):
@@ -22,6 +24,11 @@ The first preserved learned checkpoint, after 102,400 training actions, scored
 320 in its best validation game (1,617 verified neural actions). Its ten-game
 mean was 292, median 290, and all games remained in stage 1. This is an initial
 baseline, not a completed training goal.
+
+The next preserved improvement, at 1,133,312 cumulative actions, reached **380**
+points with all **1,658** neural actions verified. Its ten-game mean was **358**,
+median **360**, still entirely in stage 1. The 20-action run was paused cleanly
+at 1,542,912 actions; a fresh learned-Enter experiment is now being evaluated.
 
 See [DEFENSE.md](../../DEFENSE.md) for training, independent evaluation, controls,
 reward handling, the original three-stage loop, and remaining completion checks.
