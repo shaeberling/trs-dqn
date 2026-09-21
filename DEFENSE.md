@@ -9,8 +9,9 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
-The current standard-policy best is **560 points**, with **1,975** neural
-actions exactly reverified; its ten-game mean is **506**, median **510**, all stage 1.
+The current standard-policy best is **580 points**, with **1,904** neural
+actions exactly reverified; its ten-game mean is **480**, median **460**, all stage 1.
+The earlier 560-point checkpoint retains the stronger validation mean of **506**.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -495,6 +496,14 @@ Its [resumable checkpoint](results/defense/training/ppo-06-life-boundary/step-00
 preserves weights, optimizer and the complete evaluation. The 500-point bundle
 and all earlier milestones remain available.
 
+The next round, counter **4,836,096**, produced a **580-point** best effort,
+with all **1,904** actions exactly verified by the collector. Its ten-game
+mean was **480**, median **460**, all stage 1, with no completed mission.
+This improves the best individual replay, not mean performance: the preceding
+560-point checkpoint averaged 506 and remains archived separately. The
+[580-point resumable checkpoint](results/defense/training/ppo-06-life-boundary/step-000004836096/state.json)
+includes weights, optimizer and its complete evaluation.
+
 ### Own-experience curriculum: run 07
 
 `rl.defense_snapshot` adapts the existing native snapshot API to Defense's
@@ -569,7 +578,7 @@ preserves model, optimizer and the complete ten-game evaluation. This improves
 consistency on reused validation seeds, not fresh-test performance: every game
 remained in stage 1, with no mission completed. This did not replace the shared
 best single-effort replay because its best score only tied the original
-460-point model. Run 06 subsequently set the 560-point best described above.
+460-point model. Run 06 subsequently set the 580-point best described above.
 Both active experiments continue unchanged.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
