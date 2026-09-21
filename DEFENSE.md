@@ -206,8 +206,9 @@ continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
 - Live progress: `runs/defense-dqn-22-fresh/status.json`,
-  `runs/defense-dqn-24-bootstrap/status.json` and
-  `runs/defense-ppo-25-matched-history/status.json`, each with an adjacent
+  `runs/defense-dqn-24-bootstrap/status.json`,
+  `runs/defense-ppo-25-matched-history/status.json` and
+  `runs/defense-dqn-26-own-resets/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -260,6 +261,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-23-life-age/artifacts \
   --source runs/defense-dqn-24-bootstrap/artifacts \
   --source runs/defense-ppo-25-matched-history/artifacts \
+  --source runs/defense-dqn-26-own-resets/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -2216,15 +2218,60 @@ from-boot evaluation arguments, real own-state sharing, reserved boot workers,
 and optimizer resume with fresh archives/replay. Truncated unit-test episodes
 are bookkeeping checks, not evidence of actual game completion.
 
-A paired short check is running from ordinary DQN's **1,700,000** checkpoint.
-Each side permits **32,768** new actions, uses four workers, an 8,192-transition
+A paired short check resumed ordinary DQN's **1,700,000** checkpoint.
+Each side trained **32,768** new actions, using four workers, an 8,192-transition
 buffer refilled from new experience, 1,024 warmup transitions, and the parent's
 batch 64, n-step 5, gamma 0.997, target-copy interval 2,000 and 100,000-T-state
 action timing. One side enables 0.5 reset probability, shared score cells,
 one boot-only worker and lookback 32; the other keeps resets disabled. Both
 are excluded from the collector and evaluate ten complete games from boot.
-No longer reset-enabled DQN trial has been launched on the basis of this
-integration alone.
+Both exited normally at **1,732,768**, each with **107,608** cumulative optimizer
+updates. Their configurations differ only in output paths and the reset setup
+and its recorded provenance. Both refilled their replay buffers with new own
+experience; neither loaded evaluation actions or another learner's states.
+
+| Short continuation | Mean | Median | Best | Verified replay actions |
+| --- | ---: | ---: | ---: | ---: |
+| [No resets](results/defense/training/dqn-reset-control-01/checkpoint/evaluation.json) | 284 | 280 | 300 | [1,531](results/defense/training/dqn-reset-control-01/replay/replay.html) |
+| [Own-state resets](results/defense/training/dqn-reset-smoke-01/checkpoint/evaluation.json) | 362 | 350 | 540 | [1,919](results/defense/training/dqn-reset-smoke-01/replay/replay.html) |
+
+All twenty complete games were stage-1 losses. Reset scores were higher on nine
+paired seeds and equal on one, mean difference **+78**, but **both** checks
+regressed substantially from the parent's mean **1,372**. This one short pair
+does not establish an overall learning advantage or explain that regression.
+Worker count, replay capacity and warmup differ from the full production run.
+The control completed 16 boot games; the reset side completed 14 boot games
+and five restored segments. All **402** archive events had exact 32-action
+lookback; **54** originated in already-restored segments. Worker 0 remained
+boot-only, and every segment's logged reward equalled its new visible score.
+Both complete checkpoints, configurations, logs and verified replays are
+preserved separately; neither is a parent of the longer trial.
+
+`defense-dqn-26-own-resets` instead starts **fresh at counter zero**, with seed
+97 and the ordinary baseline's normal eight workers, 50,000-transition buffer,
+10,000-transition random warmup, batch 64, n-step 5, gamma 0.997, target copies
+every 2,000 updates and updates every 16 aggregate actions. Epsilon decays
+from 1 to 0.05 over one million actions after warmup, as in run 22. It changes
+the reset setup to probability 0.5, shared score cells, two permanently
+boot-only workers and lookback 32. It uses neither short-check weights nor
+pretrained features or native snapshots. The
+[configuration](results/defense/training/dqn-26-own-resets/config.json)
+records the fresh initialization and implementation hashes.
+
+This longer fresh-start comparison tests whether resets help value learning;
+it is not presented as a successful fix for the short-check regression.
+Training and episodes are uncapped; ten from-boot evaluations occur every
+100,000 actions. It uses part of stopped run 17's released compute. Runs 22,
+24 and 25 continue unchanged. The sole collector includes run 26 and all
+historical sources, excluding both short checks, with the same frozen-policy
+verification before any global promotion.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-own-resets-reproduction \
+  --artifacts runs/defense-dqn-own-resets-reproduction/artifacts --seed 97 \
+  --curriculum-probability .5 --curriculum-share --curriculum-boot-envs 2 \
+  --curriculum-lookback 32
+```
 
 ### Bootstrapped value exploration
 
@@ -2349,6 +2396,15 @@ compute cost. Architecture, priors and exploration schedule differ; it is not
 a single-feature ablation or a comparison against a long zero-prior ensemble.
 Both are one training seed with reused validation seeds. Run 24 continues
 without replacing the stronger shared 10,480-point best.
+
+At **800,000**, run 24's
+[ten complete evaluations](results/defense/training/dqn-24-bootstrap/step-000000800000/evaluation.json)
+all scored **520** (mean/median/best 520), still stage-1 losses. Its full
+online/target/prior/optimizer checkpoint and
+[2,006-action verified replay](results/defense/training/dqn-24-bootstrap/replay-520/replay.html)
+are preserved. The intervening 400,000-action mean was 350 (best 380), and
+the 600,000-action games all scored 320, so this recovery was not monotonic.
+It is a new milestone for this lineage, not a global-best or depth improvement.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-bootstrap-check \
