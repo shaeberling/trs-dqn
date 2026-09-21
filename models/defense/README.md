@@ -28,8 +28,9 @@ baseline, not a completed training goal.
 The next preserved improvement, at 1,133,312 cumulative actions, reached **380**
 points with all **1,658** neural actions verified. Its ten-game mean was **358**,
 median **360**, still entirely in stage 1. The 20-action run was paused cleanly
-at 1,542,912 actions; the learned-Enter experiment is now continuing with
-own-experience self-imitation.
+at 1,542,912 actions. Learned-Enter and self-imitation experiments did not
+improve the preserved best; training now continues from this checkpoint
+with a lower entropy coefficient. See DEFENSE.md for the separate live paths.
 
 Highest separately preserved sampling diagnostic: **400 points**, all **1,743**
 actions verified. [Replay](../../results/defense/sampling-probes/temperature-050/replay.html)
