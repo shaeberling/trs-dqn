@@ -393,6 +393,24 @@ does not establish a useful sampling improvement, and the subsequently trained
 standard-policy 560-point model is stronger. The diagnostic remains separate
 from the shared best; its weights are the unchanged older 500-point model.
 
+On the later frozen **10,280-point** model at counter **7,244,544**, two more
+sampling diagnostics used the same ten validation seeds and unchanged action
+timing. These are exploratory comparisons, not independent fresh-test results.
+
+| Sampling temperature | Mean | Median | Best | Highest stage |
+|---|---:|---:|---:|---:|
+| 1 (original evaluation) | 8,834 | 9,115 | 10,280 | 1 |
+| 0.5 | 8,951 | 9,125 | 10,260 | 1 |
+| 1.5 | 9,107 | 9,815 | 10,280 | 1 |
+
+Neither setting reached stage 2 or completed a mission. The
+[temperature-0.5 bundle](results/defense/sampling-probes/step-7244544-temperature-050/replay.html)
+and [temperature-1.5 bundle](results/defense/sampling-probes/step-7244544-temperature-150/replay.html)
+preserve unchanged weights, complete evaluations, traces and reloaded-policy
+verification. These diagnostic bundles are excluded from best-model promotion.
+This small comparison does not establish that changing training entropy would
+help; both active learners continue with their original settings.
+
 ### Lower-entropy continuation
 
 `defense-ppo-05-low-entropy` resumes the original 20-action checkpoint at
