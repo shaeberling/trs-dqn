@@ -9,6 +9,8 @@ Status: **screen-only PPO training is running independently of Breakdown**, with
 parallel emulator workers, resumable checkpoints, complete-game validation and
 automatic verified best-effort replays. See the commands and monitoring paths
 below. A successful mission has not yet been verified.
+The current standard-policy best is **400 points**, with **1,682** neural
+actions exactly reverified; its ten-game mean/median is **360**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
 network/sampler code now supports configurable action counts while preserving
 the original six-action defaults.
@@ -386,7 +388,7 @@ checkpoint. It initially ran alongside the self-imitation experiment, with
 separate artifact roots to avoid competing writers; run 04 is now paused.
 The experiment's local
 verified replay is `runs/defense-ppo-05-low-entropy/artifacts/best/replay.html`;
-the global 380-point policy and separate 400-point sampling probe stay intact.
+the older 380-point policy and separate 400-point sampling probe remain archived.
 
 Reproduce from the archived optimizer into a new run directory:
 
@@ -431,6 +433,38 @@ Reproduce using the command above with a new run/artifact directory and
 and [first validation](results/defense/training/ppo-06-life-boundary/first-validation.json)
 are preserved. The original 380-point best and separate 400-point sampling
 replay remain available; no unsuccessful candidate replaces them.
+
+Run 06 subsequently reached **400 points with the ordinary temperature-1
+policy**, at counter **2,034,432** (901,120 additional training actions).
+Ten complete validation games: mean **360**, median **360**, best **400**,
+all stage 1, no mission completion. The collector reloaded the frozen model
+and verified all **1,682** actions, screens and rewards, then promoted it to
+the [shared best replay](results/defense/learned/best/replay.html) and
+[weights](results/defense/learned/best/model.safetensors).
+This is a new trained-policy best, distinct from the older temperature-0.5
+diagnostic. Neither demonstrates a stage clear. All previous versions remain.
+
+### Own-experience snapshot preparation (not active in training yet)
+
+`rl.defense_snapshot` adapts the existing native snapshot API to Defense's
+visible score, ships, stage, screen history and outcome bookkeeping. It saves
+and restores an opaque emulator state reached through actual gameplay; it
+does not decode internal bytes, edit game state, select actions, or expose
+anything beyond the usual screen observation to a policy. It does not rewind
+the boot RNG and rejects incompatible timing, action profiles and malformed
+snapshots. No emulator rebuild was needed.
+
+Native regression tests captured the original learned 380-point trajectory at
+action 80, then reproduced every remaining **1,578** screen/action/reward
+transition through game over in both the original process and a newly spawned
+process. The native terminal-text stop was also restored correctly. These
+recorded actions are test fixtures only, not training examples. The 21-action
+profile and invalid-state rejection are tested separately.
+
+This is preparation for a possible own-reached-state training curriculum, not
+an activated curriculum or evidence of better gameplay. Runs 05 and 06 still
+use their unchanged from-boot training setup. Any later curriculum must retain
+from-boot evaluation and distinguish restored segments from complete games.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an

@@ -20,6 +20,12 @@ promotions remain under `results/defense/learned/versions/`. A best individual
 effort is not a fresh-test success rate; use the accompanying full evaluation
 to understand consistency. No successful mission has yet been verified.
 
+Current standard-policy best: **400 points**, all **1,682** neural actions
+verified after reloading the frozen model. Ten complete validation games:
+mean **360**, median **360**, all stage 1. This comes from the lower-entropy,
+ship-loss-boundary continuation at counter **2,034,432**, with ordinary
+temperature-1 sampling. The older versions below remain preserved.
+
 The first preserved learned checkpoint, after 102,400 training actions, scored
 320 in its best validation game (1,617 verified neural actions). Its ten-game
 mean was 292, median 290, and all games remained in stage 1. This is an initial
