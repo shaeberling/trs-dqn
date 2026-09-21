@@ -122,6 +122,46 @@ class DefenseTests(unittest.TestCase):
         finally:
             env.close()
 
+    def test_scrolling_non_hud_animation_is_not_a_score_error(self):
+        env = DefenseEnv()
+        try:
+            env.reset(12)
+            count = 0
+
+            def animate(_):
+                nonlocal count
+                count += 1
+                env.video[0] = 128
+                env.video[0, count] = ord("A")
+
+            with patch.object(env.trs, "run_for_tstates", side_effect=animate):
+                _, reward, done, truncated, info = env.step(0)
+            self.assertEqual(count, 9)
+            self.assertEqual(reward, 0)
+            self.assertEqual(info["score"], 0)
+            self.assertEqual(info["lives"], 4)
+            self.assertFalse(done or truncated or info["life_lost"])
+        finally:
+            env.close()
+
+    def test_unstable_numeric_hud_is_still_rejected(self):
+        env = DefenseEnv()
+        try:
+            env.reset(12)
+            count = 0
+
+            def redraw(_):
+                nonlocal count
+                count += 1
+                env.video[:] = hud(f"{count*20} ****".encode())
+
+            with patch.object(env.trs, "run_for_tstates", side_effect=redraw):
+                with self.assertRaisesRegex(RuntimeError, "numeric HUD did not settle"):
+                    env.step(0)
+            self.assertEqual(env.score, 0)
+        finally:
+            env.close()
+
     def test_truncation_and_action_validation(self):
         env = DefenseEnv(max_steps=1)
         try:

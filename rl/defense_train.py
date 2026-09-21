@@ -103,6 +103,7 @@ def main():
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm="ppo", game_sha256=GAME_SHA256,
                   native_sha256=sha256("libtrs.so"), environment_version=ENVIRONMENT_VERSION,
+                  environment_source_sha256=sha256(Path(__file__).with_name("defense.py")),
                   action_names=list(ACTION_NAMES), observation="four raw 16x64 video-memory frames",
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
