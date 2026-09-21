@@ -193,8 +193,9 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-04-sil/status.json` and `metrics.jsonl`
-  (own-experience self-imitation; see notes below).
+- Live progress: `runs/defense-ppo-05-low-entropy/status.json` and its adjacent
+  `metrics.jsonl`. Run 04's self-imitation comparison has stopped cleanly;
+  its complete log and final resumable checkpoint are archived below.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -290,6 +291,14 @@ levels. Keep improving until the successful completion sequence is observed.
   made 64 PPO updates plus 16 self-imitation updates; its selected 300-point
   replay reproduced all **1,152** neural actions/screens/rewards after reloading
   frozen weights. This is an integration check, not improved performance.
+- Run 04 then completed **1,032,192 additional actions**, stopping cleanly at
+  inherited counter **1,232,896**, with 928 new complete training games.
+  Across ten validation rounds, its best mean was **312**, below the starting
+  checkpoint's **326**; the final round averaged **302**. Every round's best
+  was at most 320, and no game reached stage 2. This configuration did not
+  improve the policy. Its [complete log](results/defense/training/ppo-04-sil/metrics.jsonl)
+  and [final resumable checkpoint](results/defense/training/ppo-04-sil/final-checkpoint/state.json)
+  are retained; the newer lower-entropy continuation now has the machine.
 
 Continue the self-imitation experiment from the archived starting checkpoint
 into a new run directory:
@@ -335,6 +344,34 @@ venv/bin/python -m rl.defense_evaluate \
 The optional recorder refuses incomplete suites, changed weights, existing
 output directories and temporal overrides; it never promotes a diagnostic
 into the live learner's best-artifact directory.
+
+### Lower-entropy continuation
+
+`defense-ppo-05-low-entropy` resumes the original 20-action checkpoint at
+**1,133,312** actions (the 380-point model, mean 358). Its entropy coefficient
+is **0.002**, down from 0.02; other PPO/gameplay settings are unchanged and
+self-imitation is disabled. This directly tests learning with less pressure
+to keep the action distribution diffuse. It does not scale inference logits:
+validation remains at temperature 1. The starting model and optimizer are
+[archived together](results/defense/training/ppo-05-low-entropy/start-checkpoint/state.json).
+
+Its first ten-game validation, after 102,400 additional actions, had mean
+**330**, median **330**, best **360**, all stage 1. Thus there is **no improvement
+claim** yet. The next two rounds averaged 332 and 338, still below the starting
+checkpoint. It initially ran alongside the self-imitation experiment, with
+separate artifact roots to avoid competing writers; run 04 is now paused.
+The experiment's local
+verified replay is `runs/defense-ppo-05-low-entropy/artifacts/best/replay.html`;
+the global 380-point policy and separate 400-point sampling probe stay intact.
+
+Reproduce from the archived optimizer into a new run directory:
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-low-entropy-reproduction \
+  --resume results/defense/training/ppo-05-low-entropy/start-checkpoint \
+  --artifacts runs/defense-low-entropy-reproduction/artifacts \
+  --entropy .002 --sil-updates 0
+```
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
