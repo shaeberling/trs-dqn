@@ -313,7 +313,7 @@ class DefenseCurriculumTests(unittest.TestCase):
             self.assertTrue(expected[-1][2])
         finally:
             original.close()
-        for cells in ("score", "screen"):
+        for cells in ("score", "screen", "age"):
             with self.subTest(cells=cells):
                 env = DefenseCurriculumEnv(curriculum_probability=1, curriculum_lookback=8,
                                            curriculum_cells=cells)

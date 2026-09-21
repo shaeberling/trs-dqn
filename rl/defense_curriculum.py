@@ -1,7 +1,7 @@
 """Training-only resets to unmodified states reached by this learner itself.
 
-Archive selection uses visible stage and either score progress or coarse screen
-cells. No action script, hidden-state labels, demonstration files or bonuses.
+Archive selection uses visible stage and score, coarse screens or an own-action
+counter since the visible life/stage boundary. No hidden-state labels or bonuses.
 Complete-game evaluation always uses the ordinary DefenseEnv instead.
 """
 
@@ -18,17 +18,19 @@ class DefenseCurriculumEnv(DefenseEnv):
     def __init__(self, seed=0, curriculum_probability=.5, curriculum_score_interval=20,
                  curriculum_per_bin=4, curriculum_bins=16, curriculum_share=False,
                  worker_id=None, curriculum_reset=True, curriculum_lookback=0,
-                 curriculum_cells="score", curriculum_screen_interval=32, **config):
+                 curriculum_cells="score", curriculum_screen_interval=32,
+                 curriculum_age_interval=32, **config):
         if not np.isfinite(curriculum_probability) or not 0 <= curriculum_probability <= 1:
             raise ValueError("invalid curriculum probability")
         self.interval = positive_integer(curriculum_score_interval, "score interval", allow_zero=True)
         self.per_bin = positive_integer(curriculum_per_bin, "entries per bin")
         self.bins = positive_integer(curriculum_bins, "bins per stage")
         self.lookback = positive_integer(curriculum_lookback, "curriculum lookback", allow_zero=True)
-        if curriculum_cells not in ("score", "screen"):
+        if curriculum_cells not in ("score", "screen", "age"):
             raise ValueError("invalid curriculum cell representation")
         self.cells = curriculum_cells
         self.screen_interval = positive_integer(curriculum_screen_interval, "screen cell interval")
+        self.age_interval = positive_integer(curriculum_age_interval, "life age interval")
         if worker_id is not None:
             worker_id = positive_integer(worker_id, "worker ID", allow_zero=True)
         if curriculum_share and (not curriculum_probability or worker_id is None):
@@ -42,10 +44,13 @@ class DefenseCurriculumEnv(DefenseEnv):
         self.history = deque(maxlen=self.lookback+1)
         self.total_actions = 0
         self.progress_start_score = 0
+        self.life_steps = 0
 
-    def _key(self, stage, score, start_score, frames=None):
+    def _key(self, stage, score, start_score, frames=None, life_steps=None):
         if self.cells == "screen":
             return stage, screen_cell(frames)
+        if self.cells == "age":
+            return stage, (self.life_steps if life_steps is None else life_steps)//self.age_interval
         return stage, (score-start_score)//self.interval if self.interval else 0
 
     def _reserve_slot(self, key):
@@ -95,6 +100,7 @@ class DefenseCurriculumEnv(DefenseEnv):
             obs = super().reset(seed)
             self.full_game = True
             self.progress_start_score = 0
+            self.life_steps = 0
             self.segment_source_worker = self.segment_source_action = None
         self.segment_start_score, self.segment_start_stage = self.score, self.stage
         self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score, obs)
@@ -113,10 +119,13 @@ class DefenseCurriculumEnv(DefenseEnv):
                     or saved.source_action < 1 or not 1 <= saved.lives <= 4
                     or not 1 <= saved.stage <= saved.highest_stage <= 3
                     or not 0 <= saved.progress_start_score <= saved.score
+                    or not isinstance(saved.life_steps, (int, np.integer))
+                    or isinstance(saved.life_steps, (bool, np.bool_)) or saved.life_steps < 0
                     or saved.frames.shape != (4, 16, 64) or saved.frames.dtype != np.uint8):
                 raise ValueError("invalid same-run Defense peer snapshot")
         for saved in entries:
-            key = self._key(saved.stage, saved.score, saved.progress_start_score, saved.frames)
+            key = self._key(saved.stage, saved.score, saved.progress_start_score,
+                            saved.frames, saved.life_steps)
             slot = self._reserve_slot(key)
             if slot is not None:
                 self._install(key, saved, slot)
@@ -125,9 +134,11 @@ class DefenseCurriculumEnv(DefenseEnv):
         previous_stage = self.stage
         obs, reward, terminal, truncated, info = super().step(action)
         self.total_actions += 1
+        self.life_steps += 1
         stage_entry = self.stage != previous_stage
         if stage_entry or info["life_lost"]:
             self.progress_start_score = self.score
+            self.life_steps = 0
             self.last_archive_key = self._key(self.stage, self.score, self.progress_start_score, obs)
         if self.curriculum_probability and self.lookback:
             # Keep only actually visited states within this life and stage.
@@ -143,7 +154,7 @@ class DefenseCurriculumEnv(DefenseEnv):
             if sample:
                 self.last_archive_key = key
         else:
-            progress_entry = bool(self.interval and key != self.last_archive_key)
+            progress_entry = bool((self.cells == "age" or self.interval) and key != self.last_archive_key)
             self.last_archive_key = key
         info.update(full_game=self.full_game, segment_start_score=self.segment_start_score,
                     segment_start_stage=self.segment_start_stage,
@@ -160,7 +171,8 @@ class DefenseCurriculumEnv(DefenseEnv):
                 if len(self.history) <= self.lookback:
                     return obs, reward, terminal, truncated, info
                 saved = self.history[0]
-                key = self._key(saved.stage, saved.score, saved.progress_start_score, saved.frames)
+                key = self._key(saved.stage, saved.score, saved.progress_start_score,
+                                saved.frames, saved.life_steps)
             slot = self._reserve_slot(key)
             if slot is not None or self.curriculum_share:
                 if saved is None:
@@ -171,13 +183,18 @@ class DefenseCurriculumEnv(DefenseEnv):
                     stage=saved.stage, score=saved.score, progress=saved.score-saved.progress_start_score,
                     progress_bin=(saved.score-saved.progress_start_score)//self.interval if self.interval else 0,
                     entry_kind="stage_entry" if stage_entry else (
-                        "screen_cell" if self.cells == "screen" else "score_progress"),
+                        "screen_cell" if self.cells == "screen" else
+                        "life_age" if self.cells == "age" else "score_progress"),
                     source_action=saved.source_action, source_episode_steps=saved.steps,
                     source_full_game=saved.source_full_game, retained=slot is not None, shared=self.curriculum_share,
                     source_parent_worker=self.segment_source_worker,
                     source_parent_action=self.segment_source_action)
                 if self.cells == "screen":
                     info["curriculum_archive_add"]["screen_cell"] = key[1]
+                if self.cells == "age":
+                    info["curriculum_archive_add"].update(
+                        life_steps=saved.life_steps, life_age_bin=key[1],
+                        trigger_life_steps=self.life_steps)
                 if self.lookback:
                     info["curriculum_archive_add"].update(
                         lookback_actions=self.total_actions-saved.source_action,
