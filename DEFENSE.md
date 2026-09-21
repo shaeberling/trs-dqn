@@ -1337,6 +1337,18 @@ and full replay/model bundle are preserved as this independent run's baseline.
 This is early learning from random initialization, far below the established
 best, not a replacement for that model or evidence of stage progress.
 
+At **1,900,544** actions, the fresh-seed learner's ten complete games averaged
+**434**, median **440**, best **460**, still stage 1. That
+[optimizer checkpoint](results/defense/training/ppo-17-fresh-seed/step-000001900544/evaluation.json)
+is preserved as an intermediate improvement over its 308-point initial
+validation mean. Its first 460-point effort occurred at **1,400,832**; that
+[checkpoint](results/defense/training/ppo-17-fresh-seed/step-000001400832/evaluation.json)
+and its [verified replay](results/defense/training/ppo-17-fresh-seed/replay-460/replay.html)
+are also preserved. These are two different models: the replay belongs to
+the earlier first-best checkpoint, not the later higher-mean one. Neither
+approaches the established 10,480-point global best. This independent learner
+continues from its own experience, with no prior model or demonstration data.
+
 ### Optional state-dependent output-weight exploration
 
 Run 15 (bias-noise SD 1) stopped gracefully at **12,708,608** actions after
