@@ -2019,6 +2019,14 @@ progression, not a claimed success of the calibration. Runs 17, 20 and DQN 22
 continue. The sole collector includes the new full trial and all old sources,
 but neither small check. The shared best remains unchanged.
 
+Run 23's [first ten complete games](results/defense/training/ppo-23-life-age/step-000011987712/evaluation.json),
+at **11,987,712** (**106,496** actions after calibration), averaged **9,257**,
+median **10,280**, best **10,360**, all stage 1 without a mission. Its
+[verified replay](results/defense/training/ppo-23-life-age/first-replay/replay.html)
+reproduced **2,507** actions. The full model/optimizer is preserved. This first
+regular batch is below the calibrated parent, not an improvement; the longer
+trial continues without replacing the stronger shared best.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-age-calibration-reproduction \
   --resume results/defense/training/ppo-21-long-lookback/step-000011750144 \
