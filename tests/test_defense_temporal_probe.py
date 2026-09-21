@@ -71,11 +71,36 @@ class DefenseTemporalProbeTests(unittest.TestCase):
                     contextlib.redirect_stdout(io.StringIO()):
                 defense_temporal_probe.main()
             self.assertEqual(evaluate.call_args.kwargs['max_steps'],0)
+            self.assertEqual(evaluate.call_args.kwargs['observation_stride'],2)
+            self.assertIs(evaluate.call_args.args[0],policy)
             self.assertEqual(list(evaluate.call_args.args[1]),list(range(10000,10010)))
             saved=json.loads((p/'out.json').read_text())
             self.assertTrue(saved['evaluation_only']);self.assertFalse(saved['promotion_eligible'])
             self.assertEqual(saved['nominal_history_span_tstates'],300000)
             self.assertEqual(checkpoint.read_bytes(),b'frozen')
+
+    def test_greedy_probe_preserves_policy_and_records_original_spacing(self):
+        from rl.defense_learning import DQN_ALGORITHM, greedy_policy
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp); checkpoint=p/'model.safetensors'; checkpoint.write_bytes(b'frozen-q')
+            cfg=dict(algorithm=DQN_ALGORITHM,game_sha256='game',environment_version='version',
+                     tstates=100000,observation_stride=1)
+            (p/'state.json').write_text(json.dumps(dict(config=cfg)))
+            policy=greedy_policy(lambda obs: np.zeros(len(obs),np.int32))
+            evaluation=dict(complete_games=10,incomplete_games=0,games=[])
+            with patch.object(sys,'argv',['probe',str(checkpoint),'--stride','2','--output',str(p/'out.json')]), \
+                    patch.object(defense_temporal_probe,'load_policy',return_value=(policy,cfg)), \
+                    patch.object(defense_temporal_probe,'evaluate',return_value=evaluation) as evaluate, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                defense_temporal_probe.main()
+            self.assertIs(evaluate.call_args.args[0],policy)
+            self.assertEqual(evaluate.call_args.kwargs['observation_stride'],2)
+            saved=json.loads((p/'out.json').read_text())
+            self.assertEqual(saved['checkpoint_observation_stride'],1)
+            self.assertEqual(saved['parameter_updates'],0)
+            self.assertFalse(saved['promotion_eligible'])
+            self.assertIn('greedy',saved['policy'])
+            self.assertEqual(checkpoint.read_bytes(),b'frozen-q')
 
 
 if __name__ == '__main__':

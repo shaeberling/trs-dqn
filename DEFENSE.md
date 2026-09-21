@@ -205,8 +205,7 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-17-fresh-seed/status.json`,
-  `runs/defense-dqn-22-fresh/status.json`,
+- Live progress: `runs/defense-dqn-22-fresh/status.json`,
   `runs/defense-dqn-24-bootstrap/status.json` and
   `runs/defense-ppo-25-matched-history/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
@@ -1699,7 +1698,21 @@ and [full log](results/defense/training/ppo-20-encoder-transfer/metrics.jsonl)
 are preserved alongside the earlier 640-point replay. No real training or
 evaluation game reached stage 2 or a mission. The repeated score/depth plateau,
 not a wall-clock deadline, motivated assigning its slot to bootstrap DQN.
-The fresh-seed PPO lineage continues independently.
+The fresh-seed PPO lineage continued independently until the later plateau
+described below.
+
+Run 17 eventually stopped cleanly at **9,289,728** actions, with **3,969**
+complete boot games, **2,649** restored segments and **92** complete ten-game
+validations. There were **27** evaluations after its 6,504,448-action best;
+none exceeded that checkpoint's mean or best score. The last ten means ranged
+from **548 to 588**. Its final evaluation at **9,207,808** averaged **580**,
+median **590**, best **600**. Neither training nor evaluation reached stage 2
+or a mission. The [final optimizer checkpoint](results/defense/training/ppo-17-fresh-seed/final-checkpoint/state.json)
+and [losslessly compressed full log](results/defense/training/ppo-17-fresh-seed/metrics.jsonl.gz)
+are preserved; decompression was byte-checked against the unchanged local log.
+The earlier full 2,890-point checkpoint and verified replay remain available.
+This score/depth plateau, not elapsed time, prompted releasing its compute
+for the continuing timing and value-learning experiments.
 
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
@@ -1914,6 +1927,31 @@ venv/bin/python -m rl.defense_temporal_probe \
 ```
 
 ### Trainable observation spacing
+
+The frozen Defense timing probe now uses the environment's native spacing
+instead of the wrapper, allowing **greedy DQN** as well as categorical PPO
+without changing either policy's action rule. It records original and probe
+spacing separately, retains the reused-seed restriction, and cannot promote
+results. All **237 regression tests** passed. A
+[PPO parity check](results/defense/validation/native-probe-ppo-parity.json)
+reproduced all ten earlier wrapper game records exactly.
+
+For ordinary DQN's frozen **1,700,000** checkpoint, the same ten seeds gave:
+
+| Action interval / frame stride | Mean | Median | Best |
+| --- | ---: | ---: | ---: |
+| [100,000 / 1, baseline](results/defense/validation/dqn-1700000-timing-baseline.json) | 1,372 | 1,470 | 1,670 |
+| [50,000 / 1](results/defense/validation/dqn-1700000-tstates-50000-stride-1.json) | 601 | 560 | 1,370 |
+| [50,000 / 2](results/defense/validation/dqn-1700000-tstates-50000-stride-2.json) | 924 | 540 | 2,220 |
+
+The baseline reproduced every saved game record exactly. All thirty games
+ended in stage 1 without a mission, and weights remained unchanged. Wider
+history partially recovers the mean at the faster cadence, but is still below
+the original timing and has a lower median than either control. Its higher
+single score is diagnostic only, not a new trained or promoted best. This
+mixed result does not currently justify a separate faster-action DQN run;
+ordinary DQN continues at its original timing while PPO tests learning at the
+faster cadence.
 
 Both Defense trainers now accept `--observation-stride` (positive integer,
 default **1**). The policy still receives exactly four visible frames. Stride
