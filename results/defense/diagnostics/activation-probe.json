@@ -1,0 +1,47 @@
+{
+  "purpose": "Read-only activation coverage check before considering neuron recycling or partial reinitialization",
+  "reference": "https://proceedings.mlr.press/v202/sokar23a.html",
+  "method": "Each frozen model sees every four-frame policy input from its own verified replay. Post-ReLU activity is averaged across observations and spatial positions for convolutional channels, and across observations for hidden units. Relative activity divides each unit's mean absolute activity by its layer's mean. No weights are updated.",
+  "parameter_updates": 0,
+  "columns": ["layer", "units", "never_active", "relative_activity_at_most_0.025", "relative_activity_at_most_0.1", "mean_activity"],
+  "models": [
+    {
+      "source": "results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+      "checkpoint_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+      "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+      "actions": 2580,
+      "score": 10480,
+      "layers": [["conv0",16,0,0,0,0.1513005395035416],["conv1",32,0,0,0,0.33535514599517025],["conv2",32,0,0,0,0.2495724560517636],["hidden",256,4,13,35,1.5618660232822212]]
+    },
+    {
+      "source": "runs/defense-ppo-18-weight-noise/artifacts/versions/step-000010586880-c2a1238936af-seed-10001",
+      "checkpoint_sha256": "c2a1238936af863afd32d18a3a841085f09a362075f4cf502aac51637a410607",
+      "trace_sha256": "aca63b42929ba9d4603fa0b8269868aa2dff058092ef829d1a93d3c1bfbcb0e9",
+      "actions": 2502,
+      "score": 10480,
+      "layers": [["conv0",16,0,0,0,0.13055752040599272],["conv1",32,0,0,0,0.23286882895612426],["conv2",32,0,0,0,0.1498465422065608],["hidden",256,5,19,37,1.1010233623744778]]
+    },
+    {
+      "source": "runs/defense-ppo-19-moderate-weight-noise/artifacts/versions/step-000010586880-b4b23dc9fed0-seed-10004",
+      "checkpoint_sha256": "b4b23dc9fed075ff6bfb7358c242ddfcd399629d7748cebbc9161e9a0a4144f6",
+      "trace_sha256": "b09fe8e59f3bf1c1654e6f5c0784c6550fb9c514b25d26b2fc11ea9e9c814cf5",
+      "actions": 2580,
+      "score": 10480,
+      "layers": [["conv0",16,0,0,0,0.125961224804636],["conv1",32,0,0,1,0.22724010760231134],["conv2",32,0,0,0,0.14745627652810622],["hidden",256,6,19,38,1.0677834792506373]]
+    },
+    {
+      "source": "results/defense/training/ppo-17-fresh-seed/replay-460",
+      "checkpoint_sha256": "7df99a583c3fb04fbe0b984792df60d79848fe5bb565c5dca5481606ce4dc095",
+      "trace_sha256": "6698e7ed346e54d0c5fb5a99d2d94295dac3a8f7ab12491a5ecc54890e743682",
+      "actions": 1701,
+      "score": 460,
+      "layers": [["conv0",16,0,0,0,0.09769614423105008],["conv1",32,0,0,1,0.12411342091689273],["conv2",32,0,0,0,0.11058635068673349],["hidden",256,5,8,12,0.5901585380794895]]
+    }
+  ],
+  "limitations": [
+    "Each model is measured on one selected trajectory, not representative training batches or common-distribution comparative data.",
+    "Zero activity on this sample does not prove a unit is globally dead or useless.",
+    "No widespread fully inactive channel collapse was observed here; this does not rule out plasticity or representation problems.",
+    "No neuron recycling or ReDo training was performed; this is a diagnostic only."
+  ]
+}

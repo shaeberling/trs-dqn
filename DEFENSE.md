@@ -1516,6 +1516,70 @@ one selected game and the older checkpoint's GAE lambda 0.95 differ from the
 continuing learners. The final 20-action partial block is recorded separately.
 Reward scaling, optimizer and architecture remain unchanged on this evidence.
 
+### Optional fresh decision heads with the learner's own screen encoder
+
+`--initialize-encoder CHECKPOINT_DIRECTORY` starts a **new** Defense learner
+using only the convolutional layers and shared 256-unit screen-feature layer
+from an earlier own-trained Defense checkpoint. Both actor and value heads
+remain freshly randomized from the new seed; the usual initial actor scale
+of 0.1 still applies. The optimizer, action/episode counters, policy RNG,
+emulator episodes and own-state archives are fresh. No recorded actions,
+trajectories or opaque native snapshots are loaded. All encoder parameters
+remain trainable, and observations/rewards/action selection are unchanged.
+
+This is a proposed way to test a different decision policy without discarding
+all learned visual features. It is inspired by partial-reset work such as
+[Nikishin et al. (2022)](https://proceedings.mlr.press/v162/nikishin22a.html),
+but **not a reproduction**: that paper retains replay data, while this PPO
+experiment retains only learned encoder weights and starts new on-policy
+experience. A fresh action counter reports additional training, not the
+total cost including pretraining. Source checkpoint/state hashes and the
+source's training-action count are explicitly recorded in configuration.
+The checkpoint must match Defense's game, environment, action profile,
+parameter names, shapes and dtypes; non-finite encoder weights and a source
+that changes during loading are rejected before copying anything.
+
+Initialization and optimizer resume are mutually exclusive. A later `--resume`
+continues the new learner normally and preserves its ancestry without
+reapplying initialization or requiring the old source path to remain present.
+Without the new option, fresh-training and resume behavior are unchanged.
+This is optional preparation, not a change to the live production learners.
+
+Before considering neuron recycling, a separate
+[read-only activity probe](results/defense/diagnostics/activation-probe.json)
+measured every policy-input screen from four frozen models' own replays.
+Only **4–6 of 256** hidden units were never active in each sample; none of the
+convolutional channels was entirely inactive. This does not establish a
+widespread dead-neuron failure or rule out other representation problems.
+The statistic is inspired by
+[Sokar et al. (2023)](https://proceedings.mlr.press/v202/sokar23a.html); **ReDo
+has not been implemented or used for training**. Selected replay coverage is
+not a representative sample of every state the model could encounter.
+
+All **206 regression tests** passed, including exact encoder-copy/head-
+preservation checks, unchanged optimizer/source files, malformed or changing
+source rejection, and a real-emulator fresh-start/resume test. An isolated
+[four-worker integration run](results/defense/training/encoder-transfer-smoke-01/config.json)
+used seed 73 and run 12's encoder at source counter 10,447,616, with fresh
+heads/optimizer and its own counter starting at zero. After **16,384 new
+actions**, its [ten complete games](results/defense/training/encoder-transfer-smoke-01/checkpoint/evaluation.json)
+averaged **282**, median **280**, best **300**, all stage 1 with no mission.
+Its [replay](results/defense/training/encoder-transfer-smoke-01/replay/replay.html)
+reproduced **1,536** neural actions. Full logs, configuration, checkpoint and
+replay are preserved. This verifies integration, not improved learning or
+preservation of the old policy's performance. The run is excluded from the
+collector; no long encoder-transfer trial has yet been launched.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-encoder-transfer-check \
+  --initialize-encoder results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-encoder-transfer-check/artifacts --seed 73 \
+  --envs 4 --rollout 256 --batch-size 256 --entropy .002 --gae-lambda .99 \
+  --life-terminal --curriculum-probability .5 --curriculum-share \
+  --curriculum-boot-envs 1 --curriculum-lookback 32 --mlx-cache-mb 256 \
+  --eval-envs 4 --eval-every 16384 --steps 16384
+```
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a

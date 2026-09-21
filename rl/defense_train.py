@@ -25,7 +25,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path, default=Path("results/defense/learned"))
-    parser.add_argument("--resume", type=Path)
+    start = parser.add_mutually_exclusive_group()
+    start.add_argument("--resume", type=Path)
+    start.add_argument("--initialize-encoder", type=Path,
+                       help="fresh learner using only an own Defense checkpoint's screen encoder")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
     parser.add_argument("--seed", type=int, default=41)
     parser.add_argument("--envs", type=int, default=32)
@@ -78,7 +81,7 @@ def main():
         prior = json.loads((args.resume/"state.json").read_text())
         explicit = {word.split("=", 1)[0] for word in sys.argv[1:] if word.startswith("--")}
         for key, value in prior["config"].items():
-            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps")
+            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder")
                     and "--"+key.replace("_", "-") not in explicit
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
@@ -131,6 +134,7 @@ def main():
                 action_count=len(action_names(args.allow_enter)))
     rng = np.random.default_rng(args.seed)
     steps, episodes = 0, 0
+    initialization = None
     if prior:
         agent.model.load_weights(str(args.resume/"model.safetensors"))
         agent.optimizer.state = tree_unflatten(list(mx.load(str(args.resume/"optimizer.npz")).items()))
@@ -139,6 +143,13 @@ def main():
         rng.bit_generator.state = prior["rng"]
         steps, episodes = prior["steps"], prior["episodes"]
     else:
+        if args.initialize_encoder:
+            from .defense_initialization import initialize_encoder
+            try:
+                initialization = initialize_encoder(agent.model, args.initialize_encoder,
+                                                    allow_enter=args.allow_enter)
+            except (OSError, ValueError, KeyError) as error:
+                parser.error(str(error))
         # Broad initial exploration; no preference for a hand-selected action.
         agent.model.advantage.weight *= .1
         agent.model.advantage.bias *= .1
@@ -179,6 +190,13 @@ def main():
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
+    if initialization is not None:
+        config.update(initialization=initialization,
+                      initialization_source_sha256=sha256(Path(__file__).with_name("defense_initialization.py")))
+    elif prior and "initialization" in prior["config"]:
+        # Keep ancestry without reapplying initialization or requiring its source.
+        config["initialization"] = prior["config"]["initialization"]
+        config["initialization_source_sha256"] = prior["config"]["initialization_source_sha256"]
     if noise is not None:
         config.update(training_policy=f"learned categorical with per-life Gaussian {noise_kind} perturbations",
                       evaluation_policy="unperturbed learned categorical, sampled",
