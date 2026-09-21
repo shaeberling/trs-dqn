@@ -1980,6 +1980,14 @@ slot. The sole collector was restarted with stride-aware verification and this
 full trial added; all old sources remain, and small probes remain excluded.
 No stage-2 or mission success is claimed from launching it.
 
+Its first [ten complete evaluations](results/defense/training/ppo-25-matched-history/step-000010660608/evaluation.json),
+at **10,660,608** (**212,992** new actions), averaged **9,411**, median **9,590**,
+best **10,440**. All ended in stage 1 without a mission. Its full optimizer
+checkpoint and [5,061-action verified replay](results/defense/training/ppo-25-matched-history/first-replay/replay.html)
+are preserved. This first batch is below the frozen timing-matched parent and
+the short learning check; the longer trial continues, without replacing the
+stronger shared best.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -2123,6 +2131,13 @@ Both full online/target/optimizer checkpoints are preserved. All twenty games
 remained stage-1 losses. The next 1,800,000-action batch regressed to mean
 392, median 400, best 440: improvement is not monotonic, and these milestones
 do not replace the stronger PPO global best.
+
+At **2,000,000**, DQN's
+[ten-game mean was 1,187, median 1,260, best 2,060](results/defense/training/dqn-22-fresh/step-000002000000/evaluation.json).
+The [2,089-action verified replay](results/defense/training/dqn-22-fresh/replay-2060/replay.html)
+and full optimizer/target checkpoint are preserved. This is a new single-game
+best for the independent DQN lineage, but its mean is below the 1,700,000-action
+checkpoint's 1,372. All ten games remained stage-1 losses.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
