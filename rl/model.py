@@ -40,9 +40,12 @@ class QNetwork(nn.Module):
             x = nn.relu(layer(x))
         return nn.relu(self.hidden(x.reshape(x.shape[0], -1)))
 
-    def policy_value(self, screen):
+    def policy_value(self, screen, head_weight_noise=None):
         x = self.features(screen)
-        return self.advantage(x), self.value(x)[:, 0]
+        logits = self.advantage(x)
+        if head_weight_noise is not None:
+            logits = logits + mx.matmul(mx.stop_gradient(head_weight_noise), x[:, :, None])[:, :, 0]
+        return logits, self.value(x)[:, 0]
 
     def __call__(self, screen):
         x = self.features(screen)

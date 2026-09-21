@@ -36,6 +36,8 @@ def main():
     parser.add_argument("--entropy", type=float, default=.02)
     parser.add_argument("--policy-bias-noise", type=float, default=0,
                         help="training-only actor bias noise std, fixed per life; 0 disables")
+    parser.add_argument("--policy-weight-noise", type=float, default=0,
+                        help="training-only actor output-weight noise std, fixed per life; 0 disables")
     parser.add_argument("--gamma", type=float, default=.997)
     parser.add_argument("--gae-lambda", type=float, default=.95)
     parser.add_argument("--reward-scale", type=float, default=.01,
@@ -112,6 +114,9 @@ def main():
     if (not np.isfinite(args.policy_bias_noise) or args.policy_bias_noise < 0
             or (args.policy_bias_noise and args.sil_updates)):
         parser.error("policy-bias-noise must be finite/nonnegative and cannot be combined with SIL")
+    if (not np.isfinite(args.policy_weight_noise) or args.policy_weight_noise < 0
+            or (args.policy_weight_noise and (args.policy_bias_noise or args.sil_updates))):
+        parser.error("policy-weight-noise must be finite/nonnegative and cannot be combined with bias noise or SIL")
     if (not all(np.isfinite(v) for v in (args.learning_rate, args.entropy, args.gamma,
                                         args.gae_lambda, args.reward_scale))
             or args.learning_rate <= 0 or args.entropy < 0 or args.reward_scale <= 0
@@ -151,14 +156,20 @@ def main():
     boot_episodes = prior.get("boot_episodes", episodes) if prior else 0
     restored_segments = prior.get("restored_segments", 0) if prior else 0
     noise = None
-    if args.policy_bias_noise:
-        from .defense_noise import PolicyBiasNoise
+    if args.policy_bias_noise or args.policy_weight_noise:
+        from .defense_noise import PolicyBiasNoise, PolicyWeightNoise, NoiseRollout
         noise_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 1873]))
         if prior and "policy_noise_rng" in prior:
             noise_rng.bit_generator.state = prior["policy_noise_rng"]
         # Emulator episodes restart on resume, so draw new episode perturbations.
-        noise = PolicyBiasNoise(args.envs, len(action_names(args.allow_enter)),
-                                args.policy_bias_noise, noise_rng)
+        if args.policy_weight_noise:
+            noise = PolicyWeightNoise(args.envs, len(action_names(args.allow_enter)),
+                                      agent.model.advantage.weight.shape[1], args.policy_weight_noise, noise_rng)
+            noise_argument, noise_kind = "head_weight_noise", "output-weight"
+        else:
+            noise = PolicyBiasNoise(args.envs, len(action_names(args.allow_enter)),
+                                    args.policy_bias_noise, noise_rng)
+            noise_argument, noise_kind = "logit_bias", "output-bias"
     args.run.mkdir(parents=True, exist_ok=True)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm="ppo", game_sha256=GAME_SHA256,
@@ -169,10 +180,11 @@ def main():
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
     if noise is not None:
-        config.update(training_policy="learned categorical with per-life Gaussian output-bias perturbations",
+        config.update(training_policy=f"learned categorical with per-life Gaussian {noise_kind} perturbations",
                       evaluation_policy="unperturbed learned categorical, sampled",
                       policy_noise_source_sha256=sha256(Path(__file__).with_name("defense_noise.py")),
                       ppo_source_sha256=sha256(Path(__file__).with_name("ppo.py")),
+                      model_source_sha256=sha256(Path(__file__).with_name("model.py")),
                       policy_noise_reset="visible life loss or episode boundary; fresh draw after resume")
     if args.curriculum_probability:
         config.update(curriculum_archive_saved=False,
@@ -234,12 +246,10 @@ def main():
         agent.save(args.run/"latest", state())
         while not stop and (not args.steps or steps < args.steps):
             screens, actions_buffer, logps, values_buffer, rewards, boundaries = [], [], [], [], [], []
-            noise_buffer = []
+            noise_rollout = None if noise is None else NoiseRollout(noise)
             for _ in range(args.rollout):
-                bias = None if noise is None else noise.bias.copy()
-                actions, logp, values = agent.act(obs, rng, logit_bias=bias)
-                if noise is not None:
-                    noise_buffer.append(bias)
+                exploration = {} if noise is None else {noise_argument: noise_rollout.record()}
+                actions, logp, values = agent.act(obs, rng, **exploration)
                 screens.append(obs)
                 actions_buffer.append(actions)
                 logps.append(logp)
@@ -282,7 +292,7 @@ def main():
                 boundaries.append(boundary_row)
                 obs = np.stack(next_obs)
                 if noise is not None:
-                    noise.redraw(noise_boundaries)
+                    noise_rollout.redraw(noise_boundaries)
                 steps += args.envs
             _, last_value = agent.predict(mx.array(obs))
             advantages, returns = gae(np.asarray(rewards, np.float32), np.asarray(values_buffer),
@@ -291,14 +301,15 @@ def main():
             advantages = (advantages-advantages.mean())/(advantages.std()+1e-8)
             data = (np.concatenate(screens), np.concatenate(actions_buffer), np.concatenate(logps),
                     advantages.reshape(-1), returns.reshape(-1))
-            biases = np.concatenate(noise_buffer) if noise is not None else None
+            if noise is not None:
+                noise_bank, noise_ids = noise_rollout.arrays()
             metrics = []
             for _ in range(args.epochs):
                 order = rng.permutation(len(data[0]))
                 epoch_metrics = []
                 for start in range(0, len(order), args.batch_size):
                     indices = order[start:start+args.batch_size]
-                    extra = {} if biases is None else {"logit_bias": mx.array(biases[indices])}
+                    extra = {} if noise is None else {noise_argument: mx.array(noise_bank[noise_ids[indices]])}
                     loss, aux = agent.update(*(mx.array(x[indices]) for x in data), **extra)
                     mx.eval(loss, aux, agent.state)
                     if not np.isfinite(float(loss.item())):
@@ -331,7 +342,8 @@ def main():
                          entropy=float(np.mean(metrics, axis=0)[2]),
                          approx_kl=float(np.mean(metrics, axis=0)[3]),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
-                         **({"policy_bias_noise_std": noise.std, "policy_noise_draws": noise.draws}
+                         **({"policy_weight_noise_std" if args.policy_weight_noise else "policy_bias_noise_std":
+                             noise.std, "policy_noise_draws": noise.draws}
                             if noise is not None else {}),
                          **sil_metrics))
                 last_log = time.monotonic()
