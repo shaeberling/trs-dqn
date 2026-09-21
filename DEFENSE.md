@@ -1300,6 +1300,16 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-fresh-seed-reproductio
   --curriculum-lookback 32
 ```
 
+At **106,496 training actions**, run 17's
+[first ten complete games](results/defense/training/ppo-17-fresh-seed/first-validation.json)
+averaged **308**, median **300**, best **320**, all stage 1 and no mission.
+Its [first replay](results/defense/training/ppo-17-fresh-seed/first-replay/replay.html)
+reproduced all **1,604** neural actions; the
+[optimizer checkpoint](results/defense/training/ppo-17-fresh-seed/step-000000106496/state.json)
+and full replay/model bundle are preserved as this independent run's baseline.
+This is early learning from random initialization, far below the established
+best, not a replacement for that model or evidence of stage progress.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
