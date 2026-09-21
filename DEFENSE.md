@@ -305,6 +305,37 @@ Only one active production learner should write to `results/defense/learned`;
 parallel experiments must use separate artifact directories. Breakdown keeps
 its original action count and visible-score parser defaults.
 
+### Sampling diagnostic: preserved 400-point replay
+
+On the frozen 380-point checkpoint and the same ten validation seeds, reducing
+sampling temperature from 1 to **0.5** increased mean score from **358 to 384**,
+median from **360 to 380**, and best from **380 to 400**. Temperature **0.25**
+gave mean/median/best **380**. Every game remained in stage 1. These are reused
+validation results, not fresh testing or evidence of mission completion.
+
+The [400-point replay](results/defense/sampling-probes/temperature-050/replay.html)
+reproduced all **1,743** neural actions, screens and rewards after reloading the
+original weights with temperature 0.5. Its separate bundle includes weights,
+configuration, evaluation, trace and checksums. The HTML explicitly labels this
+an evaluation-only sampling probe. It does not replace `learned/best`, whose
+original temperature-1 policy and replay remain unchanged. Loading these same
+weights without the temperature override reproduces the original policy, not
+the diagnostic. This result motivates testing lower training entropy if the
+current self-imitation run plateaus; it does not yet establish that doing so
+will improve learning.
+
+```sh
+venv/bin/python -m rl.defense_evaluate \
+  results/defense/sampling-probes/temperature-050/model.safetensors \
+  --temperature .5 --seed 10000 --games 10 --envs 10 \
+  --output runs/defense-temperature-reproduction.json \
+  --replay-output runs/defense-temperature-reproduction
+```
+
+The optional recorder refuses incomplete suites, changed weights, existing
+output directories and temporal overrides; it never promotes a diagnostic
+into the live learner's best-artifact directory.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a

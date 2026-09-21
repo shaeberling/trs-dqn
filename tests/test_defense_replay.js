@@ -31,6 +31,11 @@ assert.equal(typeof read('metadata.trained_model'), 'boolean');
 if (read('metadata.trained_model')) {
   assert(html.includes('Trained screen-only neural policy'));
   assert.match(read('metadata.checkpoint_sha256'), /^[0-9a-f]{64}$/);
+  if (read('metadata.evaluation_only')) {
+    assert(html.includes('Evaluation-only sampling probe'));
+    assert(html.includes(`temperature ${read('metadata.temperature')}`));
+    assert.equal(read('metadata.promotion_eligible'), false);
+  }
 } else {
   assert(html.includes('not a trained agent'));
 }
