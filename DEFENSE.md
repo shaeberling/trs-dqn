@@ -1589,6 +1589,27 @@ character or graphics-bit-layout mismatch was found. This covers the recorded
 stage-1 game, not unseen stages or the quality of learned visual features;
 the input pipeline was left unchanged.
 
+### Broader frozen-policy validation
+
+The unchanged global-best model at counter **8,342,272** was evaluated on
+[100 additional complete games](results/defense/validation/step-8342272-seeds-30000-30099.json),
+seeds **30000–30099**, with eight workers, temperature 1, original 100,000-
+T-state action duration and no episode action cap. Mean score was **9,482.3**,
+median **10,280**, best **10,480**. **Zero** games reached stage 2, stage 3 or a
+successful mission; all 100 ended normally at zero ships. The model's hash
+was unchanged before/after evaluation. This broader batch did not reveal a
+rare stage clear missed by the routine ten-game checks. It is additional
+**validation**, not a held-out final test or proof that a clear is impossible.
+The report remains evaluation-only and cannot automatically promote a replay.
+No new best was found, and the existing verified best bundle is unchanged.
+
+```bash
+venv/bin/python -u -m rl.defense_evaluate \
+  results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004/model.safetensors \
+  --output runs/defense-expanded-validation-reproduction.json \
+  --games 100 --seed 30000 --envs 8 --max-steps 0
+```
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
