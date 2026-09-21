@@ -1665,6 +1665,11 @@ persist in subsequent run-17 batches, whose best scores returned to around 600;
 it is a capability observation, not reliable performance. Neither trial has
 advanced beyond stage 1, and both continue without changing the shared best.
 
+Run 20 reached **600** at **2,203,648** new actions:
+[ten-game mean 552, median 580](results/defense/training/ppo-20-encoder-transfer/step-000002203648/evaluation.json).
+The full optimizer/model and [1,985-action verified replay](results/defense/training/ppo-20-encoder-transfer/replay-600/replay.html)
+are preserved. All ten games remained in stage 1 without a mission.
+
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
 also checked all **2,581** frames of the global-best replay. Its **112** distinct
 character codes all fall within the encoder's graphics or ASCII ranges.
@@ -1694,6 +1699,26 @@ venv/bin/python -u -m rl.defense_evaluate \
   --output runs/defense-expanded-validation-reproduction.json \
   --games 100 --seed 30000 --envs 8 --max-steps 0
 ```
+
+The longer-lookback run 21 later reached a ten-game mean **10,478**, median
+**10,480**, best **10,480**, at counter **11,750,144**. Its
+[full frozen checkpoint](results/defense/training/ppo-21-long-lookback/step-000011750144/evaluation.json)
+was preserved and evaluated on the **same 100 broader validation seeds** above.
+That [comparison](results/defense/validation/step-11750144-seeds-30000-30099.json)
+gave mean **10,384.2**, median **10,480**, best **10,480**, with **63/100** games
+matching that best and minimum score **7,940**. Relative to the older frozen
+model on matching seeds, scores were higher in 96 games, equal in three and
+lower in one; the mean difference was **901.9 points**. This is improved score
+consistency on reused validation seeds, not a fresh final-test estimate or
+proof of better stage-clearing ability.
+
+All **100** games still ended at zero ships in **stage 1**, with no stage 2/3
+or successful mission. Weights were hash-checked unchanged. A separate
+[2,581-action verified replay](results/defense/validation/step-11750144-seeds-30000-30099-replay/replay.html)
+preserves this exact model's best game; its bundle and report remain explicitly
+evaluation-only and ineligible for automatic promotion. The shared best-effort
+link remains unchanged on a tied score. The stronger average has not solved
+the progression plateau.
 
 ### Longer own-state lead-in experiment
 
@@ -1883,7 +1908,7 @@ reproduced **1,570** actions. Online/target weights and Adam state are preserved
 Training epsilon was still approximately **0.9145** at this checkpoint; greedy
 evaluation contains none of that random exploration. This is an early baseline,
 not an improvement over the integration run or PPO. Once the 50,000-transition
-buffer filled, swap use remained near **5.45 GB** and the other learners
+buffer filled, swap use remained near **5.3 GiB** and the other learners
 continued progressing; MLX's reported DQN peak was about **296 MB** (excluding
 the NumPy replay buffer and emulator processes). Resource use remains monitored.
 
