@@ -193,8 +193,8 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-03-enter/status.json` and `metrics.jsonl`
-  (the optional learned-Enter experiment; see notes below).
+- Live progress: `runs/defense-ppo-04-sil/status.json` and `metrics.jsonl`
+  (own-experience self-imitation; see notes below).
 - Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -265,6 +265,45 @@ levels. Keep improving until the successful completion sequence is observed.
   in sampled screen frames, even with Enter continuously held. A 64-action
   GPU smoke test completed model reload and exact 21-action replay verification.
   This is an efficiency hypothesis to test through learning, not a mission win.
+- Run 03 stopped cleanly at **1,073,152** actions. Its ten validation rounds
+  never reached stage 2. The strongest round was step **200,704**: mean **326**,
+  median **320**, best **340**; the last round fell to mean **286**. Its
+  [full log](results/defense/training/ppo-03-enter/metrics.jsonl) and strongest
+  [resumable checkpoint](results/defense/training/ppo-03-enter/step-000000200704/state.json)
+  are archived, including weights and optimizer. The separate 380-point
+  20-action best remains unchanged.
+- A further [100-game random-action timing check](results/defense/temporal-probes/random-400k-100-games.json)
+  at 400,000 T-states yielded mean **288.8**, median **280**, best **320**,
+  all stage 1. No episodes hit its diagnostic cap. These diagnostic actions
+  are not supplied to the learner.
+- `defense-ppo-04-sil` resumes run 03's strongest compatible checkpoint with
+  four optional self-imitation updates per rollout. All other training
+  settings are unchanged. The auxiliary replay contains only this learner's
+  own newly collected training screens, actions and discounted score rewards;
+  no evaluation games, replay files, demonstrations or hidden-state targets.
+  Positive return advantages select the useful updates. A bounded suffix
+  ends at a real learning terminal; truncations are discarded. Replay memory
+  is not checkpointed and refills after resuming (the sampling RNG is saved).
+  The inherited action counter starts at 200,704, not at run 03's final count.
+- Before activation, a [4,096-action smoke run](results/defense/training/sil-smoke-01/metrics.jsonl)
+  exercised the auxiliary optimizer and complete-game evaluation. The optimizer
+  made 64 PPO updates plus 16 self-imitation updates; its selected 300-point
+  replay reproduced all **1,152** neural actions/screens/rewards after reloading
+  frozen weights. This is an integration check, not improved performance.
+
+Continue the self-imitation experiment from the archived starting checkpoint
+into a new run directory:
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-sil-reproduction \
+  --resume results/defense/training/ppo-03-enter/step-000000200704 \
+  --artifacts runs/defense-sil-reproduction/artifacts --sil-updates 4
+```
+
+`--sil-updates 0` (the default for a fresh run) leaves plain PPO unchanged.
+Only one active production learner should write to `results/defense/learned`;
+parallel experiments must use separate artifact directories. Breakdown keeps
+its original action count and visible-score parser defaults.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
