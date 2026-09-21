@@ -1045,6 +1045,42 @@ were reproduced after reloading the model. This checks integration, not
 improvement: performance is below the parent. Its model, optimizer and log are
 preserved, and this smoke/probe source is excluded from the best collector.
 
+### Diverse-screen curriculum: run 13
+
+`defense-ppo-13-screen-cells` starts from the same run-10 checkpoint at counter
+**9,046,784** as run 12. Relative to that continuing lookback comparison, it
+changes archive grouping to screen cells, capacity from 16 score bins to 128
+screen cells per stage, and snapshots per cell from four to one. Screen-key
+changes are sampled every 32 actions. These are several archive changes, not
+a single-parameter comparison. Both trials retain a 32-action lookback, GAE
+lambda 0.99, entropy 0.002, 32 workers, 256-action rollouts, 50% reset probability
+for eligible workers, and eight protected boot-only workers. The
+[configuration](results/defense/training/ppo-13-screen-cells/resume-config.json)
+records the exact settings and new implementation hashes.
+
+The archive starts empty and uses only new own-play states. The smoke model
+and archive are not reused. There are no wall-clock, episode-action or total
+training-action limits. Ordinary ten-game evaluations start from boot, and
+the single verification collector now includes this trial's isolated artifact
+source. This run replaces the stopped exploration trial, not the preserved
+best model or the continuing run 12.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-screen-cells-reproduction \
+  --resume results/defense/training/ppo-10-long-credit/step-000009046784 \
+  --artifacts runs/defense-screen-cells-reproduction/artifacts \
+  --curriculum-lookback 32 --curriculum-cells screen --curriculum-bins 128 \
+  --curriculum-per-bin 1 --curriculum-screen-interval 32
+```
+
+After **106,496 additional actions**, run 13's
+[first ten complete validation games](results/defense/training/ppo-13-screen-cells/first-validation.json)
+averaged **9,362**, median **8,960**, best **10,480**, all stage 1 and no mission.
+Its local replay reproduced all **2,505** neural actions; the
+[verification record](results/defense/training/ppo-13-screen-cells/first-verification.json)
+is retained. This ties the shared best score but is below the parent mean;
+it is not evidence of improvement. The full run continues unchanged.
+
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
 unmodified complete playthrough reaching those stages**. Validate them when a
