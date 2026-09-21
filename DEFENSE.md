@@ -409,7 +409,7 @@ and [temperature-1.5 bundle](results/defense/sampling-probes/step-7244544-temper
 preserve unchanged weights, complete evaluations, traces and reloaded-policy
 verification. These diagnostic bundles are excluded from best-model promotion.
 This small comparison does not establish that changing training entropy would
-help; both active learners continue with their original settings.
+help; these probes did not change the active learners' settings.
 
 An additional [action-timing diagnostic](results/defense/sampling-probes/step-8342272-tstates-50000.json)
 used the frozen **10,480-point** model at counter **8,342,272**, ordinary
@@ -724,7 +724,8 @@ protected boot workers. All PPO settings, including **256-action rollouts and
 ship-loss learning boundaries**, remain unchanged. The
 [configuration](results/defense/training/ppo-09-curriculum-life/resume-config.json)
 records this comparison. Run 08 initially remained the unchanged baseline;
-it was later archived as described above. Run 09 remains active.
+it was later archived as described above. Run 09 was subsequently archived too,
+after the results documented below.
 
 This is not a restart of the earlier failed curriculum's final policy. Run 07
 started from a weaker 460-point model, used 128-action rollouts and did not have
@@ -761,7 +762,7 @@ confirmed an initial visible score of zero with four ships, total reward of
 segment or a claimed stage clear. The
 [resumable milestone](results/defense/training/ppo-09-curriculum-life/step-000006941440/state.json)
 preserves weights, optimizer and the complete evaluation. All older models
-and verified replays remain available, and both active runs continue unchanged.
+and verified replays remain available; both then-active runs continued unchanged.
 The visible reward trace contains thirty 20-point increments and awards of
 100, 750 and 1,500 points. The large score gain therefore does not by itself
 demonstrate a longer survival time or a later stage.
@@ -781,7 +782,7 @@ At counter **7,146,240**, after **507,904 additional actions**, run 09 reached
 Ten complete validation games: mean **8,169**, median **8,030**, best **10,260**,
 still all stage 1 and no mission. The
 [resumable checkpoint](results/defense/training/ppo-09-curriculum-life/step-000007146240/state.json)
-and complete replay bundle are preserved; both active experiments continue.
+and complete replay bundle are preserved; both then-active experiments continued.
 
 At counter **7,244,544**, after **606,208 additional actions**, run 09 reached
 **10,280 points**, with all **2,519** actions exactly verified from boot.
@@ -804,6 +805,19 @@ still all stage 1 and no mission. Its separate
 and immutable replay bundle are preserved. No successful stage clear has
 been observed in this run or the archived longer-rollout comparison.
 
+Run 09 eventually stopped cleanly at counter **9,677,568**, after **3,039,232
+additional actions**, **1,010 new complete boot games**, **740 restored practice
+segments**, and **30 complete validation rounds**. Its best stayed at 10,480
+for thirteen further rounds after first reaching that score, with no stage-2
+or mission-success event in training or evaluation. The strongest mean was
+**10,439**, median **10,460**, best **10,480**, at counter **9,243,392**; that
+[model and optimizer](results/defense/training/ppo-09-curriculum-life/step-000009243392/state.json)
+are preserved separately from the best-effort model. Its
+[complete log](results/defense/training/ppo-09-curriculum-life/metrics.jsonl) and
+[final resumable state](results/defense/training/ppo-09-curriculum-life/final-checkpoint/state.json)
+are archived. The successful score milestones remain available. The freed
+training slot now tests stronger exploration, while run 10 continues unchanged.
+
 ### Longer-credit comparison: run 10
 
 `defense-ppo-10-long-credit` resumes the preserved **10,480-point** checkpoint
@@ -822,8 +836,9 @@ from the saved checkpoint; the own-experience snapshot archive starts empty
 and refills from newly played states. There are no game/episode action caps
 or wall-clock limits. Three focused checks passed for analytic trace decay,
 episode-boundary isolation and optimizer-resume equivalence before launch.
-Run 09 continues unchanged as the reference experiment. Both write isolated
-artifacts, with the single verification collector watching both sources.
+Run 09 initially continued unchanged as the reference experiment, and was later
+archived as described above. Run 10 remains active. Experiments write isolated
+artifacts, with the single verification collector watching their sources.
 
 ```sh
 venv/bin/python -u -m rl.defense_train --run runs/defense-long-credit-reproduction \
@@ -839,6 +854,42 @@ reloading the weights; the [verification record](results/defense/training/ppo-10
 is preserved. This first result is below its starting checkpoint's mean 9,981
 and best 10,480, so it does not replace the shared best or establish improvement.
 The experiment continues unchanged beyond this initial validation.
+
+### Stronger-exploration comparison: run 11
+
+`defense-ppo-11-exploration` resumes the **same 10,480-point checkpoint** at
+counter **8,342,272** as run 10. Its only changed parameter relative to that
+parent is **entropy coefficient 0.002 to 0.01**, confirmed by comparing the
+[saved configuration](results/defense/training/ppo-11-exploration/resume-config.json).
+GAE lambda remains 0.95 here. Thus run 10 tests longer credit assignment and
+run 11 tests stronger exploration, each changing one parameter from their
+common preserved starting point. Neither intervention has yet established
+that it can clear the first stage.
+
+Motivation: the original curriculum run repeatedly learned high-scoring
+stage-1 behavior without surviving to stage 2. Encouraging more varied learned
+actions during training is a hypothesis for escaping that behavior, not a
+guaranteed improvement. This is different from the earlier evaluation-only
+sampling probes: ordinary temperature-1 sampling is retained at evaluation.
+All screen-input, score-reward, timing, action, ship-loss, curriculum and
+protected-boot settings remain unchanged. The snapshot archive starts empty,
+using only this run's newly reached states. There are no wall-clock or action
+limits. The collector includes this isolated source; the existing best model
+and replay remain available throughout training.
+
+```sh
+venv/bin/python -u -m rl.defense_train --run runs/defense-exploration-reproduction \
+  --resume results/defense/training/ppo-09-curriculum-life/step-000008342272 \
+  --artifacts runs/defense-exploration-reproduction/artifacts --entropy .01
+```
+
+After **106,496 additional actions**, run 11's
+[first validation](results/defense/training/ppo-11-exploration/first-validation.json)
+averaged **9,585**, median **10,140**, best **10,260**, all stage 1 and no mission.
+Its local replay reproduced all **2,500** neural actions after reloading the
+frozen model; the [verification record](results/defense/training/ppo-11-exploration/first-verification.json)
+is preserved. This is below its starting model's mean 9,981 and best 10,480;
+it does not replace the shared best. The experiment continues unchanged.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
