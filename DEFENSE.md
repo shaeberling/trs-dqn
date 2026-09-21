@@ -206,8 +206,8 @@ continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
 - Live progress: `runs/defense-ppo-17-fresh-seed/status.json`,
-  `runs/defense-ppo-18-weight-noise/status.json` and
-  `runs/defense-ppo-19-moderate-weight-noise/status.json`, each with an adjacent
+  `runs/defense-ppo-19-moderate-weight-noise/status.json` and
+  `runs/defense-ppo-20-encoder-transfer/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -254,6 +254,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-17-fresh-seed/artifacts \
   --source runs/defense-ppo-18-weight-noise/artifacts \
   --source runs/defense-ppo-19-moderate-weight-noise/artifacts \
+  --source runs/defense-ppo-20-encoder-transfer/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -1455,6 +1456,20 @@ match. This is an early continuation result, not a new best. The full source
 checkpoint and replay remain in the local run directory; the calibration's
 complete bundle is committed above. The existing shared best remains unchanged.
 
+Run 18 subsequently stopped gracefully at **12,233,472** actions after
+**1,753,088** additional actions beyond calibration, **535** complete boot
+games, **342** restored training segments and **17** ten-game evaluations.
+No training or evaluation record reached stage 2 or completed a mission.
+Best remained **10,480**; peak mean was **10,460**, median **10,460**, at
+**12,086,016**. Its last evaluation at **12,184,320** averaged **8,520**,
+median **9,145**, best **10,460**. The observed depth plateau, rather than a
+wall-clock limit or a claim that this method can never work, prompted a new
+experiment in its slot. The [full log](results/defense/training/ppo-18-weight-noise/metrics.jsonl),
+[final optimizer](results/defense/training/ppo-18-weight-noise/final-checkpoint/state.json),
+[peak-mean checkpoint](results/defense/training/ppo-18-weight-noise/step-000012086016/evaluation.json)
+and [2,502-action verified best replay](results/defense/training/ppo-18-weight-noise/best-effort/replay.html)
+are preserved. The larger-noise trial and fully fresh learner continue.
+
 The larger SD **0.02** was also checked for four rollouts with the same normal
 32-worker setup and the same run-12 parent, rather than inferring its behavior
 solely from the failed four-worker check. Its
@@ -1543,7 +1558,8 @@ Initialization and optimizer resume are mutually exclusive. A later `--resume`
 continues the new learner normally and preserves its ancestry without
 reapplying initialization or requiring the old source path to remain present.
 Without the new option, fresh-training and resume behavior are unchanged.
-This is optional preparation, not a change to the live production learners.
+Initialization is applied only when requested for a new learner; it does not
+alter already-running learners.
 
 Before considering neuron recycling, a separate
 [read-only activity probe](results/defense/diagnostics/activation-probe.json)
@@ -1568,7 +1584,7 @@ Its [replay](results/defense/training/encoder-transfer-smoke-01/replay/replay.ht
 reproduced **1,536** neural actions. Full logs, configuration, checkpoint and
 replay are preserved. This verifies integration, not improved learning or
 preservation of the old policy's performance. The run is excluded from the
-collector; no long encoder-transfer trial has yet been launched.
+collector. It preceded the full-size trial described below.
 
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-encoder-transfer-check \
@@ -1578,6 +1594,33 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-encoder-transfer-check
   --life-terminal --curriculum-probability .5 --curriculum-share \
   --curriculum-boot-envs 1 --curriculum-lookback 32 --mlx-cache-mb 256 \
   --eval-envs 4 --eval-every 16384 --steps 16384
+```
+
+`defense-ppo-20-encoder-transfer` replaces stopped run 18. It initializes
+directly from run 12's encoder at source counter **10,447,616**, not from the
+four-worker smoke model. Its own counter starts at **zero**. The
+[configuration](results/defense/training/ppo-20-encoder-transfer/config.json)
+uses the same seed **73**, fresh-head initialization, 32 workers, rollout 256,
+batch 512, entropy 0.002, discount 0.997, GAE lambda 0.99, life boundaries and
+score-bin/lookback curriculum settings as run 17. Neither uses policy noise
+or SIL. Apart from paths and initialization provenance, the only new config
+field difference is an explicit zero for weight noise, which was absent
+(and disabled) in run 17's earlier code. All copied features remain trainable.
+
+This is a comparison of fresh versus own-pretrained visual features, not
+training from scratch at the same total interaction cost: the source encoder
+already embodies earlier learning. No output head, optimizer history,
+trajectory or native state is transferred. Training and complete-game
+evaluation are uncapped. The collector includes the new trial and retains
+all previous artifact sources; the global best has not been replaced.
+
+```bash
+venv/bin/python -u -m rl.defense_train --run runs/defense-encoder-transfer-reproduction \
+  --initialize-encoder results/defense/training/ppo-12-lookback/step-000010447616 \
+  --artifacts runs/defense-encoder-transfer-reproduction/artifacts --seed 73 \
+  --rollout 256 --entropy .002 --gae-lambda .99 --life-terminal \
+  --curriculum-probability .5 --curriculum-share --curriculum-boot-envs 8 \
+  --curriculum-lookback 32
 ```
 
 A [screen-encoding audit](results/defense/diagnostics/screen-encoding-audit.json)
