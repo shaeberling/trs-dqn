@@ -205,8 +205,7 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-16-strong-bias-noise/status.json`,
-  `runs/defense-ppo-17-fresh-seed/status.json` and
+- Live progress: `runs/defense-ppo-17-fresh-seed/status.json` and
   `runs/defense-ppo-18-weight-noise/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
@@ -1281,6 +1280,21 @@ Its [verification record](results/defense/training/ppo-16-strong-bias-noise/firs
 confirms all **2,531** replay actions. This is below the common parent's mean
 10,474 and run 15's first mean 10,440; no improvement is established. The
 trial continues, and the existing shared best has not been replaced.
+
+Run 16 subsequently stopped gracefully at **12,512,000** actions after
+**2,064,384 new actions**, **653** additional complete boot games, **400**
+restored training segments and **20** complete ten-game evaluations. No
+training or evaluation record reached stage 2 or completed a mission. Best
+remained **10,480**; peak mean was **10,455**, median **10,460**, at counter
+**10,955,520**. The last evaluation at **12,454,656** averaged **10,434**,
+median **10,440**, best **10,480**. The stronger fixed bias perturbation did
+not escape the observed plateau in this trial. Its
+[full log](results/defense/training/ppo-16-strong-bias-noise/metrics.jsonl),
+[final optimizer](results/defense/training/ppo-16-strong-bias-noise/final-checkpoint/state.json),
+[peak-mean checkpoint](results/defense/training/ppo-16-strong-bias-noise/step-000010955520/evaluation.json)
+and [2,531-action verified replay](results/defense/training/ppo-16-strong-bias-noise/best-effort/replay.html)
+are preserved. The fresh-seed and smaller output-weight-noise learners remain
+active; the collector retains the stopped trial's immutable source.
 
 ### Independent initialization: run 17
 
