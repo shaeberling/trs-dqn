@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 
 from .defense_learning import evaluate, load_policy, policy_description, sha256
-from .temporal_probe import TemporalPolicy
 
 
 def main():
@@ -25,15 +24,16 @@ def main():
     if args.output.exists():
         parser.error("refusing to overwrite an existing result")
     config = json.loads((args.checkpoint.parent/"state.json").read_text())["config"]
-    if config.get("algorithm", "ppo") != "ppo":
-        parser.error("this diagnostic requires an original categorical PPO checkpoint")
     before = sha256(args.checkpoint)
     policy, checked_config = load_policy(args.checkpoint)
     if checked_config != config:
         raise RuntimeError("checkpoint configuration changed while loading")
-    wrapped = TemporalPolicy(policy, stride=args.stride)
-    result = evaluate(wrapped, range(args.seed, args.seed+args.games),
+    # The environment's tested spacing is equivalent to the original wrapper,
+    # and works for both categorical PPO and greedy value policies. Preserve
+    # each checkpoint's action-selection rule; override only timing/history.
+    result = evaluate(policy, range(args.seed, args.seed+args.games),
                       tstates=args.tstates, max_steps=0, envs=args.envs,
+                      observation_stride=args.stride,
                       allow_enter=config.get("allow_enter", False),
                       log=lambda row: print(json.dumps(row), flush=True))
     if sha256(args.checkpoint) != before:
@@ -45,8 +45,9 @@ def main():
                   tstates=args.tstates, observation_stride=args.stride,
                   nominal_history_span_tstates=3*args.stride*args.tstates,
                   checkpoint_tstates=config["tstates"], eval_max_steps=0,
+                  checkpoint_observation_stride=config.get("observation_stride", 1),
                   probe_source_sha256=sha256(Path(__file__)),
-                  history_wrapper_source_sha256=sha256(Path(__file__).with_name("temporal_probe.py")),
+                  environment_source_sha256=sha256(Path(__file__).with_name("defense.py")),
                   limitations=["Nominal history span excludes variable HUD/terminal settling.",
                                "Frozen-policy timing probe, not learning at a new control rate.",
                                "Reused validation seeds; not a fresh success-rate test."])
