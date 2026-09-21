@@ -193,7 +193,8 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-ppo-05-low-entropy/status.json` and its adjacent
+- Live progress: `runs/defense-ppo-05-low-entropy/status.json` and
+  `runs/defense-ppo-06-life-boundary/status.json`, each with an adjacent
   `metrics.jsonl`. Run 04's self-imitation comparison has stopped cleanly;
   its complete log and final resumable checkpoint are archived below.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/`, including optimizer,
@@ -372,6 +373,41 @@ venv/bin/python -u -m rl.defense_train --run runs/defense-low-entropy-reproducti
   --artifacts runs/defense-low-entropy-reproduction/artifacts \
   --entropy .002 --sil-updates 0
 ```
+
+Later, after **602,112 additional actions**, run 05 reached a ten-game mean
+of **370**, median **380**, best **380**, still all stage 1. This is improved
+validation consistency relative to the starting mean 358, not a new best
+individual score or fresh-test success rate. The
+[step-1,735,424 checkpoint](results/defense/training/ppo-05-low-entropy/step-000001735424/state.json)
+preserves its weights, optimizer and complete evaluation. The next validation
+means were 362 and 326, so this is not a claim of monotonic improvement.
+
+### Ship-loss learning-boundary comparison
+
+`defense-ppo-06-life-boundary` starts from exactly the same checkpoint and
+settings as run 05, with only `--life-terminal` enabled. A configuration diff
+confirms this is the only difference besides run/artifact directories. The
+boundary prevents estimated returns from crossing a visible ship loss;
+**reward remains the actual score delta**. The emulator is not reset after a
+ship loss: the original game continues through its own introduction, and all
+evaluation games still run from boot until all four ships are gone.
+
+Its first ten-game validation, after **102,400 additional actions**, had mean
+**368**, median **370**, best **380**, all stage 1, compared with run 05's mean
+330 at the same training increment. This is an encouraging early comparison,
+not stage completion or a statistically established success-rate improvement.
+The second round fell to mean **314**, median **320**, best **340**; the early
+gain is therefore not evidence of stable superiority.
+Both experiments remain active for further training with isolated archives;
+run 06's local replay is
+`runs/defense-ppo-06-life-boundary/artifacts/best/replay.html`.
+
+Reproduce using the command above with a new run/artifact directory and
+`--life-terminal`. Its exact
+[configuration](results/defense/training/ppo-06-life-boundary/resume-config.json)
+and [first validation](results/defense/training/ppo-06-life-boundary/first-validation.json)
+are preserved. The original 380-point best and separate 400-point sampling
+replay remain available; no unsuccessful candidate replaces them.
 
 Remaining validation: stage 2/3 controls and mission-success detection are
 supported by disassembly and parser tests, but **not yet exercised by an
