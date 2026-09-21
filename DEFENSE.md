@@ -1912,6 +1912,34 @@ venv/bin/python -m rl.defense_temporal_probe \
 # For the narrow-history control, use --stride 1 and a distinct output path.
 ```
 
+### Trainable observation spacing
+
+Both Defense trainers now accept `--observation-stride` (positive integer,
+default **1**). The policy still receives exactly four visible frames. Stride
+2 retains seven consecutive frames and selects indices 0, 2, 4, 6; it adds
+neither hidden-state input nor an action controller. Snapshot capture retains
+all intermediate frames so resumed stacks are exact. Cross-stride or malformed
+snapshots are rejected before changing emulator state, including shared score,
+screen and age archives. Checkpoint evaluation, recording and replay verification
+use the saved stride; legacy checkpoints default to 1.
+
+The existing global best was reloaded under this implementation and reproduced
+all **2,580** actions, screens and rewards at its original stride, with the
+same **10,480**-point stage-1 result. Real-emulator tests compare stride 2
+against the frozen probe wrapper, exercise snapshot continuation and peer
+sharing, and check vector workers and both trainers' optimizer resumes.
+All **236 regression tests** passed, including the storage checks below.
+This is infrastructure for a training experiment, not evidence of a new stage.
+
+Immutable Defense checkpoint/replay copies can be inventoried with
+`python -m rl.defense_storage`; `--apply` replaces byte-identical duplicates
+with macOS APFS copy-on-write clones. Every path and content hash is retained,
+with independent future writes (not hard links). Live `latest`/`best` paths
+and logs are excluded. The first pass replaced **393** duplicate files across
+**278** groups, with about **1.6 GiB** more free space measured afterward;
+concurrent training also changes free space. No historical checkpoint was
+deleted, and the existing disk-space safety threshold was not lowered.
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -2034,6 +2062,17 @@ At **1,400,000**, ordinary DQN reached
 Its full online/target/optimizer checkpoint and
 [1,963-action verified replay](results/defense/training/dqn-22-fresh/replay-500/replay.html)
 are preserved. All ten complete games still ended in stage 1 without a mission.
+
+At **1,600,000**, ordinary DQN reached
+[mean 991, median 995, best 1,390](results/defense/training/dqn-22-fresh/step-000001600000/evaluation.json),
+with a [2,239-action verified replay](results/defense/training/dqn-22-fresh/replay-1390/replay.html).
+At **1,700,000**, it improved to
+[mean 1,372, median 1,470, best 1,670](results/defense/training/dqn-22-fresh/step-000001700000/evaluation.json),
+with a [2,201-action verified replay](results/defense/training/dqn-22-fresh/replay-1670/replay.html).
+Both full online/target/optimizer checkpoints are preserved. All twenty games
+remained stage-1 losses. The next 1,800,000-action batch regressed to mean
+392, median 400, best 440: improvement is not monotonic, and these milestones
+do not replace the stronger PPO global best.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
