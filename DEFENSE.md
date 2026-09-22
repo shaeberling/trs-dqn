@@ -8,10 +8,11 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **350-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are the matched restored-life-only continuations (49/50).
+Current experiments are the matched restored-life-only continuations (49/50)
+and the balanced-command continuation (51).
 The separate 128-action own-loss-lookback calibration finished below its
 64-action counterpart, and an optional command-balanced exploration sampler is
-now running a checked same-parent calibration. The 64-action
+has completed a near-tied calibration and begun a longer continuation. The 64-action
 score-triggered / own-loss-triggered pair (47/48) retired after six stage-1-only
 rounds with full state preserved. The focused calibration improved mean by 251
 over its control, but the first full round scored 78 lower; all games still
@@ -5259,6 +5260,23 @@ Both retain correct offsets, own-source provenance and protected boot workers.
 
 ### Balanced command-group exploration
 
+The existing full restored-life pair completed two additional rounds without
+a later stage. At **7,693,216**, the [third comparison](results/defense/training/dqn-50-restored-life-focused/comparison-at-000007693216.json)
+has control mean/median/best **10,212 / 10,210 / 10,240**, versus focused
+**9,860 / 10,280 / 10,400** (difference **−352**). Six focused paired scores
+are higher and four lower; three lower games dominate the mean difference.
+Both full states and hash-checked log prefixes are preserved, with no new
+run-best replay. By then, control/focused completed **579 / 10,317** restored
+segments and **68 / 69** boot games; focused cuts numbered **7,193**. Both
+made **36,874** updates with correct archive offsets and protected boot workers.
+
+At **7,893,216**, the [fourth comparison](results/defense/training/dqn-50-restored-life-focused/comparison-at-000007893216.json)
+has mean **9,818 / 10,066**, reversing the ranking (focused **+248**).
+All forty games across these two rounds remain stage-1 losses. Full optimizer
+states and checked prefixes are retained for both rounds; no new run-best
+replay is published. Score ranking varies, but neither setting has demonstrated
+progression through the recurring obstacle.
+
 The previous read-only alias diagnostics did not establish duplicated firing
 choices as the dominant cause of the learned policy's entropy. They did not,
 however, test the **training random-action distribution**. Uniform sampling
@@ -5325,6 +5343,37 @@ venv/bin/python -u -m rl.defense_dqn \
   --curriculum-restored-life-only --spr-weight 0 --inverse-weight 0 \
   --exploration-actions stage1-balanced
 ```
+
+The [balanced calibration completed](results/defense/training/balanced-actions-calibration-01/comparison.json)
+at **7,093,216**, with mean/median/best **10,201 / 10,280 / 10,280**, versus
+uniform's **10,214 / 10,375 / 10,460**. Two paired scores improve and eight
+regress; the mean difference is only **−13**, with one +1,470 recovery offsetting
+several smaller regressions. All ten games still lose in stage 1. This is
+near-parity in mean, not an improvement or reliable stage progression.
+
+The [2,540-action verified replay](results/defense/training/balanced-actions-calibration-01/replay/replay.html),
+complete Q/target/Adam state and full compressed log are preserved. Its
+[loss windows](results/defense/diagnostics/balanced-actions-calibration-losses-01/report.json)
+repeat **2,570** points on each life around the familiar right-opening barrier.
+The flash markers remain alignment aids, not exact collision timestamps or
+proof of a wall-versus-projectile cause.
+
+The checked run made **7,566** updates, completed **20** boot games and
+**2,138** restored segments, with **1,561** first-loss cuts. All **321** archive
+offsets were 64 and the two boot-only workers stayed protected. Completed
+restored lives contributed **89,143** actions. Its **80,649** post-warmup
+exploratory steps contained **65.80%** movement and **8.22%** forward-fire
+aliases, confirming the intended sampling change without showing a stage clear.
+Every action remained sampled. Reset sources still came only from own play.
+
+Full run **51** now continues that preserved calibration at **7,093,216**,
+with [unchanged settings](results/defense/training/dqn-51-balanced-actions/resume-config.json),
+unlimited learning and 200,000-action evaluations. This tests longer adaptation,
+not a claimed solution from the short check. Uniform focused run 50 remains
+available as a matched action-count comparison with its own calibration parent;
+the full trajectories and RNG states differ. The sole collector now includes
+all **47** full-trial sources, retaining every historical source and excluding
+short calibrations. The shared verified 10,480-point stage-1 best is unchanged.
 
 ### Quantile score-return experiment
 
