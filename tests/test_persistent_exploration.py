@@ -81,7 +81,7 @@ class PersistentExplorationTests(unittest.TestCase):
                       '--mlx-cache-mb', '64', '--epsilon-final', '1',
                       '--curriculum-probability', '.5', '--curriculum-share',
                       '--curriculum-boot-envs', '1', '--curriculum-lookback', '4']
-            for repeat in (1, 64):
+            for repeat in (1, 64, 256):
                 base = f'base-{repeat}'; same = f'same-{repeat}'
                 options = common+['--exploration-max-repeat', str(repeat)]
                 a = run(base, options)
@@ -128,6 +128,33 @@ class PersistentExplorationTests(unittest.TestCase):
         self.assertEqual(sum(stats['sampled_duration_counts']), stats['starts'])
         self.assertEqual(sum(stats['exploratory_action_counts']), stats['exploratory_steps'])
         self.assertTrue(all(n > 0 for n in stats['exploratory_action_counts']))
+
+    def test_longer_duration_tail_preserves_nominal_worker_occupancy(self):
+        lengths, probabilities = duration_distribution(256, 1.5)
+        self.assertEqual(lengths.tolist(), list(range(1, 257)))
+        self.assertAlmostEqual(probabilities.sum(), 1.)
+        mean = float(lengths@probabilities)
+        self.assertGreater(mean, 12.)
+        for epsilon in (.05, .9):
+            p = start_probability(epsilon, mean)
+            self.assertAlmostEqual(p*mean/(1-p+p*mean), epsilon)
+        explorer = PersistentExploration(128, 20, 256, 1.5, np.random.default_rng(91))
+        rates = worker_epsilons(.9, 128, 64, .05)
+        greedy = np.zeros(128, np.int32)
+        for _ in range(6000):
+            explorer.select(greedy, rates)
+        stats = explorer.stats()
+        per_worker = np.asarray(stats['worker_exploratory_steps'])/6000
+        self.assertAlmostEqual(per_worker[:64].mean(), .05, delta=.01)
+        self.assertAlmostEqual(per_worker[64:].mean(), .9, delta=.01)
+        self.assertGreater(sum(stats['sampled_duration_counts'][64:]), 100)
+        self.assertGreater(sum(stats['sampled_duration_counts'][128:]), 20)
+        self.assertEqual(sum(stats['sampled_duration_counts']), stats['starts'])
+        # Boundaries cancel even the longest hold; epsilon zero cannot restart it.
+        explorer.remaining[:] = 256
+        explorer.reset(np.ones(128, dtype=bool))
+        np.testing.assert_array_equal(explorer.remaining, 0)
+        np.testing.assert_array_equal(explorer.select(greedy, 0), greedy)
 
     def test_exact_holds_boundary_cancellation_and_zero_epsilon(self):
         explorer = PersistentExploration(2, 20, 64, 1.5, np.random.default_rng(8))
