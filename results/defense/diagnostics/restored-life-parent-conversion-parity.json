@@ -1,0 +1,25 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "converted": "runs/defense-restored-life-parent-conversion/latest",
+  "arrays_bit_exact": {
+    "model.safetensors": 12,
+    "target.safetensors": 12,
+    "optimizer.npz": 26
+  },
+  "state_fields_equal": [
+    "steps",
+    "updates",
+    "episodes",
+    "boot_episodes",
+    "restored_segments",
+    "rng",
+    "persistent_exploration_rng"
+  ],
+  "hashes": {
+    "model.safetensors": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+    "state.json": "5db1439012a31b5b33eeb13866b3d88bb66805be59e89307c6ec34096e7a5f2a",
+    "target.safetensors": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+    "optimizer.npz": "1176d7248c3f9699b7cb3f405fc5855413c67d12a48ca41c20e34ae1ee14381c"
+  },
+  "performance_evidence": false
+}

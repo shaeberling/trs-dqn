@@ -6,11 +6,13 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **337-test** suite now passes, including
+(23 GiB available at restart). The full **344-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are full visual prediction (45), inverse-action
-classification (46), and the matched 64-action score-triggered / own-loss-triggered
-reset continuations (47/48). The own-loss calibration completed below its
+Current experiments are the matched 64-action score-triggered / own-loss-triggered
+reset continuations (47/48), plus a new matched restored-life-only calibration.
+Visual prediction (45) and inverse-action classification (46) retired after
+five and six stage-1-only evaluations, preserving final optimizers and logs.
+The own-loss calibration completed below its
 score-triggered control, with no stage passage; the longer pair tests adaptation,
 not a demonstrated advantage.
 Trace cutting (43) and longer persistence (44) retired
@@ -5033,6 +5035,81 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/loss-trigger-split-calibration-01/checkpoint \
   --steps 0 --eval-every 200000
 ```
+
+At **7,693,216**, the [third comparison](results/defense/training/dqn-48-loss-trigger/comparison-at-000007693216.json)
+has control mean/median/best **10,412 / 10,410 / 10,460**, versus own-loss
+**9,158 / 10,060 / 10,180**. All ten paired own-loss scores are lower
+(mean difference **−1,254**); all twenty games remain stage 1. Both full
+optimizer states and audited log prefixes are preserved. Neither sets a new
+run-best, so the previously verified replays remain unchanged.
+
+### Restored-life-only practice
+
+The coverage audit above motivates a separate optional
+`--curriculum-restored-life-only` experiment. An already-restored training
+segment now truncates at its first **visible** life loss, unless that loss
+already ends the native game. The emulator's actual loss observation, score
+and lives are untouched. Boot games remain complete, including the reserved
+boot-only workers; a stage entry alone never cuts a segment. The vector worker
+then uses the existing reset mechanism and its own opaque training archive.
+No route, collision timestamp, evaluation trajectory, hidden-state input or
+extra reward is introduced. This is practice allocation, not a claim that
+saved states are recoverable.
+
+DQN requires enabled curriculum and life-terminal learning for this option.
+The existing n-step targets therefore terminate at exactly the same visible
+loss as before. Restored cuts stay classified as training segments, never
+complete boot games or ranked evaluation results. The default is **off**.
+Seven focused tests cover real boot-game equality, exact restored trajectories
+through loss (including opaque native bytes), identical n-step targets,
+native last-life termination, vector reset observations, stage entry, CLI
+validation, real learning and checkpoint resume. All **344 tests passed**.
+[Default parity](results/defense/diagnostics/restored-life-default-parity.json)
+is bit exact across Q/target/Adam, RNG/counters and 16 episode/archive events.
+[Original-parent conversion](results/defense/diagnostics/restored-life-parent-conversion-parity.json)
+also preserves all 50 parameter/optimizer arrays and both RNG states exactly.
+
+The [production smoke check](results/defense/diagnostics/restored-life-production-smoke.json)
+completed **16,384** new actions and **398** updates, with **eight** full boot
+games and **46** restored segments. Of these, **29** cut with native lives
+remaining; the rest ended at native game over. Boot workers remained protected,
+and all archive offsets were 64. Neither diagnostic supplies the performance
+parent or counts as complete-game performance evidence.
+
+Two new calibrations start independently from the same original DQN-33
+checkpoint at **6,962,144**, not a smoke checkpoint. Each receives **131,072**
+new actions and ten complete uncapped boot evaluations on reused seeds
+10000–10009. Both use life-loss lookback 64, split epsilon .05/.9, two boot-only
+workers out of eight, five-step life-terminal returns, gamma .997, persistence
+64 and no auxiliary loss. Both set reset probability **1**, unlike the older
+.5 pair; this concentrates eligible-worker practice while retaining protected
+boot games. Only restored-life-only differs between the two new arms.
+They are excluded from the global collector. Comparisons against older runs
+cannot isolate the probability change; the new pair can isolate the cutoff
+configuration, but subsequent own experience and random streams may diverge.
+
+```bash
+# Repeat with --no-curriculum-restored-life-only and a separate run path for control.
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-restored-life-reproduction \
+  --artifacts runs/defense-restored-life-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 64 \
+  --curriculum-trigger life-loss --curriculum-probability 1 \
+  --curriculum-restored-life-only --spr-weight 0 --inverse-weight 0
+```
+
+The auxiliary trials freed their slots after depth plateaus, not time limits.
+[Visual prediction](results/defense/training/dqn-45-visual-prediction/retirement.json)
+stopped gracefully at **8,155,240**, with five full evaluation rounds; its final
+round mean was **10,235**, best **10,290**. Its earlier verified 10,400 full-run
+replay and 10,460 calibration replay remain preserved.
+[Inverse action](results/defense/training/dqn-46-inverse-action/retirement.json)
+stopped at **8,398,432**, with six rounds; its final mean was **10,214**, best
+**10,240**, retaining the earlier verified 10,330 replay. Both full final
+optimizers, auxiliary states, complete logs and last evaluation checkpoints
+are preserved. No training episode or evaluation reached stage 2 or a mission.
 
 ### Quantile score-return experiment
 

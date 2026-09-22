@@ -19,7 +19,8 @@ class DefenseCurriculumEnv(DefenseEnv):
                  curriculum_per_bin=4, curriculum_bins=16, curriculum_share=False,
                  worker_id=None, curriculum_reset=True, curriculum_lookback=0,
                  curriculum_cells="score", curriculum_screen_interval=32,
-                 curriculum_age_interval=32, curriculum_trigger="progress", **config):
+                 curriculum_age_interval=32, curriculum_trigger="progress",
+                 curriculum_restored_life_only=False, **config):
         if not np.isfinite(curriculum_probability) or not 0 <= curriculum_probability <= 1:
             raise ValueError("invalid curriculum probability")
         self.interval = positive_integer(curriculum_score_interval, "score interval", allow_zero=True)
@@ -31,6 +32,9 @@ class DefenseCurriculumEnv(DefenseEnv):
         if curriculum_trigger == "life-loss" and not self.lookback:
             raise ValueError("life-loss archive requires a positive lookback")
         self.trigger = curriculum_trigger
+        if not isinstance(curriculum_restored_life_only, (bool, np.bool_)):
+            raise ValueError("restored-life-only must be boolean")
+        self.restored_life_only = bool(curriculum_restored_life_only)
         if curriculum_cells not in ("score", "screen", "age"):
             raise ValueError("invalid curriculum cell representation")
         self.cells = curriculum_cells
@@ -217,6 +221,14 @@ class DefenseCurriculumEnv(DefenseEnv):
                         trigger_progress=self.score-self.progress_start_score)
                 if self.curriculum_share:
                     info["_curriculum_snapshot"] = saved
+        if (self.restored_life_only and not self.full_game and info["life_lost"]
+                and not terminal and not truncated):
+            # End only an already-restored training segment. Native lives and
+            # score are not changed, and the actual loss screen is returned.
+            # The vector wrapper then performs its ordinary own-state/boot
+            # reset. Boot games, including reserved workers, remain complete.
+            self.done = truncated = True
+            info.update(truncated=True, curriculum_life_cut=True)
         if terminal or truncated:
             info["curriculum_archive_counts"] = {f"{stage}:{bucket}": len(bank)
                                                 for (stage, bucket), bank in self.archive.items()}
