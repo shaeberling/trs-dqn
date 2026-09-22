@@ -9,7 +9,9 @@ Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **344-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Current experiments are the matched 64-action score-triggered / own-loss-triggered
-reset continuations (47/48), plus a new matched restored-life-only calibration.
+reset continuations (47/48), plus the matched restored-life-only continuations
+(49/50). The new calibration improved mean by 251 over its control, but still
+lost all ten games in stage 1; longer training is not a claimed breakthrough.
 Visual prediction (45) and inverse-action classification (46) retired after
 five and six stage-1-only evaluations, preserving final optimizers and logs.
 The own-loss calibration completed below its
@@ -5099,6 +5101,44 @@ venv/bin/python -u -m rl.defense_dqn \
   --curriculum-trigger life-loss --curriculum-probability 1 \
   --curriculum-restored-life-only --spr-weight 0 --inverse-weight 0
 ```
+
+The [completed comparison](results/defense/training/restored-life-focused-calibration-01/comparison.json)
+has control mean/median/best **9,963 / 9,945 / 10,080**, versus focused practice
+**10,214 / 10,375 / 10,460**. Focused scores are higher on nine paired seeds
+and lower on one (mean difference **+251**). All twenty complete games still
+lose in stage 1. This is a modest matched score improvement, not stage progress;
+the focused mean is also below the original parent's 10,259. Both full
+Q/target/Adam checkpoints and complete compressed logs are preserved, alongside
+the [2,519-action control replay](results/defense/training/restored-life-control-calibration-01/replay/replay.html)
+and [2,502-action focused replay](results/defense/training/restored-life-focused-calibration-01/replay/replay.html).
+
+Both arms made **7,566** updates. The control completed **18** boot games and
+**146** restored segments; focused practice completed **19** and **2,200**, with
+**1,515** first-loss cuts while native lives remained. Audits protect the two
+boot workers, join all completed restored starts to their own archive sources,
+and verify every archive's 64-action offset. Control completed restored
+segments contain **86,323** actions, only **4,142–8,363** of them in their
+initial restored lives. Focused segments contain **89,015** actions, all in
+their initial lives. This verifies the intended practice-allocation change,
+not that every such action is useful obstacle practice; active segments are
+excluded and score is not exact course position.
+
+The [read-only loss windows](results/defense/diagnostics/restored-life-calibration-losses-01/report.json)
+show the familiar right-opening barrier sequence in both selected replays.
+Focused life scores are **2,620 / 2,620 / 2,600 / 2,620**; control life scores
+are **2,620 / 2,520 / 2,470 / 2,470**. Screens are aligned to a visible flash
+or loss marker, not an exact physical collision. Neither demonstrates passage,
+nor distinguishes wall collision from a projectile hit with certainty.
+
+Full runs **49/50** now continue their respective preserved calibrations from
+**7,093,216**, with unchanged arm settings, unlimited learning and evaluations
+every **200,000** new actions. Their [control configuration](results/defense/training/dqn-49-restored-life-control/resume-config.json)
+and [focused configuration](results/defense/training/dqn-50-restored-life-focused/resume-config.json)
+retain lineage; episodes restart and archives/replay refill from new own play.
+The sole collector now retains **46** full-trial sources, including all
+historical sources and both new continuations, but no short calibrations.
+The shared verified 10,480-point stage-1 replay remains unchanged. Runs 47/48
+continue unchanged alongside the new pair.
 
 The auxiliary trials freed their slots after depth plateaus, not time limits.
 [Visual prediction](results/defense/training/dqn-45-visual-prediction/retirement.json)
