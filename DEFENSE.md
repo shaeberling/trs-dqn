@@ -205,10 +205,9 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-dqn-28-large-replay/status.json`,
-  `runs/defense-dqn-24-bootstrap/status.json`,
+- Live progress: `runs/defense-dqn-24-bootstrap/status.json`,
   `runs/defense-dqn-26-own-resets/status.json` and
-  `runs/defense-ppo-27-matched-history-low-lr/status.json`, each with an adjacent
+  `runs/defense-ppo-29-value-weight/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -264,6 +263,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-dqn-26-own-resets/artifacts \
   --source runs/defense-ppo-27-matched-history-low-lr/artifacts \
   --source runs/defense-dqn-28-large-replay/artifacts \
+  --source runs/defense-ppo-29-value-weight/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -2103,6 +2103,18 @@ earlier run's regression but has not eliminated it; none of these games
 reached stage 2. One declining batch is not yet grounds to claim a permanent
 plateau or to retire this trial.
 
+The longer run did not recover its peak. It stopped cleanly at
+**24,488,704** inherited actions: **14,041,088** new actions, **2,267** new
+boot games, **1,461** restored segments and **70** completed ten-game
+validations. Its strongest mean remained **10,237** at 11,250,432; none
+reached stage 2 or a mission. The last complete batch at **24,455,936**
+averaged **6,559**, median **6,335**, best **10,080**. The
+[final checkpoint](results/defense/training/ppo-27-matched-history-low-lr/final-checkpoint/state.json),
+[last validated checkpoint](results/defense/training/ppo-27-matched-history-low-lr/step-000024455936/evaluation.json)
+and [losslessly compressed full log](results/defense/training/ppo-27-matched-history-low-lr/metrics.jsonl.gz)
+are preserved alongside its earlier peak and verified best replay. This
+extended depth plateau motivated replacing the run, not a wall-clock limit.
+
 ```bash
 venv/bin/python -u -m rl.defense_train --run runs/defense-matched-history-reproduction \
   --resume results/defense/training/ppo-12-lookback/step-000010447616 \
@@ -2169,9 +2181,30 @@ Both checks exited normally; full models, optimizer states, logs, settings
 and verified replays are preserved. Each completed four new boot games during
 training; the control completed no restored segments and the reduced variant
 completed two. Those restored segments are not counted as complete games.
-An opposite-direction **1.0** coefficient check uses the same parent and
+The opposite-direction **1.0** coefficient check used the same parent and
 settings, recorded [here](results/defense/training/value-large-01/resume-config.json).
-It is a bounded comparison, not a production replacement or a claimed gain.
+Its [ten complete games](results/defense/training/value-large-01/checkpoint/evaluation.json)
+averaged **10,449**, median **10,450**, best **10,480**. That is **297** more
+than the matched control's mean, still entirely stage-1 losses. It completed
+four new boot games and no restored segments during training, exited normally,
+and preserved its full model/optimizer/log plus a
+[5,104-action verified replay](results/defense/training/value-large-01/replay/replay.html).
+This short result supports a longer comparison, not a claim of new depth,
+durable stability or a diagnosed cause of the earlier regression.
+
+`defense-ppo-29-value-weight` now runs at the normal **32-worker** size,
+starting directly from original parent **10,447,616**, not from the short
+check. Its [configuration](results/defense/training/ppo-29-value-weight/resume-config.json)
+matches run 27's learning settings except for **value coefficient 1.0**
+instead of the old implicit 0.5: learning rate 0.000125, 512-step rollouts,
+batch 512, 50,000-T-state actions, stride 2, adjusted gamma/lambda, shared
+score archive, eight boot-only workers and 64-action lookback. Training and
+evaluation are uncapped; ten-game evaluation occurs every 200,000 actions.
+It replaces stopped run 27's slot. The sole collector includes this source
+and all historical sources; short checks remain excluded.
+
+To reproduce, use run 27's command above with distinct output paths and
+`--learning-rate 0.000125 --value-coefficient 1`.
 
 ### Independent Double-DQN training path
 
@@ -2431,6 +2464,30 @@ not monotonic. The full checkpoint and [1,610-action verified replay](results/de
 are preserved. This is close to run 22's same-counter mean 322 and equal best
 340; all games remained stage-1 losses, not evidence of a clear advantage.
 
+Longer training produced substantial gains, but also repeated regressions.
+Its strongest single game was **10,370** at **5,700,000** actions:
+[mean 9,898, median 10,285](results/defense/training/dqn-28-large-replay/step-000005700000/evaluation.json),
+with a [2,515-action verified replay](results/defense/training/dqn-28-large-replay/replay-10370/replay.html).
+Its peak mean came at **6,100,000**:
+[10,290, median 10,290, best 10,360](results/defense/training/dqn-28-large-replay/step-000006100000/evaluation.json).
+Both full online/target/optimizer checkpoints and every intermediate
+best-effort replay/checkpoint are preserved. All remained stage-1 losses.
+This exceeds run 22's achieved best, but uses substantially more experience
+and does not isolate a causal buffer-size advantage at matched compute.
+
+Run 28 stopped cleanly at **7,400,000** actions, **461,874** updates and
+**3,783** complete training games. There were **73** complete evaluation
+batches; the 7,400,000 checkpoint was not evaluated before shutdown.
+The last four completed means were **300, 364, 378, 362**. Its
+[final checkpoint](results/defense/training/dqn-28-large-replay/final-checkpoint/state.json),
+[last completed evaluation](results/defense/training/dqn-28-large-replay/step-000007300000/evaluation.json)
+and [full log](results/defense/training/dqn-28-large-replay/metrics.jsonl)
+are preserved. A larger buffer alone did not prevent regression or produce
+stage 2. Matched short continuation checks now compare learning rates
+0.0001 and 0.000025 from the **6,100,000** peak, with otherwise identical
+fresh-buffer restart settings. Neither check is a collector source or a
+claimed improvement before its complete-game results are available.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-large-replay-reproduction \
   --artifacts runs/defense-dqn-large-replay-reproduction/artifacts \
@@ -2538,6 +2595,16 @@ At **600,000**, it reached
 with a [1,643-action verified replay](results/defense/training/dqn-26-own-resets/replay-360/replay.html).
 Both full optimizer/target checkpoints are preserved; all games remained
 stage-1 losses. These small lineage improvements do not replace the shared best.
+
+After further training, run 26's best single game reached **8,360** at
+**7,100,000** actions:
+[mean 6,480, median 6,395](results/defense/training/dqn-26-own-resets/step-000007100000/evaluation.json),
+with a [2,424-action verified replay](results/defense/training/dqn-26-own-resets/replay-8360/replay.html).
+Its strongest mean was **6,901** at **7,200,000**, median **6,845**, best
+**7,560**. Both complete checkpoints, plus all intermediate best-effort
+checkpoints and replays, are preserved. Through 8,100,000, none reached stage
+2 or a mission; the latest mean had fallen to 2,462. The learner continues
+under review rather than treating its best score as current reliability.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-own-resets-reproduction \
@@ -2678,6 +2745,16 @@ online/target/prior/optimizer checkpoint and
 are preserved. The intervening 400,000-action mean was 350 (best 380), and
 the 600,000-action games all scored 320, so this recovery was not monotonic.
 It is a new milestone for this lineage, not a global-best or depth improvement.
+
+The long run eventually moved beyond that early plateau. At **5,200,000**,
+it reached [mean 10,186, median 10,200, best 10,220](results/defense/training/dqn-24-bootstrap/step-000005200000/evaluation.json),
+with a [2,524-action verified greedy-ensemble replay](results/defense/training/dqn-24-bootstrap/replay-10220/replay.html).
+That full online/target/prior/optimizer checkpoint and all intervening
+best-effort milestones are preserved. All ten games still lost in stage 1.
+The next two means fell to 7,773 and 6,476, so this is a saved capability,
+not a claim that the current policy is equally reliable. This run continues;
+its earlier 800,000-action diagnostic below is not evidence about these
+later learned heads.
 
 A [frozen-head diagnostic](results/defense/diagnostics/bootstrap-800000-heads.json)
 then compared this exact checkpoint's greedy ensemble with each individual

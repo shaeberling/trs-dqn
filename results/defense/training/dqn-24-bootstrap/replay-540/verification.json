@@ -1,0 +1,9 @@
+{
+  "verified": true,
+  "verified_actions": 1969,
+  "temperature": 1.0,
+  "checkpoint_sha256": "25f49a5ed39ff0f97fd9e22407eca7286af267c03936a620a4d1f78697cae12c",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "method": "reload weights; reproduce every policy action, reward and screen from boot"
+}
