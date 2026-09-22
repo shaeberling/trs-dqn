@@ -4765,6 +4765,12 @@ Mean differences versus the same-count historical baseline are
 **+115 / +1,369 / −844 / +2,955**. The larger fourth difference reflects the
 baseline's low 7,310 mean, not passage through the recurring failure sequence.
 
+At **8,093,216**, the [fifth round](results/defense/training/dqn-46-inverse-action/comparison-through-000008093216.json)
+regresses to mean **9,268**, median **9,525**, best **10,040**, all stage 1. This
+is **−516** against the historical same-count baseline's 9,784. The preceding
+10,330 verified replay remains the full trial's best. One million additional
+training actions after calibration have not yet produced a stage clear.
+
 ### Intermediate own-state rewind calibration
 
 The [selected-reset audit](results/defense/diagnostics/selected-reset-origins-45-46.json)
@@ -4977,6 +4983,42 @@ control's maximum selected per-life score of 330, reaching 1,100. These log
 joins verify different sampling, not improved navigation or exact course
 positions. The pair continues unchanged for another matched evaluation; this
 negative first round is not presented as a successful intervention.
+
+At **7,493,216**, the [second full comparison](results/defense/training/dqn-48-loss-trigger/comparison-at-000007493216.json)
+adds **400,000** actions per arm after calibration. Control mean/median/best are
+**10,051 / 10,060 / 10,310**; own-loss results are **9,757 / 9,980 / 10,080**.
+All twenty games still lose in stage 1. Own-loss mean is **−294**, with seven
+paired scores lower and three higher; its two full-round differences are
+**−479 / −294**. Both complete online/target/Adam states and checked log prefixes
+are preserved. Neither round set a new run-best, so no new replay was published:
+the earlier independently verified 10,480 and 10,280 replays remain intact.
+
+The cumulative [control audit](results/defense/training/dqn-47-mid-lookback-control/audit-at-000007493216.json)
+has **176** boot games, **135** completed restored segments and **4,320** archive
+events; the [own-loss audit](results/defense/training/dqn-48-loss-trigger/audit-at-000007493216.json)
+has **170**, **130** and **906**. Each made **24,374** updates, with correct offsets,
+protected boot workers, and no logged stage beyond 1. Of the own-loss selections,
+**41/130** have source per-life score above the control's maximum of 330.
+
+A [read-only restored-life coverage audit](results/defense/diagnostics/loss-trigger-restored-life-coverage-7493216.json)
+checks an additional distinction: a reset selects the beginning of a training
+segment, but the current trainer then continues through all remaining native
+lives. The 130 completed restored segments contain **97,795** actions. Only
+**1,978–7,522** are in their initial restored lives; **90,273–95,817** occur in
+later native lives. For the 41 above-control-score starts, their initial lives
+contribute **633–1,956** actions, or **0.158–0.489%** of the 400,000 total actions.
+
+Those are bounds on the contribution of **completed restored segments**, not an
+upper bound on all useful obstacle practice; still-active segments are excluded,
+and ordinary boot/later lives can also reach the barrier. The audit reconciles
+worker-local action counters with every completed segment length. When the
+first visible loss has an archive event (or only one native life remained), its
+timing is exact. Otherwise, enabled sharing and the same-life capture rule bound
+the unarchived first loss to at most 64 new decisions; no timestamp is invented.
+It reads no opaque snapshots and supplies no training examples or labels.
+This evidence motivates examining practice frequency, but does not prove that
+more frequent resets would work, or that these starts are recoverable. The
+current matched pair remains unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
