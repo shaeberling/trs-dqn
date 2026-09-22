@@ -32,12 +32,14 @@ A bounded archive-diversity pair favored screen fingerprints over score bins
 by 384 mean points, with equal maximum archive capacity and identical parent
 state. Both still fell below the parent and lost every evaluation in stage 1.
 Full trials 35/36 continue those capacity-matched archive-selection arms.
-Their first two full rounds average **10,198 / 10,133** and **9,836 / 10,172**,
-respectively, but every game still loses in stage 1. Verified replay loss panels show the same broad
+Their first three full rounds average **10,198 / 10,133**, **9,836 / 10,172**
+and **10,085 / 10,198**, respectively; every game still loses in stage 1.
+Verified replay loss panels show the same broad
 right-opening barrier sequence; archive diversity has not resolved it.
-A matched quantile-DQN calibration now tests training-only risk distortion,
-initialized from an own learned scalar model with fresh Adam. Its results are
-pending; it adds no observations, demonstrations or rewards.
+A matched quantile-DQN calibration found risk distortion worse than neutral
+exploration (**10,146 / 10,280** mean), without a later stage. Full trials
+37/38 now continue both quantile arms from their own checked states. They add
+no observations, demonstrations or rewards.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -3492,6 +3494,42 @@ They have identical transferred online/target weights and fresh optimizer/RNG,
 not the parent's scalar Adam. They are excluded from the global collector.
 Neither finite calibration nor its initial action parity is a stage clear.
 
+Both calibrations have finished normally at **131,072** new actions, with
+**7,566** updates each. The [paired result](results/defense/training/quantile-risk-calibration-01/comparison.json)
+does not favor risk distortion:
+
+| Training selection | Mean | Median | Best | Verified mean-greedy replay |
+| --- | ---: | ---: | ---: | --- |
+| Neutral quantile mean | 10,280 | 10,280 | 10,280 | [2,592 actions](results/defense/training/quantile-neutral-calibration-01/replay/replay.html) |
+| Power-distorted quantiles | 10,146 | 10,200 | 10,240 | [2,538 actions](results/defense/training/quantile-risk-calibration-01/replay/replay.html) |
+
+Risk minus neutral is **−134**, with all ten paired scores lower. Both lose
+every game in stage 1. They completed **55 / 56** boot training games, no
+restored segments, and no logged later-stage episode. Full online/target/Adam/
+RNG checkpoints, compressed logs and manifest-checked verified replays are
+preserved. The [read-only loss windows](results/defense/diagnostics/shared-loss-quantile-calibration-01/report.json)
+show life scores **2,570 × 4** for neutral and **2,570 / 2,570 / 2,550 / 2,550**
+for risk; score alone does not identify a collision or establish passage.
+Neutral's mean is 21 above the scalar parent's reused validation mean, but
+both best scores are lower. This is not independent testing or a stage clear.
+
+Full [DQN 37 neutral](results/defense/training/dqn-37-quantile-neutral/resume-config.json)
+and [DQN 38 risk](results/defense/training/dqn-38-quantile-risk/resume-config.json)
+continue each arm's own **131,072** full state, with unlimited learning and
+200,000-action evaluation intervals. First full evaluations are due at
+**331,072**. Unlike scalar initialization, this restores the quantile Adam,
+target and RNG; replay refills from newly booted experience. Neither arm's
+settings changed after seeing calibration results. This longer comparison
+tests durability and the distributional learner, not a claimed advantage of
+risk-seeking. Trials 35/36 continue separately.
+
+The previous collector exited cleanly before the new sole collector started
+with [all 34 full-run sources](results/defense/training/dqn-37-quantile-neutral/collector-config.json)
+and the quantile-compatible loader. Calibrations remain excluded. A global
+replacement still requires complete-game rank improvement and independent
+frozen action/screen/reward verification. The shared 10,480-point replay is
+unchanged.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
   --run runs/defense-quantile-risk-reproduction \
@@ -3635,6 +3673,15 @@ not proof of identical collisions or a prescribed route. Flash alignment can
 lag a collision; final-life settling can skip the flash entirely. Neither
 score alone nor these selected high-scoring traces establish general success.
 The full pair continues unchanged for its next matched evaluation.
+
+The [three-round curve through **7,693,216**](results/defense/training/dqn-35-screen-archive/comparison-through-000007693216.json)
+now records screen/control means **10,198 / 10,133**, **9,836 / 10,172** and
+**10,085 / 10,198**: differences **+65 / −336 / −113**. All sixty complete
+evaluation games lost in stage 1. The later rounds do not support a durable
+advantage from screen diversity. Full per-game records and model hashes are
+preserved in the curve; first-round full checkpoints and stronger verified
+replays remain archived. The newer matched quantile experiment is separate;
+neither evaluation data nor replay traces enter its training buffer.
 
 ```bash
 # Use distinct paths and curriculum-cells score for the capacity-matched control.
