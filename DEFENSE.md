@@ -6,12 +6,12 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **311-test** suite now passes, including
+(23 GiB available at restart). The full **317-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Current experiments are full current-policy trace cutting (43) and longer
 persistence (44). Higher discount (42) retired after seven stage-1-only rounds;
-a visual-prediction auxiliary task is documented as a not-yet-implemented next
-candidate. Worker-split exploration
+a visual-prediction auxiliary task is now running an isolated checked calibration.
+Worker-split exploration
 (40) and its uniform control (41) retired after nine and seven evaluation
 rounds, respectively, without a later stage.
 Runs 33–39 have retired with full final state and logs preserved; the historical
@@ -4160,6 +4160,14 @@ episodes remain stage 1. Mean sampled backup length is **1.4205**, with
 **92.724%** ending at a nongreedy later action. This first continuation batch
 does not demonstrate a benefit; the original shared best is unchanged.
 
+By **7,693,216**, run 43's [three-round comparison](results/defense/training/dqn-43-greedy-trace-cut/comparison-through-000007693216.json)
+has means **8,681 / 8,227 / 9,415**, versus baseline **9,755 / 8,851 / 10,299**.
+Every paired round remains lower in mean, and every game remains stage 1.
+The third checkpoint's median is **10,020**, best **10,180**; its full optimizer
+and [2,484-action verified replay](results/defense/training/dqn-43-greedy-trace-cut/replay-10180/replay.html)
+are preserved. Recovery from the earlier regression is not a demonstrated
+trace-cut advantage or stage passage.
+
 ### Longer random-persistence calibration
 
 The [new isolated duration check](results/defense/training/long-persistence-split-calibration-01/resume-config.json)
@@ -4269,18 +4277,103 @@ episodes remain stage 1. It sampled **586** planned holds above 64 decisions,
 including **246** above 128; mechanism activity is not successful passage.
 The trial continues unchanged for further complete-game measurements.
 
-### Next candidate: auxiliary visual prediction (design only)
+The duration arm's [three-round comparison through **7,693,216**](results/defense/training/dqn-44-long-persistence/comparison-through-000007693216.json)
+has means **6,404 / 9,904 / 10,248**, recovering from its first full regression.
+Differences from the cap-64 baseline are **−3,351 / +1,053 / −51**, so the mean
+ranking varies and does not establish a sustained advantage. All games still
+lose in stage 1. Its third median is **10,250**, best **10,260**; the full
+checkpoint and [2,541-action verified replay](results/defense/training/dqn-44-long-persistence/replay-10260/replay.html)
+are preserved. The 10,480-point shared best remains unchanged.
 
-The [design and pre-trial checks](results/defense/diagnostics/visual-prediction-design.md)
-consider an SPR-inspired auxiliary objective using only the learner's own
-visible trajectories. This is **not implemented or running**, and no benefit
-is claimed. It would test visual representation learning rather than another
-exploration/discount change, while keeping actual game-score rewards and ordinary
-learned greedy acting. There would be no simulator lookahead, reward bonus,
-route label, demonstration or future-screen input at play time. The document
-specifies separate auxiliary/EMA/optimizer/RNG preservation and required native,
-gradient-isolation, default-parity and replay checks before a calibration.
-The current active models and inference paths are unchanged.
+### Auxiliary visual prediction
+
+Optional `--spr-weight .1` tests an auxiliary visual-representation objective
+based on [Self-Predictive Representations](https://arxiv.org/abs/2007.05929).
+It predicts the learner's own future visual representations through a learned
+action-conditioned model. This tests representation learning after repeated
+stage-depth plateaus, not an established diagnosis of the obstacle failures.
+The [initial design and acceptance criteria](results/defense/diagnostics/visual-prediction-design.md)
+are preserved. No performance benefit or stage clear is yet established.
+
+The acting model remains the existing QNetwork. Only the auxiliary training
+path uses its 6×16×32 spatial features, per-example min/max normalization,
+explicit-key dropout .5 after each convolution, two action-conditioned
+32-channel convolutions, a location-wise LayerNorm, the shared 256-unit hidden
+projection, and a separate 256-unit linear predictor. Targets use a separate
+EMA encoder/projection with coefficient **.99** and stopped gradients.
+This is a scalar-DQN adaptation: different encoder dimensions, LayerNorm instead
+of batch normalization, mean valid-step rather than summed loss, and coefficient
+**.1**. It is not a reproduction of the paper's Rainbow/Atari results.
+
+The auxiliary loss averages cosine distance over actual valid transitions in
+each sampled path, then applies existing PER sample weights. It is added to the
+unchanged scalar Double-Q loss; **only TD errors set replay priorities**.
+The same stored float32 n-step return and discount are used, not a recomputed
+target with different arithmetic. Actual terminal screens are allowed; padding
+is masked, and paths never cross a life/episode reset. Location-wise normalization
+prevents padded examples from altering another example's normalization statistics.
+Trace cutting is off. The option requires compact scalar replay and n-step 1–5;
+quantile, bootstrap and trace-cut combinations are explicitly rejected.
+
+This does **not** add an intrinsic reward, route label, scripted action,
+demonstration or simulator lookahead. Rewards remain visible score delta times
+the same constant. Future stored frames are auxiliary targets only; acting and
+evaluation use no dropout, predictor, future screen or latent rollout. Replay
+contains only new own experience. Existing full trials 43/44 are unchanged.
+
+Online/target weights and original Adam remain in their standard files. Full
+SPR training checkpoints additionally save `spr-aux.safetensors`,
+`spr-ema.safetensors`, `spr-optimizer.npz` and `spr-rng.npz`, with checksums in
+the final state marker. Missing or mismatched auxiliary state prevents resume.
+An own scalar conversion preserves both Q networks, original Adam and existing
+RNGs; auxiliary parameters/Adam/key start explicitly fresh and EMA copies the
+loaded online network. Later SPR resumes restore all auxiliary state and key.
+Local diagnostic counters clear while native archives and replay refill.
+Breakdown's checkpoint format is unchanged; ordinary frozen Q weights still
+suffice for acting and replay verification.
+
+The [default-path before/after check](results/defense/diagnostics/spr-default-parity.json)
+reproduces both networks, all **26** Adam arrays and prior counters/RNGs exactly.
+The [zero-update actual-parent conversion](results/defense/diagnostics/spr-parent-conversion-parity.json)
+preserves the original state and initializes EMA to the parent online weights
+exactly. Tiny native tests are not performance results or training parents.
+Focused tests cover stored TD-field/sampler identity, auxiliary gradients without
+TD-head or target gradients, padding invariance, EMA arithmetic, independent
+target synchronization, explicit-key resume, corrupted state rejection, native
+own resets and MLX-free workers. A complete native game and independent frozen
+replay publication also pass without using auxiliary inference.
+
+All [six focused SPR tests](results/defense/diagnostics/spr-focused-tests.txt)
+and the [317-test full regression suite](results/defense/diagnostics/spr-regression-tests.txt)
+passed. A separate [production-size native integration check](results/defense/diagnostics/spr-production-smoke.json)
+used eight workers, batch 64 and five-step paths for **16,384** new actions,
+performing **398** joint updates with peak recorded MLX allocation **688,636,200
+bytes** (about **657 MiB**). It exited normally. This was not a performance
+evaluation; neither its weights nor trajectories initialize the calibration.
+
+The [isolated SPR calibration](results/defense/training/spr-split-calibration-01/resume-config.json)
+starts directly from original DQN 33 at **6,962,144**, collects **131,072** new
+actions and then evaluates ten complete uncapped boot games on reused seeds
+10000–10009. Its [configuration comparison](results/defense/training/spr-split-calibration-01/design.json)
+allows only SPR settings/provenance, the newer trainer hash and explicit false
+trace flag, and output paths. Acting-model, environment, baseline replay,
+exploration and archive source hashes match the historical worker-split baseline.
+The default-path parity check covers the intervening disabled branches.
+It retains gamma .997, n-step 5, random-hold cap 64, two boot workers at epsilon
+.05, six other workers at .9, lookback 128, and all original optimizer settings.
+The original Q optimizer resumes; only the new auxiliary optimizer starts fresh.
+This is a historical same-parent comparison, not an independent replication or
+fresh success-rate estimate. The short calibration is excluded from the shared
+collector. Results are pending; the original mission goal remains unachieved.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-spr-split-reproduction \
+  --artifacts runs/defense-spr-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128 --spr-weight .1
+```
 
 ### Quantile score-return experiment
 
