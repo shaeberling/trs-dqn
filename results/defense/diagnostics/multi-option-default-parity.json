@@ -1,0 +1,19 @@
+{
+  "before": "runs/defense-option-learning-parity-before",
+  "after": "runs/defense-option-learning-parity-after",
+  "new_base_actions": 16384,
+  "new_updates": 400,
+  "model_sha256": "74152e05b96b5424c43d3ba6158042a7cb110eee20c760678e5d83d2dd85282d",
+  "target_sha256": "dc0223f55e8865d682a94f6a1ce3fd8e14a396c1ff192dc7b838bfbc7fdfa78c",
+  "optimizer_arrays_equal": 26,
+  "all_nonconfiguration_state_equal": true,
+  "equal_game_and_archive_events": 104,
+  "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+  "original_trainer_commit": "aac051f",
+  "original_executed_trainer_sha256": "e069aa4a048fde9c4ffa179342fd0f33d4aaa7f22ec54608966ff6d6236835a1",
+  "new_trainer_sha256": "28548224c90435d56edf2886afb5b2721fb81d91717bced71509515bcb7b2bdb",
+  "limits": [
+    "Deterministic disabled-feature check with optimizer updates; not multi-option performance.",
+    "Before trainer executes git-show source with original package/file globals. Its recorded trainer_source_sha256 reads the current file, so the execution source hash is recorded separately here."
+  ]
+}
