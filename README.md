@@ -35,6 +35,10 @@ and experimental limitations in [DEFENSE.md](DEFENSE.md).
 Its default score-based archive selection is unchanged; `--curriculum-cells
 screen` optionally uses the existing coarse visible-screen fingerprints, with
 explicit archive-capacity controls and no extra reward or policy input.
+Experimental `--quantiles 32` learns distributions of score returns; optional
+`--quantile-exploration-power 1.5` changes training action selection only.
+Evaluation still uses greedy mean values. An own scalar DQN can initialize
+this model with `--init-from-dqn`; this starts fresh Adam, not optimizer resume.
 `--compact-replay` optionally shares byte-identical visible frames in DQN's
 training buffer, preserving exact observations and sampling while reducing
 screen-storage duplication. It works with ordinary and bootstrap DQN.

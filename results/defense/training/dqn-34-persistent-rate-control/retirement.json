@@ -1,0 +1,108 @@
+{
+  "run": "runs/defense-dqn-34-persistent-rate-control",
+  "stopped": {
+    "wall_seconds": 4542.97,
+    "event": "stopped",
+    "steps": 8153696,
+    "stop_requested": true
+  },
+  "final_checkpoint": "results/defense/training/dqn-34-persistent-rate-control/final-checkpoint-000008153696",
+  "final_checkpoint_evaluated": false,
+  "final_file_hashes": {
+    "model.safetensors": "0bc2b77fad2f8f96172637d81413209207c3c060666798c90adc25fd3ace1dfe",
+    "state.json": "0b8f0336ed16a79803d68a29bbaf2b351ce542af0aeea6f174f3f4e327650557",
+    "target.safetensors": "9c2ec9827f74076c209ca8ed2fc7ab580b5be61090cc16d6c9231759eb170bd9",
+    "optimizer.npz": "78ecb769f18c455b19b9b47203c10f0b8d2e216d690e76785974666e618d0399"
+  },
+  "new_actions": 1391552,
+  "new_boot_games": 710,
+  "new_restored_segments": 0,
+  "validation_curve": [
+    {
+      "wall_seconds": 656.53,
+      "event": "validation",
+      "steps": 6962144,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10197.0,
+      "median_score": 10150.0,
+      "best_score": 10460,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 1372.55,
+      "event": "validation",
+      "steps": 7162144,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10247.0,
+      "median_score": 10230.0,
+      "best_score": 10320,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 2074.62,
+      "event": "validation",
+      "steps": 7362144,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 9789.0,
+      "median_score": 9820.0,
+      "best_score": 9960,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 2660.77,
+      "event": "validation",
+      "steps": 7562144,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10154.0,
+      "median_score": 10160.0,
+      "best_score": 10250,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 3216.52,
+      "event": "validation",
+      "steps": 7762144,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 9631.0,
+      "median_score": 9860.0,
+      "best_score": 9920,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 3897.62,
+      "event": "validation",
+      "steps": 7962144,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 9470.0,
+      "median_score": 9280.0,
+      "best_score": 9940,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    }
+  ],
+  "complete_log_sha256": "6ae47472721279ed1f0865f4b81da798161cda867ff50b9637c60d3c512efcd1",
+  "reason": "Six complete ten-game rounds without any later stage or mission; preserve all state and reassign compute to a matched distributional exploration experiment. No wall-clock limit. Stronger earlier models and verified replays remain unchanged."
+}

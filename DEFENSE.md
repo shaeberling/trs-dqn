@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **280-test** suite now passes, including
+(23 GiB available at restart). The full **289-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
@@ -22,20 +22,22 @@ Bounded follow-ups combine persistent exploration with their own newly
 reached-state resets. Both have finished without a new stage; the 32-action
 lookback improves the bounded comparison's mean and archive coverage, but
 does not solve the shared failure pattern.
-Full trials 33/34 now continue the verified shorter-lookback reset arm and
-its matched high-exploration no-reset comparator, retaining complete-game
-evaluation and automatic verified replay collection.
-Their first five full-run mean differences (resets minus control) are
-**+62 / −305 / +240 / +39 / +596**. All games remain stage-1 losses.
+Full trials 33/34 subsequently retired after six complete paired rounds without
+a stage clear, preserving final state and complete logs. Their mean differences
+(resets minus control) were **+62 / −305 / +240 / +39 / +596 / +782**.
+All 120 evaluation games were stage-1 losses.
 A read-only prediction/return diagnostic does not support
 gross near-loss Q-value inflation as the explanation.
 A bounded archive-diversity pair favored screen fingerprints over score bins
 by 384 mean points, with equal maximum archive capacity and identical parent
 state. Both still fell below the parent and lost every evaluation in stage 1.
 Full trials 35/36 continue those capacity-matched archive-selection arms.
-Their first full round averages **10,198 / 10,133**, respectively, but every
-game still loses in stage 1. Verified replay loss panels show the same broad
+Their first two full rounds average **10,198 / 10,133** and **9,836 / 10,172**,
+respectively, but every game still loses in stage 1. Verified replay loss panels show the same broad
 right-opening barrier sequence; archive diversity has not resolved it.
+A matched quantile-DQN calibration now tests training-only risk distortion,
+initialized from an own learned scalar model with fresh Adam. Its results are
+pending; it adds no observations, demonstrations or rewards.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -3400,6 +3402,18 @@ results and immutable local model hashes; earlier stronger full optimizer
 states and verified replays remain the archived references. The changing
 score margin still does not demonstrate progression beyond the shared obstacle.
 
+Runs 33/34 have now stopped cleanly with full state preserved at
+[**8,133,536**](results/defense/training/dqn-33-persistent-resets/retirement.json)
+and [**8,153,696**](results/defense/training/dqn-34-persistent-rate-control/retirement.json).
+They added **1,371,392 / 1,391,552** actions, **529 / 710** complete boot games
+and **362 / 0** restored segments since their calibration parents. Their sixth
+round, at **7,962,144**, averaged **10,252 / 9,470**, median **10,260 / 9,280**,
+best **10,280 / 9,940**, all stage 1. All **120** evaluation games across six
+paired rounds lost in stage 1. The two final checkpoints, last evaluated full
+checkpoints and complete compressed logs are archived. Final post-update
+weights were not separately evaluated. This depth plateau prompted reassigning
+compute to distributional learning, not a wall-clock limit; nothing was deleted.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
   --run runs/defense-persistent-reset-reproduction \
@@ -3417,6 +3431,76 @@ venv/bin/python -u -m rl.defense_dqn \
   --steps 0 --eval-every 200000
 # For the matched comparator, use distinct output paths and resume
 # results/defense/training/persistent-rate-high-01/checkpoint instead.
+```
+
+### Quantile score-return experiment
+
+The scalar critic diagnostics did not establish gross Q inflation near loss,
+and archive/exploration changes have not yet passed the recurring barrier.
+An optional `--quantiles 32` now tests a different value representation:
+fixed midpoint return quantiles using the pairwise quantile Huber loss from
+[QR-DQN](https://arxiv.org/abs/1710.10044). The shared screen CNN feeds dueling
+value/advantage heads per quantile. Loss sums over predicted quantiles and
+averages over target quantiles, with Huber threshold 1. Double-Q selects the
+next action by the online **mean** and obtains its quantiles from the target.
+Existing score scaling, life-terminal n-step returns, Adam, gradient clipping
+and own-experience replay remain. PER uses unweighted per-transition quantile
+Huber loss divided by the quantile count, not a signed mean residual that can
+cancel. This is an adaptation, not an exact paper reproduction.
+
+Optional `--quantile-exploration-power 1.5` uses the positive power distortion
+described in [IQN's risk-sensitive experiments](https://arxiv.org/abs/1806.06923)
+for **training action selection only**. For a fixed quantile bin `[a,b]`, its
+weight is `b**(1+power)-a**(1+power)`. Zero uses the ordinary mean. Values retain
+their trained quantile indices; predictions are not sorted at action time.
+Higher quantiles get more weight, but their spread is return variability, not
+epistemic uncertainty or a confidence bound. Risk-seeking is not guaranteed to
+help; the paper reports failures too. Unlike its IQN experiments, this model
+has fixed quantiles and keeps both Bellman action selection and all evaluation
+risk-neutral. There is no risk bonus, intrinsic reward, route or hidden input.
+
+`--init-from-dqn` optionally transfers an own compatible scalar Defense model:
+the encoder is copied, scalar dueling heads are tiled into initially coincident
+quantiles, and target equals transferred online. Adam, RNG, counters and replay
+start fresh; this is **not optimizer resume**. No fabricated return spread is
+added. Compatibility includes game hash, screen history, action profile and
+action timing; source hashes are checked before/after loading. Ordinary
+quantile `--resume` restores its full optimizer/target/RNG and retains parent
+provenance. Quantile count cannot change on resume. Bootstrap heads and
+persistent action holds are rejected in this experimental mode.
+
+The [default-path regression](results/defense/diagnostics/quantile-default-parity.json)
+preserves byte-identical scalar online/target files, all **26** Adam arrays,
+counters and RNG on a small native run. Its deliberately truncated games are
+only plumbing evidence. A read-only
+[own-model transfer check](results/defense/diagnostics/quantile-own-transfer-parity.json)
+reproduces all **2,564** actions of the selected parent trace with both mean and
+distorted selection before training. No trace is supplied to learning, and
+this check is not a new emulator playthrough. All **nine** focused tests and
+the full **289-test** suite pass, including analytic loss/gradient checks,
+mean-versus-risk separation, exact optimizer resume and native initialization.
+
+The matched neutral/risk calibrations initialize from run 33's
+**6,962,144** checkpoint (mean **10,259**, best **10,480**) with 32 quantiles,
+eight workers, compact capacity 200,000, batch 64, learning rate 1e-4, gamma
+.997, n-step 5, life terminals, 100,000 T-states/action and history stride 1.
+Both use 10,000-entry uniform warmup followed by 5% independent random actions
+(`epsilon-steps=1`), no own-state resets and no persistent holds. Each permits
+**131,072 new actions**, then ten complete mean-greedy boot games on reused
+seeds 10000–10009. Only training power (0 versus 1.5) and output paths differ.
+They have identical transferred online/target weights and fresh optimizer/RNG,
+not the parent's scalar Adam. They are excluded from the global collector.
+Neither finite calibration nor its initial action parity is a stage clear.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-quantile-risk-reproduction \
+  --artifacts runs/defense-quantile-risk-reproduction/artifacts \
+  --init-from-dqn results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --quantiles 32 --quantile-exploration-power 1.5 \
+  --capacity 200000 --compact-replay --epsilon-steps 1 --epsilon-final .05 \
+  --steps 131072 --eval-every 131072
+# Matched control: distinct paths, --quantile-exploration-power 0.
 ```
 
 ### DQN archive-diversity comparison

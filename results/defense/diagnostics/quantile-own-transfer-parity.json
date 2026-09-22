@@ -1,0 +1,17 @@
+{
+  "source": "results/defense/training/dqn-33-persistent-resets/first-replay",
+  "source_model_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+  "quantile_source_sha256": "424d8ee7751a041b75bd1991451a4ea67569ef6d6c4eb34009d26cc53d9831f4",
+  "quantiles": 32,
+  "exploration_power": 1.5,
+  "recorded_actions_checked": 2564,
+  "mean_action_mismatches": [],
+  "distorted_action_mismatches": [],
+  "maximum_quantile_spread_on_every_64th_frame": 0.0,
+  "optimizer_step": 0,
+  "diagnostic_only": true,
+  "native_reexecution": false,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "limitation": "Only frozen recorded screens used to check transfer inference. No replay transitions are supplied to learning. This is not a new full-game evaluation or a learned distributional improvement."
+}

@@ -1,0 +1,14 @@
+test_cli_validation_and_cross_algorithm_resume (tests.test_defense_quantile.DefenseQuantileTests.test_cli_validation_and_cross_algorithm_resume) ... ok
+test_double_q_mean_target_terminal_and_distribution_priority (tests.test_defense_quantile.DefenseQuantileTests.test_double_q_mean_target_terminal_and_distribution_priority) ... ok
+test_huber_pairwise_sign_midpoints_reduction_and_gradient (tests.test_defense_quantile.DefenseQuantileTests.test_huber_pairwise_sign_midpoints_reduction_and_gradient) ... ok
+test_matching_initialization_updates_and_unchanged_target (tests.test_defense_quantile.DefenseQuantileTests.test_matching_initialization_updates_and_unchanged_target) ... ok
+test_native_scalar_initialization_and_resumed_provenance (tests.test_defense_quantile.DefenseQuantileTests.test_native_scalar_initialization_and_resumed_provenance) ... ok
+test_power_bin_masses_and_validation (tests.test_defense_quantile.DefenseQuantileTests.test_power_bin_masses_and_validation) ... ok
+test_real_emulator_training_and_exact_optimizer_resume (tests.test_defense_quantile.DefenseQuantileTests.test_real_emulator_training_and_exact_optimizer_resume) ... ok
+test_scalar_transfer_preserves_encoder_and_tiles_heads_with_fresh_adam (tests.test_defense_quantile.DefenseQuantileTests.test_scalar_transfer_preserves_encoder_and_tiles_heads_with_fresh_adam) ... ok
+test_training_distortion_is_not_evaluation_or_sorted_predictions (tests.test_defense_quantile.DefenseQuantileTests.test_training_distortion_is_not_evaluation_or_sorted_predictions) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 7.693s
+
+OK

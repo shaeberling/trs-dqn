@@ -1,0 +1,22 @@
+{
+  "before": "runs/defense-quantile-default-before/latest",
+  "after": "runs/defense-quantile-default-after/latest",
+  "actions": 32,
+  "deliberately_truncated_plumbing_only": true,
+  "file_hashes": {
+    "model.safetensors": "4ad8c722646e1a81fa48f6101589dbd2e4bfa4316f71d663bd4426ef2a4dd335",
+    "target.safetensors": "1b5c101a27b55a0c858a1b3a4f38994f8470491dc06e4ef592bd9a6e949c0d39"
+  },
+  "optimizer_arrays_equal": 26,
+  "counters_rng_identical": true,
+  "before_trainer_sha256": "a0d7b92b0b2612069bca294595d89aef4f164662c608f7204974cb0759179924",
+  "after_trainer_sha256": "ee5fad64230bb5c55ac62fffda767fd11f2a9342fb403f72db79d125f4cb10f0",
+  "limitation": "Tiny default-path numerical regression, not a game-performance experiment. Neither run supplies weights or data to production.",
+  "final_source_confirmation": {
+    "checkpoint": "runs/defense-quantile-default-after-initializer/latest",
+    "trainer_source_sha256": "a0d7e740466c7f582aa1f52e08a22b0a0133fe72c19c509fd698402c6407326e",
+    "online_target_files_identical": true,
+    "all_optimizer_arrays_identical": 26,
+    "counters_rng_identical": true
+  }
+}
