@@ -25,6 +25,8 @@ does not solve the shared failure pattern.
 Full trials 33/34 now continue the verified shorter-lookback reset arm and
 its matched high-exploration no-reset comparator, retaining complete-game
 evaluation and automatic verified replay collection.
+Their first full-run round favors resets by 62 mean points, down from the
+bounded check's 224; all twenty games still lost in stage 1.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -3258,6 +3260,32 @@ including the new pair and all historical sources. Short calibrations remain
 excluded. Any global replacement still requires an independently reproduced
 frozen-policy replay and a higher stage/mission/score rank; the existing best
 is never replaced just for a higher mean.
+
+The [first full comparison at **6,962,144**](results/defense/training/dqn-33-persistent-resets/comparison-at-000006962144.json)
+adds **200,000** actions per arm after calibration (**331,072** after the common
+6,631,072 parent):
+
+| Full trial | Ten-game mean | Median | Best | Independently verified replay |
+| --- | ---: | ---: | ---: | --- |
+| [DQN 33 own resets](results/defense/training/dqn-33-persistent-resets/step-000006962144/evaluation.json) | 10,259 | 10,430 | 10,480 | [2,564 actions](results/defense/training/dqn-33-persistent-resets/first-replay/replay.html) |
+| [DQN 34 no resets](results/defense/training/dqn-34-persistent-rate-control/step-000006962144/evaluation.json) | 10,197 | 10,150 | 10,460 | [2,558 actions](results/defense/training/dqn-34-persistent-rate-control/first-replay/replay.html) |
+
+All twenty complete games lost in stage 1. The reset advantage narrows to
+**+62**, with eight higher and two lower paired scores, including one −1,350
+outlier. This is not a durable advantage or a new stage; both means remain
+below the common parent's 10,344. Matching the global single-game ceiling
+does not replace the shared best. Both full online/target/optimizer/RNG
+checkpoints, game records and verified replays are preserved.
+
+The reset arm completed **83** new boot games and **45** restored segments;
+control completed **99** new boot games, with none restored. Both had no
+later-stage training event. Measured exploratory-action fractions were
+**24.467%** and **24.388%**, respectively. All **2,753** reset-arm archive
+events used 32-action lookback, the **241** retained save events reached
+within-life source score **2,600**, and both reserved workers stayed boot-only.
+These counts describe retained events over time, not current archive contents
+or measured obstacle positions. Both learners continue unchanged for further
+matched rounds; no new source data, reward or controller was introduced.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
