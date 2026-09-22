@@ -34,8 +34,13 @@ BOOTSTRAP_ALGORITHM = "bootstrapped-dueling-double-dqn-prior-per-nstep"
 QUANTILE_ALGORITHM = "quantile-dueling-double-dqn-per-nstep"
 
 
-def policy_description(config, temperature=1.0):
+def policy_description(config, temperature=1.0, *, quantile_power=None):
     algorithm = config.get("algorithm", "ppo")
+    if quantile_power is not None:
+        if (algorithm != QUANTILE_ALGORITHM or isinstance(quantile_power, bool)
+                or not np.isfinite(quantile_power) or not 0 <= quantile_power <= 4
+                or temperature != 1):
+            raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
     from .recurrent_policy import RECURRENT_ARCHITECTURE
     architecture = config.get("architecture")
     if architecture is not None:
@@ -50,6 +55,8 @@ def policy_description(config, temperature=1.0):
     if algorithm == BOOTSTRAP_ALGORITHM:
         return "learned bootstrap ensemble plus fixed priors, greedy mean Q-values"
     if algorithm == QUANTILE_ALGORITHM:
+        if quantile_power:
+            return f"learned score-return quantiles, greedy power-distorted expectation (power={quantile_power:g})"
         return "learned score-return quantiles, greedy mean Q-values"
     if algorithm != "ppo":
         raise ValueError("Unsupported Defense policy algorithm")
@@ -96,7 +103,7 @@ def summarize(games):
                 games=games)
 
 
-def load_policy(checkpoint, *, temperature=1.0):
+def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
     from .model import QNetwork
     from .temperature_probe import temperature_policy
     import mlx.core as mx
@@ -104,7 +111,7 @@ def load_policy(checkpoint, *, temperature=1.0):
     config = json.loads((checkpoint.parent/"state.json").read_text())["config"]
     if isinstance(temperature, bool) or not np.isfinite(temperature) or temperature <= 0:
         raise ValueError("temperature must be finite and positive")
-    policy_description(config, temperature)  # Reject unknown algorithms, never guess.
+    policy_description(config, temperature, quantile_power=quantile_power)  # Reject unknown algorithms, never guess.
     validate_observation_stride(config.get("observation_stride", 1))
     names = action_names(config.get("allow_enter", False))
     if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
@@ -135,6 +142,12 @@ def load_policy(checkpoint, *, temperature=1.0):
     if config.get("algorithm") in (DQN_ALGORITHM, BOOTSTRAP_ALGORITHM, QUANTILE_ALGORITHM):
         if temperature != 1:
             raise ValueError("Temperature overrides do not apply to a greedy DQN policy")
+        if quantile_power:
+            from .defense_quantile import distortion_weights
+            weights = mx.array(distortion_weights(config['quantiles'], quantile_power))
+            predict = mx.compile(lambda obs: mx.sum(model.quantile_values(obs)*weights, axis=2),
+                                 inputs=model.state)
+            return greedy_policy(lambda obs: np.array(predict(mx.array(obs)))), config
         predict = mx.compile(model, inputs=model.state)
         return greedy_policy(lambda obs: np.array(predict(mx.array(obs)))), config
     predict = mx.compile(model.policy_value, inputs=model.state)
@@ -211,9 +224,10 @@ def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False, 
 
 
 def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_stop=lambda: False,
-                        temperature=1.0):
+                        temperature=1.0, quantile_power=None):
     """Reload frozen weights and re-run every neural action and screen from boot."""
-    policy, config = load_policy(checkpoint, temperature=temperature)
+    policy, config = load_policy(checkpoint, temperature=temperature,
+                                 **(dict(quantile_power=quantile_power) if quantile_power is not None else {}))
     actual = record_game(policy, result["seed"], tstates=config["tstates"],
                          max_steps=config["eval_max_steps"], should_stop=should_stop,
                          allow_enter=config.get("allow_enter", False),
@@ -225,6 +239,7 @@ def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_
     if game_rank(result) is None:
         raise ValueError("An incomplete replay cannot replace the best complete game")
     return dict(verified=True, verified_actions=len(actions), temperature=temperature,
+                **(dict(quantile_power=quantile_power) if quantile_power is not None else {}),
                 observation_stride=config.get("observation_stride", 1),
                 checkpoint_sha256=sha256(checkpoint), game_sha256=GAME_SHA256,
                 environment_version=ENVIRONMENT_VERSION,
@@ -233,6 +248,9 @@ def verify_policy_trace(checkpoint, frames, actions, rewards, result, *, should_
 
 def publish_best(checkpoint, evaluation, output, *, should_stop=lambda: False, log=None):
     """Append immutable bundle and atomically switch best symlink after verification."""
+    if (evaluation.get('evaluation_only') or evaluation.get('promotion_eligible') is False
+            or evaluation.get('temperature', 1) != 1 or evaluation.get('quantile_power') is not None):
+        raise ValueError('evaluation-only policy probes cannot promote the standard training best')
     checkpoint, output = Path(checkpoint), Path(output)
     candidates = [g for g in evaluation["games"] if game_rank(g) is not None]
     if not candidates:

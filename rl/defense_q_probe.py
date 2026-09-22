@@ -11,8 +11,8 @@ from pathlib import Path
 import numpy as np
 
 from .defense import action_names
-from .defense_alias_probe import replay_observation
-from .defense_learning import DQN_ALGORITHM, sha256
+from .defense_alias_probe import GROUPS, replay_observation
+from .defense_learning import DQN_ALGORITHM, QUANTILE_ALGORITHM, sha256
 from .defense_loss_probe import loss_windows
 
 
@@ -49,6 +49,32 @@ def comparison(predictions, returns, scale):
                 p90_absolute_error=float(np.quantile(np.abs(error), .9)))
 
 
+def distribution_summary(quantiles, actions, alternative_actions, weights, scale):
+    """Selected-action return spread and counterfactual choice, never confidence."""
+    z, actions, other, weights = map(np.asarray, (quantiles, actions, alternative_actions, weights))
+    if (z.ndim != 2 or not len(z) or z.shape[1] < 2
+            or actions.shape != (len(z),) or other.shape != actions.shape
+            or actions.dtype.kind not in 'iu' or other.dtype.kind not in 'iu'
+            or np.any(actions < 0) or np.any(actions >= 20) or np.any(other < 0) or np.any(other >= 20)
+            or weights.shape != (z.shape[1],) or not np.isfinite(z).all()
+            or not np.isfinite(weights).all() or np.any(weights < 0)
+            or not np.isclose(weights.sum(), 1.) or not np.isfinite(scale) or scale <= 0):
+        raise ValueError('requires finite quantiles, choices, normalized weights and positive scale')
+    low, high = int(.1*z.shape[1]), min(z.shape[1]-1, int(.9*z.shape[1]))
+    group = np.empty(20, np.int32)
+    for index, members in enumerate(GROUPS):
+        group[list(members)] = index
+    return dict(observations=len(z), quantiles=z.shape[1],
+                low_fraction=(low+.5)/z.shape[1], high_fraction=(high+.5)/z.shape[1],
+                mean_high_minus_low_discounted_score=float(np.mean(z[:, high]-z[:, low])/scale),
+                mean_distorted_minus_mean_discounted_score=float(np.mean(z@weights-z.mean(axis=1))/scale),
+                selected_adjacent_crossing_fraction=float(np.mean(z[:, :-1]>z[:, 1:]+1e-6)),
+                counterfactual_different_actions=int(np.sum(actions != other)),
+                counterfactual_disagreement_fraction=float(np.mean(actions != other)),
+                counterfactual_different_stage_one_commands=int(np.sum(group[actions] != group[other])),
+                counterfactual_stage_one_command_disagreement_fraction=float(np.mean(group[actions] != group[other])))
+
+
 def probe(bundle):
     bundle = Path(bundle).resolve(strict=True)
     manifest = json.loads((bundle/'manifest.json').read_text())
@@ -60,11 +86,12 @@ def probe(bundle):
     verification = json.loads((bundle/'verification.json').read_text())
     config = json.loads((bundle/'state.json').read_text())['config']
     if (not verification.get('verified') or verification.get('temperature', 1) != 1
+            or verification.get('quantile_power', 0) != 0
             or verification['checkpoint_sha256'] != hashes['model.safetensors']
-            or config.get('algorithm') != DQN_ALGORITHM or config.get('allow_enter', False)
+            or config.get('algorithm') not in (DQN_ALGORITHM, QUANTILE_ALGORITHM) or config.get('allow_enter', False)
             or config.get('action_names') != list(action_names())
             or config.get('life_terminal') is not True):
-        raise ValueError('requires verified ordinary 20-action DQN with life terminals')
+        raise ValueError('requires verified mean-greedy scalar or quantile 20-action DQN with life terminals')
     with np.load(bundle/'trace.npz', allow_pickle=False) as trace:
         frames, actions, rewards = trace['frames'], trace['actions'], trace['rewards']
         metadata = json.loads(str(trace['metadata']))
@@ -72,6 +99,7 @@ def probe(bundle):
     if (metadata.get('checkpoint_sha256') != hashes['model.safetensors']
             or metadata.get('action_names') != list(action_names())
             or metadata.get('temperature', 1) != 1
+            or metadata.get('quantile_power', 0) != 0
             or metadata.get('observation_stride', 1) != stride
             or metadata.get('tstates') != config['tstates']
             or verification['verified_actions'] != len(actions)):
@@ -85,14 +113,34 @@ def probe(bundle):
     import mlx.core as mx
     from .model import QNetwork
     mx.set_cache_limit(256*1024*1024)
-    model = QNetwork(action_count=20)
+    distributional = config['algorithm'] == QUANTILE_ALGORITHM
+    if distributional:
+        from .defense_quantile import QuantileQ, distortion_weights
+        model = QuantileQ(action_count=20, quantiles=config['quantiles'])
+        # Standardized read-only counterfactual for both neutral and risk models.
+        # It does not replace their actual mean-greedy replay or training policy.
+        weights = distortion_weights(config['quantiles'], 1.5)
+        mlx_weights = mx.array(weights)
+        selected_quantiles = np.empty((len(actions), config['quantiles']), np.float64)
+        alternative_actions = np.empty(len(actions), np.int32)
+        def infer(obs):
+            values = model.quantile_values(obs)
+            return mx.mean(values, axis=2), values, mx.argmax(mx.sum(values*mlx_weights, axis=2), axis=1)
+    else:
+        model = QNetwork(action_count=20)
     model.load_weights(str(bundle/'model.safetensors'))
     mx.eval(model.state)
-    predict = mx.compile(model, inputs=model.state)
+    predict = mx.compile(infer if distributional else model, inputs=model.state)
     selected_q = np.empty(len(actions), np.float64)
     for i, action in enumerate(actions):
         obs = replay_observation(frames, i, stride)[None]
-        values = np.array(predict(mx.array(obs)))[0]
+        if distributional:
+            mean, quantiles, alternatives = predict(mx.array(obs))
+            values = np.array(mean)[0]
+            selected_quantiles[i] = np.array(quantiles)[0, action]
+            alternative_actions[i] = int(alternatives[0].item())
+        else:
+            values = np.array(predict(mx.array(obs)))[0]
         if not np.isfinite(values).all() or int(values.argmax()) != int(action):
             raise ValueError(f'reconstructed greedy action differs at decision {i}')
         selected_q[i] = float(values[action])
@@ -116,6 +164,10 @@ def probe(bundle):
                             pre_marker=comparison(selected_q[first:marker], returns[first:marker], scale),
                             after_flash=(comparison(selected_q[flash:stop], returns[flash:stop], scale)
                                          if flash is not None else None), anchors=anchors))
+        if distributional:
+            reports[-1]['pre_marker_distribution'] = distribution_summary(
+                selected_quantiles[first:marker], actions[first:marker], alternative_actions[first:marker],
+                weights, scale)
     for name in required:
         if sha256(bundle/name) != hashes[name]:
             raise RuntimeError('source changed during diagnostic: '+name)
@@ -126,6 +178,14 @@ def probe(bundle):
                 training_data_written=False, native_reexecution=False,
                 original_native_verification=verification,
                 replay_actions_reproduced=len(actions),
+                **(dict(quantile_distribution=dict(
+                    diagnostic_power=1.5, actual_training_power=config['quantile_exploration_power'],
+                    counterfactual_only=True,
+                    whole_replay=distribution_summary(selected_quantiles, actions, alternative_actions, weights, scale),
+                    limitation='Selected mean-greedy replay screens only, not the actual exploratory training states. '
+                               'Higher-index quantiles are not sorted; crossing is reported, not repaired. '
+                               'Stage-one alias grouping compares commands, not measured physical displacement. '
+                               'Return spread is not epistemic uncertainty or a confidence interval.')) if distributional else {}),
                 whole_replay=comparison(selected_q, returns, scale), lives=reports,
                 limitations=[
                     'One selected verified replay, not a fresh evaluation or expected-return estimate.',

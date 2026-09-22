@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **289-test** suite now passes, including
+(23 GiB available at restart). The full **293-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
@@ -40,6 +40,12 @@ A matched quantile-DQN calibration found risk distortion worse than neutral
 exploration (**10,146 / 10,280** mean), without a later stage. Full trials
 37/38 now continue both quantile arms from their own checked states. They add
 no observations, demonstrations or rewards.
+Their first full round reverses the short comparison's mean ranking
+(neutral **9,939**, risk **10,283**), still without a later stage. Separately
+playing the higher-return criterion scored worse on both frozen checkpoints;
+those independently verified probes do not replace standard mean-greedy play.
+The second standard round is **6,317 / 10,196**: neutral has regressed, while
+risk retains near-ceiling scoring, still with no stage clear.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -3539,6 +3545,90 @@ venv/bin/python -u -m rl.defense_dqn \
   --capacity 200000 --compact-replay --epsilon-steps 1 --epsilon-final .05 \
   --steps 131072 --eval-every 131072
 # Matched control: distinct paths, --quantile-exploration-power 0.
+```
+
+### Quantile distribution and policy-criterion checks
+
+The [first full quantile round at **331,072**](results/defense/training/dqn-37-quantile-neutral/comparison-at-000000331072.json)
+adds **200,000** new actions to each calibrated model. Neutral completed
+**82** new boot games and risk **83**, with no restored segments. Both full
+online/target/Adam/RNG checkpoints are preserved. Standard mean-greedy results:
+
+| Training criterion | Mean | Median | Best | Verified replay |
+| --- | ---: | ---: | ---: | --- |
+| Neutral | 9,939 | 10,120 | 10,360 | [2,535 actions](results/defense/training/dqn-37-quantile-neutral/first-replay/replay.html) |
+| Power 1.5 | 10,283 | 10,280 | 10,330 | [2,534 actions](results/defense/training/dqn-38-quantile-risk/first-replay/replay.html) |
+
+Risk minus neutral is **+344**, eight paired scores higher and two lower.
+One pair contributes **2,480** of the **3,440** summed difference. All twenty
+games lose in stage 1; this reversal of the short check is not a durable
+advantage or a fresh success-rate estimate.
+
+The [second-round record through **531,072**](results/defense/training/dqn-37-quantile-neutral/comparison-through-000000531072.json)
+shows a marked neutral regression: mean **6,317**, median **5,370**, best
+**7,880**, versus risk mean **10,196**, median **10,200**, best **10,220**.
+The +3,879 risk margin is retention of stage-1 scoring, not new depth. All
+forty standard games across both rounds lost in stage 1. Complete game records
+and local immutable model hashes are preserved; first-round full states and
+stronger verified replays remain the archived references. Neither run's
+settings changed after these results.
+
+The read-only Q probe now also supports mean-greedy quantile replay bundles.
+It reproduces every recorded action, checks checksums before/after, retains
+trained quantile indices without sorting, and compares choices under a fixed
+power-1.5 counterfactual. On the calibrated models' selected replays, the
+[neutral report](results/defense/diagnostics/quantile-neutral-distribution-131072.json)
+and [risk report](results/defense/diagnostics/quantile-risk-distribution-131072.json)
+reproduce all **2,592 / 2,538** actions. Mean spans between midpoint fractions
+0.109375 and 0.890625 are **110.72 / 133.34** discounted score units; these
+are learned return spreads, not confidence intervals or proof of calibration.
+Adjacent selected-action quantile crossings occur in **0.086% / 0.146%** of
+comparisons. Whole-trace mean prediction minus realized greedy return is
+**−92.74 / −68.44**; selection of good traces prevents interpreting that as
+global underestimation.
+
+Power weighting changes **776 / 609** raw action IDs. After collapsing the
+nine equivalent stage-1 forward-fire commands, **644 / 474** choices still
+differ (**24.85% / 18.68%**). In the four 64-decision pre-loss-alignment windows,
+command differences are **23 / 17 / 31 / 19** for neutral and
+**12 / 12 / 13 / 13** for risk. These are counterfactual choices on saved
+screens, not new trajectories, actual training disagreement rates, measured
+motion or evidence of a successful alternative route. Replay data never
+enters learning.
+
+To test those choices in actual play, `rl.defense_evaluate` now accepts an
+explicit **evaluation-only** `--quantile-power 1.5`. Omission preserves all
+standard mean-greedy behavior; explicit zero is mean-greedy but still a probe.
+The option is rejected for other algorithms, nonfinite/out-of-range values
+or temperature overrides. Its value is recorded in the evaluation, replay
+metadata and independent native verification. Replay recording reloads the
+frozen weights and reproduces actions, rewards, screens and outcome under
+the same explicit criterion. Both collector and direct standard publisher
+exclude evaluation-only reports. No trainer or default policy changed.
+
+On the **331,072** frozen checkpoints, ten complete power-policy games on
+the same reused seeds gave:
+
+| Trained model | Probe mean | Median | Best | Verified probe replay |
+| --- | ---: | ---: | ---: | --- |
+| Neutral | 2,864 | 2,880 | 5,210 | [2,241 actions](results/defense/diagnostics/quantile-neutral-power-replay-331072/replay.html) |
+| Risk | 8,863 | 9,350 | 10,280 | [2,503 actions](results/defense/diagnostics/quantile-risk-power-replay-331072/replay.html) |
+
+All twenty probe games lost in stage 1. Mean changes versus the same weights'
+standard play were **−7,075 / −1,420**. Thus this checked alternative criterion
+did not hide a stage clear at these checkpoints/seeds. It does not establish
+that every future distorted policy will fail. Mean-greedy remains standard;
+the two ongoing learners are unchanged and no shared-best replacement occurs.
+All [24 focused tests](results/defense/diagnostics/quantile-policy-probe-focused-tests.txt)
+and [293 full regression tests](results/defense/diagnostics/quantile-policy-probe-regression-tests.txt)
+pass, including native alternative-policy replay and promotion exclusion.
+
+```bash
+venv/bin/python -m rl.defense_evaluate \
+  results/defense/training/dqn-38-quantile-risk/step-000000331072/model.safetensors \
+  --quantile-power 1.5 --games 10 --seed 10000 --envs 8 \
+  --output runs/defense-quantile-policy-check.json \
+  --replay-output runs/defense-quantile-policy-check-replay
 ```
 
 ### DQN archive-diversity comparison

@@ -39,6 +39,8 @@ Experimental `--quantiles 32` learns distributions of score returns; optional
 `--quantile-exploration-power 1.5` changes training action selection only.
 Evaluation still uses greedy mean values. An own scalar DQN can initialize
 this model with `--init-from-dqn`; this starts fresh Adam, not optimizer resume.
+Separate `rl.defense_evaluate --quantile-power 1.5` probes can play and verify
+the alternative learned criterion without changing training or the shared best.
 `--compact-replay` optionally shares byte-identical visible frames in DQN's
 training buffer, preserving exact observations and sampling while reducing
 screen-storage duplication. It works with ordinary and bootstrap DQN.
