@@ -29,8 +29,9 @@ Their first full-run round favors resets by 62 mean points, down from the
 bounded check's 224; the second favors no resets by 305. All games remain
 stage-1 losses. A read-only prediction/return diagnostic does not support
 gross near-loss Q-value inflation as the explanation.
-A bounded archive-diversity pair now compares screen fingerprints with score
-bins, using equal maximum archive capacity and identical parent state.
+A bounded archive-diversity pair favored screen fingerprints over score bins
+by 384 mean points, with equal maximum archive capacity and identical parent
+state. Both still fell below the parent and lost every evaluation in stage 1.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -247,7 +248,7 @@ fresh-test seeds to tune the model.
   finished) and `runs/defense-persistent-reset-short-calibration-01/status.json`
   (lookback 32, finished), with adjacent logs. Both sources are excluded from
   the global collector.
-- Bounded archive-diversity comparison:
+- Completed bounded archive-diversity comparison:
   `runs/defense-dqn-screen-cells-calibration-01/status.json` and
   `runs/defense-dqn-score-cells-control-01/status.json`, with adjacent logs.
   These sources and the numerical-parity smoke runs are excluded from the collector.
@@ -3376,6 +3377,14 @@ remain unchanged; no new replay is claimed for this lower-scoring round.
 The inconsistent mean ranking does not establish a durable reset benefit or
 stage-depth progress. Both full runs continue unchanged.
 
+The [three-round record through **7,362,144**](results/defense/training/dqn-33-persistent-resets/comparison-through-000007362144.json)
+includes the third round's reset mean **10,029**, median **10,080**, best
+**10,180**, versus control mean **9,789**, median **9,820**, best **9,960**.
+The +240 difference again reverses the previous round. All sixty evaluation
+games across the three rounds lost in stage 1. Complete third-round game
+records and model hashes are archived in that report; the earlier, stronger
+full optimizer checkpoints and verified replays remain the preserved references.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
   --run runs/defense-persistent-reset-reproduction \
@@ -3449,6 +3458,32 @@ evaluation games start from boot on the same reused seeds. Both short sources
 are excluded from the global collector. The previous PPO screen-cell trial
 did not clear stage 1; this tests the combination with persistent DQN, without
 assuming screen diversity is sufficient. Trials 33/34 continue unchanged.
+
+Both checks have now stopped normally at **7,093,216**. The
+[complete paired result](results/defense/training/dqn-screen-cells-calibration-01/comparison.json)
+favors the screen method within this bounded comparison:
+
+| Archive selection | Ten-game mean | Median | Best | Independently verified replay |
+| --- | ---: | ---: | ---: | --- |
+| Screen fingerprints | 10,156 | 10,120 | 10,240 | [2,528 actions](results/defense/training/dqn-screen-cells-calibration-01/replay/replay.html) |
+| Score bins, matched limit | 9,772 | 9,760 | 9,820 | [2,438 actions](results/defense/training/dqn-score-cells-control-01/replay/replay.html) |
+
+All ten paired screen scores were higher, mean difference **+384**. All twenty
+games nevertheless lost in stage 1, and both means remain below the common
+parent's **10,259**. This one paired lineage on reused seeds is not a fresh
+success rate, a durable advantage or a stage clear. Both full online/target/
+optimizer/RNG checkpoints and complete compressed logs are preserved beside
+their replays; the shared best remains unchanged.
+
+Each arm completed **49** new boot games; screen selection completed **28**
+restored segments and score selection **29**, without a later-stage event.
+The latest logged terminal inventories had **128** entries on every screen
+worker and **33** on every score worker. Equal capacity did not produce equal
+occupancy, as anticipated. Both recorded source progress up to **2,600** and
+trigger progress up to **2,620** within a life. These scores do not establish
+obstacle passage, and having more screen cells does not prove they represent
+useful new situations. Both reserved workers in each arm remained boot-only;
+all archive events retained the exact 32-action lookback.
 
 ```bash
 # Use distinct paths and curriculum-cells score for the capacity-matched control.
