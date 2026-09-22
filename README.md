@@ -21,6 +21,11 @@ experimental results in [DEFENSE.md](DEFENSE.md).
 Its optional `--bootstrap-heads 5` experiment uses per-game value-head
 exploration with frozen random priors and greedy ensemble evaluation; it
 does not add demonstrations, hidden-state inputs or reward bonuses.
+Ordinary Defense DQN also supports `--exploration-max-repeat 64`: training-only
+random action persistence, with ordinary learned greedy evaluation unchanged.
+The default `1` preserves the original independent-action exploration. See
+[the controlled comparison](DEFENSE.md#persistent-random-exploration) for its
+motivation, rate calibration and limitations.
 Both Defense trainers support `--observation-stride` to space their four
 visible input frames independently of action duration (default 1 preserves
 existing models). Checkpoint evaluation and verified replays retain that setting.

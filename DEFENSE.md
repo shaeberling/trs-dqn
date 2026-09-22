@@ -6,10 +6,11 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **269-test** suite now passes, including
+(23 GiB available at restart). The full **274-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Bootstrap DQN 24 and PPO 29 resumed their preserved pause checkpoints with
-unlimited training. PPO 30 now tests frozen-base screen-history memory after
+Bootstrap DQN 24 continues from its preserved pause checkpoint; PPO 29 later
+retired after sustained regression with all results preserved. PPO 30 tests
+frozen-base screen-history memory after
 a verified bounded comparison. Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 A successful mission has not yet been verified.
@@ -209,12 +210,16 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-dqn-24-bootstrap/status.json`,
-  `runs/defense-ppo-29-value-weight/status.json` and
+- Live unlimited progress: `runs/defense-dqn-24-bootstrap/status.json` and
   `runs/defense-ppo-30-frozen-memory/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
+- Bounded persistent-exploration comparison:
+  `runs/defense-persistent-control-01/status.json` and
+  `runs/defense-persistent-memory-01/status.json`. These are training checks,
+  excluded from the global collector. The latter name refers to holding a
+  random action, **not** a recurrent neural network.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/` and `runs/defense-dqn-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -2371,6 +2376,19 @@ That is above its last pre-pause mean of 7,879, but below its preserved peak
 10,461 and the shared best's score. The full optimizer checkpoint is preserved;
 the continuation did not replace the global replay.
 
+Run 29 subsequently retired cleanly at **18,279,168** inherited actions,
+**7,831,552** new actions beyond its original parent. All **38** complete
+ten-game validations stayed in stage 1; peak mean remained 10,461. The final
+validation at **18,082,560** averaged **8,416**, median **8,595**, best **10,220**.
+Its [last validation checkpoint](results/defense/training/ppo-29-value-weight/step-000018082560/evaluation.json),
+[final optimizer checkpoint](results/defense/training/ppo-29-value-weight/final-checkpoint-000018279168/state.json),
+[retirement record and curve](results/defense/training/ppo-29-value-weight/retirement-000018279168.json)
+and [complete compressed log](results/defense/training/ppo-29-value-weight/metrics-at-000018279168.jsonl.gz)
+are preserved. The stopped process was confirmed gone. Sustained regression
+and no new stage—not a wall-clock limit—motivated releasing its compute for
+the controlled persistent-exploration comparison below. Its earlier best replay
+and every previous checkpoint remain available.
+
 ### Recurrent screen-history experiment
 
 `rl.defense_train --recurrent-hidden 128 --sequence-length 32` adds a GRU to
@@ -2783,6 +2801,83 @@ venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-reproduction \
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-continuation \
   --artifacts runs/defense-dqn-continuation/artifacts \
   --resume runs/defense-dqn-reproduction/latest
+```
+
+### Persistent random exploration
+
+The shared-barrier replay diagnostic motivates testing **temporal persistence**
+in exploration, without supplying a route or using the diagnostic frames as
+training examples. [Temporally-Extended Epsilon-Greedy Exploration](https://arxiv.org/abs/2006.01782)
+studies randomly sampled actions held for sampled durations. Our optional
+ordinary-DQN adaptation is not a reproduction of its Atari agents: it uses
+this repository's existing network, score-only reward and primitive-step
+replay, with bounded durations and an occupancy-calibrated exploration rate.
+
+`--exploration-max-repeat 1` (the default) executes the **unchanged** independent
+epsilon-greedy branch, including its original RNG draws. A larger value enables
+`rl.persistent_exploration`: sample uniformly among all existing actions, then
+hold that action for a random number of original environment steps. For the
+first comparison, durations are 1–64 with probability proportional to
+`length**(-1.5)`. No observation, obstacle detector, location, score threshold,
+or game-private state selects the start, action or duration. All directions,
+firing aliases and no-op remain eligible; there is no preference for right.
+
+Each held primitive step still produces its own screen, visible-score reward,
+n-step replay transition and normal update opportunity. This is **not** a new
+evaluation action repeat or a change in emulation speed. Visible life loss,
+termination and truncation cancel outstanding holds. Replay warmup retains
+the old independent uniform random actions. Saved online/target/optimizer and
+replay semantics are unchanged. An independent exploration RNG is saved and
+restored; active holds and local diagnostic counters clear when resume boots
+new games. Bootstrap-head combinations are currently rejected explicitly.
+
+To separate longer sequences from simply adding more random actions, epsilon
+denotes a nominal exploratory-step fraction. If mean duration is `m`, an idle
+worker starts a random hold with probability `epsilon / (m*(1-epsilon)+epsilon)`.
+This is the renewal-process occupancy formula, not the paper's unadjusted
+option-start epsilon. Here `m = 6.17855` and epsilon 0.05 gives start probability
+**0.00844648**. Stationary uninterrupted occupancy is 5%; episode/life cuts and
+changing epsilon can change realized occupancy. Logs and checkpoints retain
+actual exploratory steps, duration/action counts and cancelled future steps.
+
+Greedy complete-game validation remains **entirely learned, at the original
+100,000-T-state decision cadence**. The evaluation loader never instantiates
+the training exploration helper. No reward bonus, demonstration, hidden RAM,
+scripted route, or evaluation-only action override is introduced.
+
+The first paired calibration starts both arms from the same preserved ordinary
+DQN-28 peak at **6,100,000**, not from either earlier short learning-rate check.
+Each collects **131,072** new primitive actions and ends at **6,231,072**.
+Both retain eight workers, compact capacity 200,000, batch 64, learning rate
+0.0001, n-step 5, gamma 0.997, life learning boundaries, 10,000-entry replay
+warmup, update interval 16, target interval 2,000, epsilon 0.05 and no own-state
+resets. Each refills replay with its own newly collected experience. The
+[control configuration](results/defense/training/persistent-control-01/resume-config.json)
+and [persistent configuration](results/defense/training/persistent-repeat-01/resume-config.json)
+differ only in maximum repeat, output paths and exploration provenance.
+They share the same reused ten validation seeds; neither is a fresh test or
+eligible source for the global collector. A complete stage clear remains the
+objective, not a higher training score under random exploratory actions.
+
+All **274 regression tests** pass. The five added tests cover the duration
+distribution and occupancy calibration, exact holds and boundary cancellation,
+RNG reproducibility, invalid CLI combinations, real native training and resume,
+and byte-for-byte array equality of default versus explicitly disabled runs
+(online, target and optimizer, with identical counters/RNG). A 384,000-decision
+synthetic check exercises the nominal 5% occupancy and long-duration tail;
+it is a sampler test, not game-performance evidence. The
+[complete test log](results/defense/diagnostics/persistent-regression-tests.txt)
+is preserved. Existing learners continue using their originally loaded code;
+new checkpoints record the exact new trainer/helper source hashes.
+
+```bash
+# Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-persistent-reproduction \
+  --artifacts runs/defense-persistent-reproduction/artifacts \
+  --resume results/defense/training/dqn-28-large-replay/step-000006100000 \
+  --steps 6231072 --eval-every 131072 \
+  --exploration-max-repeat 64 --exploration-exponent 1.5
 ```
 
 ### Lossless compact training replay
