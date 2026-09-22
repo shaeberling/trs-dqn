@@ -5,12 +5,13 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
-Status: **Defense learners are paused at saved checkpoints because free disk
-space fell below the existing 5 GiB safety threshold.** Training remains
-independent of Breakdown, with parallel emulator workers, resumable checkpoints,
-complete-game validation and automatic verified best-effort replays. No history
-has been deleted. Free additional storage before restarting an unlimited run;
-see the pause checkpoints below. A successful mission has not yet been verified.
+Status: **Defense training has resumed after the user freed disk space**
+(23 GiB available at restart). The full **259-test** suite now passes, including
+the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
+Bootstrap DQN 24 and PPO 29 resumed their preserved pause checkpoints with
+unlimited training. Training remains independent of Breakdown, with complete-game
+validation and automatic verified best-effort replays. No history was deleted.
+A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
@@ -207,7 +208,7 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Latest progress (learners currently paused): `runs/defense-dqn-24-bootstrap/status.json`
+- Live progress: `runs/defense-dqn-24-bootstrap/status.json`
   and `runs/defense-ppo-29-value-weight/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
@@ -224,6 +225,39 @@ fresh-test seeds to tune the model.
 - With concurrent learners, the single `rl.defense_collect` process owns that
   shared archive. Its status/log live in `runs/defense-collector/`. The learner
   processes write only to their separate experiment artifact roots.
+
+After the storage pause, both original learner processes were confirmed gone
+and every pause-checkpoint file was checked against its archived copy before
+restart. DQN resumed at **7,383,056** actions and PPO at **15,674,112**.
+Learning settings remain unchanged; newer optional features retain their
+disabled/default behavior. The preserved
+[DQN restart configuration](results/defense/training/dqn-24-bootstrap/resume-after-storage-config.json)
+and [PPO restart configuration](results/defense/training/ppo-29-value-weight/resume-after-storage-config.json)
+record the exact source hashes and ancestry. The
+[259-test result](results/defense/diagnostics/post-storage-regression-tests.txt)
+passed after space was freed. Both processes were observed advancing counters;
+the original sole collector remained live, with short experiments excluded.
+
+Weights, optimizer, DQN targets/priors and saved RNG states are restored, but
+games restart from boot, DQN refills its replay buffer from new own experience,
+and PPO refills its own-state archive. This is not exact trajectory or replay-
+buffer continuation. Initial training-game scores during random DQN warmup are
+not frozen-policy validation results. The stronger shared best is preserved.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-24-bootstrap \
+  --artifacts runs/defense-dqn-24-bootstrap/artifacts \
+  --resume results/defense/training/dqn-24-bootstrap/pause-checkpoint-000007383056 \
+  --steps 0
+venv/bin/python -u -m rl.defense_train --run runs/defense-ppo-29-value-weight \
+  --artifacts runs/defense-ppo-29-value-weight/artifacts \
+  --resume results/defense/training/ppo-29-value-weight/pause-checkpoint-000015674112 \
+  --steps 0
+```
+
+These are the recorded restart commands, not commands to launch duplicate
+learners while those runs are already active. Use the latest preserved
+checkpoint and an unoccupied run directory for a later continuation.
 
 Selection prioritizes completed missions, then highest stage, then score, among
 **complete from-boot games only**. The stable best is a best single effort, not
