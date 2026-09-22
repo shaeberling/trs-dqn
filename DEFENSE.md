@@ -8,13 +8,15 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **327-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are full current-policy trace cutting (43) and visual
-prediction (45). Longer persistence (44) retired after six stage-1-only rounds;
+Current experiments are full visual prediction (45) and inverse-action
+classification (46). Trace cutting (43) and longer persistence (44) retired
+after six stage-1-only rounds each;
 higher discount (42) retired after seven. Visual prediction's calibration improved mean score
 but still failed at the recurring barrier; its full continuation tests longer
 adaptation, not an established fix.
-An isolated inverse-action auxiliary calibration is also running after its
-default-parity, native-game, resume and full regression checks passed.
+The inverse-action calibration scored below the baseline, and its frozen
+classifier did not outperform an action-frequency prior. Its full continuation
+tests longer adaptation, not a demonstrated capability.
 Worker-split exploration
 (40) and its uniform control (41) retired after nine and seven evaluation
 rounds, respectively, without a later stage.
@@ -4179,6 +4181,20 @@ and [2,484-action verified replay](results/defense/training/dqn-43-greedy-trace-
 are preserved. Recovery from the earlier regression is not a demonstrated
 trace-cut advantage or stage passage.
 
+Run 43 then [retired gracefully](results/defense/training/dqn-43-greedy-trace-cut/retirement.json)
+at **8,308,744**, after **1,215,528** new actions, **541** boot games and **392**
+restored segments since its calibration. All logged episodes and all **60**
+complete evaluation games remain stage 1. Its
+[six-round means](results/defense/training/dqn-43-greedy-trace-cut/comparison-through-000008293216.json)
+are **8,681 / 8,227 / 9,415 / 8,089 / 4,828 / 9,074**. Differences from the
+historical baseline are **−1,074 / −624 / −884 / +779 / −4,956 / +25**; later
+rank reversals did not produce stage passage. Final full state and the latest
+evaluated checkpoint at **8,293,216**, complete log and new
+[2,575-action verified 10,280-point replay](results/defense/training/dqn-43-greedy-trace-cut/replay-10280/replay.html)
+are preserved. Final weights were not separately evaluated. This was an
+outcome-based retirement, not a wall-clock limit; historical collector sources
+and all earlier replays remain intact.
+
 ### Longer random-persistence calibration
 
 The [new isolated duration check](results/defense/training/long-persistence-split-calibration-01/resume-config.json)
@@ -4586,7 +4602,7 @@ pairs, with peak logged MLX allocation **509,643,200 bytes**, and exited normall
 This is not performance evidence; smoke/conversion models and trajectories are
 not calibration parents or training data.
 
-The [running calibration](results/defense/training/inverse-split-calibration-01/resume-config.json)
+The [isolated calibration](results/defense/training/inverse-split-calibration-01/resume-config.json)
 starts directly from the same original DQN-33 checkpoint
 at **6,962,144**, using the historical worker-split baseline settings and
 **131,072** new actions, followed by ten complete uncapped boot games on reused
@@ -4600,7 +4616,7 @@ The [configuration comparison](results/defense/training/inverse-split-calibratio
 permits only inverse settings/provenance, the newer trainer hash and disabled
 SPR/trace flags, and output paths. Acting-model, environment, ordinary replay,
 exploration and archive source hashes match the historical baseline. Results are
-pending; the short calibration remains excluded from the shared collector.
+below; the short calibration remains excluded from the shared collector.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
@@ -4609,6 +4625,68 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
   --steps 7093216 --eval-every 131072 --epsilon-final .9 \
   --curriculum-boot-epsilon .05 --curriculum-lookback 128 --inverse-weight .01
+```
+
+#### Inverse-action result and frozen controls
+
+The [completed calibration](results/defense/training/inverse-split-calibration-01/comparison.json)
+at **7,093,216** has mean **8,632**, median **9,420**, best **10,190**. Every game
+remains a stage-1 loss. The mean is **834** below the historical baseline; one
+paired score improved and nine fell. Full state including both auxiliary files,
+the complete compressed log, and the
+[2,550-action verified replay](results/defense/training/inverse-split-calibration-01/replay/replay.html)
+are preserved. Its [loss panels](results/defense/diagnostics/shared-loss-inverse-calibration-01/policy-1-losses.png)
+again show the right-opening barrier sequence with the ship near centre/left;
+life scores are **2,550 / 2,520 / 2,570 / 2,550**. This did not solve the bottleneck.
+
+The [audit](results/defense/training/inverse-split-calibration-01/audit.json)
+records **131,072** new actions, **7,566** updates, **55** boot games, **37**
+restored segments and **1,282** archive events. All recorded offsets are 128,
+reserved workers stayed boot-only, and all logged episodes stayed in stage 1.
+There were **484,224** sampled own pairs. Peak logged MLX allocation was
+**509,635,520 bytes**. The process exited normally.
+
+`python -m rl.defense_inverse_probe CHECKPOINT REPLAY --output NEW_JSON` is a
+read-only control, not a trainer. It checks full classifier/checkpoint hashes,
+matching replay provenance and all greedy actions, then compares paired-screen
+classification with repeated-current and deterministically permuted-next-screen
+inputs. A smoothed action-frequency prior fits only the first half of recorded
+actions. All comparisons below use the same **1,275** second-half decisions:
+
+| Classifier input/control | Cross entropy (lower is better) | Accuracy |
+| --- | ---: | ---: |
+| Actual adjacent screens | 2.7361 | 17.10% |
+| Repeat current screen | 2.7334 | 17.25% |
+| Permute next screens | 2.9504 | 13.18% |
+| First-half action-frequency prior | 2.4668 | 31.22% |
+
+The [frozen report](results/defense/diagnostics/inverse-calibration-classifier-7093216.json)
+therefore does **not** demonstrate useful action-change recognition. Real next
+screens perform almost the same as unchanged-current screens and worse than a
+simple class-frequency control. Permuting screens hurts, but that alone does
+not prove controllable dynamics: temporal/context relationships and policy
+shortcuts are confounds. This is one selected greedy game, not the exploratory
+training distribution. Temporal halves are not independent samples, and these
+inference-only input substitutions are not playable counterfactual trajectories.
+No diagnostic data enters training. All [three focused probe tests](results/defense/diagnostics/inverse-probe-tests.txt)
+pass, including analytic metrics, invalid input, deterministic frozen inference,
+source immutability and corrupted auxiliary-state rejection.
+
+Full **DQN 46** now [continues the exact calibrated state](results/defense/training/dqn-46-inverse-action/resume-config.json)
+with unchanged learner settings and ten complete uncapped boot games every
+**200,000** new actions. This tests whether longer adaptation can establish the
+intended classifier capability and improve gameplay; the negative short result
+is not presented as an advantage. No SPR or other new change is combined with it.
+The sole [collector includes 42 full-trial sources](results/defense/training/dqn-46-inverse-action/collector-config.json),
+including retired histories and excluding all short calibrations. The original
+10,480-point global best remains unchanged and verified.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-inverse-full-reproduction \
+  --artifacts runs/defense-inverse-full-reproduction/artifacts \
+  --resume results/defense/training/inverse-split-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Quantile score-return experiment
