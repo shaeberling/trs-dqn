@@ -3648,6 +3648,17 @@ across the two paired rounds remain stage-1 losses. More exploratory practice
 has not yet established a passage benefit. Frozen checkpoint hashes and all
 per-game records are preserved with the comparison; the trials continue.
 
+At **7,693,216**, the [third-round comparison](results/defense/training/dqn-40-worker-epsilon-split/comparison-through-000007693216.json)
+shows a split-arm recovery: mean **10,299**, median **10,310**, best
+**10,430**, versus control mean **9,236**, median **9,110**, best **9,840**.
+Split scores are higher on all ten paired seeds, with mean difference
+**+1,063**, after differences **−77** and **−314** in the first two rounds.
+This single-round score advantage is not durable-superiority or stage-clear
+evidence: all sixty games across the three rounds remain stage-1 losses.
+The split arm's full online/target/Adam/RNG checkpoint and
+[2,550-action verified replay](results/defense/training/dqn-40-worker-epsilon-split/replay-10430/replay.html)
+are preserved separately; the global 10,480-point best is unchanged.
+
 ### One-step target calibration under heavy exploration
 
 The worker-allocation trial changes which experience is generated, but still
@@ -3788,6 +3799,54 @@ The check uses the now-finished one-step slot; runs 39/40/41 and the sole
 37-source collector continue unchanged. Both short calibrations are excluded
 from global promotion. The 10,480-point stage-1 best remains verified and
 available; the mission goal is not achieved.
+
+#### Longer-discount result and full continuation
+
+The [completed calibration comparison](results/defense/training/long-discount-split-calibration-01/comparison.json)
+at **7,093,216** gives gamma .9995 mean **7,283**, median **7,240**, best
+**10,320**, versus gamma .997 mean **9,466**, median **10,310**, best
+**10,410**. Eight paired scores are lower and two higher; mean difference is
+**−2,183**. All twenty compared games remain stage-1 losses. This is a short
+score regression, not evidence that longer discounting improves passage.
+
+Its full online/target/Adam/RNG, complete compressed log and
+[2,398-action verified replay](results/defense/training/long-discount-split-calibration-01/replay/replay.html)
+are preserved. The [audit](results/defense/training/long-discount-split-calibration-01/audit.json)
+records **60** boot games, **43** restored segments, **1,271** archive events
+and **124** retained save events, with exact 128-action offsets and protected
+boot-only workers. Retained source within-life score reaches **190**, trigger
+score **2,620**; these are not position measurements or stage-clear evidence.
+All logged training episodes remain stage 1. Both discount calibrations
+performed **7,566** updates over **131,072** new actions.
+
+Full [DQN 42](results/defense/training/dqn-42-long-discount/resume-config.json)
+now continues the higher-discount calibration unchanged, apart from output
+paths, **unlimited** training and evaluation every **200,000** actions. Its
+first full round is due at **7,293,216**. This longer trial asks whether the
+changed objective recovers from retraining and yields actual stage progression;
+the retained best-game competence warrants testing more exposure, not claiming
+a benefit from the regressed mean. Unlike the one-step check's median **540**,
+this check retained median **7,240**, but neither demonstrates later-stage play.
+No evaluation trace becomes training input; replay/native archives refill.
+
+Runs 39/40/41 continue. The old collector exited cleanly before the replacement
+started with [all 38 full-run sources](results/defense/training/dqn-42-long-discount/collector-config.json).
+Retired sources remain included and short calibrations remain excluded.
+Promotion still requires frozen-policy native replay verification. No stage-2
+reach or original mission completion has yet been observed.
+
+The [new aligned screen comparison](results/defense/diagnostics/shared-loss-long-discount-01/report.json)
+preserves the split run's 10,430-point replay and the longer-discount check's
+10,320-point replay. Per-life scores are **[2620, 2620, 2620, 2570]** and
+**[2600, 2570, 2550, 2600]**. They show the familiar broad obstacle sequence,
+but not identical failure timing: the longer-discount panels include the
+preceding center-opening barrier near the ship when the right-opening barrier
+is still farther up the screen. The split replay reaches the latter barrier
+near the ship. This is consistent with some earlier failures in the changed
+policy, not a verified new passage. Neither alignment nor score establishes
+the exact collision object or instant; projectile/wall causality is not
+inferred from these panels. Selected replays are not representative training
+rollouts, and no diagnostic frames/actions are supplied to learning.
 
 ### Longer preparation-context continuation
 
