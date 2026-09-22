@@ -6,10 +6,11 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **327-test** suite now passes, including
+(23 GiB available at restart). The full **337-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are full visual prediction (45) and inverse-action
-classification (46). Trace cutting (43) and longer persistence (44) retired
+Current experiments are full visual prediction (45), inverse-action
+classification (46), and a controlled own-loss-triggered reset calibration.
+Trace cutting (43) and longer persistence (44) retired
 after six stage-1-only rounds each;
 higher discount (42) retired after seven. Visual prediction's calibration improved mean score
 but still failed at the recurring barrier; its full continuation tests longer
@@ -4562,6 +4563,15 @@ following the first-round **+11** difference. The full second checkpoint and
 are preserved. Auxiliary loss fell to **.00719**, but this is not gameplay
 progress: no later stage has been observed and the shared best is unchanged.
 
+The [third full comparison at **7,693,216**](results/defense/training/dqn-45-visual-prediction/comparison-at-000007693216.json)
+recovers to mean **10,295**, median **10,275**, best **10,400**, still all stage 1.
+The historical same-count baseline averages **10,299**: a **−4** difference,
+not a demonstrated advantage. Its complete state and
+[2,585-action verified replay](results/defense/training/dqn-45-visual-prediction/replay-10400/replay.html)
+are preserved. Cumulative continuation totals are **600,000** actions,
+**252** complete boot games and **189** completed restored segments; all
+**5,884** logged archive offsets are 128, with reserved boot workers protected.
+
 ### Inverse-action representation experiment
 
 The separate optional `--inverse-weight .01` tests whether learning to predict
@@ -4722,6 +4732,16 @@ paired-versus-repeated distinction remains tiny. These are different selected
 states from the calibration, not a matched-state causal learning curve. Run 46
 continues unchanged; the global best remains intact.
 
+At **7,493,216**, run 46's [second full comparison](results/defense/training/dqn-46-inverse-action/comparison-at-000007493216.json)
+has mean **10,220**, median **10,215**, best **10,280**. This is **+1,369** over
+the historical same-count baseline's 8,851, but every game remains a stage-1
+loss. The full optimizer and
+[2,494-action verified replay](results/defense/training/dqn-46-inverse-action/replay-10280/replay.html)
+are preserved. Across **400,000** continuation actions, **188** complete boot
+games and **132** completed restored segments, no logged episode reached a
+later stage. All **3,856** archive offsets are 128 and boot workers remain
+protected. The trial continues without replacing the shared best.
+
 ### Intermediate own-state rewind calibration
 
 The [selected-reset audit](results/defense/diagnostics/selected-reset-origins-45-46.json)
@@ -4788,6 +4808,75 @@ venv/bin/python -u -m rl.defense_dqn \
   --steps 7093216 --eval-every 131072 --epsilon-final .9 \
   --curriculum-boot-epsilon .05 --curriculum-lookback 64 \
   --spr-weight 0 --inverse-weight 0
+```
+
+### Own-loss-triggered reset experiment
+
+The selected-reset audit and repeated failure panels motivate testing the
+**trigger**, not only the rewind duration. The default archive rewinds from
+score-bin changes; it is not aligned to ship loss. Optional DQN
+`--curriculum-trigger life-loss --curriculum-lookback 64` instead waits for an
+actual visible life-counter loss and retains the exact opaque own snapshot
+from 64 decisions earlier. It does so before clearing that life's history or
+resetting its score baseline. The final lost life can also contribute a prior
+live state. Short histories are skipped, never borrowed across a life/reset.
+New visible stages still receive an immediate own snapshot.
+
+This changes training starting states only. Archive keys, bounded retention,
+sharing, boot-only workers and probabilistic resets remain unchanged. The
+saved state's own score/life-age/screen key is used, not a fabricated label
+from the later event. Policy input stays four raw visible frames; reward stays
+visible score delta. There is no route, extra penalty, action override, hidden
+RAM label or demonstration. A visible ship loss may lag physical collision;
+64 decisions is a hypothesis, not a guarantee of a recoverable state. Evaluation
+always plays ordinary complete games from boot without archive access.
+
+The [disabled-path parity check](results/defense/diagnostics/loss-trigger-default-parity.json)
+compares a 4,096-action diagnostic before and after the change: all **12** online,
+**12** target and **26** optimizer arrays, every non-config state field and all
+**41** archive/episode records are equal. Paths, provenance hashes and the
+new default `progress` config entry differ. These capped diagnostic episodes
+are not performance evidence. A separate
+[zero-action parent conversion](results/defense/diagnostics/loss-trigger-parent-conversion-parity.json)
+preserves the actual DQN-33 parent's weights, Adam, original counters and both
+RNGs exactly. Local exploration statistics clear normally with boot resets.
+
+The [production-setting smoke](results/defense/diagnostics/loss-trigger-production-smoke.json)
+completed 16,384 new actions without an evaluation; it is not a performance
+parent. Tests check all four real losses against exact earlier native bytes and
+screens, unchanged complete-game observations/rewards for score/screen/age keys,
+final-life capture, insufficient history, immediate stage-entry bookkeeping,
+peer restoration, protected boot workers, absence of capture when disabled,
+truncation without loss, and native DQN learning/resume with archive refill.
+Stage-transition fixtures are not evidence of actual stage passage.
+
+All [seven focused checks](results/defense/diagnostics/loss-trigger-focused-tests.txt)
+passed, and the [full 337-test suite](results/defense/diagnostics/loss-trigger-regression-tests.txt)
+passed in 326 seconds. The production smoke made **398** updates, completed
+**eight** boot games and **one** restored segment, and emitted **38** correctly
+offset own-loss archive events with boot workers protected. Its measured MLX
+peak was **289,622,052 bytes**; it exited normally. This verifies execution,
+not improved gameplay.
+
+The [running controlled calibration](results/defense/training/loss-trigger-split-calibration-01/resume-config.json)
+starts from original DQN 33 at **6,962,144**,
+not the smoke or either auxiliary learner. It uses the same settings as the
+completed intermediate-rewind check: 64-action lookback, gamma .997, five-step
+returns, hold cap 64, split epsilon .05/.9, eight workers, reset probability .5,
+score cells 16×4 and no auxiliary losses. The [configuration audit](results/defense/training/loss-trigger-split-calibration-01/design.json)
+confirms that only the trigger changes, apart from paths and source provenance. Compare
+131,072 new actions and ten complete uncapped boot games on the reused seeds;
+judge actual stage passage separately from mean score. It is excluded from
+the shared best collector until a full trial is warranted.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-loss-trigger-split-reproduction \
+  --artifacts runs/defense-loss-trigger-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 64 \
+  --curriculum-trigger life-loss --spr-weight 0 --inverse-weight 0
 ```
 
 ### Quantile score-return experiment
