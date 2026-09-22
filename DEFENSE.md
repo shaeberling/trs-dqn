@@ -16,8 +16,12 @@ while the control recovers score without clearing stage 1.
 The second means are 1,136 / 9,502, again without a later stage.
 The third means are 1,701 / 9,484 and the fourth 1,271 / 4,280. A separate matched calibration
 at discount .999 averaged 10,266 with temporal consistency versus 9,710 without,
-all stage-1 losses. Full consistency/control continuations (58/57) are now live;
-no success is inferred from their losses or near-ceiling scores.
+all stage-1 losses. Full consistency/control continuations (58/57) are live;
+their first full means are **10,262 / 9,890**, with all 20 games still losing
+in stage 1. The [current screen review](results/defense/diagnostics/consistency-full-losses-7293216/README.md)
+confirms the recurring barrier approach, not new navigation progress.
+Full states, log prefixes and verified replays are preserved. No success is
+inferred from learning losses or near-ceiling scores.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
