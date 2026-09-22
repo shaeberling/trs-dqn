@@ -1,0 +1,1396 @@
+{
+  "checkpoint_hashes": {
+    "model.safetensors": "21d3eb5fa42db8cfddd67100a77d8385a2312a7666fd350e05bfcb033e6cfb62",
+    "state.json": "b211d3eb61d7ff656f53352d33db4b0dbd633d0b6956824099a63b2a9d1ecd09",
+    "target.safetensors": "8ee5831904e2f9e17c8caaa84d7f1829bddcf59cedb025875fa07e761af2d521",
+    "optimizer.npz": "8f791844b141322cc162c7a8df51e8eb5db6cce4e376b2e4fb272d2ad271181e",
+    "evaluation.json": "098515af024e58d1c1531e3c9e685453d0f6456e2e47e4d0be8610f8cc9ff38e"
+  },
+  "log_prefix_sha256": "cbc8529602aa73038846574cda17a6684d77dabac850719d2e7228c273d74694",
+  "log_prefix_bytes": 2543368,
+  "new_replay_published": false,
+  "verified_actions": null,
+  "new_actions": 400000,
+  "new_updates": 24374,
+  "new_boot_games": 176,
+  "new_restored_segments": 135,
+  "archive_events": 4320,
+  "all_archive_offsets_correct": true,
+  "reserved_workers_boot_only": true,
+  "highest_logged_training_stage": 1,
+  "logged_training_missions": 0,
+  "selected_reset_source_progress_counts": {
+    "0": 4,
+    "20": 15,
+    "40": 11,
+    "60": 10,
+    "80": 9,
+    "100": 10,
+    "120": 5,
+    "140": 8,
+    "160": 9,
+    "180": 2,
+    "190": 4,
+    "210": 2,
+    "230": 7,
+    "260": 9,
+    "280": 8,
+    "290": 4,
+    "310": 9,
+    "330": 9
+  },
+  "selected_resets_from_boot_only_workers": 108,
+  "selected_reset_origins": [
+    {
+      "source_worker": 1,
+      "source_action": 1421,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 83,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 1028,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 540,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 934,
+      "source_progress": 0,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 160.0,
+      "segment_steps": 626,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 539,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1011,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 539,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1086,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 2078,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1068,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2106,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 990.0,
+      "segment_steps": 1399,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2072,
+      "source_progress": 290,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1455,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 1573,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 61,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2075,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1354,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 3154,
+      "source_progress": 210,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 970.0,
+      "segment_steps": 536,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2075,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 240.0,
+      "segment_steps": 1417,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3507,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 250.0,
+      "segment_steps": 546,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1608,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 33,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 5934,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 433,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5303,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 495,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6078,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 48,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6078,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 35,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2824,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 930.0,
+      "segment_steps": 997,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 1396,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 60,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4697,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 1050.0,
+      "segment_steps": 1023,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 7712,
+      "source_progress": 0,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 160,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6078,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 41,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 1527,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 49,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 7744,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 972,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5387,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 555,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5841,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 132,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2106,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 2530.0,
+      "segment_steps": 1467,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4649,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 970.0,
+      "segment_steps": 1409,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4014,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 240.0,
+      "segment_steps": 1383,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 10597,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 770.0,
+      "segment_steps": 51,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5956,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 59,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 8396,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 551,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 10559,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 602,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4577,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 902,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 9657,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1042,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 12372,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 534,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2949,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 548,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2949,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 578,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 6908,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 620,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 6,
+      "source_action": 1421,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 60,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2000,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1410,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 13743,
+      "source_progress": 190,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 63,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4232,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 190.0,
+      "segment_steps": 64,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 11457,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 38,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 3818,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 280.0,
+      "segment_steps": 1502,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2084,
+      "source_progress": 290,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1449,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 17227,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 160.0,
+      "segment_steps": 960,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1571,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 44,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10167,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 180.0,
+      "segment_steps": 971,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10882,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 537,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9294,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 35,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 18080,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 850.0,
+      "segment_steps": 545,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1608,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 18,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 17253,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 506,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10882,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 870.0,
+      "segment_steps": 523,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2000,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1375,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 13127,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1002,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 17253,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 491,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20469,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 90.0,
+      "segment_steps": 74,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 22106,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 524,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 16239,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 62,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1692,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 49,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 11826,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 390.0,
+      "segment_steps": 1405,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 14079,
+      "source_progress": 120,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1312,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 12372,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 525,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 17792,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1043,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 4,
+      "source_action": 539,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1009,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 1612,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 340.0,
+      "segment_steps": 1610,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 9493,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 118,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 10586,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 60,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 5404,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 950.0,
+      "segment_steps": 984,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 9887,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 549,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 15547,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 489,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5278,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 504,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 16262,
+      "source_progress": 180,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 58,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 26416,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1369,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9305,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 770.0,
+      "segment_steps": 50,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 17384,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 890.0,
+      "segment_steps": 930,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20338,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 60,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 22106,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 472,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 13075,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 546,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 24031,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 330.0,
+      "segment_steps": 1513,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 27731,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 9,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 21592,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 870.0,
+      "segment_steps": 869,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20900,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1475,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 3069,
+      "source_progress": 120,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 561,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 21669,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 930.0,
+      "segment_steps": 1244,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 17888,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 134,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 14664,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 472,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 29642,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1014,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 25372,
+      "source_progress": 120,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 45,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 6,
+      "source_action": 7605,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1054,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 11638,
+      "source_progress": 0,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 862,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2106,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 1010.0,
+      "segment_steps": 1513,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 22670,
+      "source_progress": 0,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 195,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 20524,
+      "source_progress": 120,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 499,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 6,
+      "source_action": 22611,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 82,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10905,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 870.0,
+      "segment_steps": 519,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6840,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 160.0,
+      "segment_steps": 987,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9124,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 130,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 26089,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 22,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 22364,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1036,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4014,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 300.0,
+      "segment_steps": 1529,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 28947,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 135,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 21319,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1046,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 4,
+      "source_action": 23864,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 79,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 3166,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 850.0,
+      "segment_steps": 484,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 35856,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 19,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 6908,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 570,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 6,
+      "source_action": 33236,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 180.0,
+      "segment_steps": 969,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 25372,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 536,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9124,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 59,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2824,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 970.0,
+      "segment_steps": 1054,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 9815,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 481,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 27816,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 190.0,
+      "segment_steps": 94,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2072,
+      "source_progress": 290,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1450,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20877,
+      "source_progress": 190,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 1150.0,
+      "segment_steps": 1552,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 15535,
+      "source_progress": 210,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 870.0,
+      "segment_steps": 499,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 8184,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 16,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 41837,
+      "source_progress": 180,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 498,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 34987,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 516,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4268,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 17,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 22208,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 160.0,
+      "segment_steps": 944,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 33305,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9124,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 61,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10096,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 990,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 42776,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 2490.0,
+      "segment_steps": 1453,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2075,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 1030.0,
+      "segment_steps": 1493,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 23028,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 491,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20877,
+      "source_progress": 190,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 320.0,
+      "segment_steps": 1320,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 28824,
+      "source_progress": 120,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1362,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20877,
+      "source_progress": 190,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 380.0,
+      "segment_steps": 1479,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 7670,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 300.0,
+      "segment_steps": 1507,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 26174,
+      "source_progress": 290,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 34,
+      "highest_stage": 1
+    }
+  ],
+  "selection_limits": "Completed restored segments, not all resets or occupancy. Score is not exact course position."
+}

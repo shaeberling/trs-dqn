@@ -1,0 +1,1350 @@
+{
+  "checkpoint_hashes": {
+    "model.safetensors": "4eb4ba9e5d2f0e7e53feb2137948f6495e7ec39e1a21317764ef879fa90b856d",
+    "state.json": "494b5c06c9f7c3fc0d7126abedf3d8fa2a7cef953922b77f166f18be2e857f60",
+    "target.safetensors": "5fcf62ffb9ca5e08f97a7e9354182d9dc313aca14885c4354470cf276ee1aef5",
+    "optimizer.npz": "4698db5e87eb129c5ab57c97cda0d7338eb479a3ded6f69e0baa866efbde467b",
+    "evaluation.json": "7c9187291152056c9d2cbddd9c65ee48e0fadca7ebbc3ff2721023f7d8f1e175"
+  },
+  "log_prefix_sha256": "2bc03668b870dfaf3a7e895168a055d62ac13f4cc4698ae52976d7ffa888bd60",
+  "log_prefix_bytes": 1166795,
+  "new_replay_published": false,
+  "verified_actions": null,
+  "new_actions": 400000,
+  "new_updates": 24374,
+  "new_boot_games": 170,
+  "new_restored_segments": 130,
+  "archive_events": 906,
+  "all_archive_offsets_correct": true,
+  "reserved_workers_boot_only": true,
+  "highest_logged_training_stage": 1,
+  "logged_training_missions": 0,
+  "selected_reset_source_progress_counts": {
+    "0": 1,
+    "20": 1,
+    "40": 5,
+    "60": 3,
+    "80": 2,
+    "100": 8,
+    "140": 3,
+    "160": 9,
+    "180": 5,
+    "200": 2,
+    "240": 7,
+    "260": 10,
+    "280": 11,
+    "300": 12,
+    "330": 10,
+    "910": 5,
+    "930": 5,
+    "950": 8,
+    "1010": 7,
+    "1030": 2,
+    "1050": 9,
+    "1100": 5
+  },
+  "selected_resets_from_boot_only_workers": 110,
+  "selected_reset_origins": [
+    {
+      "source_worker": 6,
+      "source_action": 996,
+      "source_progress": 40,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 417,
+      "segment_new_score": 140.0,
+      "segment_steps": 556,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 596,
+      "source_progress": 60,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 432,
+      "segment_new_score": 140.0,
+      "segment_steps": 906,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 85,
+      "source_progress": 40,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 85,
+      "segment_new_score": 240.0,
+      "segment_steps": 1422,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 1996,
+      "source_progress": 40,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 394,
+      "segment_new_score": 200.0,
+      "segment_steps": 994,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2795,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 160.0,
+      "segment_steps": 960,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1714,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 621,
+      "segment_new_score": 770.0,
+      "segment_steps": 18,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2795,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 160.0,
+      "segment_steps": 940,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4251,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 657,
+      "segment_new_score": 0.0,
+      "segment_steps": 12,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 100,
+      "source_progress": 40,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 100,
+      "segment_new_score": 280.0,
+      "segment_steps": 1527,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2773,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 602,
+      "segment_new_score": 140.0,
+      "segment_steps": 903,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 2712,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 516,
+      "segment_new_score": 100.0,
+      "segment_steps": 542,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2107,
+      "source_progress": 180,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 316,
+      "segment_new_score": 970.0,
+      "segment_steps": 1368,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 6,
+      "source_action": 2144,
+      "source_progress": 0,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 18,
+      "segment_new_score": 280.0,
+      "segment_steps": 1461,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2107,
+      "source_progress": 180,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 316,
+      "segment_new_score": 990.0,
+      "segment_steps": 1404,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 2556,
+      "source_progress": 80,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 442,
+      "segment_new_score": 100.0,
+      "segment_steps": 497,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6520,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 652,
+      "segment_new_score": 20.0,
+      "segment_steps": 36,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 5295,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 600,
+      "segment_new_score": 200.0,
+      "segment_steps": 999,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 4982,
+      "source_progress": 60,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 427,
+      "segment_new_score": 40.0,
+      "segment_steps": 76,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1580.0,
+      "segment_steps": 490,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 4,
+      "source_action": 4989,
+      "source_progress": 20,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 332,
+      "segment_new_score": 160.0,
+      "segment_steps": 609,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 6381,
+      "source_progress": 40,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 368,
+      "segment_new_score": 160.0,
+      "segment_steps": 984,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4631,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 316,
+      "segment_new_score": 1030.0,
+      "segment_steps": 1510,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 6695,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 0.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2126,
+      "source_progress": 930,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 348,
+      "segment_new_score": 1720.0,
+      "segment_steps": 1378,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 8953,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 636,
+      "segment_new_score": 20.0,
+      "segment_steps": 19,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2126,
+      "source_progress": 930,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 348,
+      "segment_new_score": 1760.0,
+      "segment_steps": 1427,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 6641,
+      "source_progress": 60,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 402,
+      "segment_new_score": 120.0,
+      "segment_steps": 513,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 6935,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 475,
+      "segment_new_score": 160.0,
+      "segment_steps": 956,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 6175,
+      "source_progress": 80,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 430,
+      "segment_new_score": 180.0,
+      "segment_steps": 983,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6895,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 311,
+      "segment_new_score": 970.0,
+      "segment_steps": 1386,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1580.0,
+      "segment_steps": 465,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4051,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 511,
+      "segment_new_score": 40.0,
+      "segment_steps": 41,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10969,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 100.0,
+      "segment_steps": 508,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 2712,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 516,
+      "segment_new_score": 60.0,
+      "segment_steps": 450,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 10030,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 910.0,
+      "segment_steps": 971,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9170,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 593,
+      "segment_new_score": 20.0,
+      "segment_steps": 27,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10969,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 80.0,
+      "segment_steps": 444,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 80.0,
+      "segment_steps": 475,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 7602,
+      "source_progress": 1100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 643,
+      "segment_new_score": 1680.0,
+      "segment_steps": 1026,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 11690,
+      "source_progress": 910,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 1760.0,
+      "segment_steps": 1456,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2107,
+      "source_progress": 180,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 316,
+      "segment_new_score": 990.0,
+      "segment_steps": 1432,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1600.0,
+      "segment_steps": 546,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 8253,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 587,
+      "segment_new_score": 850.0,
+      "segment_steps": 492,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 16122,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 658,
+      "segment_new_score": 0.0,
+      "segment_steps": 19,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 2712,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 516,
+      "segment_new_score": 100.0,
+      "segment_steps": 546,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 6695,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 0.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 17191,
+      "source_progress": 180,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 599,
+      "segment_new_score": 180.0,
+      "segment_steps": 954,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 2712,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 516,
+      "segment_new_score": 120.0,
+      "segment_steps": 539,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9170,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 593,
+      "segment_new_score": 40.0,
+      "segment_steps": 57,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 8020,
+      "source_progress": 930,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 350,
+      "segment_new_score": 1740.0,
+      "segment_steps": 1415,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1580.0,
+      "segment_steps": 489,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 12421,
+      "source_progress": 1030,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 667,
+      "segment_new_score": 180.0,
+      "segment_steps": 1010,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 6935,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 475,
+      "segment_new_score": 200.0,
+      "segment_steps": 1020,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9170,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 593,
+      "segment_new_score": 40.0,
+      "segment_steps": 57,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1580.0,
+      "segment_steps": 507,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5102,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 140.0,
+      "segment_steps": 910,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 8953,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 636,
+      "segment_new_score": 20.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 2712,
+      "source_progress": 100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 516,
+      "segment_new_score": 100.0,
+      "segment_steps": 507,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20004,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 639,
+      "segment_new_score": 1580.0,
+      "segment_steps": 503,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10969,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 40.0,
+      "segment_steps": 428,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 16122,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 658,
+      "segment_new_score": 0.0,
+      "segment_steps": 19,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1560.0,
+      "segment_steps": 437,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 10731,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 637,
+      "segment_new_score": 1580.0,
+      "segment_steps": 505,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9170,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 593,
+      "segment_new_score": 20.0,
+      "segment_steps": 29,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 11658,
+      "source_progress": 200,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 625,
+      "segment_new_score": 0.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6520,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 652,
+      "segment_new_score": 0.0,
+      "segment_steps": 13,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4433,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 318,
+      "segment_new_score": 990.0,
+      "segment_steps": 1387,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 7082,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 323,
+      "segment_new_score": 970.0,
+      "segment_steps": 1418,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9577,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 1720.0,
+      "segment_steps": 1388,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4433,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 318,
+      "segment_new_score": 970.0,
+      "segment_steps": 1382,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4433,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 318,
+      "segment_new_score": 1010.0,
+      "segment_steps": 1532,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 15738,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 668,
+      "segment_new_score": 1600.0,
+      "segment_steps": 472,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4433,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 318,
+      "segment_new_score": 280.0,
+      "segment_steps": 1551,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5102,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 180.0,
+      "segment_steps": 971,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 8253,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 587,
+      "segment_new_score": 100.0,
+      "segment_steps": 488,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 16122,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 658,
+      "segment_new_score": 20.0,
+      "segment_steps": 25,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20693,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 625,
+      "segment_new_score": 770.0,
+      "segment_steps": 30,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 11690,
+      "source_progress": 910,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 220.0,
+      "segment_steps": 1399,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10969,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 850.0,
+      "segment_steps": 511,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 14521,
+      "source_progress": 1030,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 342,
+      "segment_new_score": 1780.0,
+      "segment_steps": 1502,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5102,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 930.0,
+      "segment_steps": 979,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 13832,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 658,
+      "segment_new_score": 0.0,
+      "segment_steps": 27,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 22364,
+      "source_progress": 140,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 568,
+      "segment_new_score": 140.0,
+      "segment_steps": 610,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 21060,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 303,
+      "segment_new_score": 260.0,
+      "segment_steps": 1431,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5102,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 160.0,
+      "segment_steps": 940,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6520,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 652,
+      "segment_new_score": 0.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 9361,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 344,
+      "segment_new_score": 1760.0,
+      "segment_steps": 1445,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1600.0,
+      "segment_steps": 513,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 11690,
+      "source_progress": 910,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 1740.0,
+      "segment_steps": 1398,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 7602,
+      "source_progress": 1100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 643,
+      "segment_new_score": 1680.0,
+      "segment_steps": 1012,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 7602,
+      "source_progress": 1100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 643,
+      "segment_new_score": 1680.0,
+      "segment_steps": 1008,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9170,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 593,
+      "segment_new_score": 20.0,
+      "segment_steps": 24,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4433,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 318,
+      "segment_new_score": 200.0,
+      "segment_steps": 1305,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 5295,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 600,
+      "segment_new_score": 930.0,
+      "segment_steps": 998,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6895,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 311,
+      "segment_new_score": 240.0,
+      "segment_steps": 1408,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 7602,
+      "source_progress": 1100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 643,
+      "segment_new_score": 1700.0,
+      "segment_steps": 1024,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 36147,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 650,
+      "segment_new_score": 810.0,
+      "segment_steps": 455,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 21060,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 303,
+      "segment_new_score": 240.0,
+      "segment_steps": 1435,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 8253,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 587,
+      "segment_new_score": 120.0,
+      "segment_steps": 543,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 1580.0,
+      "segment_steps": 483,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10969,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 635,
+      "segment_new_score": 850.0,
+      "segment_steps": 528,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 10731,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 637,
+      "segment_new_score": 1580.0,
+      "segment_steps": 498,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 37112,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 292,
+      "segment_new_score": 240.0,
+      "segment_steps": 1409,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 21674,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 595,
+      "segment_new_score": 160.0,
+      "segment_steps": 979,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 37112,
+      "source_progress": 240,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 292,
+      "segment_new_score": 260.0,
+      "segment_steps": 1447,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6895,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 311,
+      "segment_new_score": 240.0,
+      "segment_steps": 1443,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 36147,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 650,
+      "segment_new_score": 810.0,
+      "segment_steps": 461,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5102,
+      "source_progress": 330,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 605,
+      "segment_new_score": 910.0,
+      "segment_steps": 960,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3530,
+      "source_progress": 300,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 671,
+      "segment_new_score": 60.0,
+      "segment_steps": 435,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 16122,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 658,
+      "segment_new_score": 0.0,
+      "segment_steps": 21,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 34763,
+      "source_progress": 910,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 1780.0,
+      "segment_steps": 1476,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 34763,
+      "source_progress": 910,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 1740.0,
+      "segment_steps": 1430,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 41840,
+      "source_progress": 930,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 653,
+      "segment_new_score": 0.0,
+      "segment_steps": 24,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 41840,
+      "source_progress": 930,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 653,
+      "segment_new_score": 0.0,
+      "segment_steps": 22,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 16863,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 346,
+      "segment_new_score": 300.0,
+      "segment_steps": 1521,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 7082,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 323,
+      "segment_new_score": 990.0,
+      "segment_steps": 1373,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 22364,
+      "source_progress": 140,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 568,
+      "segment_new_score": 100.0,
+      "segment_steps": 524,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 22364,
+      "source_progress": 140,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 568,
+      "segment_new_score": 120.0,
+      "segment_steps": 511,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 16122,
+      "source_progress": 950,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 658,
+      "segment_new_score": 1520.0,
+      "segment_steps": 29,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 18741,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 600,
+      "segment_new_score": 0.0,
+      "segment_steps": 29,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 32408,
+      "source_progress": 260,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 307,
+      "segment_new_score": 2490.0,
+      "segment_steps": 1427,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 44331,
+      "source_progress": 180,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 312,
+      "segment_new_score": 970.0,
+      "segment_steps": 1357,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 22381,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 643,
+      "segment_new_score": 120.0,
+      "segment_steps": 565,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 3476,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 639,
+      "segment_new_score": 80.0,
+      "segment_steps": 472,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 46734,
+      "source_progress": 160,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 306,
+      "segment_new_score": 990.0,
+      "segment_steps": 1442,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 39344,
+      "source_progress": 280,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 631,
+      "segment_new_score": 770.0,
+      "segment_steps": 22,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9577,
+      "source_progress": 1010,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 343,
+      "segment_new_score": 1760.0,
+      "segment_steps": 1456,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20004,
+      "source_progress": 1050,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 639,
+      "segment_new_score": 1580.0,
+      "segment_steps": 509,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 34790,
+      "source_progress": 1100,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 644,
+      "segment_new_score": 1680.0,
+      "segment_steps": 1017,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 11658,
+      "source_progress": 200,
+      "source_kind": "life_loss_lookback",
+      "source_life_steps": 625,
+      "segment_new_score": 20.0,
+      "segment_steps": 36,
+      "highest_stage": 1
+    }
+  ],
+  "selection_limits": "Completed restored segments, not all resets or occupancy. Score is not exact course position."
+}
