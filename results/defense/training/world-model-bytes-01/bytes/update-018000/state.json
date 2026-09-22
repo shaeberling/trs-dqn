@@ -1,0 +1,79 @@
+{
+  "updates": 18000,
+  "burn": 8,
+  "overshooting": {
+    "distance": 1,
+    "weight": 0.0
+  },
+  "sampling_rng": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 13722055663144191864221286877632910488,
+      "inc": 87136372517582989555478159403783844777
+    },
+    "has_uint32": 0,
+    "uinteger": 1987461337
+  },
+  "metadata": {
+    "data": "/Users/sascha/source/trs-dqn/runs/defense-world-data-feedback-02",
+    "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+    "architecture": "small-gaussian-rssm-v1",
+    "reward_scale": 0.01,
+    "batch": 8,
+    "length": 32,
+    "burn": 8,
+    "train_games": 80,
+    "heldout_games": 16,
+    "boundary_fraction": 0.0,
+    "overshooting": {
+      "distance": 1,
+      "weight": 0.0
+    },
+    "byte_reconstruction": {
+      "weight": 1.0,
+      "architecture": "visible-cell-deconvolution-256-v1"
+    },
+    "byte_source_sha256": "29da7996d589beb0b4f31e501db7feb82a5c4e40fcd79bcfd904706b631e8d36",
+    "byte_audit_source_sha256": "7ca447671cea3a4e3feaffee42898db4d6043a1b102baa41cfc5258c1f051300",
+    "train_windows": 144145,
+    "heldout_windows": 28871,
+    "fit_source_sha256": "130e281927a20ac0bfdd5372831c386f187ab653b8c2a408716081f6cd9de72e",
+    "model_source_sha256": "c2aa4ae572e9d2d0c9d62bfd93ff37e43c2e4c008d6e86ff04f2f28e48b39139",
+    "dynamics_only": true,
+    "promotion_eligible": false,
+    "source_paper": "https://arxiv.org/abs/1912.01603",
+    "args": {
+      "data": "runs/defense-world-data-feedback-02",
+      "output": "runs/defense-world-fit-11-byte-reconstruction",
+      "updates": 20000,
+      "batch": 8,
+      "length": 32,
+      "burn": 8,
+      "audit_windows": 64,
+      "every": 1000,
+      "seed": 0,
+      "resume": "runs/defense-world-fit-08-overshoot-control/update-018000",
+      "extend_data": false,
+      "boundary_fraction": 0.0,
+      "change_sampling": false,
+      "overshoot_distance": 1,
+      "overshoot_weight": 0.0,
+      "change_objective": true,
+      "byte_weight": 1.0
+    },
+    "previous_byte_reconstruction": null,
+    "objective_changed": true
+  },
+  "hashes": {
+    "world.safetensors": "d88ef23e31a20bc08d402a5e4d9c497abcd6de672f06bd995a63c1bfddcf94d6",
+    "optimizer.npz": "03823cc0d94b2e6bd9f1678e7bfe892df78b4cf4e7ac368a73360782f05668e5",
+    "random.npz": "b1ae7a87662cfe4d94a37eff5c4374045d3c85ff4e9b5ea52c114d036a6111c6",
+    "byte-decoder.safetensors": "5343de85d476e27119cded94754bead40553dc0089e16f0005048d1d01a3f9bd",
+    "byte-optimizer.npz": "1c38524080a93c50f6f2a8e065828164271ec6d7959ba8d1a6723ea084e807ab"
+  },
+  "byte_reconstruction": {
+    "weight": 1.0,
+    "architecture": "visible-cell-deconvolution-256-v1"
+  },
+  "byte_updates": 0
+}

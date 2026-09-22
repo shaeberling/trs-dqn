@@ -43,6 +43,10 @@ Two manually orchestrated experience/world/actor feedback cycles now have
 preserved negative results. A separate [four-step latent-regularization test](results/defense/training/world-model-overshoot-01/README.md)
 also failed to improve play; it is opt-in and changes neither rewards nor
 acting inputs. An unattended repeating model-based driver is not yet present.
+A [categorical screen-reconstruction test](results/defense/training/world-model-bytes-01/README.md)
+also failed to improve play. Its frozen-core readout recovers nearly as much
+visible text as joint retraining, qualifying the earlier decoder diagnosis;
+life-loss prediction remains poor. The stronger verified best is unchanged.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,

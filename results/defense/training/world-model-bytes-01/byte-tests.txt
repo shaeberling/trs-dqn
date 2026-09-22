@@ -1,0 +1,10 @@
+test_auxiliary_gradient_reaches_encoder_not_reward_head (tests.test_defense_world_bytes.ByteWorldTests.test_auxiliary_gradient_reaches_encoder_not_reward_head) ... ok
+test_byte_forecasts_ignore_future_screens (tests.test_defense_world_bytes.ByteWorldTests.test_byte_forecasts_ignore_future_screens) ... ok
+test_decoder_shape_alignment_and_original_terms (tests.test_defense_world_bytes.ByteWorldTests.test_decoder_shape_alignment_and_original_terms) ... ok
+test_exact_extended_resume_and_explicit_full_parent_extension (tests.test_defense_world_bytes.ByteWorldTests.test_exact_extended_resume_and_explicit_full_parent_extension) ... ok
+test_readout_changes_but_world_and_its_optimizer_do_not (tests.test_defense_world_byte_probe.FrozenReadoutTests.test_readout_changes_but_world_and_its_optimizer_do_not) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.259s
+
+OK

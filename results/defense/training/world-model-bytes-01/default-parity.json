@@ -1,0 +1,10 @@
+{
+  "default_parity": true,
+  "updates": 4,
+  "actual_own_training_windows": 32,
+  "old_source_sha256": "5119108946dc158d8dff5f6cc1a794d635a39eb2613c1d6db62ff4cbb95bd15a",
+  "new_source_sha256": "c2aa4ae572e9d2d0c9d62bfd93ff37e43c2e4c008d6e86ff04f2f28e48b39139",
+  "checkpoint_sha256": "d88ef23e31a20bc08d402a5e4d9c497abcd6de672f06bd995a63c1bfddcf94d6",
+  "model_optimizer_rng_exact": true,
+  "no_diagnostic_state_used_for_training": true
+}

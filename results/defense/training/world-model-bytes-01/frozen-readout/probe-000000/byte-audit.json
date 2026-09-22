@@ -1,0 +1,270 @@
+{
+  "windows": 64,
+  "context": 8,
+  "measurements": {
+    "observed": {
+      "cross_entropy_sum": 8726196.0,
+      "cells": 1572864,
+      "groups": {
+        "all": {
+          "cells": 1572864,
+          "correct": 4313,
+          "persistence_correct": 1411262,
+          "accuracy": 0.002742131551106771,
+          "persistence_accuracy": 0.8972562154134115
+        },
+        "changed": {
+          "cells": 161602,
+          "correct": 481,
+          "persistence_correct": 0,
+          "accuracy": 0.002976448311283276,
+          "persistence_accuracy": 0.0
+        },
+        "nonblank_ascii": {
+          "cells": 60173,
+          "correct": 42,
+          "persistence_correct": 52892,
+          "accuracy": 0.0006979874694630483,
+          "persistence_accuracy": 0.8789988865437988
+        },
+        "digits": {
+          "cells": 8378,
+          "correct": 28,
+          "persistence_correct": 7430,
+          "accuracy": 0.0033420864168059203,
+          "persistence_accuracy": 0.8868465027452853
+        },
+        "stars": {
+          "cells": 4881,
+          "correct": 2,
+          "persistence_correct": 4539,
+          "accuracy": 0.0004097520999795124,
+          "persistence_accuracy": 0.9299323909035033
+        }
+      },
+      "cross_entropy": 5.547966003417969,
+      "predicted_bytes_sha256": "688c8d7a77dbabbe72969754b39900cccbafc310a2d2bff6b46477ea12de9654"
+    },
+    "prior_1": {
+      "cross_entropy_sum": 363552.59765625,
+      "cells": 65536,
+      "groups": {
+        "all": {
+          "cells": 65536,
+          "correct": 176,
+          "persistence_correct": 59678,
+          "accuracy": 0.002685546875,
+          "persistence_accuracy": 0.910614013671875
+        },
+        "changed": {
+          "cells": 5858,
+          "correct": 22,
+          "persistence_correct": 0,
+          "accuracy": 0.0037555479685899623,
+          "persistence_accuracy": 0.0
+        },
+        "nonblank_ascii": {
+          "cells": 2489,
+          "correct": 2,
+          "persistence_correct": 2184,
+          "accuracy": 0.0008035355564483728,
+          "persistence_accuracy": 0.8774608276416231
+        },
+        "digits": {
+          "cells": 361,
+          "correct": 1,
+          "persistence_correct": 330,
+          "accuracy": 0.002770083102493075,
+          "persistence_accuracy": 0.9141274238227147
+        },
+        "stars": {
+          "cells": 204,
+          "correct": 0,
+          "persistence_correct": 188,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.9215686274509803
+        }
+      },
+      "cross_entropy": 5.547372400760651,
+      "predicted_bytes_sha256": "a2b8d9a6e21ee5293453720f0a540bf809a34e8de658dd4890158a017342c4b1"
+    },
+    "prior_4": {
+      "cross_entropy_sum": 363559.42578125,
+      "cells": 65536,
+      "groups": {
+        "all": {
+          "cells": 65536,
+          "correct": 179,
+          "persistence_correct": 59047,
+          "accuracy": 0.0027313232421875,
+          "persistence_accuracy": 0.9009857177734375
+        },
+        "changed": {
+          "cells": 6489,
+          "correct": 20,
+          "persistence_correct": 0,
+          "accuracy": 0.0030821390044691015,
+          "persistence_accuracy": 0.0
+        },
+        "nonblank_ascii": {
+          "cells": 2514,
+          "correct": 1,
+          "persistence_correct": 2151,
+          "accuracy": 0.0003977724741447892,
+          "persistence_accuracy": 0.8556085918854416
+        },
+        "digits": {
+          "cells": 352,
+          "correct": 0,
+          "persistence_correct": 292,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.8295454545454546
+        },
+        "stars": {
+          "cells": 208,
+          "correct": 0,
+          "persistence_correct": 180,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.8653846153846154
+        }
+      },
+      "cross_entropy": 5.547476589679718,
+      "predicted_bytes_sha256": "f40966511c1e5e941d961d42bb680c1ab0b97b5cbf9e9d68f12e1a488feb7b48"
+    },
+    "prior_8": {
+      "cross_entropy_sum": 363565.8125,
+      "cells": 65536,
+      "groups": {
+        "all": {
+          "cells": 65536,
+          "correct": 169,
+          "persistence_correct": 54766,
+          "accuracy": 0.0025787353515625,
+          "persistence_accuracy": 0.835662841796875
+        },
+        "changed": {
+          "cells": 10770,
+          "correct": 30,
+          "persistence_correct": 0,
+          "accuracy": 0.002785515320334262,
+          "persistence_accuracy": 0.0
+        },
+        "nonblank_ascii": {
+          "cells": 2498,
+          "correct": 3,
+          "persistence_correct": 2118,
+          "accuracy": 0.0012009607686148918,
+          "persistence_accuracy": 0.8478783026421137
+        },
+        "digits": {
+          "cells": 333,
+          "correct": 1,
+          "persistence_correct": 275,
+          "accuracy": 0.003003003003003003,
+          "persistence_accuracy": 0.8258258258258259
+        },
+        "stars": {
+          "cells": 205,
+          "correct": 0,
+          "persistence_correct": 179,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.8731707317073171
+        }
+      },
+      "cross_entropy": 5.547574043273926,
+      "predicted_bytes_sha256": "67113cb160fed4f3d53acab099e82c6711f9c0e52a7ff864f9b51d03e5a346ed"
+    },
+    "prior_16": {
+      "cross_entropy_sum": 363568.6328125,
+      "cells": 65536,
+      "groups": {
+        "all": {
+          "cells": 65536,
+          "correct": 157,
+          "persistence_correct": 56906,
+          "accuracy": 0.0023956298828125,
+          "persistence_accuracy": 0.868316650390625
+        },
+        "changed": {
+          "cells": 8630,
+          "correct": 24,
+          "persistence_correct": 0,
+          "accuracy": 0.0027809965237543454,
+          "persistence_accuracy": 0.0
+        },
+        "nonblank_ascii": {
+          "cells": 2497,
+          "correct": 3,
+          "persistence_correct": 2119,
+          "accuracy": 0.0012014417300760913,
+          "persistence_accuracy": 0.8486183420104125
+        },
+        "digits": {
+          "cells": 353,
+          "correct": 0,
+          "persistence_correct": 280,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.7932011331444759
+        },
+        "stars": {
+          "cells": 203,
+          "correct": 0,
+          "persistence_correct": 173,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.8522167487684729
+        }
+      },
+      "cross_entropy": 5.547617077827454,
+      "predicted_bytes_sha256": "adebdce0e77918ce3be2cab672e60e2df60d4afd0ff3d829b909fc21727ca079"
+    },
+    "prior_24": {
+      "cross_entropy_sum": 363571.62890625,
+      "cells": 65536,
+      "groups": {
+        "all": {
+          "cells": 65536,
+          "correct": 158,
+          "persistence_correct": 58786,
+          "accuracy": 0.002410888671875,
+          "persistence_accuracy": 0.897003173828125
+        },
+        "changed": {
+          "cells": 6750,
+          "correct": 23,
+          "persistence_correct": 0,
+          "accuracy": 0.0034074074074074076,
+          "persistence_accuracy": 0.0
+        },
+        "nonblank_ascii": {
+          "cells": 2524,
+          "correct": 4,
+          "persistence_correct": 1933,
+          "accuracy": 0.001584786053882726,
+          "persistence_accuracy": 0.7658478605388273
+        },
+        "digits": {
+          "cells": 359,
+          "correct": 2,
+          "persistence_correct": 272,
+          "accuracy": 0.005571030640668524,
+          "persistence_accuracy": 0.7576601671309192
+        },
+        "stars": {
+          "cells": 199,
+          "correct": 0,
+          "persistence_correct": 160,
+          "accuracy": 0.0,
+          "persistence_accuracy": 0.8040201005025126
+        }
+      },
+      "cross_entropy": 5.547662794589996,
+      "predicted_bytes_sha256": "7843519fbd6e2f1bb6df25f99fe80bf0337b271b0691acc680f5e35a4acb7521"
+    }
+  },
+  "limitations": [
+    "Observed reconstruction is not a forecast.",
+    "Prior rollouts use past filtered state and actual future actions, never future observations.",
+    "Mean-latent predictions on held-out own games, not playing scores.",
+    "All 256 visible byte values are targets; named groups are diagnostic only."
+  ]
+}

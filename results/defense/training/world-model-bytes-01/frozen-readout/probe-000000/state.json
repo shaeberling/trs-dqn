@@ -1,0 +1,32 @@
+{
+  "probe_updates": 0,
+  "config": {
+    "world": "/Users/sascha/source/trs-dqn/runs/defense-world-fit-08-overshoot-control/update-018000",
+    "world_sha256": "d88ef23e31a20bc08d402a5e4d9c497abcd6de672f06bd995a63c1bfddcf94d6",
+    "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+    "batch": 8,
+    "burn": 8,
+    "length": 32,
+    "diagnostic_only": true,
+    "policy_training": false,
+    "promotion_eligible": false,
+    "source_sha256": "da40a2fac693d637ac861019219eb455fa1b0ef17d85d841ddef8754bd183578",
+    "byte_source_sha256": "29da7996d589beb0b4f31e501db7feb82a5c4e40fcd79bcfd904706b631e8d36",
+    "audit_source_sha256": "7ca447671cea3a4e3feaffee42898db4d6043a1b102baa41cfc5258c1f051300",
+    "description": "Same newly initialized byte decoder, own-data sampler RNG and stochastic-filter RNG as joint arm; only decoder Adam updates. World optimizer/weights frozen."
+  },
+  "sampling_rng": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 13722055663144191864221286877632910488,
+      "inc": 87136372517582989555478159403783844777
+    },
+    "has_uint32": 0,
+    "uinteger": 1987461337
+  },
+  "hashes": {
+    "byte-decoder.safetensors": "5343de85d476e27119cded94754bead40553dc0089e16f0005048d1d01a3f9bd",
+    "random.npz": "b1ae7a87662cfe4d94a37eff5c4374045d3c85ff4e9b5ea52c114d036a6111c6",
+    "byte-optimizer.npz": "1c38524080a93c50f6f2a8e065828164271ec6d7959ba8d1a6723ea084e807ab"
+  }
+}
