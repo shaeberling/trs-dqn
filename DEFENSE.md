@@ -13,7 +13,7 @@ plateaus or sustained regression, with all results preserved.
 Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 Full DQN trials 31/32 now compare persistent random exploration with the
-unchanged control. Their first four full-run rounds disagree on mean-score
+unchanged control. Their first six full-run rounds disagree on mean-score
 ranking; all games still lost in stage 1.
 A bounded matched check of 5% versus 25% nominal persistent exploration
 finished without a new stage; the higher rate scored worse. Neither full
@@ -3036,6 +3036,19 @@ persistence, averaging **+251**, but all twenty games still lost in stage 1.
 The runs have completed **342** and **343** new boot games since calibration.
 This matches the global score ceiling without passing it or establishing a
 stage clear; the existing shared replay remains unchanged.
+
+The [six-round comparison through **7,431,072**](results/defense/training/dqn-31-persistent/comparison-at-000007431072.json)
+shows another reversal. At 7,231,072 the means were **10,195** persistent and
+**9,866** control (+329). At 7,431,072 they were **10,239** persistent versus
+**10,304** control (−65), with four higher and six lower paired persistent
+scores. Persistent median/best were **10,250 / 10,320**; control median/best
+were **10,320 / 10,440**, a new control-run personal best. Its independently
+verified [2,588-action replay](results/defense/training/dqn-32-persistent-control/replay-10440/replay.html)
+and both complete checkpoints are preserved. The earlier persistent 10,480
+replay remains unchanged. Since calibration, the runs completed **508** and
+**516** new boot games respectively. All **120** evaluation games across these
+six reused-seed rounds per arm lost in stage 1. The evidence remains mixed on
+mean score and entirely negative on a new stage; it is not a fresh success rate.
 
 ```bash
 # Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
