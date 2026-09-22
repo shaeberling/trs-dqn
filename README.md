@@ -47,6 +47,10 @@ A [categorical screen-reconstruction test](results/defense/training/world-model-
 also failed to improve play. Its frozen-core readout recovers nearly as much
 visible text as joint retraining, qualifying the earlier decoder diagnosis;
 life-loss prediction remains poor. The stronger verified best is unchanged.
+A subsequent [life-loss head-only continuation](results/defense/training/world-life-readout-01/README.md)
+improves recognition but not gameplay; a longer fit worsens held-out one-step
+prediction. Both learned actor comparisons remain in stage 1, with full states
+and verified local replays preserved.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
