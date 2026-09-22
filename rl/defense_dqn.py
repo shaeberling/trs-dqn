@@ -50,6 +50,8 @@ def main():
                         help="optional own-visual-future auxiliary loss; 0 preserves ordinary DQN")
     parser.add_argument("--inverse-weight", type=float, default=0.,
                         help="optional own-adjacent-screen action classification; no intrinsic reward")
+    parser.add_argument("--tc-weight", type=float, default=0.,
+                        help="optional next-value temporal consistency weight, 0..10; scalar DQN only")
     parser.add_argument("--reward-scale", type=float, default=.01)
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False)
@@ -219,6 +221,11 @@ def main():
                                or args.spr_weight or not args.compact_replay or args.n_step > 32):
         parser.error("inverse task requires compact scalar DQN, n-step in 1..32, and no other auxiliary task")
     initialization = None
+    if not np.isfinite(args.tc_weight) or not 0 <= args.tc_weight <= 10:
+        parser.error('temporal consistency weight must be finite and in 0..10')
+    if args.tc_weight and (args.learned_repeats or args.bootstrap_heads or args.quantiles
+                           or args.greedy_trace_cut or args.spr_weight or args.inverse_weight):
+        parser.error('temporal consistency requires ordinary scalar DQN without other auxiliary variants')
     if args.init_from_dqn:
         if args.resume or not (args.quantiles or args.learned_repeats):
             parser.error("scalar initialization requires fresh quantile/action-duration DQN, not --resume")
@@ -253,7 +260,11 @@ def main():
             saved = dict(saved, inverse_auxiliary_hashes=learner.save_auxiliary(directory))
         base_checkpoint(learner, directory, saved)
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
-    if args.learned_repeats:
+    if args.tc_weight:
+        from .defense_consistency import ConsistencyLearner
+        agent = ConsistencyLearner(args.learning_rate, args.seed,
+                                   len(action_names(args.allow_enter)), args.tc_weight)
+    elif args.learned_repeats:
         from .defense_repeat_model import RepeatLearner
         agent = RepeatLearner(args.learning_rate, args.seed,
                              len(action_names(args.allow_enter)), args.learned_repeats)
@@ -337,6 +348,13 @@ def main():
                   resume_semantics="online, target, optimizer and RNG restored; episodes restart from boot",
                   priority_alpha=.6, priority_beta="0.4 to 1 over epsilon-steps aggregate actions")
     repeated = None
+    if args.tc_weight:
+        config.update(consistency_source_sha256=sha256(Path(__file__).with_name('defense_consistency.py')),
+                      consistency_target='current online greedy bootstrap action; stopped saved-target value',
+                      consistency_loss='PER importance-weighted next-value Huber, masked when n-step discount is zero',
+                      consistency_priority='ordinary absolute TD error only; no auxiliary priority',
+                      consistency_resume='standard online/target/Adam/RNG restore; local diagnostic counters restart',
+                      consistency_reference='https://arxiv.org/html/1805.11593#S3.SS3')
     if args.learned_repeats:
         from .defense_repeat import RepeatedActions, OptionReturns, LearnedRepeatPolicy
         repeated = RepeatedActions(args.envs, len(config['action_names']), args.learned_repeats)
@@ -517,6 +535,8 @@ def main():
             saved['spr'] = agent.spr_stats()
         if args.inverse_weight:
             saved['inverse'] = agent.inverse_stats()
+        if args.tc_weight:
+            saved['consistency'] = agent.consistency_stats()
         return saved
 
     def log(row):
@@ -623,6 +643,8 @@ def main():
                     last_metrics['spr'] = agent.spr_stats()
                 if args.inverse_weight:
                     last_metrics['inverse'] = agent.inverse_stats()
+                if args.tc_weight:
+                    last_metrics['consistency'] = agent.consistency_stats()
             if time.monotonic()-last_log >= 10:
                 log(dict(event="progress", steps=steps, episodes=episodes, updates=updates,
                          boot_episodes=boot_episodes, restored_segments=restored_segments,

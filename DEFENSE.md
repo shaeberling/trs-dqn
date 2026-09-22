@@ -6,14 +6,18 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **371-test** suite now passes, including
+(23 GiB available at restart). The full **376-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
-are now live. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
+retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
 Their first full means are 358 / 9,128: variable duration has regressed,
 while the control recovers score without clearing stage 1.
 The second means are 1,136 / 9,502, again without a later stage.
+The third means are 1,701 / 9,484 and the fourth 1,271 / 4,280. A separate matched calibration
+at discount .999 averaged 10,266 with temporal consistency versus 9,710 without,
+all stage-1 losses. Full consistency/control continuations (58/57) are now live;
+no success is inferred from their losses or near-ceiling scores.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
@@ -5892,6 +5896,28 @@ arm's new [5,080 replay](results/defense/training/dqn-56-repeat-five-variable/re
 verified **2,024** base commands. The control retains its earlier 10,200
 run-best. Neither run changes the global best.
 
+At [731,072](results/defense/training/dqn-56-repeat-five-variable/comparison-at-000000731072.json),
+the third full means are **9,484 / 1,701** for control/variable, with best
+scores **10,080 / 5,260**, again all stage 1. Full checkpoints, log prefixes
+and accounting audits are preserved. The variable arm's
+[5,260 replay](results/defense/training/dqn-56-repeat-five-variable/replay-5260/replay.html)
+is verified separately; it does not replace the stronger shared best.
+
+The [fourth round at 931,072](results/defense/training/dqn-56-repeat-five-variable/comparison-at-000000931072.json)
+regresses to means **4,280 / 1,271**, best **7,650 / 4,470**, all stage 1.
+Both full states and log prefixes are preserved. After four rounds without
+stage progression or improvement over the shared best, compute was reassigned
+to the matched stability experiment below. This is not a wall-clock stop or
+a proof that further training could never help.
+
+[Control 55 retired gracefully](results/defense/training/dqn-55-repeat-five-control/retirement.json)
+at **966,848**, after **835,776** new actions, **96** boot games and **11,470**
+restored segments. [Variable 56 retired](results/defense/training/dqn-56-repeat-five-variable/retirement.json)
+at **998,448**, after **867,376** new actions, **141** boot games and **11,088**
+restored segments. Final online/target/Adam states and complete compressed logs
+are preserved, with no training stage 2 or mission. Run-best replays remain
+10,200 and 5,260, respectively; historical collector sources are retained.
+
 #### Frozen option-return error scale
 
 Before attributing failure to the game's uneven award sizes, the read-only
@@ -5936,10 +5962,108 @@ during this diagnostic review.
 
 For possible future experiments, [Pohlen et al., section 3.2](https://arxiv.org/html/1805.11593#S3.SS2)
 describe transforming value targets while keeping rewards unaltered. Section
-3.3 separately proposes temporal-consistency regularization. Neither is
-implemented or claimed validated here. Their full algorithm also uses expert
+3.3 separately proposes temporal-consistency regularization. Neither was
+implemented at this diagnostic milestone; the following section records the
+later isolated consistency experiment. Their full algorithm also uses expert
 demonstrations, which remain excluded by this project's rules. Current live
 training, reward scaling and acting policies are unchanged by this diagnostic.
+
+#### Temporal-consistency stability experiment
+
+The next optional scalar-DQN experiment adapts the temporal-consistency term
+from [Pohlen et al., section 3.3](https://arxiv.org/html/1805.11593#S3.SS3).
+It penalizes changes to the online next-state value used for bootstrapping,
+relative to the saved target network. This is a stability hypothesis, not a
+diagnosis proven by the selected-replay error audit. The paper's demonstration
+system and imitation loss are not used. Nor is its nonlinear value transform
+implemented here.
+
+`--tc-weight 1` adds PER-importance-weighted Huber loss between online and
+stopped target values for the **online-greedy** action at the n-step bootstrap
+screen. The discrete argmax is explicitly stopped; gradients flow through
+the selected online value only. Our adaptation masks rows with zero bootstrap
+discount, so visible life/terminal transitions do not constrain unused future
+values. Time-limit truncations retain their ordinary bootstrap behavior.
+Loss is averaged over the whole batch, not renormalized by the active count.
+
+Ordinary Double-Q labels, actual score rewards, return construction, replay
+sampling and acting are unchanged. Priorities remain **absolute TD errors**,
+not the auxiliary residual. Both losses share the existing clipped-gradient
+Adam update; there are no extra networks, optimizer files or acting inputs.
+Full Q/target/Adam/RNG resume stays compatible with scalar checkpoints; local
+diagnostic counters restart. Weight zero retains the original `Learner` path.
+The option is deliberately not combined with learned durations, quantile or
+bootstrap heads, trace cutting, SPR or inverse-action learning.
+
+The first candidate tests caught an MLX gradient-through-index error. It was
+fixed by explicitly stopping the discrete argmax before any calibration was
+launched; the [failed candidate test log](results/defense/diagnostics/consistency-initial-test-failure.txt)
+is retained. All [five corrected focused tests](results/defense/diagnostics/consistency-focused-tests.txt)
+pass, covering weighted loss arithmetic, terminal masks, stopped target/index
+gradients, exact terminal-only TD-gradient equivalence, unchanged priorities,
+fixed targets/synchronization, invalid settings, native learning/resume and
+complete parallel/serial/reloaded greedy replay compatibility.
+
+A [16,384-action disabled-feature check](results/defense/diagnostics/consistency-default-parity.json)
+made **398** optimizer updates and exactly reproduced online/target bytes,
+all **26** optimizer arrays, all nonconfiguration state and **201**
+game/archive events. The two existing five-option full trials were not changed.
+The [full 376-test suite](results/defense/diagnostics/consistency-regression-tests.txt)
+passed in **492.895 seconds**.
+
+The new matched calibrations resume the same original own scalar full state
+at **6,962,144**, retain five-base-action returns, and receive **131,072** new
+actions each. Both use discount **.999**, eight workers/two protected boot
+workers, .25/.05 persistent exploration, own-loss lookback 64, probability-one
+first-restored-life practice, compact replay 200,000, batch 64 and Adam 1e-4.
+Only consistency weight **0 versus 1** and its provenance/output paths differ.
+They preserve the parent's optimizer and target rather than using the fresh
+duration-head initialization. Thus older .997 or differently initialized
+experiments are not isolated controls for this comparison. Evaluation remains
+ten complete uncapped boot games on reused seeds, and both calibrations stay
+outside the global replay collector.
+
+Both calibrations finished normally. The
+[paired comparison](results/defense/training/consistency-enabled-calibration-01/comparison.json)
+gives control mean/median/best **9,710 / 10,200 / 10,220** and consistency
+**10,266 / 10,280 / 10,280**. All twenty complete boot games still lose in
+stage 1. Nine consistency scores are higher and one ties; the **+556** mean
+difference is mostly driven by two **+2,530** recoveries, while the other
+differences are 0..80. This is stronger short-check scoring, not evidence of
+passing the barrier, exceeding the shared best, or a fresh success-rate gain.
+
+Both full Q/target/Adam checkpoints, configurations and complete compressed
+logs are preserved. [Control](results/defense/training/consistency-control-calibration-01/replay/replay.html)
+and [consistency](results/defense/training/consistency-enabled-calibration-01/replay/replay.html)
+replays independently verify **2,549 / 2,517** base actions. The
+[consistency loss panels](results/defense/diagnostics/consistency-calibration-losses-01/policy-2-losses.png)
+show the recurring right-opening barrier sequence, with the ship left of
+the opening in approach frames and **2,570** points on every life. Visible
+flashes/life counters are not exact collision timestamps, and the panels
+do not establish wall-versus-projectile deaths. No diagnostic examples enter
+learning.
+
+Each calibration made **7,566** optimizer updates and completed **20** boot
+games. The [control audit](results/defense/training/consistency-control-calibration-01/audit.json)
+records **1,384** restored segments, **88,592** initial-life actions and **602**
+correct-offset archive events. The [consistency audit](results/defense/training/consistency-enabled-calibration-01/audit.json)
+records **1,418 / 88,527 / 598**, respectively. Protected workers remained
+boot-only. Final sampled consistency statistics are weighted TD loss **.02882**,
+unscaled-by-coefficient consistency loss **.002643**, masked mean next-value
+gap **.13417**, and **93.75%** bootstrapping rows. Those sampled losses are
+implementation diagnostics, not measurements of navigation ability.
+
+Full trials [57 (longer-horizon control)](results/defense/training/dqn-57-long-horizon-control/resume-config.json)
+and [58 (temporal consistency)](results/defense/training/dqn-58-temporal-consistency/resume-config.json)
+now continue their respective checked optimizers with **unlimited** training
+and 200,000-action complete-game evaluations. The sole collector includes all
+**54** full-trial sources, including the retired histories; neither short
+calibration is eligible. The verified shared 10,480 best remains unchanged.
+
+To reproduce this matched calibration, use the scalar lower-exploration
+command below with `--gamma .999 --tc-weight 1`; use weight 0 and separate
+paths for its control. Resume the corresponding preserved calibration
+checkpoint with `--steps 0 --eval-every 200000` for the full continuation.
 
 Reproduce the five-option calibration with the command below plus
 `--repeat-n-step 5`; use `--learned-repeats 1` and separate paths for its control.
