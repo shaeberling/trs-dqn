@@ -13,6 +13,8 @@ retired after sustained regression with all results preserved. PPO 30 tests
 frozen-base screen-history memory after
 a verified bounded comparison. Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
+Full DQN trials 31/32 now compare persistent random exploration with the
+unchanged control after a positive but weak short-run comparison.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -210,12 +212,14 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live unlimited progress: `runs/defense-dqn-24-bootstrap/status.json` and
-  `runs/defense-ppo-30-frozen-memory/status.json`, each with an adjacent
+- Live unlimited progress: `runs/defense-dqn-24-bootstrap/status.json`,
+  `runs/defense-ppo-30-frozen-memory/status.json`,
+  `runs/defense-dqn-31-persistent/status.json` and
+  `runs/defense-dqn-32-persistent-control/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
-- Bounded persistent-exploration comparison:
+- Completed bounded persistent-exploration comparison:
   `runs/defense-persistent-control-01/status.json` and
   `runs/defense-persistent-memory-01/status.json`. These are training checks,
   excluded from the global collector. The latter name refers to holding a
@@ -307,6 +311,8 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-dqn-28-large-replay/artifacts \
   --source runs/defense-ppo-29-value-weight/artifacts \
   --source runs/defense-ppo-30-frozen-memory/artifacts \
+  --source runs/defense-dqn-31-persistent/artifacts \
+  --source runs/defense-dqn-32-persistent-control/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -2870,6 +2876,39 @@ it is a sampler test, not game-performance evidence. The
 is preserved. Existing learners continue using their originally loaded code;
 new checkpoints record the exact new trainer/helper source hashes.
 
+Both bounded arms exited normally and independently verified their best replay:
+
+| Calibration | Ten-game mean | Median | Best | Verified greedy replay |
+| --- | ---: | ---: | ---: | --- |
+| [Independent-action control](results/defense/training/persistent-control-01/checkpoint/evaluation.json) | 10,008 | 10,245 | 10,350 | [2,414 actions](results/defense/training/persistent-control-01/replay/replay.html) |
+| [Persistent random exploration](results/defense/training/persistent-repeat-01/checkpoint/evaluation.json) | 10,240 | 10,180 | 10,440 | [2,485 actions](results/defense/training/persistent-repeat-01/replay/replay.html) |
+
+All twenty games lost in stage 1. The [paired mean gain of **232**](results/defense/training/persistent-repeat-01/comparison.json)
+comes largely from **one 2,370-point difference**: five seeds improved and five
+worsened, and the persistent median is lower. Both means remain below the
+untouched parent's 10,290. This is weak early evidence, not a demonstrated
+exploration advantage or barrier passage. The control completed **57** new
+boot games during training, versus **56** for persistence; neither used resets.
+After warmup, persistence recorded **5,798 / 121,040** exploratory primitive
+steps (**4.790%**), 929 sampled holds and 264 future steps cancelled at boundaries.
+Full online/target/optimizer/RNG checkpoints, configurations, logs and verified
+replays are preserved for both arms. Training games and exploratory actions
+are not substituted for greedy validation results.
+
+To test durability with a matched baseline, unlimited full trials now continue
+each arm's own **6,231,072** checkpoint:
+[DQN 31 persistent configuration](results/defense/training/dqn-31-persistent/resume-config.json)
+and [DQN 32 control configuration](results/defense/training/dqn-32-persistent-control/resume-config.json).
+They keep all learning settings, change the validation interval to 200,000,
+and remove the training action cap; full games remain uncapped. Each restores
+its online/target/optimizer and RNG states, boots new games and refills its
+own replay buffer, so this is not exact continuation of prior trajectories.
+They are not independently initialized replicates. DQN 24 and frozen-memory
+PPO 30 continue independently. The sole collector was stopped cleanly,
+confirmed gone, then restarted with both full-run sources and all 26 historical
+sources. Short calibration sources remain excluded. Any new global best still
+requires independent frozen-policy replay verification.
+
 ```bash
 # Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
 venv/bin/python -u -m rl.defense_dqn \
@@ -2878,6 +2917,13 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/dqn-28-large-replay/step-000006100000 \
   --steps 6231072 --eval-every 131072 \
   --exploration-max-repeat 64 --exploration-exponent 1.5
+
+# Unlimited continuation of the verified persistence calibration:
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-persistent-full-reproduction \
+  --artifacts runs/defense-persistent-full-reproduction/artifacts \
+  --resume results/defense/training/persistent-repeat-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Lossless compact training replay
