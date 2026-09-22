@@ -1,0 +1,48 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "converted": "runs/defense-trace-cut-parent-conversion/latest",
+  "files": {
+    "model.safetensors": {
+      "arrays": 12,
+      "arrays_exact": true,
+      "parent_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+      "converted_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d"
+    },
+    "target.safetensors": {
+      "arrays": 12,
+      "arrays_exact": true,
+      "parent_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+      "converted_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538"
+    },
+    "optimizer.npz": {
+      "arrays": 26,
+      "arrays_exact": true,
+      "parent_sha256": "bfa7ee30f1065da566838dfa906d1f3e2bdee5d937c17ad095d0cadd542fd14c",
+      "converted_sha256": "1176d7248c3f9699b7cb3f405fc5855413c67d12a48ca41c20e34ae1ee14381c"
+    }
+  },
+  "state_keys_exact": [
+    "steps",
+    "updates",
+    "episodes",
+    "boot_episodes",
+    "restored_segments",
+    "rng",
+    "persistent_exploration_rng"
+  ],
+  "greedy_trace": {
+    "sampled_backups": 0,
+    "backup_action_histogram": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mean_backup_actions": 0.0,
+    "policy_cut_backups": 0,
+    "policy_cut_fraction": 0.0
+  },
+  "local_exploration_counters_cleared": true,
+  "limitation": "Zero-update conversion only; never a training parent or performance result. Replay, native own-state archives, holds and local counters refill on resume; historical global counters and both RNGs are restored."
+}

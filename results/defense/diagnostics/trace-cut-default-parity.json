@@ -1,0 +1,30 @@
+{
+  "before": "runs/defense-trace-cut-default-before/latest",
+  "after": "runs/defense-trace-cut-default-after/latest",
+  "steps": 64,
+  "updates": 15,
+  "states_rng_exploration_exact": true,
+  "files": {
+    "model.safetensors": {
+      "before": "a6eadddca273ed8a04f5bf2726e14e3590bdc3ce9ed25d3b5d903ffce27253c0",
+      "after": "a6eadddca273ed8a04f5bf2726e14e3590bdc3ce9ed25d3b5d903ffce27253c0",
+      "arrays": 12,
+      "arrays_exact": true
+    },
+    "target.safetensors": {
+      "before": "863be8c17b6c127071433fa71ae5f60a30f5b7d74997cbaf7118ae35d812d83d",
+      "after": "863be8c17b6c127071433fa71ae5f60a30f5b7d74997cbaf7118ae35d812d83d",
+      "arrays": 12,
+      "arrays_exact": true
+    },
+    "optimizer.npz": {
+      "before": "71fbc72a475ce569a6fce4a1ae5dfbe10bd69fe80b90ff2aaf3f6ebae89edcc9",
+      "after": "71fbc72a475ce569a6fce4a1ae5dfbe10bd69fe80b90ff2aaf3f6ebae89edcc9",
+      "arrays": 26,
+      "arrays_exact": true
+    }
+  },
+  "old_trainer_sha256": "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+  "new_trainer_sha256": "8c2979f671a7813b2b100ae93a1dcdc5ff9f39dccb22c2eac8d64948443cc9e6",
+  "limitation": "Tiny 64-action native integration check, deliberately truncated at three episode actions. Not a performance result or training parent."
+}

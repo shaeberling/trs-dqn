@@ -30,6 +30,10 @@ Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
 score-only rewards and ordinary greedy from-boot evaluation.
+Optional `--greedy-trace-cut` tests current-policy cuts in scalar DQN's
+multi-step training targets. It requires compact replay, retains only own
+visible trajectories, and leaves acting/evaluation unchanged. See the
+[controlled calibration](DEFENSE.md#current-policy-trace-cutting-calibration).
 Both Defense trainers support `--observation-stride` to space their four
 visible input frames independently of action duration (default 1 preserves
 existing models). Checkpoint evaluation and verified replays retain that setting.

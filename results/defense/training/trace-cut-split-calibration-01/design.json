@@ -1,0 +1,55 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions": 131072,
+  "baseline": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-trace-cut-split-calibration-01/artifacts"
+    ],
+    "greedy_trace_cut": [
+      null,
+      true
+    ],
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-trace-cut-split-calibration-01"
+    ],
+    "trace_replay_source_sha256": [
+      null,
+      "7666431a7d73d8a38abff719f4d34a8cea090aa05a479e0a718f2169f4eb887d"
+    ],
+    "trace_resume": [
+      null,
+      "full network/target/Adam/RNG; replay refills; diagnostic counts clear"
+    ],
+    "trace_source_sha256": [
+      null,
+      "6e950c02da9fd7237dd8653af0c77a1e39c69536c5ffd521cee06c28e0d7e7b0"
+    ],
+    "trace_target": [
+      null,
+      "up to n own rewards; stop before first later action not current online argmax; Double-Q bootstrap"
+    ],
+    "trace_ties": [
+      null,
+      "deterministic online argmax, matching normal greedy evaluation"
+    ],
+    "trainer_source_sha256": [
+      "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+      "8c2979f671a7813b2b100ae93a1dcdc5ff9f39dccb22c2eac8d64948443cc9e6"
+    ]
+  },
+  "parity_reports": [
+    "results/defense/diagnostics/trace-cut-default-parity.json",
+    "results/defense/diagnostics/trace-cut-parent-conversion-parity.json"
+  ],
+  "hypothesis": "Retain multi-step propagation only through later actions matching the current online greedy policy; avoid propagating random-hold continuations as if greedy.",
+  "limitations": [
+    "Finite-horizon lagged Double-Q adaptation of greedy trace cutting, not a tabular convergence claim or general stochastic-target Retrace implementation.",
+    "Historical same-parent control, not a simultaneous or independent replication.",
+    "Ten reused validation seeds 10000..10009; complete uncapped boot games.",
+    "No policy-input/reward/action/exploration/reset changes; native state archive and replay refill from own new experience.",
+    "Evaluation trajectories are never training data; calibration is excluded from shared collector."
+  ]
+}

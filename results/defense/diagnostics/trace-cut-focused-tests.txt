@@ -1,0 +1,14 @@
+test_current_online_greediness_recomputed_for_the_same_recorded_path (tests.test_defense_trace.TraceTests.test_current_online_greediness_recomputed_for_the_same_recorded_path) ... ok
+test_invalid_trace_inputs_and_cli (tests.test_defense_trace.TraceTests.test_invalid_trace_inputs_and_cli) ... ok
+test_life_truncation_and_worker_queues_never_cross_into_reset (tests.test_defense_trace.TraceTests.test_life_truncation_and_worker_queues_never_cross_into_reset) ... ok
+test_native_default_identity_trace_training_and_exact_resume (tests.test_defense_trace.TraceTests.test_native_default_identity_trace_training_and_exact_resume) ... ok
+test_native_trace_with_own_archives_and_reserved_boot_workers (tests.test_defense_trace.TraceTests.test_native_trace_with_own_archives_and_reserved_boot_workers) ... ok
+test_real_model_update_keeps_target_fixed_then_syncs (tests.test_defense_trace.TraceTests.test_real_model_update_keeps_target_fixed_then_syncs) ... ok
+test_replay_exact_paths_sampling_priorities_and_ring_references (tests.test_defense_trace.TraceTests.test_replay_exact_paths_sampling_priorities_and_ring_references) ... ok
+test_targets_greedy_prefix_deviation_terminal_truncation_and_ties (tests.test_defense_trace.TraceTests.test_targets_greedy_prefix_deviation_terminal_truncation_and_ties) ... ok
+test_targets_one_step_identity_and_stop_gradient (tests.test_defense_trace.TraceTests.test_targets_one_step_identity_and_stop_gradient) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 24.446s
+
+OK
