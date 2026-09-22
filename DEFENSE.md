@@ -3547,6 +3547,17 @@ average **9,882**, **9,994**, **10,301**; its new **10,340** best has a
 These are score recoveries, not new depth. All remain stage 1; the shared
 global best and completed Breakdown winning replay remain unchanged.
 
+The [latest aligned loss panels](results/defense/diagnostics/shared-loss-worker-exploration-01/report.json)
+compare those three newly preserved replays. Their per-life scores are
+**[2620, 2620, 2620, 2620]**, **[2550, 2600, 2580, 2620]** and
+**[2600, 2600, 2570, 2570]** respectively. Visual inspection of the neutral
+and long-lookback sheets again shows the broad right-opening barrier while
+the ship remains near the center/left. This supports the recurring-sequence
+diagnosis, not an exact collision-coordinate or causal proof. White-flash
+alignment is not a collision timestamp, and the final loss can omit the flash
+between sampled screens. These are selected best replays, not representative
+training rollouts; no diagnostic screen or action is supplied to training.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)
