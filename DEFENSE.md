@@ -6,10 +6,12 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **344-test** suite now passes, including
+(23 GiB available at restart). The full **350-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are the matched restored-life-only continuations (49/50)
-and a separate 128-action own-loss-lookback calibration. The 64-action
+Current experiments are the matched restored-life-only continuations (49/50).
+The separate 128-action own-loss-lookback calibration finished below its
+64-action counterpart, and an optional command-balanced exploration sampler is
+now running a checked same-parent calibration. The 64-action
 score-triggered / own-loss-triggered pair (47/48) retired after six stage-1-only
 rounds with full state preserved. The focused calibration improved mean by 251
 over its control, but the first full round scored 78 lower; all games still
@@ -5224,6 +5226,105 @@ stopped at **8,398,432**, with six rounds; its final mean was **10,214**, best
 **10,240**, retaining the earlier verified 10,330 replay. Both full final
 optimizers, auxiliary states, complete logs and last evaluation checkpoints
 are preserved. No training episode or evaluation reached stage 2 or a mission.
+
+The [earlier-start calibration finished](results/defense/training/restored-life-long-lookback-calibration-01/comparison.json)
+at **7,093,216**, with mean/median/best **7,975 / 7,965 / 9,110**, versus the
+64-decision focused calibration's **10,214 / 10,375 / 10,460**. Nine paired
+scores regress and one improves (mean difference **−2,239**); all ten games
+lose in stage 1. The [2,566-action verified replay](results/defense/training/restored-life-long-lookback-calibration-01/replay/replay.html),
+full Q/target/Adam state and complete compressed log are preserved. It is not
+being continued as a demonstrated improvement.
+
+Its audit records **7,566** updates, **19** boot games, **994** completed
+restored segments and **831** first-loss cuts. All **230** archive offsets
+are exactly 128 decisions and boot workers stay protected. Completed restored
+lives contain **88,831** actions; selected source per-life score ranges from
+0 to 240. These are genuinely earlier states, not a known collision lead time.
+The [saved loss windows](results/defense/diagnostics/focused-and-earlier-losses-01/report.json)
+show the recurring barrier sequence; its life scores are
+**1,720 / 2,470 / 2,450 / 2,470**, not new stage progression.
+
+Meanwhile the new full pair reached **7,493,216**, adding **400,000** actions
+each. The [second comparison](results/defense/training/dqn-50-restored-life-focused/comparison-at-000007493216.json)
+is control mean/median/best **9,832 / 9,800 / 10,000**, versus focused
+**9,641 / 9,670 / 10,460**. All twenty games remain stage-1 losses; four
+focused scores improve and six regress (mean difference **−191**). Both full
+optimizer states and audited log prefixes are preserved. Focused practice's
+new full-run best [10,460-point replay](results/defense/training/dqn-50-restored-life-focused/replay-10460/replay.html)
+verifies **2,568** actions. Its life scores **2,620 / 2,600 / 2,620 / 2,620**
+and loss windows still show the familiar barrier. The shared best is unchanged.
+Each arm made **24,374** updates and completed **48** boot games; restored
+segment counts are **395 / 6,880**, with **4,527** focused first-loss cuts.
+Both retain correct offsets, own-source provenance and protected boot workers.
+
+### Balanced command-group exploration
+
+The previous read-only alias diagnostics did not establish duplicated firing
+choices as the dominant cause of the learned policy's entropy. They did not,
+however, test the **training random-action distribution**. Uniform sampling
+over the standard 20 keyboard combinations gives 45% of random starts to the
+nine stage-1 forward-fire aliases (Space, or Space plus an arrow combination).
+Stage 1 compares the whole movement byte, so these combinations fire without
+moving. The eight movement directions together get only 40%.
+
+Optional `--exploration-actions stage1-balanced` tests equal probability for
+the twelve distinct stage-1 command groups: nine no-op/direction choices,
+one forward-fire group and two side-fire combinations. Each group gets 1/12;
+the nine forward-fire aliases share their group's probability equally (1/108
+each). All twenty actions remain possible, and the learned Q head is unchanged.
+Nominal movement probability becomes 2/3 and forward-fire-only 1/12; actual
+exploratory-step proportions can differ because life boundaries cut holds.
+
+This is a **fixed training-only sampling distribution**, not a screen-dependent
+controller, route or obstacle detector. It never reads the current stage,
+score, position or collision state and applies unchanged in later stages,
+where the aliases need not be equivalent. Keeping every action possible avoids
+removing later-stage move-and-fire choices, but the fixed bias may still be
+unhelpful there. No particular movement direction is preferred. Warmup remains
+independent uniform sampling, persistent duration/rate/boundary rules are
+unchanged, and complete-game evaluation remains original learned greedy play.
+The option requires persistent exploration and the standard 20-action profile.
+The default `uniform` keeps the original integer RNG draws exactly.
+
+Six focused tests pass, including empirical group probabilities, defensive
+probability validation, disabled RNG parity, unchanged greedy choices, hold
+reset/resume, CLI rejection, and native learning/checkpoint loading. A real
+complete stage-1 game with random diagnostic actions is screen/reward/outcome
+identical when its firing aliases are replaced by Space or Down+Right+Space;
+these traces are not training demonstrations. The
+[4,096-action default parity check](results/defense/diagnostics/balanced-actions-default-parity.json)
+matches all 50 Q/target/Adam arrays, all nonconfiguration state fields and all
+16 episode/archive records. The
+[zero-action parent conversion](results/defense/diagnostics/balanced-actions-parent-conversion-parity.json)
+also preserves weights, optimizer, counters and both RNG states exactly.
+
+The [production smoke check](results/defense/diagnostics/balanced-actions-production-smoke.json)
+completed **16,384** new actions and **398** updates, eight full boot games,
+51 restored segments and 30 first-loss cuts. It exercised every action and
+recorded **4,241** post-warmup exploratory steps: **6.08%** forward-fire aliases
+and **61.47%** movement, without changing reserved worker roles or reset offsets.
+This is plumbing evidence, not complete-game performance evidence. All **350
+regression tests passed**. The same-parent performance calibration now starts
+from original DQN-33 at **6,962,144**, not the smoke checkpoint, and gets
+**131,072** new actions plus ten complete uncapped evaluations on reused seeds.
+It matches the preserved 64-decision focused calibration's settings except
+for the random-action distribution and recorded source metadata/output paths.
+It retains split epsilon .05/.9, probability-1 shared own-loss resets, two
+protected boot workers out of eight, first-restored-life-only segments,
+five-step life-terminal returns, gamma .997 and no auxiliary loss. It is
+excluded from the collector; the existing full runs remain unchanged.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-balanced-actions-reproduction \
+  --artifacts runs/defense-balanced-actions-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 64 \
+  --curriculum-trigger life-loss --curriculum-probability 1 \
+  --curriculum-restored-life-only --spr-weight 0 --inverse-weight 0 \
+  --exploration-actions stage1-balanced
+```
 
 ### Quantile score-return experiment
 
