@@ -1,0 +1,38 @@
+{
+  "control": "runs/defense-dqn-47-mid-lookback-control",
+  "life_loss_trigger": "runs/defense-dqn-48-loss-trigger",
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-dqn-47-mid-lookback-control/artifacts",
+      "runs/defense-dqn-48-loss-trigger/artifacts"
+    ],
+    "resume": [
+      "results/defense/training/mid-lookback-split-calibration-01/checkpoint",
+      "results/defense/training/loss-trigger-split-calibration-01/checkpoint"
+    ],
+    "curriculum_trigger_semantics": [
+      null,
+      "actual same-life state L decisions before visible loss; immediate stage entry; not a physical-collision timestamp; no snapshots restored during evaluation"
+    ],
+    "run": [
+      "runs/defense-dqn-47-mid-lookback-control",
+      "runs/defense-dqn-48-loss-trigger"
+    ],
+    "curriculum_trigger": [
+      "progress",
+      "life-loss"
+    ]
+  },
+  "starts_at": 7093216,
+  "evaluation_interval": 200000,
+  "unlimited": true,
+  "original_common_parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "calibration_comparison": "results/defense/training/loss-trigger-split-calibration-01/comparison.json",
+  "short_calibration_mean_difference": -200,
+  "reason": "Test longer adaptation after confirming actual own-reset selection changed; short calibration does not demonstrate improvement.",
+  "limits": [
+    "Different learned states and RNG after their own matched calibrations; same original parent and total action-count protocol.",
+    "Ten reused complete boot evaluation games per round, not fresh independent success-rate evidence.",
+    "No demonstrations, route labels, extra rewards or evaluation trajectories enter training."
+  ]
+}
