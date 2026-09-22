@@ -55,6 +55,10 @@ archives actual own states 64 decisions before a visible ship loss. This is a
 training-reset experiment, not a collision oracle or an evaluation-time aid;
 the default remains progress-triggered archives. See
 [the own-loss reset experiment](DEFENSE.md#own-loss-triggered-reset-experiment).
+Optional `--curriculum-restored-life-only` ends already-restored training
+segments at their first visible ship loss. It requires life-terminal learning;
+boot games and complete-game evaluation remain unchanged. See
+[the focused-practice comparison](DEFENSE.md#restored-life-only-practice).
 Experimental `--quantiles 32` learns distributions of score returns; optional
 `--quantile-exploration-power 1.5` changes training action selection only.
 Evaluation still uses greedy mean values. An own scalar DQN can initialize
