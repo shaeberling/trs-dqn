@@ -24,6 +24,20 @@ def audit(path=Path("var/defense.cmd")):
     image = Image()
     entry = CMD(image).load(str(path))
     checks = [
+        (0x7578, "cd 17 60 3a 4b 60 32 0f 70 b7 c0 c3 7e 74",
+         "Stage 1 tests the rendered player sprite for overlap, stores the outcome and returns on nonzero; this is not a HUD ship-count update."),
+        (0x6FAD, "3a 0f 70 b7 c4 10 70 20 12",
+         "After stage return, a nonzero outcome calls the separate loss routine before dispatch continues."),
+        (0x701A, "3a ef 7c 3d 32 ef 7c",
+         "The loss routine decrements P1's internal ship count before the later visible HUD refresh; this address is never read by the policy or environment."),
+        (0x7031, "21 10 27 cd 11 67",
+         "After decrement, the original loss routine calls a 10,000-iteration busy wait before subsequent drawing; this is static code, not a measured collision timestamp."),
+        (0x6711, "e5 f5 2b 7c b5 20 fb f1 e1 c9",
+         "Busy wait decrements HL until zero; no movement-key handling in this loop."),
+        (0x7E01, "3a 02 7f 3d 32 02 7f c2 f2 7e",
+         "HUD formatting is gated by a decrementing countdown, so individual refresh calls need not redraw the ship count."),
+        (0x7E8C, "13 3a ef 7c b7 28 40 47 3e 2a 12 13 10 fc",
+         "When the P1 HUD is formatted, draw stars from the current ship count; this static audit does not provide a live collision or reward signal."),
         (0x7432, "21 a9 76 22 9b 81 3e 06 32 9a 81",
          "Stage 1 initializes its obstacle-stream pointer to 76A9 and row-update countdown to six."),
         (0x747E, "cd 07 ac cd de 7f 2a 9b 81 7e 32 0f 70 b7 c8",
