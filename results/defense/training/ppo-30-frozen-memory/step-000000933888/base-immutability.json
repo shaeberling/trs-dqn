@@ -1,0 +1,10 @@
+{
+  "base_arrays_exactly_unchanged": 12,
+  "base_source": "results/defense/training/ppo-12-lookback/step-000010447616/model.safetensors",
+  "base_source_sha256": "b37d73f71d6ec18edf461997cda8e52754e0aed74192e2df2677df7c49e2ecdf",
+  "checkpoint_sha256": "cf666fdf50d7cbdede30b476cde83b3b6036b1b17a3453fc927c38bd31305cdf",
+  "base_optimizer_slots_absent": true,
+  "optimizer_array_count": 18,
+  "recurrent_training_actions": 933888,
+  "parent_training_actions": 10447616
+}

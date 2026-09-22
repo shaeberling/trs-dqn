@@ -1,0 +1,11 @@
+{
+  "original_evaluation_sha256": "79a07905c13e1298dad85e5fb36a070aa2ab41be4d990938e54af42aa62c5862",
+  "reevaluation_sha256": "3cc1f1d82f01624f959deb254c0b364b8a9fde6863eb8527baa8e0d3323b5971",
+  "all_ten_game_records_exactly_equal": true,
+  "checkpoint_sha256": "cf666fdf50d7cbdede30b476cde83b3b6036b1b17a3453fc927c38bd31305cdf",
+  "reused_validation_seeds": [
+    10000,
+    10009
+  ],
+  "fresh_test": false
+}
