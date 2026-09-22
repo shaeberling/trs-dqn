@@ -1,7 +1,7 @@
 """Read-only SPR representation checks on a frozen, verified own replay.
 
 No training, emulator actions, reward changes or evaluation-to-training transfer.
-Clean (dropout-free) diagnostics are not the PER-weighted training objective.
+Unweighted diagnostics are not the PER-weighted training objective.
 """
 
 import argparse
@@ -59,11 +59,37 @@ def path_starts(length, loss_frames, horizon, spacing=8):
     return result
 
 
-def probe(checkpoint, bundle):
-    from .defense_spr import AUX_FILES, SprAuxiliary, spatial_features
-    from .model import QNetwork
+def trajectory_predictions(online, ema, auxiliary, observations, actions, following, key, dropout):
+    """Match auxiliary_loss's root/target dropout keys and batch layout exactly."""
     import mlx.core as mx
     import mlx.nn as nn
+    from .defense_spr import spatial_features
+    batch, horizon = actions.shape
+    root_key, target_key = mx.random.split(key)
+    latent = spatial_features(online, observations, root_key, dropout)
+    encoded = spatial_features(ema, following.reshape(batch*horizon, *observations.shape[1:]),
+                               target_key, dropout)
+    targets = nn.relu(ema.hidden(encoded.reshape(batch*horizon, -1))).reshape(batch, horizon, -1)
+    # Independent current-screen noise: persistence must not reuse target masks.
+    current_key = mx.random.split(key, 3)[2]
+    current = spatial_features(ema, observations, current_key, dropout)
+    current = nn.relu(ema.hidden(current.reshape(batch, -1)))
+    other = latent
+    predictions, alternatives = [], []
+    for offset in range(horizon):
+        recorded = actions[:, offset]
+        latent = auxiliary.transition(latent, recorded)
+        other = auxiliary.transition(other, (recorded+1) % 20)
+        predictions.append(auxiliary.predictor(nn.relu(online.hidden(latent.reshape(batch, -1)))))
+        alternatives.append(auxiliary.predictor(nn.relu(online.hidden(other.reshape(batch, -1)))))
+    return (targets, mx.stack(predictions, axis=1), mx.stack(alternatives, axis=1),
+            mx.broadcast_to(current[:, None], targets.shape))
+
+
+def probe(checkpoint, bundle, training_dropout=False, seed=0):
+    from .defense_spr import AUX_FILES, SprAuxiliary
+    from .model import QNetwork
+    import mlx.core as mx
 
     checkpoint = Path(checkpoint).resolve(strict=True)
     report, frames, actions = analyze(bundle)
@@ -71,6 +97,7 @@ def probe(checkpoint, bundle):
     before = {name: sha256(checkpoint/name) for name in names}
     state = json.loads((checkpoint/'state.json').read_text())
     config = state['config']
+    dropout = config['spr_dropout'] if training_dropout else 0.
     verification = report['original_native_verification']
     if (config.get('algorithm') != DQN_ALGORITHM or config.get('spr_weight', 0) <= 0
             or config.get('spr_architecture') != 'spatial-own-future-v1'
@@ -97,24 +124,19 @@ def probe(checkpoint, bundle):
                 or not np.array_equal(values.argmax(axis=1), actions[first:first+32])):
             raise ValueError('recorded greedy actions do not match frozen checkpoint')
     targets, predictions, alternatives, persistence = [], [], [], []
+    key = mx.random.key(seed)
     for first in range(0, len(starts), 16):
         indices = starts[first:first+16]
         observation = mx.array(np.stack([replay_observation(frames, i, stride) for i in indices]))
-        latent = spatial_features(online, observation, mx.random.key(0), 0.)
-        current = spatial_features(ema, observation, mx.random.key(0), 0.)
-        current = np.array(nn.relu(ema.hidden(current.reshape(len(indices), -1))))
-        other = latent
-        for offset in range(horizon):
-            recorded = mx.array(actions[np.array(indices)+offset].astype(np.int32))
-            latent = auxiliary.transition(latent, recorded)
-            # A fixed label rotation, not a game-valid counterfactual trajectory.
-            other = auxiliary.transition(other, (recorded+1) % 20)
-            future = mx.array(np.stack([replay_observation(frames, i+offset+1, stride) for i in indices]))
-            encoded = spatial_features(ema, future, mx.random.key(0), 0.)
-            targets.append(np.array(nn.relu(ema.hidden(encoded.reshape(len(indices), -1)))))
-            persistence.append(current)
-            predictions.append(np.array(auxiliary.predictor(nn.relu(online.hidden(latent.reshape(len(indices), -1))))))
-            alternatives.append(np.array(auxiliary.predictor(nn.relu(online.hidden(other.reshape(len(indices), -1))))))
+        recorded = mx.array(np.stack([actions[i:i+horizon] for i in indices]).astype(np.int32))
+        following = mx.array(np.stack([[replay_observation(frames, i+j+1, stride)
+                                        for j in range(horizon)] for i in indices]))
+        batch_key, key = mx.random.split(key)
+        outputs = trajectory_predictions(online, ema, auxiliary, observation, recorded, following,
+                                         batch_key, dropout)
+        for destination, value in zip((targets, predictions, alternatives, persistence), outputs):
+            # Preserve the original clean probe's horizon-major within-batch order.
+            destination.append(np.array(value).transpose(1, 0, 2).reshape(-1, 256))
     statistics = summarize(*(np.concatenate(x) for x in (targets, predictions, alternatives, persistence)))
     if before != {name: sha256(checkpoint/name) for name in names}:
         raise RuntimeError('checkpoint changed during diagnostic')
@@ -125,15 +147,16 @@ def probe(checkpoint, bundle):
     return dict(checkpoint=str(checkpoint), bundle=report['bundle'], source_hashes=before,
                 trace_hashes=report['source_hashes'], probe_sha256=sha256(Path(__file__)),
                 diagnostic_only=True, parameter_updates=0, training_data_written=False,
-                native_reexecution=False, promotion_eligible=False, dropout=0.,
+                native_reexecution=False, promotion_eligible=False, dropout=dropout, diagnostic_seed=seed,
                 replay_actions_reproduced=len(actions),
                 paths=len(starts), horizon=horizon, result=report['result'], statistics=statistics,
                 limitations=[
                     'Selected verified replay only, not the exploratory training distribution.',
-                    'Dropout-free unweighted diagnostic, not the logged PER-weighted objective.',
+                    'Unweighted diagnostic, not the logged PER-weighted objective.',
                     'Fixed action-label rotation is a sensitivity probe, not simulated counterfactual evidence.',
                     'Constant baseline uses first-half targets; all distances compare on the second half.',
                     'Persistence baseline repeats the current EMA projection without any learned transition.',
+                    'With dropout, current and future encodings use independent noise; distances include this noise.',
                     'Small variance or weak action sensitivity suggests a concern, not a causal proof.',
                     'Noncollapsed features or lower distance do not prove useful control or mission progress.'])
 
@@ -143,10 +166,12 @@ def main():
     parser.add_argument('checkpoint', type=Path)
     parser.add_argument('bundle', type=Path)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--training-dropout', action='store_true', help='use saved auxiliary dropout, never acting dropout')
+    parser.add_argument('--seed', type=int, default=0, help='explicit diagnostic-only dropout key')
     args = parser.parse_args()
     if args.output.exists():
         parser.error('refusing to overwrite evidence')
-    result = probe(args.checkpoint, args.bundle)
+    result = probe(args.checkpoint, args.bundle, args.training_dropout, args.seed)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open('x') as stream:
         stream.write(json.dumps(result, indent=2)+'\n')
