@@ -1,0 +1,127 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-53-repeat-control/replay-610",
+  "source_hashes": {
+    "model.safetensors": "d537639229a078ccb7746f0b5330cd5705630ff0d81d5dcf34cb897463ec7e90",
+    "state.json": "e058b04ce64dee54fa79ed26a6529ff810e8dc1f07ad65a58640d8e91126fd5f",
+    "trace.npz": "017476db69e4181fe117e505feb396f04d2361f2b3cc07a9529d9aab09e4c05c",
+    "verification.json": "3a34d39eda81e02fea3a768aff0d55cd2cf9494fc68dda7508ffd2143f6d97b7"
+  },
+  "probe_source_sha256": "a85779fdeb4e93a48e7860bc06529fd0b876986e0019abb96f9167a4be35288b",
+  "durations": [
+    1
+  ],
+  "result": {
+    "seed": 10004,
+    "score": 610,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 1802,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 610.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1202000,
+    "start_tstates": 80324
+  },
+  "whole_replay": {
+    "base_commands": 1802,
+    "neural_option_decisions": 1802,
+    "decisions_by_duration": [
+      1802
+    ],
+    "executed_commands_by_duration": [
+      1802
+    ],
+    "long_option_command_fraction": 0.0
+  },
+  "interrupted_options": 0,
+  "cancelled_base_commands": 0,
+  "pre_visible_loss_windows": [
+    {
+      "life": 1,
+      "first_base_action": 112,
+      "stop_exclusive": 176,
+      "base_commands": 64,
+      "neural_option_decisions": 64,
+      "decisions_by_duration": [
+        64
+      ],
+      "executed_commands_by_duration": [
+        64
+      ],
+      "long_option_command_fraction": 0.0
+    },
+    {
+      "life": 2,
+      "first_base_action": 622,
+      "stop_exclusive": 686,
+      "base_commands": 64,
+      "neural_option_decisions": 64,
+      "decisions_by_duration": [
+        64
+      ],
+      "executed_commands_by_duration": [
+        64
+      ],
+      "long_option_command_fraction": 0.0
+    },
+    {
+      "life": 3,
+      "first_base_action": 1073,
+      "stop_exclusive": 1137,
+      "base_commands": 64,
+      "neural_option_decisions": 64,
+      "decisions_by_duration": [
+        64
+      ],
+      "executed_commands_by_duration": [
+        64
+      ],
+      "long_option_command_fraction": 0.0
+    },
+    {
+      "life": 4,
+      "first_base_action": 1738,
+      "stop_exclusive": 1802,
+      "base_commands": 64,
+      "neural_option_decisions": 64,
+      "decisions_by_duration": [
+        64
+      ],
+      "executed_commands_by_duration": [
+        64
+      ],
+      "long_option_command_fraction": 0.0
+    }
+  ],
+  "replay_commands_reproduced": 1802,
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 1802,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "d537639229a078ccb7746f0b5330cd5705630ff0d81d5dcf34cb897463ec7e90",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "native_reexecution": false,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "ranking_eligible": false,
+  "diagnostic_only": true,
+  "limitations": [
+    "One selected verified replay, not a representative or fresh evaluation sample.",
+    "Durations describe neural commitments, not movement, survival, obstacle passage or a route.",
+    "Base-command counts include original animations; visible life loss can lag physical collision.",
+    "Window decisions count only starts inside the window; a hold can begin before it.",
+    "Native verification is reused; this diagnostic reconstructs policy commands from recorded screens.",
+    "Frozen weights only; no replay or diagnostic examples enter learning."
+  ]
+}

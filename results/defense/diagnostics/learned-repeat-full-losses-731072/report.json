@@ -1,0 +1,713 @@
+{
+  "probe_source_sha256": "610b499ef32eda88e56681dbf27a6cdb3fd9730a1baa1a15cbb92c088b5b05c4",
+  "reports": [
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+      "source_hashes": {
+        "model.safetensors": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+        "state.json": "18e57e6d83f8619fef850a40b5d8de43ebe9a7f3a287917e1daf0771590c7aa0",
+        "trace.npz": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+        "verification.json": "ebbb69fc84d3626b0e77e9af6cd59b2e4db6f3b17c188a4ff2710680dfa7d876"
+      },
+      "result": {
+        "seed": 10004,
+        "score": 10480,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2580,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10480.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 80324
+      },
+      "tstates": 100000,
+      "diagnostic_only": true,
+      "promotion_eligible": false,
+      "native_reexecution": false,
+      "training_data_written": false,
+      "parameter_updates": 0,
+      "original_native_verification": {
+        "verified": true,
+        "verified_actions": 2580,
+        "temperature": 1.0,
+        "checkpoint_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "lives": [
+        {
+          "life": 1,
+          "previous_visible_loss_frame": 0,
+          "visible_loss_frame": 410,
+          "visible_score_at_loss": 2620,
+          "score_gained_this_life": 2620,
+          "first_major_white_flash_in_last_128_frames": 392,
+          "flash_to_visible_loss_actions": 18,
+          "action_window": [
+            328,
+            392
+          ],
+          "action_counts": {
+            "NOOP": 1,
+            "UP": 0,
+            "DOWN": 4,
+            "LEFT": 3,
+            "RIGHT": 1,
+            "UP+LEFT": 0,
+            "UP+RIGHT": 12,
+            "DOWN+LEFT": 8,
+            "DOWN+RIGHT": 8,
+            "SPACE": 0,
+            "UP+SPACE": 3,
+            "DOWN+SPACE": 5,
+            "LEFT+SPACE": 1,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 3,
+            "UP+RIGHT+SPACE": 0,
+            "DOWN+LEFT+SPACE": 3,
+            "DOWN+RIGHT+SPACE": 0,
+            "LEFT+RIGHT": 12,
+            "LEFT+RIGHT+SPACE": 0
+          },
+          "movement_action_fraction": 0.5625,
+          "recent_visible_score_increments": [
+            {
+              "frame": 184,
+              "points": 40.0
+            },
+            {
+              "frame": 231,
+              "points": 20.0
+            },
+            {
+              "frame": 269,
+              "points": 70.0
+            },
+            {
+              "frame": 281,
+              "points": 100.0
+            },
+            {
+              "frame": 305,
+              "points": 20.0
+            },
+            {
+              "frame": 329,
+              "points": 750.0
+            },
+            {
+              "frame": 354,
+              "points": 1520.0
+            },
+            {
+              "frame": 388,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            328,
+            360,
+            384,
+            391
+          ]
+        },
+        {
+          "life": 2,
+          "previous_visible_loss_frame": 410,
+          "visible_loss_frame": 1133,
+          "visible_score_at_loss": 5240,
+          "score_gained_this_life": 2620,
+          "first_major_white_flash_in_last_128_frames": 1121,
+          "flash_to_visible_loss_actions": 12,
+          "action_window": [
+            1057,
+            1121
+          ],
+          "action_counts": {
+            "NOOP": 0,
+            "UP": 0,
+            "DOWN": 6,
+            "LEFT": 4,
+            "RIGHT": 5,
+            "UP+LEFT": 0,
+            "UP+RIGHT": 11,
+            "DOWN+LEFT": 10,
+            "DOWN+RIGHT": 10,
+            "SPACE": 1,
+            "UP+SPACE": 5,
+            "DOWN+SPACE": 4,
+            "LEFT+SPACE": 0,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 4,
+            "UP+RIGHT+SPACE": 0,
+            "DOWN+LEFT+SPACE": 0,
+            "DOWN+RIGHT+SPACE": 1,
+            "LEFT+RIGHT": 3,
+            "LEFT+RIGHT+SPACE": 0
+          },
+          "movement_action_fraction": 0.71875,
+          "recent_visible_score_increments": [
+            {
+              "frame": 945,
+              "points": 20.0
+            },
+            {
+              "frame": 994,
+              "points": 70.0
+            },
+            {
+              "frame": 1019,
+              "points": 100.0
+            },
+            {
+              "frame": 1031,
+              "points": 20.0
+            },
+            {
+              "frame": 1055,
+              "points": 750.0
+            },
+            {
+              "frame": 1067,
+              "points": 20.0
+            },
+            {
+              "frame": 1080,
+              "points": 1500.0
+            },
+            {
+              "frame": 1114,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            1057,
+            1089,
+            1113,
+            1120
+          ]
+        },
+        {
+          "life": 3,
+          "previous_visible_loss_frame": 1133,
+          "visible_loss_frame": 1863,
+          "visible_score_at_loss": 7860,
+          "score_gained_this_life": 2620,
+          "first_major_white_flash_in_last_128_frames": 1851,
+          "flash_to_visible_loss_actions": 12,
+          "action_window": [
+            1787,
+            1851
+          ],
+          "action_counts": {
+            "NOOP": 0,
+            "UP": 0,
+            "DOWN": 9,
+            "LEFT": 1,
+            "RIGHT": 5,
+            "UP+LEFT": 0,
+            "UP+RIGHT": 5,
+            "DOWN+LEFT": 8,
+            "DOWN+RIGHT": 12,
+            "SPACE": 1,
+            "UP+SPACE": 5,
+            "DOWN+SPACE": 5,
+            "LEFT+SPACE": 2,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 5,
+            "UP+RIGHT+SPACE": 0,
+            "DOWN+LEFT+SPACE": 2,
+            "DOWN+RIGHT+SPACE": 0,
+            "LEFT+RIGHT": 3,
+            "LEFT+RIGHT+SPACE": 1
+          },
+          "movement_action_fraction": 0.625,
+          "recent_visible_score_increments": [
+            {
+              "frame": 1712,
+              "points": 20.0
+            },
+            {
+              "frame": 1724,
+              "points": 50.0
+            },
+            {
+              "frame": 1737,
+              "points": 100.0
+            },
+            {
+              "frame": 1749,
+              "points": 20.0
+            },
+            {
+              "frame": 1785,
+              "points": 750.0
+            },
+            {
+              "frame": 1797,
+              "points": 20.0
+            },
+            {
+              "frame": 1810,
+              "points": 1500.0
+            },
+            {
+              "frame": 1832,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            1787,
+            1819,
+            1843,
+            1850
+          ]
+        },
+        {
+          "life": 4,
+          "previous_visible_loss_frame": 1863,
+          "visible_loss_frame": 2580,
+          "visible_score_at_loss": 10480,
+          "score_gained_this_life": 2620,
+          "first_major_white_flash_in_last_128_frames": null,
+          "flash_to_visible_loss_actions": null,
+          "action_window": [
+            2516,
+            2580
+          ],
+          "action_counts": {
+            "NOOP": 0,
+            "UP": 0,
+            "DOWN": 8,
+            "LEFT": 2,
+            "RIGHT": 2,
+            "UP+LEFT": 0,
+            "UP+RIGHT": 6,
+            "DOWN+LEFT": 5,
+            "DOWN+RIGHT": 10,
+            "SPACE": 0,
+            "UP+SPACE": 6,
+            "DOWN+SPACE": 5,
+            "LEFT+SPACE": 2,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 3,
+            "UP+RIGHT+SPACE": 7,
+            "DOWN+LEFT+SPACE": 3,
+            "DOWN+RIGHT+SPACE": 0,
+            "LEFT+RIGHT": 4,
+            "LEFT+RIGHT+SPACE": 1
+          },
+          "movement_action_fraction": 0.515625,
+          "recent_visible_score_increments": [
+            {
+              "frame": 2392,
+              "points": 20.0
+            },
+            {
+              "frame": 2428,
+              "points": 20.0
+            },
+            {
+              "frame": 2454,
+              "points": 50.0
+            },
+            {
+              "frame": 2466,
+              "points": 100.0
+            },
+            {
+              "frame": 2478,
+              "points": 20.0
+            },
+            {
+              "frame": 2514,
+              "points": 770.0
+            },
+            {
+              "frame": 2539,
+              "points": 1500.0
+            },
+            {
+              "frame": 2550,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            2516,
+            2548,
+            2572,
+            2579
+          ]
+        }
+      ],
+      "screen_sheet": "policy-1-losses.png"
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-54-learned-repeat/replay-9980",
+      "source_hashes": {
+        "model.safetensors": "ffdc6f176771782999ee804c3a705412142f6bbc65d1ad63eb955592f6ec6707",
+        "state.json": "ad1b845e0348cda461fd14181cdc694390fdb0662e1e39462145c5951063af18",
+        "trace.npz": "2467f576c853ade61f686bb6c8c29e281662156ffadb7e511fe7673f43519a6b",
+        "verification.json": "24aa9ac9076eaef621442c14cc4d59d424bfe9ebb319546678a60dba514a152a"
+      },
+      "result": {
+        "seed": 10008,
+        "score": 9980,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2478,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 9980.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 91003
+      },
+      "tstates": 100000,
+      "diagnostic_only": true,
+      "promotion_eligible": false,
+      "native_reexecution": false,
+      "training_data_written": false,
+      "parameter_updates": 0,
+      "original_native_verification": {
+        "verified": true,
+        "verified_actions": 2478,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "ffdc6f176771782999ee804c3a705412142f6bbc65d1ad63eb955592f6ec6707",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "lives": [
+        {
+          "life": 1,
+          "previous_visible_loss_frame": 0,
+          "visible_loss_frame": 408,
+          "visible_score_at_loss": 2500,
+          "score_gained_this_life": 2500,
+          "first_major_white_flash_in_last_128_frames": 396,
+          "flash_to_visible_loss_actions": 12,
+          "action_window": [
+            332,
+            396
+          ],
+          "action_counts": {
+            "NOOP": 0,
+            "UP": 2,
+            "DOWN": 4,
+            "LEFT": 2,
+            "RIGHT": 0,
+            "UP+LEFT": 0,
+            "UP+RIGHT": 0,
+            "DOWN+LEFT": 4,
+            "DOWN+RIGHT": 16,
+            "SPACE": 10,
+            "UP+SPACE": 4,
+            "DOWN+SPACE": 0,
+            "LEFT+SPACE": 4,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 0,
+            "UP+RIGHT+SPACE": 0,
+            "DOWN+LEFT+SPACE": 1,
+            "DOWN+RIGHT+SPACE": 5,
+            "LEFT+RIGHT": 12,
+            "LEFT+RIGHT+SPACE": 0
+          },
+          "movement_action_fraction": 0.4375,
+          "recent_visible_score_increments": [
+            {
+              "frame": 234,
+              "points": 20.0
+            },
+            {
+              "frame": 259,
+              "points": 50.0
+            },
+            {
+              "frame": 271,
+              "points": 20.0
+            },
+            {
+              "frame": 306,
+              "points": 20.0
+            },
+            {
+              "frame": 330,
+              "points": 750.0
+            },
+            {
+              "frame": 354,
+              "points": 20.0
+            },
+            {
+              "frame": 365,
+              "points": 1500.0
+            },
+            {
+              "frame": 388,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            332,
+            364,
+            388,
+            395
+          ]
+        },
+        {
+          "life": 2,
+          "previous_visible_loss_frame": 408,
+          "visible_loss_frame": 1109,
+          "visible_score_at_loss": 4950,
+          "score_gained_this_life": 2450,
+          "first_major_white_flash_in_last_128_frames": 1097,
+          "flash_to_visible_loss_actions": 12,
+          "action_window": [
+            1033,
+            1097
+          ],
+          "action_counts": {
+            "NOOP": 2,
+            "UP": 0,
+            "DOWN": 2,
+            "LEFT": 0,
+            "RIGHT": 0,
+            "UP+LEFT": 0,
+            "UP+RIGHT": 1,
+            "DOWN+LEFT": 16,
+            "DOWN+RIGHT": 8,
+            "SPACE": 0,
+            "UP+SPACE": 19,
+            "DOWN+SPACE": 7,
+            "LEFT+SPACE": 0,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 0,
+            "UP+RIGHT+SPACE": 1,
+            "DOWN+LEFT+SPACE": 1,
+            "DOWN+RIGHT+SPACE": 0,
+            "LEFT+RIGHT": 7,
+            "LEFT+RIGHT+SPACE": 0
+          },
+          "movement_action_fraction": 0.421875,
+          "recent_visible_score_increments": [
+            {
+              "frame": 890,
+              "points": 20.0
+            },
+            {
+              "frame": 925,
+              "points": 20.0
+            },
+            {
+              "frame": 960,
+              "points": 20.0
+            },
+            {
+              "frame": 1007,
+              "points": 20.0
+            },
+            {
+              "frame": 1031,
+              "points": 750.0
+            },
+            {
+              "frame": 1043,
+              "points": 20.0
+            },
+            {
+              "frame": 1055,
+              "points": 1500.0
+            },
+            {
+              "frame": 1078,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            1033,
+            1065,
+            1089,
+            1096
+          ]
+        },
+        {
+          "life": 3,
+          "previous_visible_loss_frame": 1109,
+          "visible_loss_frame": 1817,
+          "visible_score_at_loss": 7550,
+          "score_gained_this_life": 2600,
+          "first_major_white_flash_in_last_128_frames": 1805,
+          "flash_to_visible_loss_actions": 12,
+          "action_window": [
+            1741,
+            1805
+          ],
+          "action_counts": {
+            "NOOP": 2,
+            "UP": 0,
+            "DOWN": 4,
+            "LEFT": 0,
+            "RIGHT": 8,
+            "UP+LEFT": 1,
+            "UP+RIGHT": 1,
+            "DOWN+LEFT": 4,
+            "DOWN+RIGHT": 6,
+            "SPACE": 2,
+            "UP+SPACE": 0,
+            "DOWN+SPACE": 1,
+            "LEFT+SPACE": 0,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 0,
+            "UP+RIGHT+SPACE": 3,
+            "DOWN+LEFT+SPACE": 6,
+            "DOWN+RIGHT+SPACE": 9,
+            "LEFT+RIGHT": 16,
+            "LEFT+RIGHT+SPACE": 1
+          },
+          "movement_action_fraction": 0.375,
+          "recent_visible_score_increments": [
+            {
+              "frame": 1605,
+              "points": 20.0
+            },
+            {
+              "frame": 1640,
+              "points": 20.0
+            },
+            {
+              "frame": 1689,
+              "points": 70.0
+            },
+            {
+              "frame": 1714,
+              "points": 100.0
+            },
+            {
+              "frame": 1726,
+              "points": 20.0
+            },
+            {
+              "frame": 1762,
+              "points": 770.0
+            },
+            {
+              "frame": 1797,
+              "points": 1500.0
+            },
+            {
+              "frame": 1817,
+              "points": 20.0
+            }
+          ],
+          "panel_frames": [
+            1741,
+            1773,
+            1797,
+            1804
+          ]
+        },
+        {
+          "life": 4,
+          "previous_visible_loss_frame": 1817,
+          "visible_loss_frame": 2478,
+          "visible_score_at_loss": 9980,
+          "score_gained_this_life": 2430,
+          "first_major_white_flash_in_last_128_frames": null,
+          "flash_to_visible_loss_actions": null,
+          "action_window": [
+            2414,
+            2478
+          ],
+          "action_counts": {
+            "NOOP": 0,
+            "UP": 1,
+            "DOWN": 2,
+            "LEFT": 0,
+            "RIGHT": 8,
+            "UP+LEFT": 4,
+            "UP+RIGHT": 4,
+            "DOWN+LEFT": 3,
+            "DOWN+RIGHT": 8,
+            "SPACE": 0,
+            "UP+SPACE": 4,
+            "DOWN+SPACE": 0,
+            "LEFT+SPACE": 2,
+            "RIGHT+SPACE": 0,
+            "UP+LEFT+SPACE": 0,
+            "UP+RIGHT+SPACE": 0,
+            "DOWN+LEFT+SPACE": 0,
+            "DOWN+RIGHT+SPACE": 8,
+            "LEFT+RIGHT": 20,
+            "LEFT+RIGHT+SPACE": 0
+          },
+          "movement_action_fraction": 0.46875,
+          "recent_visible_score_increments": [
+            {
+              "frame": 2261,
+              "points": 20.0
+            },
+            {
+              "frame": 2296,
+              "points": 20.0
+            },
+            {
+              "frame": 2343,
+              "points": 20.0
+            },
+            {
+              "frame": 2379,
+              "points": 20.0
+            },
+            {
+              "frame": 2415,
+              "points": 20.0
+            },
+            {
+              "frame": 2439,
+              "points": 750.0
+            },
+            {
+              "frame": 2463,
+              "points": 20.0
+            },
+            {
+              "frame": 2474,
+              "points": 1500.0
+            }
+          ],
+          "panel_frames": [
+            2414,
+            2446,
+            2470,
+            2477
+          ]
+        }
+      ],
+      "screen_sheet": "policy-2-losses.png"
+    }
+  ],
+  "limitations": [
+    "Selected best replays, not representative or matched-seed evaluations.",
+    "Equal score does not prove equal course progress or identical collisions.",
+    "White flashes are visible alignment heuristics, not physical collision timestamps.",
+    "Frames include original game animations; action counts do not measure motion.",
+    "No hidden RAM, route oracle, training examples, or policy changes."
+  ]
+}

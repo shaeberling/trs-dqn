@@ -1,0 +1,36 @@
+{
+  "version": "step-000000331072-d537639229a0-seed-10004",
+  "rank": [
+    0,
+    1,
+    610
+  ],
+  "result": {
+    "seed": 10004,
+    "score": 610,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 1802,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 610.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1202000,
+    "start_tstates": 80324
+  },
+  "selected_for": "best single complete effort, not mean evaluation score",
+  "hashes": {
+    "model.safetensors": "d537639229a078ccb7746f0b5330cd5705630ff0d81d5dcf34cb897463ec7e90",
+    "state.json": "e058b04ce64dee54fa79ed26a6529ff810e8dc1f07ad65a58640d8e91126fd5f",
+    "evaluation.json": "142576b265fe06186658504d8bcb316c4f4327bb4b0a287b190949a72552bf1d",
+    "verification.json": "3a34d39eda81e02fea3a768aff0d55cd2cf9494fc68dda7508ffd2143f6d97b7",
+    "trace.npz": "017476db69e4181fe117e505feb396f04d2361f2b3cc07a9529d9aab09e4c05c",
+    "replay.html": "f55f58d14757a2d1654d2b1da0383f05cc9ba6bf81b1d490bc6fbfc0922dfa6c"
+  }
+}

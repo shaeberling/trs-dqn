@@ -1,0 +1,134 @@
+{
+  "analysis_source_sha256": "2687e530018883c9f23cfa1801f3a51bb49862cee73197c75055cec50cfc232d",
+  "reports": [
+    {
+      "bundle": "results/defense/training/repeat-variable-calibration-01/replay",
+      "source_hashes": {
+        "model.safetensors": "2365d4fb14299471ace587090f49515232951482f90fcbe88574ccf69646ba65",
+        "state.json": "6b972fa7e0d6b5895317e3dd41e280828dd1daac782a58ef3ffa2228fac59ce8",
+        "trace.npz": "02a7484a4d61b2e20961673d49a78cb840aced4277484ed1a0aa7e177ebb9139",
+        "verification.json": "a7a816095f3cba465676137382534b0966355de670b84cad2ead335d6330ea5f"
+      },
+      "reproduced_commands": 2394,
+      "durations": [
+        1,
+        4,
+        16,
+        64
+      ],
+      "intro_text_present": {
+        "base_commands_by_duration": [
+          0,
+          8,
+          552,
+          11
+        ],
+        "decisions_by_duration": [
+          0,
+          2,
+          34,
+          2
+        ]
+      },
+      "intro_text_not_recognized": {
+        "base_commands_by_duration": [
+          559,
+          400,
+          680,
+          184
+        ],
+        "decisions_by_duration": [
+          559,
+          100,
+          43,
+          3
+        ]
+      }
+    },
+    {
+      "bundle": "results/defense/training/dqn-54-learned-repeat/replay-5180",
+      "source_hashes": {
+        "model.safetensors": "6f72c54913f243d50ba13e4b680be5a477b79dcf980bd5ab93821a6c85185302",
+        "state.json": "b2209eaaf6da8fcfd0eecd5cb07713a67d555ff657ad37110e5efda0bf30c244",
+        "trace.npz": "a623a60895c693973b451589a7c3003a028eef349c9e1e8631b01426b955eeff",
+        "verification.json": "1f6c57c1bba43ac505d127c3bde92017975a2311638b0aef2633b47cad33e114"
+      },
+      "reproduced_commands": 2102,
+      "durations": [
+        1,
+        4,
+        16,
+        64
+      ],
+      "intro_text_present": {
+        "base_commands_by_duration": [
+          0,
+          0,
+          577,
+          0
+        ],
+        "decisions_by_duration": [
+          0,
+          0,
+          37,
+          0
+        ]
+      },
+      "intro_text_not_recognized": {
+        "base_commands_by_duration": [
+          511,
+          344,
+          655,
+          15
+        ],
+        "decisions_by_duration": [
+          511,
+          86,
+          40,
+          2
+        ]
+      }
+    },
+    {
+      "bundle": "results/defense/training/dqn-53-repeat-control/replay-610",
+      "source_hashes": {
+        "model.safetensors": "d537639229a078ccb7746f0b5330cd5705630ff0d81d5dcf34cb897463ec7e90",
+        "state.json": "e058b04ce64dee54fa79ed26a6529ff810e8dc1f07ad65a58640d8e91126fd5f",
+        "trace.npz": "017476db69e4181fe117e505feb396f04d2361f2b3cc07a9529d9aab09e4c05c",
+        "verification.json": "3a34d39eda81e02fea3a768aff0d55cd2cf9494fc68dda7508ffd2143f6d97b7"
+      },
+      "reproduced_commands": 1802,
+      "durations": [
+        1
+      ],
+      "intro_text_present": {
+        "base_commands_by_duration": [
+          565
+        ],
+        "decisions_by_duration": [
+          565
+        ]
+      },
+      "intro_text_not_recognized": {
+        "base_commands_by_duration": [
+          1237
+        ],
+        "decisions_by_duration": [
+          1237
+        ]
+      }
+    }
+  ],
+  "classifier_source_sha256": "f49b8c032e4e928513f6c8dd7b69ebf59d7b97bce251a485f708e0a1b965d394",
+  "classifier": "Existing visible stage-introduction phrases in the PRE-action frame only.",
+  "diagnostic_only": true,
+  "native_reexecution": false,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "limitations": [
+    "Recorded complete games, not new native evaluations or representative samples.",
+    "No recognized introduction text does NOT establish active gameplay or absence of animation.",
+    "Intro text is not a collision, movement, obstacle or recoverability label.",
+    "No routes, preferred keys, rewards or training examples are generated."
+  ]
+}

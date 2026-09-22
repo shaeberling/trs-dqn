@@ -6,11 +6,14 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **362-test** suite now passes, including
+(23 GiB available at restart). The full **364-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched learned-duration / one-step full continuations (54/53) are now live.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
+Their first three full evaluation means are 1,800 / 377, 9,016 / 342 and
+8,379 / 1,328. The variable-duration run's 9,980-point replay still shows the
+recurring barrier sequence; the shared 10,480-point best remains unchanged.
 The lower-exploration
 focused continuation (52) retired after six stage-1-only evaluations. Its calibration
 averaged 10,297 versus high exploration's 10,214, but only one of ten paired
@@ -5704,6 +5707,64 @@ now continue their own calibrated optimizer states with unlimited learning and
 archives, with no diagnostic/evaluation examples loaded. The sole collector was
 restarted with tested duration-policy support and all **50** full-trial sources;
 historical sources remain, and short calibrations stay excluded.
+
+#### First three full rounds and read-only duration review
+
+The full continuations have completed three paired rounds, each with ten
+uncapped boot games on the same reused evaluation seeds. Every game still
+loses in stage 1; these are not fresh success-rate estimates.
+
+| Base actions since fresh initialization | One-step mean / best | Variable-duration mean / best |
+| --- | --- | --- |
+| [331,072](results/defense/training/dqn-54-learned-repeat/comparison-at-000000331072.json) | 377 / 610 | 1,800 / 5,180 |
+| [531,072](results/defense/training/dqn-54-learned-repeat/comparison-at-000000531072.json) | 342 / 400 | 9,016 / 9,800 |
+| [731,072](results/defense/training/dqn-54-learned-repeat/comparison-at-000000731072.json) | 1,328 / 2,180 | 8,379 / 9,980 |
+
+All six Q/target/Adam checkpoints, evaluation records, compressed log prefixes
+and own-reset/option-accounting audits are preserved. The new variable-duration
+replays verify **2,102**, **2,404** and **2,478** base commands, respectively;
+the control's two published records verify **1,802** and **1,996**. The
+[9,980-point replay](results/defense/training/dqn-54-learned-repeat/replay-9980/replay.html)
+is the current run-best, not the stronger shared best. Neither evaluation nor
+training logs through these checkpoints record stage 2 or a mission. Full
+trials continue unchanged; no diagnostic examples enter their replay buffers.
+
+The new read-only `rl.defense_repeat_probe` reconstructs every recorded base
+command with frozen weights, the original visible history and visible life
+boundaries. It checks source hashes, option countdowns and exact
+planned/executed/cancelled accounting. It exports aggregate duration counts,
+not actions to imitate or training examples. Two new tests cover frozen
+reproduction/source integrity and window-edge accounting; the
+[full 364-test suite](results/defense/diagnostics/learned-repeat-probe-regression-tests.txt)
+passed in **354.014 seconds**. This probe reuses original native verification;
+it is not another native evaluation.
+
+For the [7,550-point calibration replay](results/defense/diagnostics/learned-repeat-use-calibration-01.json),
+743 neural option decisions reproduce 2,394 base commands; **76.65%** of
+commands belong to options longer than one step. For the first full
+[5,180-point replay](results/defense/diagnostics/learned-repeat-use-full-331072.json),
+676 decisions reproduce 2,102 commands, with **75.69%** belonging to longer
+options. Near the visible losses, most commands instead belong to one- or
+four-step options. Window counts do not label the physical collision time.
+
+The [visible introduction-text breakdown](results/defense/diagnostics/learned-repeat-intro-use-01.json)
+guards against mistaking waiting-screen holds for learned navigation. Of
+1,232 base commands under 16-step options in each variable-duration replay,
+**552** in the calibration and **577** in the first full replay occur with
+recognized introduction text in the pre-action frame. Frames without that
+text can still contain waits or animations: the complement is **not** an
+active-gameplay label. This classification is diagnostic only and is not
+fed to either learner. Long-hold usage alone therefore does not demonstrate
+better obstacle handling.
+
+Finally, [original-screen loss panels](results/defense/diagnostics/learned-repeat-full-losses-731072/README.md)
+compare the shared best with the newest 9,980 replay. The latter earns
+**2,500 / 2,450 / 2,600 / 2,430** per life, versus the best's four identical
+2,620 totals. Both show the recurring right-opening barrier sequence, with
+the ship still left of that opening in approach frames. This supports the
+user's navigation-bottleneck observation, not identical collision positions
+or a proven wall-versus-projectile cause. The experiment has recovered some
+score but has not demonstrated passage through the bottleneck.
 
 ```sh
 # Use --learned-repeats 1 and separate paths for the matched control.
