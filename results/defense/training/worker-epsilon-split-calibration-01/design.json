@@ -1,0 +1,58 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "parent_actions": 6962144,
+  "new_actions_each": 131072,
+  "split_rates": [
+    0.05,
+    0.05,
+    0.9,
+    0.9,
+    0.9,
+    0.9,
+    0.9,
+    0.9
+  ],
+  "control_rates": [
+    0.6875,
+    0.6875,
+    0.6875,
+    0.6875,
+    0.6875,
+    0.6875,
+    0.6875,
+    0.6875
+  ],
+  "nominal_mean": 0.6875,
+  "comparison": "Allocate the same nominal exploratory-step occupancy differently across fixed worker roles; lifetime cuts may change realized occupancy. No screen-dependent action rules.",
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-worker-epsilon-uniform-control-01/artifacts"
+    ],
+    "curriculum_boot_epsilon": [
+      0.05,
+      null
+    ],
+    "exploration_worker_source_sha256": [
+      "846e66fc13e173ce2ae76210b3c1c94dbb3164375f2401c2fac2a438317a1c0a",
+      null
+    ],
+    "exploration_worker_roles": [
+      "first curriculum_boot_envs use fixed boot epsilon; others use schedule",
+      null
+    ],
+    "epsilon_final": [
+      0.9,
+      0.6875
+    ],
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-worker-epsilon-uniform-control-01"
+    ],
+    "exploration_worker_warmup": [
+      "all workers remain independent uniform until replay warmup",
+      null
+    ]
+  },
+  "validation": "Ten complete uncapped boot games on reused seeds 10000..10009. Calibrations excluded from collector."
+}

@@ -3448,6 +3448,105 @@ venv/bin/python -u -m rl.defense_dqn \
 # results/defense/training/persistent-rate-high-01/checkpoint instead.
 ```
 
+### Worker-role exploration allocation
+
+The shared failure sequence persists across the archive and quantile trials.
+Increasing exploration everywhere can also make the early course harder to
+reach. An optional `--curriculum-boot-epsilon` now gives the existing reserved
+boot-only workers a fixed post-warmup exploration rate; all other workers
+retain the global epsilon schedule. Roles are fixed by worker index, not by
+screens, scores, obstacle locations or a scripted route. All workers use the
+same learned Q-network and share their own training replay and native-state
+archive. Warmup remains independent uniform actions for every worker.
+
+This borrows the actor-diversity idea from
+[Ape-X / Distributed Prioritized Experience Replay](https://arxiv.org/abs/1803.00933),
+which assigned different exploration rates to actors. It is **not a full
+Ape-X implementation** or its published epsilon distribution: our workers
+remain synchronous and this experiment combines two fixed worker roles with
+the already-tested bounded persistent random exploration and own-state resets.
+The paper does not establish that this particular combination will work here.
+
+With persistent exploration, each worker's nominal exploratory-step fraction
+is converted separately into a hold-start probability. Visible life/episode
+boundaries still cancel holds; actual occupancy can differ from the nominal
+rate and is now counted per worker. Setting a rate to zero does not interrupt
+an already active hold; normal boundaries do. Evaluation never uses these
+random holds or worker overrides. No new reward, policy input, demonstration,
+hidden-state read or game-specific action selection is introduced.
+
+The [split calibration configuration](results/defense/training/worker-epsilon-split-calibration-01/resume-config.json)
+and [uniform control](results/defense/training/worker-epsilon-uniform-control-01/resume-config.json)
+both resume own DQN 33 at **6,962,144**, with the same online/target/Adam/RNG
+and **131,072** new actions each. The parent averaged **10,259**, best
+**10,480**, all stage 1. Both use eight workers, compact replay 200,000,
+batch 64, learning rate 1e-4, gamma .997, n-step 5, life terminals,
+100,000 T-states/stride 1, duration maximum 64/exponent 1.5, shared score
+archives 16×4, reset probability .5, two reserved boot workers and lookback
+**128**. Replay and opaque native archives refill from new own experience;
+saved evaluation traces are never training input.
+
+- Split: two boot-only workers at **.05**, six other workers at **.9**.
+- Control: all eight workers at **.6875**.
+
+Both have the same nominal mean **.6875**. The comparison tests allocation,
+not just adding more exploration; boundary cuts and resulting state visitation
+may still change the realized mean. The [configuration comparison](results/defense/training/worker-epsilon-split-calibration-01/design.json)
+checks that only this allocation and its metadata/output paths differ.
+Both will use ten complete uncapped from-boot games on the reused validation
+seeds 10000–10009. They are short controlled checks, excluded from the shared
+best collector, not fresh success-rate estimates or a claimed stage clear.
+
+The [before/after default-path check](results/defense/diagnostics/worker-epsilon-default-parity.json)
+kept online/target files, all 26 Adam arrays, RNG states and existing exploration
+counters exact over 64 native actions. It deliberately truncated tiny test
+episodes and is not a performance result. Eleven focused tests cover scalar
+versus vector equality, analytical/statistical occupancy, zero/one rates,
+boundary cancellation, invalid CLI settings, both independent and persistent
+native training, optimizer/RNG resume, warmup and unchanged greedy evaluation.
+The full [297-test regression suite](results/defense/diagnostics/worker-epsilon-regression-tests.txt)
+passed, as did the [11 focused tests](results/defense/diagnostics/worker-epsilon-focused-tests.txt).
+Existing live learners retain their loaded implementation and settings.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-worker-epsilon-split-reproduction \
+  --artifacts runs/defense-worker-epsilon-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128
+# Matched control: distinct output paths, --epsilon-final .6875,
+# omit --curriculum-boot-epsilon; all other arguments unchanged.
+```
+
+The slots come from two gracefully retired depth-plateaued learners, whose
+full final online/target/Adam/RNG, complete compressed logs and validation
+records are preserved:
+
+- [DQN 36](results/defense/training/dqn-36-score-archive-control/retirement.json):
+  stopped at **9,092,560**, after **1,999,344** new actions, **820** boot games,
+  **482** restored segments and **nine** ten-game rounds, all stage 1. Peak
+  mean **10,418**, best **10,460**; final evaluation mean **9,993**.
+- [DQN 38](results/defense/training/dqn-38-quantile-risk/retirement.json):
+  stopped at **1,346,528**, after **1,215,456** new actions, **530** boot games
+  and **six** ten-game rounds, all stage 1. Peak mean **10,283**; final mean
+  **9,800**. Its later best **10,350** has a preserved
+  [2,475-action verified replay](results/defense/training/dqn-38-quantile-risk/replay-10350/replay.html).
+
+Their final post-update checkpoints were not separately evaluated. Retirement
+reflects depth plateaus, not a wall-clock limit. No artifacts were deleted.
+The collector retains both historical sources; DQN 37 and DQN 39 continue.
+
+DQN 37 also matched the global **10,480** at **931,072**, with mean **8,424**
+and a [2,498-action verified replay](results/defense/training/dqn-37-quantile-neutral/replay-10480/replay.html).
+Its [six-round curve](results/defense/training/dqn-37-quantile-neutral/curve-through-000001331072.json)
+peaks at mean **10,408** at **1,131,072**, then **10,098** at **1,331,072**.
+DQN 39's [first three rounds](results/defense/training/dqn-39-long-lookback/curve-through-000007362144.json)
+average **9,882**, **9,994**, **10,301**; its new **10,340** best has a
+[2,591-action verified replay](results/defense/training/dqn-39-long-lookback/replay-10340/replay.html).
+These are score recoveries, not new depth. All remain stage 1; the shared
+global best and completed Breakdown winning replay remain unchanged.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)

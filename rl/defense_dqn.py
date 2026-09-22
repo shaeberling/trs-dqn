@@ -78,6 +78,8 @@ def main():
                         help="training-only resets to this learner's own states; 0 disables")
     parser.add_argument("--curriculum-share", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--curriculum-boot-envs", type=int, default=0)
+    parser.add_argument("--curriculum-boot-epsilon", type=float,
+                        help="optional fixed post-warmup epsilon for reserved boot-only workers")
     parser.add_argument("--curriculum-lookback", type=int, default=0)
     parser.add_argument("--curriculum-cells", choices=("score", "screen"), default="score",
                         help="training archive selection only; policy observations stay unchanged")
@@ -142,9 +144,13 @@ def main():
             or (args.curriculum_share and not args.curriculum_probability)
             or (args.curriculum_boot_envs and not args.curriculum_share)):
         parser.error("invalid own-experience curriculum settings")
+    if args.curriculum_boot_epsilon is not None and (
+            not args.curriculum_boot_envs or not np.isfinite(args.curriculum_boot_epsilon)
+            or not 0 <= args.curriculum_boot_epsilon <= 1):
+        parser.error("boot epsilon requires reserved shared-curriculum workers and a rate in 0..1")
     if args.bootstrap_heads and args.curriculum_probability:
         parser.error("own-state resets currently support ordinary DQN only")
-    from .persistent_exploration import duration_distribution
+    from .persistent_exploration import duration_distribution, worker_epsilons
     try:
         duration_distribution(args.exploration_max_repeat, args.exploration_exponent)
     except ValueError as error:
@@ -295,6 +301,10 @@ def main():
                       exploration_warmup="unchanged independent uniform actions until replay warmup",
                       exploration_reset="cancel on visible ship loss, termination or truncation; no screen-triggered starts",
                       exploration_resume="restore separate RNG; active holds and local counters clear with new boot episodes")
+    if args.curriculum_boot_epsilon is not None:
+        config.update(exploration_worker_roles="first curriculum_boot_envs use fixed boot epsilon; others use schedule",
+                      exploration_worker_warmup="all workers remain independent uniform until replay warmup",
+                      exploration_worker_source_sha256=sha256(Path(__file__).with_name("persistent_exploration.py")))
     args.run.mkdir(parents=True, exist_ok=True)
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
     if args.bootstrap_heads:
@@ -352,16 +362,18 @@ def main():
                 epsilon = args.bootstrap_epsilon
                 if episode_heads is None:
                     episode_heads = rng.integers(args.bootstrap_heads, size=args.envs)
+            epsilons = worker_epsilons(epsilon, args.envs, args.curriculum_boot_envs,
+                                      args.curriculum_boot_epsilon)
             if replay.size < max(1, args.warmup):
                 actions = rng.integers(len(config["action_names"]), size=args.envs)
             else:
                 actions = (agent.actions(observations, episode_heads) if args.bootstrap_heads
                            else agent.actions(observations))
                 if persistent is None:
-                    explore = rng.random(args.envs) < epsilon
+                    explore = rng.random(args.envs) < epsilons
                     actions[explore] = rng.integers(len(config["action_names"]), size=int(explore.sum()))
                 else:
-                    actions = persistent.select(actions, epsilon)
+                    actions = persistent.select(actions, epsilons)
             results = workers.step(actions)
             if persistent is not None:
                 persistent.reset(np.asarray([terminal or truncated or info["life_lost"]
@@ -412,6 +424,8 @@ def main():
                                               mean_new_score=float(np.mean(recent_restored))
                                               if recent_restored else None),
                          replay_size=replay.size, epsilon=epsilon,
+                         **({"worker_epsilons": epsilons.tolist()}
+                            if args.curriculum_boot_epsilon is not None else {}),
                          steps_per_second=(steps-start_steps)/(time.monotonic()-started),
                          recent={k: v for k, v in summarize(list(recent)).items() if k != "games"},
                          **({"replay_frame_storage": replay.frame_storage.stats()}

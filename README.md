@@ -26,6 +26,10 @@ random action persistence, with ordinary learned greedy evaluation unchanged.
 The default `1` preserves the original independent-action exploration. See
 [the controlled comparison](DEFENSE.md#persistent-random-exploration) for its
 motivation, rate calibration and limitations.
+Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
+a separate fixed exploration rate; other workers retain the normal schedule.
+This tests exploration allocation while preserving screen-only inputs,
+score-only rewards and ordinary greedy from-boot evaluation.
 Both Defense trainers support `--observation-stride` to space their four
 visible input frames independently of action duration (default 1 preserves
 existing models). Checkpoint evaluation and verified replays retain that setting.

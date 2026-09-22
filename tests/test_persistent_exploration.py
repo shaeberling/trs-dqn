@@ -11,10 +11,105 @@ from unittest.mock import patch
 
 import numpy as np
 
-from rl.persistent_exploration import PersistentExploration, duration_distribution, start_probability
+from rl.persistent_exploration import (PersistentExploration, duration_distribution,
+                                       start_probability, worker_epsilons)
 
 
 class PersistentExplorationTests(unittest.TestCase):
+    def test_worker_role_rates_and_invalid_vectors(self):
+        self.assertEqual(worker_epsilons(.25, 8, 0), .25)
+        np.testing.assert_array_equal(worker_epsilons(.9, 8, 2, .05), [.05]*2+[.9]*6)
+        for boot, rate in [(0, .05), (8, .05), (2, -1), (2, np.nan), (2, 1.1)]:
+            with self.assertRaises(ValueError): worker_epsilons(.9, 8, boot, rate)
+        explorer = PersistentExploration(2, 20, 64, 1.5, np.random.default_rng(6))
+        for rates in ([.1], [[.1, .2]], [.1, np.nan], [-1, .2], [.1, 2]):
+            with self.assertRaises(ValueError): explorer.select([0, 0], rates)
+
+    def test_vector_rates_exact_scalar_parity_and_per_worker_occupancy(self):
+        scalar = PersistentExploration(8, 20, 64, 1.5, np.random.default_rng(7))
+        vector = PersistentExploration(8, 20, 64, 1.5, np.random.default_rng(7))
+        for step in range(300):
+            np.testing.assert_array_equal(scalar.select(np.arange(8), .25),
+                                          vector.select(np.arange(8), np.full(8, .25)))
+            if step % 13 == 0:
+                cuts = np.arange(8) % 3 == 0
+                scalar.reset(cuts); vector.reset(cuts)
+        self.assertEqual(scalar.stats(), vector.stats())
+        self.assertEqual(scalar.rng.bit_generator.state, vector.rng.bit_generator.state)
+        explorer = PersistentExploration(128, 20, 64, 1.5, np.random.default_rng(9))
+        rates = np.repeat([0., .05, .9, 1.], 32)
+        for _ in range(3000): explorer.select(np.zeros(128, np.int32), rates)
+        occupancy = explorer.worker_exploratory_steps.reshape(4, 32).sum(axis=1)/(3000*32)
+        np.testing.assert_allclose(occupancy, [0., .05, .9, 1.], atol=.012)
+        self.assertEqual(sum(explorer.stats()['worker_exploratory_steps']),
+                         explorer.stats()['exploratory_steps'])
+        # An existing hold persists when epsilon changes, until a normal boundary.
+        explorer.remaining[:2] = [5, 5]; explorer.held[:2] = [3, 4]
+        explorer.reset(np.arange(128) == 0)
+        selected = explorer.select(np.zeros(128, np.int32), np.zeros(128))
+        np.testing.assert_array_equal(selected[:2], [0, 4])
+
+    def test_worker_epsilon_cli_rejects_missing_roles_and_invalid_rates(self):
+        from rl import defense_dqn
+        common = ['dqn', '--run', 'runs/invalid-worker-epsilon', '--artifacts',
+                  'runs/invalid-worker-epsilon/artifacts']
+        valid_roles = ['--curriculum-probability', '.5', '--curriculum-share',
+                       '--curriculum-boot-envs', '2']
+        for extra in (['--curriculum-boot-epsilon', '.05'],
+                      valid_roles+['--curriculum-boot-epsilon', 'nan'],
+                      valid_roles+['--curriculum-boot-epsilon', '-.1'],
+                      valid_roles+['--curriculum-boot-epsilon', '1.1']):
+            with patch.object(sys, 'argv', common+extra), \
+                    contextlib.redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as error:
+                defense_dqn.main()
+            self.assertEqual(error.exception.code, 2)
+
+    def test_native_worker_epsilon_uniform_parity_split_and_resume(self):
+        import mlx.core as mx
+        from rl.defense_learning import load_policy, policy_description
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            def run(name, extra):
+                command = [sys.executable, '-m', 'rl.defense_dqn', '--run', str(root/name),
+                           '--artifacts', str(root/(name+'-artifacts'))]+extra
+                result = subprocess.run(command, capture_output=True, text=True, timeout=90)
+                self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+                return json.loads((root/name/'latest/state.json').read_text())
+            common = ['--envs', '2', '--batch-size', '4', '--capacity', '32', '--warmup', '4',
+                      '--n-step', '2', '--train-every', '4', '--target-every', '2',
+                      '--steps', '64', '--eval-every', '1000', '--max-episode-steps', '3',
+                      '--mlx-cache-mb', '64', '--epsilon-final', '1',
+                      '--curriculum-probability', '.5', '--curriculum-share',
+                      '--curriculum-boot-envs', '1', '--curriculum-lookback', '4']
+            for repeat in (1, 64):
+                base = f'base-{repeat}'; same = f'same-{repeat}'
+                options = common+['--exploration-max-repeat', str(repeat)]
+                a = run(base, options)
+                b = run(same, options+['--curriculum-boot-epsilon', '1'])
+                for key in ('steps', 'updates', 'episodes', 'rng'):
+                    self.assertEqual(a[key], b[key])
+                for file in ('model.safetensors', 'target.safetensors', 'optimizer.npz'):
+                    x = mx.load(str(root/base/'latest'/file)); y = mx.load(str(root/same/'latest'/file))
+                    self.assertEqual(set(x), set(y))
+                    for key in x: np.testing.assert_array_equal(np.array(x[key]), np.array(y[key]))
+            split = run('split', common+['--exploration-max-repeat', '64',
+                                        '--curriculum-boot-epsilon', '0'])
+            self.assertEqual(split['persistent_exploration']['decisions'], 58)
+            self.assertEqual(split['persistent_exploration']['worker_exploratory_steps'], [0, 29])
+            resumed = run('resumed', ['--resume', str(root/'split/latest'), '--steps', '96'])
+            self.assertEqual(resumed['config']['curriculum_boot_epsilon'], 0.)
+            self.assertEqual(resumed['persistent_exploration']['worker_exploratory_steps'], [0, 13])
+            unchanged = run('unchanged', ['--resume', str(root/'split/latest'), '--steps', '64'])
+            for key in ('rng', 'persistent_exploration_rng', 'updates'):
+                self.assertEqual(unchanged[key], split[key])
+            self.assertEqual(unchanged['persistent_exploration']['worker_exploratory_steps'], [0, 0])
+            for file in ('model.safetensors', 'target.safetensors', 'optimizer.npz'):
+                a = mx.load(str(root/'split/latest'/file)); b = mx.load(str(root/'unchanged/latest'/file))
+                for key in a: np.testing.assert_array_equal(np.array(a[key]), np.array(b[key]))
+            policy, config = load_policy(root/'split/latest/model.safetensors')
+            self.assertEqual(policy_description(config), 'learned Q-values, greedy')
+            self.assertFalse(hasattr(policy, 'remaining'))
+
     def test_distribution_and_occupancy_calibration(self):
         lengths, probabilities = duration_distribution(64, 1.5)
         self.assertEqual(lengths.tolist(), list(range(1, 65)))

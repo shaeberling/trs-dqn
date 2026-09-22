@@ -1,0 +1,31 @@
+{
+  "before": "runs/defense-worker-epsilon-default-before/latest",
+  "after": "runs/defense-worker-epsilon-default-after/latest",
+  "steps": 64,
+  "updates": 15,
+  "state_rng_exact": true,
+  "existing_exploration_stats_exact": true,
+  "files": {
+    "model.safetensors": {
+      "before": "a6eadddca273ed8a04f5bf2726e14e3590bdc3ce9ed25d3b5d903ffce27253c0",
+      "after": "a6eadddca273ed8a04f5bf2726e14e3590bdc3ce9ed25d3b5d903ffce27253c0",
+      "arrays": 12,
+      "arrays_exact": true
+    },
+    "target.safetensors": {
+      "before": "863be8c17b6c127071433fa71ae5f60a30f5b7d74997cbaf7118ae35d812d83d",
+      "after": "863be8c17b6c127071433fa71ae5f60a30f5b7d74997cbaf7118ae35d812d83d",
+      "arrays": 12,
+      "arrays_exact": true
+    },
+    "optimizer.npz": {
+      "before": "71fbc72a475ce569a6fce4a1ae5dfbe10bd69fe80b90ff2aaf3f6ebae89edcc9",
+      "after": "71fbc72a475ce569a6fce4a1ae5dfbe10bd69fe80b90ff2aaf3f6ebae89edcc9",
+      "arrays": 26,
+      "arrays_exact": true
+    }
+  },
+  "old_trainer_sha256": "a0d7e740466c7f582aa1f52e08a22b0a0133fe72c19c509fd698402c6407326e",
+  "new_trainer_sha256": "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+  "limitation": "Tiny native integration check, deliberately truncated at three episode actions; not a performance result or training parent."
+}
