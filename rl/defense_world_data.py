@@ -120,11 +120,36 @@ class Sequences:
         if not self.episodes:
             raise ValueError('no sufficiently long own episodes')
         self.length, self.ends = length, np.cumsum(self.counts)
+        self.split, self._boundary_pools = split, {}
 
-    def sample(self, count, rng):
-        if count < 1:
-            raise ValueError('positive batch size required')
+    def boundary_pool(self, burn):
+        """Unique windows with a visible loss after burn-in; training only."""
+        if self.split != 'train' or not 0 <= burn < self.length:
+            raise ValueError('boundary sampling requires train split and valid burn-in')
+        if burn not in self._boundary_pools:
+            pools = []
+            for i, episode in enumerate(self.episodes):
+                eligible = np.zeros(self.counts[i], bool)
+                for boundary in np.flatnonzero(episode[3] == 0):
+                    low = max(0, int(boundary)-self.length+1)
+                    high = min(int(boundary)-burn, self.counts[i]-1)
+                    if low <= high:
+                        eligible[low:high+1] = True
+                pools.append(np.flatnonzero(eligible)+(self.ends[i-1] if i else 0))
+            self._boundary_pools[burn] = np.concatenate(pools)
+        return self._boundary_pools[burn]
+
+    def sample(self, count, rng, boundary_fraction=0., burn=0):
+        if (count < 1 or not np.isfinite(boundary_fraction) or not 0 <= boundary_fraction <= 1
+                or not 0 <= burn < self.length):
+            raise ValueError('positive batch size, valid burn-in and boundary fraction required')
         selected = rng.integers(int(self.ends[-1]), size=count)
+        if boundary_fraction:
+            pool = self.boundary_pool(burn)
+            if not len(pool):
+                raise ValueError('no eligible training loss windows')
+            focused = rng.random(count) < boundary_fraction
+            selected[focused] = pool[rng.integers(len(pool), size=int(focused.sum()))]
         rows = []
         for index in selected:
             episode = int(np.searchsorted(self.ends, index, side='right'))

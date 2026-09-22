@@ -74,10 +74,21 @@ def main():
     parser.add_argument('--every', type=int, default=200)
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--resume', type=Path)
+    parser.add_argument('--extend-data', action='store_true',
+                        help='explicitly continue on a checked union containing the entire previous dataset')
+    parser.add_argument('--boundary-fraction', type=float, default=0.,
+                        help='training-window mixture fraction containing a visible life loss after burn-in')
+    parser.add_argument('--change-sampling', action='store_true',
+                        help='explicitly change window sampling on a full optimizer/RNG continuation')
     args = parser.parse_args()
     if (args.output.exists() or min(args.updates, args.batch, args.every, args.audit_windows) < 1
-            or not 0 < args.burn < args.length):
+            or not 0 < args.burn < args.length or not np.isfinite(args.boundary_fraction)
+            or not 0 <= args.boundary_fraction <= 1):
         parser.error('use a new output, positive counts, and 0 < burn < length')
+    if args.extend_data and not args.resume:
+        parser.error('data extension requires a full optimizer/RNG resume')
+    if args.change_sampling and not args.resume:
+        parser.error('sampling change requires a full optimizer/RNG resume')
     mx.set_cache_limit(128*1024*1024)
     train, held = Sequences(args.data, 'train', args.length), Sequences(args.data, 'heldout', args.length)
     if set(train.files) & set(held.files):
@@ -88,6 +99,7 @@ def main():
     metadata = dict(data=str(args.data.resolve()), dataset_sha256=sha256(args.data/'manifest.json'),
         architecture='small-gaussian-rssm-v1', reward_scale=.01, batch=args.batch,
         length=args.length, burn=args.burn, train_games=len(train.episodes), heldout_games=len(held.episodes),
+        boundary_fraction=args.boundary_fraction,
         train_windows=int(train.ends[-1]), heldout_windows=int(held.ends[-1]),
         fit_source_sha256=sha256(Path(__file__)),
         model_source_sha256=sha256(Path(__file__).with_name('defense_world_model.py')),
@@ -95,9 +107,37 @@ def main():
         source_paper='https://arxiv.org/abs/1912.01603', args={k:str(v) if isinstance(v, Path) else v for k,v in vars(args).items()})
     if args.resume:
         previous = learner.restore(args.resume, rng)
-        for field in ('dataset_sha256', 'architecture', 'batch', 'length', 'burn', 'reward_scale'):
+        if args.extend_data:
+            union = json.loads((args.data/'manifest.json').read_text())
+            if (union.get('dataset_operation') != 'immutable byte-identical union; no new trajectories or split changes'
+                    or previous['dataset_sha256'] not in [s['sha256'] for s in union.get('source_manifests', [])]):
+                parser.error('new dataset must be a checked union containing the previous dataset')
+            # Verify that every previous episode is included byte-identically
+            # with its original held-out label, not merely named in metadata.
+            source = next(s for s in union['source_manifests'] if s['sha256']==previous['dataset_sha256'])
+            old_path = Path(source['path'])/'manifest.json'
+            if sha256(old_path) != previous['dataset_sha256']:
+                parser.error('extension source provenance mismatch')
+            old_rows = json.loads(old_path.read_text())['episodes']
+            seeds = [r['seed'] for r in union['episodes']]
+            if len(seeds) != len(set(seeds)):
+                parser.error('extension contains overlapping episode seeds')
+            members = {(r['seed'], r['sha256'], r['split']) for r in union['episodes']}
+            if not all((r['seed'], r['sha256'], r['split']) in members for r in old_rows):
+                parser.error('extension omitted or relabeled an original episode')
+            metadata['previous_dataset_sha256'] = previous['dataset_sha256']
+            metadata['dataset_extension'] = True
+        elif previous['dataset_sha256'] != metadata['dataset_sha256']:
+            parser.error('dataset differs; use an explicit checked union extension')
+        for field in ('architecture', 'batch', 'length', 'burn', 'reward_scale'):
             if previous[field] != metadata[field]:
                 raise ValueError('incompatible continuation: '+field)
+        previous_fraction = previous.get('boundary_fraction', 0.)
+        if previous_fraction != args.boundary_fraction:
+            if not args.change_sampling:
+                parser.error('sampling differs; declare --change-sampling')
+            metadata['previous_boundary_fraction'] = previous_fraction
+            metadata['sampling_change'] = True
     if learner.updates >= args.updates:
         parser.error('target updates must exceed restored updates')
     disk_guard(args.output.parent)
@@ -119,10 +159,12 @@ def main():
                         last=report['horizons'][-1]))
         preserve()
         while learner.updates < args.updates:
-            stats = learner.train(train.sample(args.batch, rng))
+            batch = train.sample(args.batch, rng, args.boundary_fraction, args.burn)
+            stats = learner.train(batch)
             if learner.updates % 20 == 0:
                 disk_guard(args.output)
-                record(dict(event='update', updates=learner.updates, **stats))
+                record(dict(event='update', updates=learner.updates,
+                            sampled_loss_targets=int((batch[3][:, args.burn:] == 0).sum()), **stats))
             if learner.updates % args.every == 0 or learner.updates == args.updates:
                 preserve()
         if sha256(args.data/'manifest.json') != metadata['dataset_sha256']:

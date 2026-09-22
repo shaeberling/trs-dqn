@@ -1,5 +1,9 @@
 # Learned dynamics preflight: not yet a playing policy
 
+This records the initial prediction-only milestone. A later
+[actor calibration](../imagination-calibration-01/README.md) now plays complete
+games, but performs poorly; no mission or later stage has been observed.
+
 Repeated model-free trials still fail in stage 1. This experiment starts a
 different path: learn an action-conditioned recurrent world model, then test
 whether its forecasts are useful enough for subsequent behavior learning.
@@ -140,3 +144,14 @@ not deeper stage passage. No updates have used it yet. The original fit's
 [3,000-update boundary review](continuation/review-3000/report.json) remains
 poor (continuation Brier .99600 at the selected losses); its full model and
 optimizer are preserved separately. The 5,000-update continuation is live.
+
+It subsequently completed **5,000 updates**, with all checkpoint states and
+the [complete log](continuation/metrics-complete.jsonl) preserved. Its final
+one/24-action graphics errors are **.01005 / .07134** on the original fixed
+held-out windows. At the twelve selected visible-loss endpoints, Brier is
+still **.99518**. The [final panels](continuation/review-5000/forecasts.png),
+visually inspected, retain blurred/mistimed forecasts despite sharper static
+features. This did not establish reliable action consequences or loss
+anticipation. The exact [original fitter source](fit-source-v1.py) is archived
+and matches its recorded source SHA; the current fitter additionally supports
+an explicit, checked dataset extension.
