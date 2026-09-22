@@ -46,6 +46,10 @@ def main():
                         help="new aggregate actions per optimizer update")
     parser.add_argument("--epsilon-steps", type=int, default=1_000_000)
     parser.add_argument("--epsilon-final", type=float, default=.05)
+    parser.add_argument("--exploration-max-repeat", type=int, default=1,
+                        help="1 preserves ordinary epsilon-greedy; >1 enables training-only action persistence")
+    parser.add_argument("--exploration-exponent", type=float, default=1.5,
+                        help="bounded power-law duration exponent; must exceed one")
     parser.add_argument("--bootstrap-heads", type=int, default=0,
                         help="0 = ordinary DQN; at least 2 = per-game value-head exploration")
     parser.add_argument("--bootstrap-probability", type=float, default=.5)
@@ -124,6 +128,13 @@ def main():
         parser.error("invalid own-experience curriculum settings")
     if args.bootstrap_heads and args.curriculum_probability:
         parser.error("own-state resets currently support ordinary DQN only")
+    from .persistent_exploration import duration_distribution
+    try:
+        duration_distribution(args.exploration_max_repeat, args.exploration_exponent)
+    except ValueError as error:
+        parser.error(str(error))
+    if args.bootstrap_heads and args.exploration_max_repeat > 1:
+        parser.error("persistent random exploration currently supports ordinary DQN only")
 
     # MLX is main-process-only: spawned emulator workers never import it.
     import mlx.core as mx
@@ -155,6 +166,15 @@ def main():
     mx.eval(agent.state)
     boot_episodes = prior.get("boot_episodes", episodes) if prior else 0
     restored_segments = prior.get("restored_segments", 0) if prior else 0
+    persistent = None
+    if args.exploration_max_repeat > 1:
+        from .persistent_exploration import PersistentExploration
+        exploration_rng = np.random.default_rng(np.random.SeedSequence([args.seed, 3089]))
+        if prior and "persistent_exploration_rng" in prior:
+            exploration_rng.bit_generator.state = prior["persistent_exploration_rng"]
+        persistent = PersistentExploration(args.envs, len(action_names(args.allow_enter)),
+                                          args.exploration_max_repeat, args.exploration_exponent,
+                                          exploration_rng)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm=BOOTSTRAP_ALGORITHM if args.bootstrap_heads else DQN_ALGORITHM,
                   game_sha256=GAME_SHA256,
@@ -195,6 +215,15 @@ def main():
     if args.compact_replay:
         config.update(replay_storage="exact-visible-frame-interning-v1",
                       frame_storage_source_sha256=sha256(Path(__file__).with_name("frame_storage.py")))
+    if persistent is not None:
+        config.update(training_policy="learned Q-values with training-only persistent uniform random exploration",
+                      exploration_source_sha256=sha256(Path(__file__).with_name("persistent_exploration.py")),
+                      exploration_duration="bounded power law proportional to length**(-exponent)",
+                      exploration_epsilon="nominal uninterrupted exploratory-step fraction; boundary cuts can reduce it",
+                      exploration_mean_duration=persistent.mean_duration,
+                      exploration_warmup="unchanged independent uniform actions until replay warmup",
+                      exploration_reset="cancel on visible ship loss, termination or truncation; no screen-triggered starts",
+                      exploration_resume="restore separate RNG; active holds and local counters clear with new boot episodes")
     args.run.mkdir(parents=True, exist_ok=True)
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
     if args.bootstrap_heads:
@@ -219,6 +248,9 @@ def main():
                      rng=rng.bit_generator.state, config=config)
         if args.bootstrap_heads:
             saved["bootstrap_rng"] = bootstrap_rng.bit_generator.state
+        if persistent is not None:
+            saved["persistent_exploration_rng"] = exploration_rng.bit_generator.state
+            saved["persistent_exploration"] = persistent.stats()
         return saved
 
     def log(row):
@@ -254,9 +286,15 @@ def main():
             else:
                 actions = (agent.actions(observations, episode_heads) if args.bootstrap_heads
                            else agent.actions(observations))
-                explore = rng.random(args.envs) < epsilon
-                actions[explore] = rng.integers(len(config["action_names"]), size=int(explore.sum()))
+                if persistent is None:
+                    explore = rng.random(args.envs) < epsilon
+                    actions[explore] = rng.integers(len(config["action_names"]), size=int(explore.sum()))
+                else:
+                    actions = persistent.select(actions, epsilon)
             results = workers.step(actions)
+            if persistent is not None:
+                persistent.reset(np.asarray([terminal or truncated or info["life_lost"]
+                                             for _, _, terminal, truncated, info, _ in results], dtype=bool))
             following = []
             for worker, (obs, reward, terminal, truncated, info, reset) in enumerate(results):
                 learning_terminal = terminal or (args.life_terminal and info["life_lost"])
@@ -307,6 +345,7 @@ def main():
                          recent={k: v for k, v in summarize(list(recent)).items() if k != "games"},
                          **({"replay_frame_storage": replay.frame_storage.stats()}
                             if args.compact_replay else {}),
+                         **({"persistent_exploration": persistent.stats()} if persistent is not None else {}),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
                          **last_metrics))
                 last_log = time.monotonic()
