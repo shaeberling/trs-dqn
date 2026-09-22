@@ -1,0 +1,35 @@
+{
+  "source": "runs/defense-inverse-default-before/latest",
+  "comparison": "runs/defense-inverse-default-after/latest",
+  "files": {
+    "model.safetensors": {
+      "arrays": 12,
+      "all_arrays_identical": true,
+      "source_sha256": "764b2fa85b0179a2ddf0b6f318e26b388eec6dc081c7ef5a9b8ffab09548aeef",
+      "converted_sha256": "764b2fa85b0179a2ddf0b6f318e26b388eec6dc081c7ef5a9b8ffab09548aeef"
+    },
+    "target.safetensors": {
+      "arrays": 12,
+      "all_arrays_identical": true,
+      "source_sha256": "6611f6005d0e420028b818d5850a66b991c6edc9adb23906335a9be9d9b48ea0",
+      "converted_sha256": "6611f6005d0e420028b818d5850a66b991c6edc9adb23906335a9be9d9b48ea0"
+    },
+    "optimizer.npz": {
+      "arrays": 26,
+      "all_arrays_identical": true,
+      "source_sha256": "ce2657ce047261204e2bca0b0e0b25cc522d8be20a065b22a11e8c9ed0487132",
+      "converted_sha256": "ce2657ce047261204e2bca0b0e0b25cc522d8be20a065b22a11e8c9ed0487132"
+    }
+  },
+  "identical_original_state_fields": [
+    "steps",
+    "updates",
+    "episodes",
+    "boot_episodes",
+    "restored_segments",
+    "rng"
+  ],
+  "source_trainer_sha256": "47ccc6f31e2519bacff51e49f657f57c4e8d866eeb631a1b72d32631045b7d37",
+  "new_trainer_sha256": "529bd7608a1a6aa0b6006d69791af8d4d9cda85b0405ae2ec2d327eb19f2213c",
+  "performance_evidence": false
+}

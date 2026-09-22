@@ -1,0 +1,46 @@
+{
+  "source": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "comparison": "runs/defense-inverse-parent-conversion/latest",
+  "files": {
+    "model.safetensors": {
+      "arrays": 12,
+      "all_arrays_identical": true,
+      "source_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+      "converted_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d"
+    },
+    "target.safetensors": {
+      "arrays": 12,
+      "all_arrays_identical": true,
+      "source_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+      "converted_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538"
+    },
+    "optimizer.npz": {
+      "arrays": 26,
+      "all_arrays_identical": true,
+      "source_sha256": "bfa7ee30f1065da566838dfa906d1f3e2bdee5d937c17ad095d0cadd542fd14c",
+      "converted_sha256": "1176d7248c3f9699b7cb3f405fc5855413c67d12a48ca41c20e34ae1ee14381c"
+    }
+  },
+  "identical_original_state_fields": [
+    "steps",
+    "updates",
+    "episodes",
+    "boot_episodes",
+    "restored_segments",
+    "rng",
+    "persistent_exploration_rng"
+  ],
+  "source_trainer_sha256": "77076c19803f0f1c6afb61821519b7f83cf26522510e17a933b521971173d5b6",
+  "new_trainer_sha256": "529bd7608a1a6aa0b6006d69791af8d4d9cda85b0405ae2ec2d327eb19f2213c",
+  "performance_evidence": false,
+  "inverse": {
+    "local_updates": 0,
+    "own_pairs": 0,
+    "weight": 0.01,
+    "last_weighted_cross_entropy": 0.0,
+    "last_sampled_accuracy": 0.0
+  },
+  "auxiliary_hashes_verified": true,
+  "local_persistent_statistics_reset": true,
+  "reset_semantics": "Active persistent holds and local counters reset on every normal resume; the separate persistent RNG is restored exactly. No training update performed."
+}

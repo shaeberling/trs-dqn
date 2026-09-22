@@ -1,0 +1,32 @@
+{
+  "steps": 7293216,
+  "new_actions": 200000,
+  "new_updates": 11874,
+  "new_boot_games": 86,
+  "new_restored_segments": 66,
+  "archive_events": 1974,
+  "all_archive_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true,
+  "spr": {
+    "local_updates": 11874,
+    "valid_future_predictions": 3767900,
+    "last_weighted_cosine_loss": 0.011219827458262444,
+    "weight": 0.1,
+    "ema": 0.99,
+    "dropout": 0.5
+  },
+  "full_checkpoint_hashes": {
+    "model.safetensors": "08468ce25b663efd9f2346c4ada8fe2e288dd226d5fab6fcd72c0145b3f8e0a5",
+    "state.json": "2a0e3039287999f6cf3acbee8ab09b6271907c30a22f0efbf9a0da8c947ea550",
+    "target.safetensors": "cc96c806197982806274049b341de9748d1257ac4881f230e8e8099c6d547998",
+    "spr-ema.safetensors": "dd30f8fe353249e4e10f27c9e2e305886e8368bf7824376d3f406995c561b35c",
+    "spr-rng.npz": "958d0fb71a44fea076a1f9e8bcf99c5c790fe500533a9f9a0858120806883070",
+    "optimizer.npz": "eb8d430f310571aa1af9f06634e337676df1eae49a67af84a6542c8e0ed9607a",
+    "evaluation.json": "cd73933bca5ded2497e0565b33095f315a36cc2bfea8862ad1e0bcb322dae7f6",
+    "spr-optimizer.npz": "cf5156c326e3fe00dcb0c7f268f78fcf4b9fb43d56d00cb2dc08fdc4345f79a3",
+    "spr-aux.safetensors": "6cde83b09bf8f7d8a2d3dfc59ca98fffe001bd1ffe8a9362d781908c115fe0ce"
+  },
+  "log_prefix_sha256": "e7e5d2d295179456f4d5fe49c09342e2f0a0ddcb9d9fdf1f5eb822f4b4bc9b12",
+  "verified_replay_actions": 2439
+}

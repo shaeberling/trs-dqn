@@ -1,0 +1,71 @@
+{
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-45-visual-prediction/step-000007293216",
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-45-visual-prediction/first-replay",
+  "source_hashes": {
+    "state.json": "2a0e3039287999f6cf3acbee8ab09b6271907c30a22f0efbf9a0da8c947ea550",
+    "model.safetensors": "08468ce25b663efd9f2346c4ada8fe2e288dd226d5fab6fcd72c0145b3f8e0a5",
+    "spr-aux.safetensors": "6cde83b09bf8f7d8a2d3dfc59ca98fffe001bd1ffe8a9362d781908c115fe0ce",
+    "spr-ema.safetensors": "dd30f8fe353249e4e10f27c9e2e305886e8368bf7824376d3f406995c561b35c",
+    "spr-optimizer.npz": "cf5156c326e3fe00dcb0c7f268f78fcf4b9fb43d56d00cb2dc08fdc4345f79a3",
+    "spr-rng.npz": "958d0fb71a44fea076a1f9e8bcf99c5c790fe500533a9f9a0858120806883070"
+  },
+  "trace_hashes": {
+    "model.safetensors": "08468ce25b663efd9f2346c4ada8fe2e288dd226d5fab6fcd72c0145b3f8e0a5",
+    "state.json": "2a0e3039287999f6cf3acbee8ab09b6271907c30a22f0efbf9a0da8c947ea550",
+    "trace.npz": "f002b14aeef4f5c7179c177b15cf8a4f2252966f044a2f1791343564220c0f08",
+    "verification.json": "59a7e0bf6672d82a9840cfa09bf05a7260b5feeddbdc906e5e6a020de9d7405f"
+  },
+  "probe_sha256": "898da397982acd4a4332f7d1e6b40a775780acf3a79e232c54146e09f5de30e9",
+  "diagnostic_only": true,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "native_reexecution": false,
+  "promotion_eligible": false,
+  "dropout": 0.5,
+  "diagnostic_seed": 0,
+  "replay_actions_reproduced": 2439,
+  "paths": 304,
+  "horizon": 5,
+  "result": {
+    "seed": 10002,
+    "score": 9780,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2439,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 9780.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 652000,
+    "start_tstates": 185880
+  },
+  "statistics": {
+    "vectors": 1520,
+    "comparison_vectors": 760,
+    "mean_raw_feature_std": 0.04637111350893974,
+    "mean_unit_feature_std": 0.01449941247887717,
+    "unit_variance_sum": 0.20242574301081717,
+    "zero_target_vectors": 0,
+    "recorded_action_distance": 0.05225208238034525,
+    "rotated_action_distance": 0.052635530818097374,
+    "constant_target_distance": 0.10344771650322913,
+    "unchanged_current_target_distance": 0.05830342759320405,
+    "prediction_action_sensitivity": 0.0006355137412578131
+  },
+  "limitations": [
+    "Selected verified replay only, not the exploratory training distribution.",
+    "Unweighted diagnostic, not the logged PER-weighted objective.",
+    "Fixed action-label rotation is a sensitivity probe, not simulated counterfactual evidence.",
+    "Constant baseline uses first-half targets; all distances compare on the second half.",
+    "Persistence baseline repeats the current EMA projection without any learned transition.",
+    "With dropout, current and future encodings use independent noise; distances include this noise.",
+    "Small variance or weak action sensitivity suggests a concern, not a causal proof.",
+    "Noncollapsed features or lower distance do not prove useful control or mission progress."
+  ]
+}

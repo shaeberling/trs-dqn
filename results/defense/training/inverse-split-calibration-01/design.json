@@ -1,0 +1,76 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions_each": 131072,
+  "baseline": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "inverse_conversion": [
+      null,
+      "own scalar Q/target/Adam/RNG preserved; auxiliary head/Adam fresh"
+    ],
+    "inverse_replay_source_sha256": [
+      null,
+      "c7b0f8f3ea619347692405f31fbbb5c78caa84dec724051e4f5a4ab9919b2129"
+    ],
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-inverse-split-calibration-01"
+    ],
+    "greedy_trace_cut": [
+      null,
+      false
+    ],
+    "inverse_weight": [
+      null,
+      0.01
+    ],
+    "inverse_inference": [
+      null,
+      "ordinary QNetwork only; no next screen or inverse classifier"
+    ],
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-inverse-split-calibration-01/artifacts"
+    ],
+    "inverse_objective": [
+      null,
+      "PER-weighted actual-action cross entropy plus unchanged scalar TD loss"
+    ],
+    "inverse_resume": [
+      null,
+      "full Q/target/Adam plus inverse head/Adam; own replay refills"
+    ],
+    "inverse_architecture": [
+      null,
+      "own-adjacent-hidden-pair-v1"
+    ],
+    "inverse_sequence_source_sha256": [
+      null,
+      "7666431a7d73d8a38abff719f4d34a8cea090aa05a479e0a718f2169f4eb887d"
+    ],
+    "spr_weight": [
+      null,
+      0.0
+    ],
+    "inverse_source_sha256": [
+      null,
+      "08b1a6c2047f975c1e19660ae8c54aa28a883e2b5dc179d24f99980fcccf93aa"
+    ],
+    "trainer_source_sha256": [
+      "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+      "529bd7608a1a6aa0b6006d69791af8d4d9cda85b0405ae2ec2d327eb19f2213c"
+    ]
+  },
+  "unchanged_acting_model_environment_replay_exploration_archive_hashes": true,
+  "parity_reports": [
+    "results/defense/diagnostics/inverse-default-parity.json",
+    "results/defense/diagnostics/inverse-parent-conversion-parity.json"
+  ],
+  "limitations": [
+    "Historical same-parent comparison, not simultaneous independent replication.",
+    "Score reward and greedy acting unchanged; own recorded actions supervise an auxiliary classifier only.",
+    "No SPR, trace cuts, higher gamma or longer holds combined into this comparison.",
+    "Smoke/conversion models and diagnostic/evaluation traces excluded from performance training.",
+    "Ten reused complete uncapped boot validation seeds 10000..10009.",
+    "Short calibration excluded from global collector; no stage clear established."
+  ]
+}

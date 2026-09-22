@@ -1,0 +1,11 @@
+test_auxiliary_gradients_and_td_only_priorities (tests.test_defense_inverse.InverseTests.test_auxiliary_gradients_and_td_only_priorities) ... ok
+test_exact_td_fields_sampler_and_immediate_not_nstep_endpoint (tests.test_defense_inverse.InverseTests.test_exact_td_fields_sampler_and_immediate_not_nstep_endpoint) ... ok
+test_invalid_cli_and_checkpoint (tests.test_defense_inverse.InverseTests.test_invalid_cli_and_checkpoint) ... ok
+test_joint_update_and_unchanged_acting_path (tests.test_defense_inverse.InverseTests.test_joint_update_and_unchanged_acting_path) ... ok
+test_native_actual_own_resets (tests.test_defense_inverse.InverseTests.test_native_actual_own_resets) ... ok
+test_native_parity_conversion_resume_and_verified_game (tests.test_defense_inverse.InverseTests.test_native_parity_conversion_resume_and_verified_game) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 35.530s
+
+OK
