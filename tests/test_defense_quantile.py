@@ -12,7 +12,7 @@ import mlx.core as mx
 from mlx.utils import tree_flatten
 import numpy as np
 
-from rl.defense_learning import QUANTILE_ALGORITHM, load_policy, policy_description
+from rl.defense_learning import QUANTILE_ALGORITHM, load_policy, policy_description, publish_best, sha256
 from rl.defense_quantile import QuantileLearner, QuantileQ, distortion_weights, quantile_huber
 from rl.train import checkpoint
 from rl.model import Learner
@@ -138,9 +138,49 @@ class DefenseQuantileTests(unittest.TestCase):
             checkpoint(agent, root, dict(config=config, steps=0))
             policy, loaded = load_policy(root/'model.safetensors')
             np.testing.assert_array_equal(policy(obs), [0, 0])
+            zero, _ = load_policy(root/'model.safetensors', quantile_power=0)
+            distorted, _ = load_policy(root/'model.safetensors', quantile_power=1)
+            np.testing.assert_array_equal(zero(obs), [0, 0])
+            np.testing.assert_array_equal(distorted(obs), [1, 1])
+            self.assertIn('power-distorted', policy_description(loaded, quantile_power=1))
+            for bad in [-1, 5, np.nan, np.inf, True]:
+                with self.assertRaises(ValueError): load_policy(root/'model.safetensors', quantile_power=bad)
+            with self.assertRaises(ValueError):
+                policy_description(configuration(), quantile_power=1)
             self.assertEqual(policy_description(loaded), 'learned score-return quantiles, greedy mean Q-values')
             with self.assertRaisesRegex(ValueError, 'Temperature'):
                 load_policy(root/'model.safetensors', temperature=.5)
+
+    def test_native_distorted_evaluation_replay_and_promotion_exclusion(self):
+        source = Path('results/defense/training/quantile-risk-calibration-01/checkpoint')
+        before = {p.name: sha256(p) for p in source.iterdir()}
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp)
+            result = subprocess.run([sys.executable, '-m', 'rl.defense_evaluate',
+                                     str(source/'model.safetensors'), '--output', str(p/'result.json'),
+                                     '--replay-output', str(p/'replay'), '--games', '1', '--seed', '10000',
+                                     '--envs', '1', '--quantile-power', '1.5'],
+                                    capture_output=True, text=True, timeout=120)
+            self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+            evaluation = json.loads((p/'result.json').read_text())
+            verification = json.loads((p/'replay/verification.json').read_text())
+            manifest = json.loads((p/'replay/manifest.json').read_text())
+            self.assertTrue(evaluation['evaluation_only'])
+            self.assertFalse(evaluation['promotion_eligible'])
+            self.assertEqual(evaluation['complete_games'], 1)
+            self.assertEqual(evaluation['incomplete_games'], 0)
+            self.assertEqual(evaluation['quantile_power'], 1.5)
+            self.assertTrue(verification['verified'])
+            self.assertEqual(verification['quantile_power'], 1.5)
+            self.assertEqual(manifest['metadata']['quantile_power'], 1.5)
+            self.assertTrue(all(sha256(p/'replay'/name) == h for name, h in manifest['hashes'].items()))
+            with self.assertRaisesRegex(ValueError, 'cannot promote'):
+                publish_best(source/'model.safetensors', evaluation, p/'global')
+            self.assertFalse((p/'global').exists())
+            from rl.defense_q_probe import probe
+            with self.assertRaisesRegex(ValueError, 'mean-greedy'):
+                probe(p/'replay')
+        self.assertEqual(before, {p.name: sha256(p) for p in source.iterdir()})
 
     def test_matching_initialization_updates_and_unchanged_target(self):
         neutral = QuantileLearner(seed=12, quantiles=4)

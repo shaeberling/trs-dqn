@@ -1,0 +1,370 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/quantile-neutral-calibration-01/replay",
+  "source_hashes": {
+    "model.safetensors": "7c5adddb71a16fd18df6f5c49a09bf06e2e1c082b8274cca332ec47cb044155f",
+    "state.json": "67f0bb83f23862bfc00c10a59838a86692a7b7e3a4c10b582902c34716c5e0a5",
+    "trace.npz": "b4a6a113c734a5368eb9d7d1c7ddc2295eabb4c4505ea6b8a09ecb1cff9965bd",
+    "verification.json": "75187ec1c744f1fc07f0c345756768e9eb49849cd107ea079e06d5b6291222fc"
+  },
+  "probe_source_sha256": "e457c287363668636f3441c7ed752fed68cc7ee2391b236e58f2395967f3b744",
+  "result": {
+    "seed": 10000,
+    "score": 10280,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2592,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 10280.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1202000,
+    "start_tstates": 33283
+  },
+  "gamma": 0.997,
+  "reward_scale": 0.01,
+  "life_terminal": true,
+  "diagnostic_only": true,
+  "promotion_eligible": false,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "native_reexecution": false,
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 2592,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "7c5adddb71a16fd18df6f5c49a09bf06e2e1c082b8274cca332ec47cb044155f",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "replay_actions_reproduced": 2592,
+  "quantile_distribution": {
+    "diagnostic_power": 1.5,
+    "actual_training_power": 0.0,
+    "counterfactual_only": true,
+    "whole_replay": {
+      "observations": 2592,
+      "quantiles": 32,
+      "low_fraction": 0.109375,
+      "high_fraction": 0.890625,
+      "mean_high_minus_low_discounted_score": 110.72251148590888,
+      "mean_distorted_minus_mean_discounted_score": 38.17758318751353,
+      "selected_adjacent_crossing_fraction": 0.0008587216248506571,
+      "counterfactual_different_actions": 776,
+      "counterfactual_disagreement_fraction": 0.2993827160493827,
+      "counterfactual_different_stage_one_commands": 644,
+      "counterfactual_stage_one_command_disagreement_fraction": 0.24845679012345678
+    },
+    "limitation": "Selected mean-greedy replay screens only, not the actual exploratory training states. Higher-index quantiles are not sorted; crossing is reported, not repaired. Stage-one alias grouping compares commands, not measured physical displacement. Return spread is not epistemic uncertainty or a confidence interval."
+  },
+  "whole_replay": {
+    "observations": 2592,
+    "mean_predicted_discounted_score": 965.3585119060108,
+    "mean_realized_discounted_score": 1058.0943555564675,
+    "mean_prediction_minus_return": -92.73584365045653,
+    "median_prediction_minus_return": -15.742513312681012,
+    "mean_absolute_error": 151.8693858059123,
+    "p90_absolute_error": 362.76910024186515
+  },
+  "lives": [
+    {
+      "life": 1,
+      "life_score": 2570,
+      "visible_loss_frame": 410,
+      "flash_alignment_frame": 398,
+      "pre_marker_window": [
+        334,
+        398
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 561.2131569767371,
+        "mean_realized_discounted_score": 522.7610986313341,
+        "mean_prediction_minus_return": 38.45205834540291,
+        "median_prediction_minus_return": 46.618981959329105,
+        "mean_absolute_error": 44.94051373400877,
+        "p90_absolute_error": 74.9063422108606
+      },
+      "after_flash": {
+        "observations": 12,
+        "mean_predicted_discounted_score": -2.7633836648116508,
+        "mean_realized_discounted_score": 0.0,
+        "mean_prediction_minus_return": -2.7633836648116508,
+        "median_prediction_minus_return": -1.5750468708574772,
+        "mean_absolute_error": 7.190823353206118,
+        "p90_absolute_error": 12.240788489580154
+      },
+      "anchors": [
+        {
+          "decision": 270,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1951.7528533935547,
+          "realized_discounted_score": 1946.431733310073
+        },
+        {
+          "decision": 334,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1481.2621116638184,
+          "realized_discounted_score": 1443.961754325761
+        },
+        {
+          "decision": 366,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 107.61339664459229,
+          "realized_discounted_score": 18.608604049497934
+        },
+        {
+          "decision": 390,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 22.39753156900406,
+          "realized_discounted_score": 20.0
+        },
+        {
+          "decision": 397,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 0.594126433134079,
+          "realized_discounted_score": 0.0
+        }
+      ],
+      "pre_marker_distribution": {
+        "observations": 64,
+        "quantiles": 32,
+        "low_fraction": 0.109375,
+        "high_fraction": 0.890625,
+        "mean_high_minus_low_discounted_score": 114.16089362464845,
+        "mean_distorted_minus_mean_discounted_score": 36.16086850525423,
+        "selected_adjacent_crossing_fraction": 0.0,
+        "counterfactual_different_actions": 28,
+        "counterfactual_disagreement_fraction": 0.4375,
+        "counterfactual_different_stage_one_commands": 23,
+        "counterfactual_stage_one_command_disagreement_fraction": 0.359375
+      }
+    },
+    {
+      "life": 2,
+      "life_score": 2570,
+      "visible_loss_frame": 1143,
+      "flash_alignment_frame": 1131,
+      "pre_marker_window": [
+        1067,
+        1131
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 617.2484674490988,
+        "mean_realized_discounted_score": 515.959282579596,
+        "mean_prediction_minus_return": 101.28918486950289,
+        "median_prediction_minus_return": 101.87429320815835,
+        "mean_absolute_error": 101.28918486950289,
+        "p90_absolute_error": 142.33362020325666
+      },
+      "after_flash": {
+        "observations": 12,
+        "mean_predicted_discounted_score": 66.0146452486515,
+        "mean_realized_discounted_score": 0.0,
+        "mean_prediction_minus_return": 66.0146452486515,
+        "median_prediction_minus_return": 62.91499435901642,
+        "mean_absolute_error": 66.0146452486515,
+        "p90_absolute_error": 81.69346153736115
+      },
+      "anchors": [
+        {
+          "decision": 1003,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1984.8882675170898,
+          "realized_discounted_score": 1930.9718642476205
+        },
+        {
+          "decision": 1067,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1551.45845413208,
+          "realized_discounted_score": 1445.2716326426455
+        },
+        {
+          "decision": 1099,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 141.07201099395752,
+          "realized_discounted_score": 19.291761998064324
+        },
+        {
+          "decision": 1123,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 63.36974501609802,
+          "realized_discounted_score": 0.0
+        },
+        {
+          "decision": 1130,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 98.07751178741455,
+          "realized_discounted_score": 0.0
+        }
+      ],
+      "pre_marker_distribution": {
+        "observations": 64,
+        "quantiles": 32,
+        "low_fraction": 0.109375,
+        "high_fraction": 0.890625,
+        "mean_high_minus_low_discounted_score": 109.2644958756864,
+        "mean_distorted_minus_mean_discounted_score": 34.96639881655824,
+        "selected_adjacent_crossing_fraction": 0.0,
+        "counterfactual_different_actions": 20,
+        "counterfactual_disagreement_fraction": 0.3125,
+        "counterfactual_different_stage_one_commands": 17,
+        "counterfactual_stage_one_command_disagreement_fraction": 0.265625
+      }
+    },
+    {
+      "life": 3,
+      "life_score": 2570,
+      "visible_loss_frame": 1874,
+      "flash_alignment_frame": 1862,
+      "pre_marker_window": [
+        1798,
+        1862
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 577.5200288742781,
+        "mean_realized_discounted_score": 490.8717303635573,
+        "mean_prediction_minus_return": 86.64829851072076,
+        "median_prediction_minus_return": 93.67949962615967,
+        "mean_absolute_error": 86.64829851072076,
+        "p90_absolute_error": 117.81092564218751
+      },
+      "after_flash": {
+        "observations": 12,
+        "mean_predicted_discounted_score": 61.70797844727834,
+        "mean_realized_discounted_score": 0.0,
+        "mean_prediction_minus_return": 61.70797844727834,
+        "median_prediction_minus_return": 60.145699977874756,
+        "mean_absolute_error": 61.70797844727834,
+        "p90_absolute_error": 78.36562037467957
+      },
+      "anchors": [
+        {
+          "decision": 1734,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1960.9596252441406,
+          "realized_discounted_score": 1937.9350716434171
+        },
+        {
+          "decision": 1798,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1532.7948570251465,
+          "realized_discounted_score": 1430.0427560383116
+        },
+        {
+          "decision": 1830,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 107.03563690185547,
+          "realized_discounted_score": 19.291761998064324
+        },
+        {
+          "decision": 1854,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 109.44205522537231,
+          "realized_discounted_score": 0.0
+        },
+        {
+          "decision": 1861,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 70.8314597606659,
+          "realized_discounted_score": 0.0
+        }
+      ],
+      "pre_marker_distribution": {
+        "observations": 64,
+        "quantiles": 32,
+        "low_fraction": 0.109375,
+        "high_fraction": 0.890625,
+        "mean_high_minus_low_discounted_score": 104.82778269797564,
+        "mean_distorted_minus_mean_discounted_score": 33.457660419341714,
+        "selected_adjacent_crossing_fraction": 0.0,
+        "counterfactual_different_actions": 36,
+        "counterfactual_disagreement_fraction": 0.5625,
+        "counterfactual_different_stage_one_commands": 31,
+        "counterfactual_stage_one_command_disagreement_fraction": 0.484375
+      }
+    },
+    {
+      "life": 4,
+      "life_score": 2570,
+      "visible_loss_frame": 2592,
+      "flash_alignment_frame": null,
+      "pre_marker_window": [
+        2528,
+        2592
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 605.2136197686195,
+        "mean_realized_discounted_score": 532.0391291880796,
+        "mean_prediction_minus_return": 73.17449058053988,
+        "median_prediction_minus_return": 74.18621288960821,
+        "mean_absolute_error": 73.17449058053988,
+        "p90_absolute_error": 105.26443074362842
+      },
+      "after_flash": null,
+      "anchors": [
+        {
+          "decision": 2464,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1933.890151977539,
+          "realized_discounted_score": 1922.2188460720201
+        },
+        {
+          "decision": 2528,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1449.091625213623,
+          "realized_discounted_score": 1422.1148316909612
+        },
+        {
+          "decision": 2560,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 114.57903385162354,
+          "realized_discounted_score": 19.880180000000003
+        },
+        {
+          "decision": 2584,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 47.96208739280701,
+          "realized_discounted_score": 0.0
+        },
+        {
+          "decision": 2591,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 24.060609936714172,
+          "realized_discounted_score": 0.0
+        }
+      ],
+      "pre_marker_distribution": {
+        "observations": 64,
+        "quantiles": 32,
+        "low_fraction": 0.109375,
+        "high_fraction": 0.890625,
+        "mean_high_minus_low_discounted_score": 102.50729322433472,
+        "mean_distorted_minus_mean_discounted_score": 33.20141954933358,
+        "selected_adjacent_crossing_fraction": 0.0,
+        "counterfactual_different_actions": 24,
+        "counterfactual_disagreement_fraction": 0.375,
+        "counterfactual_different_stage_one_commands": 19,
+        "counterfactual_stage_one_command_disagreement_fraction": 0.296875
+      }
+    }
+  ],
+  "limitations": [
+    "One selected verified replay, not a fresh evaluation or expected-return estimate.",
+    "Returns follow the frozen greedy policy on this trajectory; they are not optimal counterfactual returns.",
+    "Visible life boundaries match learning terminals but can lag physical collision.",
+    "White flashes align windows; they are not exact collision timestamps.",
+    "Prediction errors can reflect approximation, partial observations or policy/value mismatch; they do not prove a causal bug.",
+    "No policy action, reward, training input or parameter is changed."
+  ]
+}

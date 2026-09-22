@@ -16,6 +16,14 @@ from rl.sil import SILReplay, TrainingSuffixes
 
 
 class DefenseLearningTests(unittest.TestCase):
+    def test_publisher_rejects_all_explicit_evaluation_only_modes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for flags in [dict(evaluation_only=True), dict(promotion_eligible=False),
+                          dict(temperature=.5), dict(quantile_power=0), dict(quantile_power=1.5)]:
+                with self.subTest(flags=flags), self.assertRaisesRegex(ValueError, 'cannot promote'):
+                    publish_best(Path(tmp)/'missing.safetensors', dict(games=[], **flags), Path(tmp)/'output')
+            self.assertFalse((Path(tmp)/'output').exists())
+
     def test_probe_recording_rejects_changed_weights_and_existing_output(self):
         from rl.defense_evaluate import record_probe
         with tempfile.TemporaryDirectory() as tmp:

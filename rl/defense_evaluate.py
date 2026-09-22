@@ -24,7 +24,9 @@ def record_probe(checkpoint, evaluation, output):
     if sha256(checkpoint) != evaluation["checkpoint_sha256"]:
         raise ValueError("probe weights differ from evaluation")
     temperature = evaluation["temperature"]
-    policy, config = load_policy(checkpoint, temperature=temperature)
+    quantile_options = (dict(quantile_power=evaluation['quantile_power'])
+                        if 'quantile_power' in evaluation else {})
+    policy, config = load_policy(checkpoint, temperature=temperature, **quantile_options)
     candidate = max(evaluation["games"], key=game_rank)
     frames, actions, rewards, result, events = record_game(
         policy, candidate["seed"], tstates=config["tstates"], max_steps=0,
@@ -33,12 +35,12 @@ def record_probe(checkpoint, evaluation, output):
     if result != candidate:
         raise RuntimeError("probe replay differs from evaluation")
     verification = verify_policy_trace(checkpoint, frames, actions, rewards, result,
-                                      temperature=temperature)
+                                      temperature=temperature, **quantile_options)
     if sha256(checkpoint) != evaluation["checkpoint_sha256"]:
         raise RuntimeError("probe weights changed during verification")
     metadata = dict(game="Obstacle Run / Missile Defense", game_sha256=GAME_SHA256,
                     environment_version=ENVIRONMENT_VERSION, action_names=config["action_names"],
-                    policy=evaluation["policy"], temperature=temperature, trained_model=True,
+                    policy=evaluation["policy"], temperature=temperature, trained_model=True, **quantile_options,
                     evaluation_only=True, promotion_eligible=False,
                     checkpoint_sha256=evaluation["checkpoint_sha256"],
                     verified_actions=len(actions), tstates=config["tstates"], max_steps=0,
@@ -67,6 +69,8 @@ def main():
                         help="explicit temporal probe; default uses checkpoint action duration")
     parser.add_argument("--temperature", type=float, default=1.0,
                         help="evaluation-only sampling probe; 1 preserves the trained policy")
+    parser.add_argument("--quantile-power", type=float,
+                        help="evaluation-only quantile distortion 0..4; omitted preserves mean-greedy evaluation")
     parser.add_argument("--replay-output", type=Path,
                         help="new separate verified probe bundle; never promotes to trained best")
     args = parser.parse_args()
@@ -76,12 +80,16 @@ def main():
         parser.error("tstates must be between 1 and 1,000,000")
     if not math.isfinite(args.temperature) or args.temperature <= 0:
         parser.error("temperature must be finite and positive")
+    if args.quantile_power is not None and (not math.isfinite(args.quantile_power)
+                                          or not 0 <= args.quantile_power <= 4 or args.temperature != 1):
+        parser.error("quantile power requires 0..4 and temperature 1")
     if args.output.exists():
         parser.error("output exists; use a fresh path")
     if args.replay_output and args.replay_output.exists():
         parser.error("replay output exists; use a fresh path")
     before = sha256(args.checkpoint)
-    policy, config = load_policy(args.checkpoint, temperature=args.temperature)
+    quantile_options = dict(quantile_power=args.quantile_power) if args.quantile_power is not None else {}
+    policy, config = load_policy(args.checkpoint, temperature=args.temperature, **quantile_options)
     tstates = config["tstates"] if args.tstates is None else args.tstates
     if args.replay_output and tstates != config["tstates"]:
         parser.error("probe replay requires original checkpoint timing")
@@ -92,7 +100,7 @@ def main():
     if sha256(args.checkpoint) != before:
         raise RuntimeError("Checkpoint changed during evaluation; use frozen weights")
     result.update(checkpoint_sha256=before, config=config,
-                  policy=policy_description(config, args.temperature),
+                  policy=policy_description(config, args.temperature, **quantile_options), **quantile_options,
                   temperature=args.temperature, evaluation_only=True,
                   promotion_eligible=False, evaluation_seed=args.seed,
                   evaluation_tstates=tstates, training_tstates=config["tstates"],
