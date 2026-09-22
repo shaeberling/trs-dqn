@@ -4575,6 +4575,13 @@ are preserved. Cumulative continuation totals are **600,000** actions,
 **252** complete boot games and **189** completed restored segments; all
 **5,884** logged archive offsets are 128, with reserved boot workers protected.
 
+At **7,893,216**, the [fourth round](results/defense/training/dqn-45-visual-prediction/comparison-through-000007893216.json)
+averages **10,134**, median **10,165**, best **10,280**, again all stage 1. This
+is **+2,824** above the historical baseline's weak fourth round (7,310), following
+differences **+11 / −700 / −4**. None of these score comparisons establishes a
+stage clear. The preserved third-round 10,400 replay remains this full trial's
+best; the stronger shared best is unchanged.
+
 ### Inverse-action representation experiment
 
 The separate optional `--inverse-weight .01` tests whether learning to predict
@@ -4744,6 +4751,19 @@ are preserved. Across **400,000** continuation actions, **188** complete boot
 games and **132** completed restored segments, no logged episode reached a
 later stage. All **3,856** archive offsets are 128 and boot workers remain
 protected. The trial continues without replacing the shared best.
+
+The [third and fourth full comparisons](results/defense/training/dqn-46-inverse-action/comparison-through-000007893216.json)
+give means **9,455** and **10,265**, respectively, both all stage-1 losses. At
+**7,893,216**, the fourth round has median **10,280** and a new run-best
+**10,330**. Its [2,536-action verified replay](results/defense/training/dqn-46-inverse-action/replay-10330/replay.html),
+complete model/target/Q-Adam/auxiliary-Adam state and checked log prefix are
+preserved. The [audit](results/defense/training/dqn-46-inverse-action/audit-at-000007893216.json)
+records **800,000** continuation actions, **49,374** updates, **366** complete
+boot games, **263** completed restored segments and **7,773** correctly offset
+archive events, with protected boot workers and no later stage in the log.
+Mean differences versus the same-count historical baseline are
+**+115 / +1,369 / −844 / +2,955**. The larger fourth difference reflects the
+baseline's low 7,310 mean, not passage through the recurring failure sequence.
 
 ### Intermediate own-state rewind calibration
 
@@ -4926,6 +4946,37 @@ The previous collector exited cleanly before its replacement started. The sole
 including 47/48 and every prior source, while excluding short calibrations.
 Shared-best promotion still requires independent native replay verification.
 The existing 10,480-point best remains unchanged.
+
+The [first full paired evaluation at **7,293,216**](results/defense/training/dqn-48-loss-trigger/comparison-at-000007293216.json)
+adds **200,000** actions per arm after calibration (**331,072** after their
+original common parent). The progress-triggered control averages **10,368**,
+median **10,450**, best **10,480**. The own-loss arm averages **9,889**, median
+**10,030**, best **10,280**. Every one of the twenty complete boot games lost
+in stage 1. The own-loss arm is **−479** in mean, with nine paired scores lower
+and one higher, following its **−200** calibration difference. Neither actual
+stage passage nor a score advantage has been demonstrated.
+
+Both complete optimizer checkpoints, checked log prefixes and independently
+verified replays are preserved:
+[control, 2,569 actions](results/defense/training/dqn-47-mid-lookback-control/first-replay/replay.html)
+and [own-loss, 2,575 actions](results/defense/training/dqn-48-loss-trigger/first-replay/replay.html).
+The control merely ties the existing global single-game best and does not
+replace it. The [screen-only loss panels](results/defense/diagnostics/shared-loss-trigger-full-01/report.json)
+again show the recurring barrier sequence. The selected control replay earns
+**2,620** on each life, versus **2,570** on each life in the own-loss replay;
+score equality is not a claim of identical physical collisions.
+
+The [control audit](results/defense/training/dqn-47-mid-lookback-control/audit-at-000007293216.json)
+records **89** boot games, **64** completed restored segments and **2,164** archive
+events. The [own-loss audit](results/defense/training/dqn-48-loss-trigger/audit-at-000007293216.json)
+records **85**, **67** and **454**, respectively. Both made **11,874** updates,
+kept correct 64-action offsets and protected reserved boot workers. All logged
+training episodes remained in stage 1. Every completed restored segment joins
+to its original same-run source: **17/67** own-loss selections exceed the
+control's maximum selected per-life score of 330, reaching 1,100. These log
+joins verify different sampling, not improved navigation or exact course
+positions. The pair continues unchanged for another matched evaluation; this
+negative first round is not presented as a successful intervention.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
