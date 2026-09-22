@@ -110,6 +110,8 @@ class ByteWorldLearner:
             raise ValueError('byte objective differs; explicit change required')
         if saved.get('overshooting', {}).get('weight', 0.):
             raise ValueError('combined byte/overshoot continuation is not supported')
+        if saved.get('prior_outputs', {}).get('weight', 0.):
+            raise ValueError('combined byte/prior-output continuation is not supported')
         if previous:
             if previous['architecture'] != BYTE_ARCHITECTURE:
                 raise ValueError('incompatible byte decoder')

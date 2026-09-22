@@ -85,6 +85,8 @@ def main():
     parser.add_argument('--change-objective', action='store_true')
     parser.add_argument('--byte-weight', type=float, default=0.,
                         help='optional mean categorical visible-byte reconstruction loss')
+    parser.add_argument('--prior-output-weight', type=float, default=0.,
+                        help='optional one-step prior screen/score/continuation output loss')
     args = parser.parse_args()
     if (args.output.exists() or min(args.updates, args.batch, args.every, args.audit_windows) < 1
             or not 0 < args.burn < args.length or not np.isfinite(args.boundary_fraction)
@@ -104,6 +106,10 @@ def main():
         parser.error('byte weight must be finite and nonnegative')
     if args.byte_weight and args.overshoot_weight:
         parser.error('combined byte and overshooting objectives are not supported')
+    if not np.isfinite(args.prior_output_weight) or args.prior_output_weight < 0:
+        parser.error('prior-output weight must be finite and nonnegative')
+    if args.prior_output_weight and (args.byte_weight or args.overshoot_weight):
+        parser.error('combined prior-output and other auxiliary objectives are not supported')
     mx.set_cache_limit(128*1024*1024)
     train, held = Sequences(args.data, 'train', args.length), Sequences(args.data, 'heldout', args.length)
     if set(train.files) & set(held.files):
@@ -115,12 +121,15 @@ def main():
         learner = ByteWorldLearner(seed=args.seed, burn=args.burn, byte_weight=args.byte_weight)
     else:
         learner = WorldLearner(seed=args.seed, burn=args.burn,
-            overshoot_distance=args.overshoot_distance, overshoot_weight=args.overshoot_weight)
+            overshoot_distance=args.overshoot_distance, overshoot_weight=args.overshoot_weight,
+            prior_output_weight=args.prior_output_weight)
     metadata = dict(data=str(args.data.resolve()), dataset_sha256=sha256(args.data/'manifest.json'),
         architecture='small-gaussian-rssm-v1', reward_scale=.01, batch=args.batch,
         length=args.length, burn=args.burn, train_games=len(train.episodes), heldout_games=len(held.episodes),
         boundary_fraction=args.boundary_fraction,
         overshooting=learner.overshooting,
+        prior_outputs=getattr(learner, 'prior_outputs', dict(weight=0.)),
+        prior_output_source_sha256=sha256(Path(__file__).with_name('defense_world_prior_output.py')) if args.prior_output_weight else None,
         byte_reconstruction=getattr(learner, 'byte_reconstruction', None),
         byte_source_sha256=sha256(Path(__file__).with_name('defense_world_bytes.py')) if args.byte_weight else None,
         byte_audit_source_sha256=sha256(Path(__file__).with_name('defense_world_byte_audit.py')) if args.byte_weight else None,
@@ -134,6 +143,10 @@ def main():
         old_objective = previous.get('overshooting', dict(distance=1, weight=0.))
         if old_objective != learner.overshooting:
             metadata['previous_overshooting'] = old_objective
+            metadata['objective_changed'] = True
+        old_prior = previous.get('prior_outputs', dict(weight=0.))
+        if old_prior != metadata['prior_outputs']:
+            metadata['previous_prior_outputs'] = old_prior
             metadata['objective_changed'] = True
         old_bytes = previous.get('byte_reconstruction')
         if old_bytes != metadata['byte_reconstruction']:

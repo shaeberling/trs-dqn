@@ -100,7 +100,7 @@ class WorldModel(nn.Module):
         return self.decoder[-1](x).reshape(*features.shape[:-1], 48, 128, 2)
 
     def loss(self, frames, actions, rewards, continuation, key, burn=8,
-             overshoot_distance=1, overshoot_weight=0., filtered=None):
+             overshoot_distance=1, overshoot_weight=0., filtered=None, prior_output_weight=0.):
         states, kl = self.observe(frames, actions, key) if filtered is None else filtered
         features = self.features(states)[:, burn+1:]
         # Reward[i] belongs to action[i] and the resulting frame[i+1].
@@ -117,14 +117,24 @@ class WorldModel(nn.Module):
             penalty = latent_overshoot(self, states, actions, key, burn, overshoot_distance)
             total = total+overshoot_weight*penalty
             terms.append(penalty)
+        if prior_output_weight:
+            from .defense_world_prior_output import prior_output_loss
+            extra = prior_output_loss(self, states, frames, actions, rewards, continuation, key, burn)
+            total = total+prior_output_weight*mx.sum(extra)
+            terms.extend([extra[0], extra[1], extra[2]])
         return total, mx.stack(terms)
 
 
 class WorldLearner:
-    def __init__(self, seed=0, learning_rate=6e-4, burn=8, overshoot_distance=1, overshoot_weight=0.):
+    def __init__(self, seed=0, learning_rate=6e-4, burn=8, overshoot_distance=1, overshoot_weight=0.,
+                 prior_output_weight=0.):
         from .defense_world_overshoot import validate
         validate(overshoot_distance, overshoot_weight)
         self.overshooting = dict(distance=overshoot_distance, weight=overshoot_weight)
+        if (not np.isfinite(prior_output_weight) or prior_output_weight < 0
+                or (prior_output_weight and overshoot_weight)):
+            raise ValueError('invalid or combined prior-output objective')
+        self.prior_outputs = dict(weight=float(prior_output_weight))
         mx.random.seed(seed)
         self.model = WorldModel()
         self.optimizer = optim.Adam(learning_rate=learning_rate, eps=1e-5)
@@ -142,7 +152,8 @@ class WorldLearner:
         key, next_key = mx.random.split(self.random['key'])
         def objective(model):
             return model.loss(frames, actions, rewards, continuation, key, self.burn,
-                              self.overshooting['distance'], self.overshooting['weight'])
+                              self.overshooting['distance'], self.overshooting['weight'],
+                              prior_output_weight=self.prior_outputs['weight'])
         (loss, terms), grads = nn.value_and_grad(self.model, objective)(self.model)
         grads, norm = optim.clip_grad_norm(grads, max_norm=100.)
         self.optimizer.update(self.model, grads)
@@ -160,6 +171,9 @@ class WorldLearner:
                     kl=float(result[1][3]), gradient_norm=float(result[2]))
         if self.overshooting['weight']:
             stats['overshoot_kl'] = float(result[1][4])
+        if self.prior_outputs['weight']:
+            stats.update(prior_image=float(result[1][4]), prior_reward=float(result[1][5]),
+                         prior_continuation=float(result[1][6]))
         return stats
 
     def save(self, directory, sampling_rng, metadata):
@@ -171,6 +185,7 @@ class WorldLearner:
         mx.savez(str(directory/'random.npz'), **self.random)
         write_json(directory/'state.json', dict(updates=self.updates, burn=self.burn,
             overshooting=self.overshooting,
+            prior_outputs=self.prior_outputs,
             sampling_rng=sampling_rng.bit_generator.state, metadata=metadata,
             hashes={n: sha256(directory/n) for n in ('world.safetensors', 'optimizer.npz', 'random.npz')}))
 
@@ -185,6 +200,8 @@ class WorldLearner:
         previous = saved.get('overshooting', dict(distance=1, weight=0.))
         if previous != self.overshooting and not allow_objective_change:
             raise ValueError('world objective differs; explicit change required')
+        if saved.get('prior_outputs', dict(weight=0.)) != self.prior_outputs and not allow_objective_change:
+            raise ValueError('prior-output objective differs; explicit change required')
         for name in ('world.safetensors', 'optimizer.npz', 'random.npz'):
             if sha256(directory/name) != saved['hashes'][name]:
                 raise ValueError('world checkpoint checksum mismatch')
