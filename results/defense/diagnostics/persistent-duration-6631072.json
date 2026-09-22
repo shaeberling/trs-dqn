@@ -1,0 +1,27 @@
+{
+  "checkpoint_state": "results/defense/training/dqn-31-persistent/step-000006631072/state.json",
+  "checkpoint_state_sha256": "91cabc3a51487f175df579195c7709b0fb3cdd90cc6fa434f4b627fdd7109b89",
+  "parent_state": "results/defense/training/persistent-repeat-01/checkpoint/state.json",
+  "parent_state_sha256": "5d2bed5121b7015c807fc071777ec4212d8b6287780c29c87d579dc0aac2f65d",
+  "new_boot_games": 174,
+  "starts": 3240,
+  "sampled_holds_at_least": {
+    "16": 351,
+    "32": 131,
+    "48": 53
+  },
+  "cancelled_future_steps": 920,
+  "realized_exploratory_fraction": 0.04930404546014032,
+  "nominal_rate_start_probabilities": {
+    "0.05": 0.008446484706973104,
+    "0.25": 0.05118846916049633
+  },
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "limitations": [
+    "Counts include all actions and animations, not only movement near an obstacle.",
+    "Sampled duration is not necessarily realized; boundaries cancel remaining steps.",
+    "Duration/action marginals do not identify long movement holds or their location.",
+    "This does not establish an adequate duration or diagnose why the agent loses."
+  ]
+}
