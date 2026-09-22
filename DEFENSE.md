@@ -2476,6 +2476,19 @@ restarted with the recurrent loader and this new full-run source, retaining
 all historical sources and excluding all short checks. It still requires
 frozen-policy replay verification before replacing the shared best.
 
+Run 30's [first full-run validation at **335,872**](results/defense/training/ppo-30-frozen-memory/step-000000335872/evaluation.json)
+(**204,800** actions beyond calibration) averaged **10,464**, median/best
+**10,480**, all ten stage-1 losses. Its
+[2,494-action verified replay](results/defense/training/ppo-30-frozen-memory/first-replay/replay.html)
+and full optimizer checkpoint are preserved. An additional
+[saved-weight check](results/defense/training/ppo-30-frozen-memory/step-000000335872/base-immutability.json)
+confirms all **12** base arrays remain exactly equal to the original own
+feedforward parent and the optimizer still excludes their slots. Since the
+calibration, training completed **55** additional boot games and **17** restored
+segments. This is continued retention, slightly above calibration's mean
+10,453 but below the original parent's 10,474; it is not a stage clear. The
+tied best score does not replace the global replay. Unlimited learning continues.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-recurrent-frozen-calibration-reproduction \
