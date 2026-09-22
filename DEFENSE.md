@@ -6,10 +6,11 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **259-test** suite now passes, including
+(23 GiB available at restart). The full **262-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24 and PPO 29 resumed their preserved pause checkpoints with
-unlimited training. Training remains independent of Breakdown, with complete-game
+unlimited training. PPO 30 now tests frozen-base screen-history memory after
+a verified bounded comparison. Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
@@ -208,8 +209,9 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-dqn-24-bootstrap/status.json`
-  and `runs/defense-ppo-29-value-weight/status.json`, each with an adjacent
+- Live progress: `runs/defense-dqn-24-bootstrap/status.json`,
+  `runs/defense-ppo-29-value-weight/status.json` and
+  `runs/defense-ppo-30-frozen-memory/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -299,6 +301,7 @@ venv/bin/python -u -m rl.defense_collect \
   --source runs/defense-ppo-27-matched-history-low-lr/artifacts \
   --source runs/defense-dqn-28-large-replay/artifacts \
   --source runs/defense-ppo-29-value-weight/artifacts \
+  --source runs/defense-ppo-30-frozen-memory/artifacts \
   --output results/defense/learned --run runs/defense-collector --interval 30
 ```
 
@@ -2436,11 +2439,42 @@ absence of base gradients/optimizer slots, complete checkpoint serialization,
 native saved-policy replay reproduction, inherited freezing on real training
 resume, incompatible-mode rejection and unchanged default initialization.
 
-`defense-recurrent-frozen-calibration-01` tests **131,072** new actions with
+`defense-recurrent-frozen-calibration-01` completed **131,072** new actions with
 32 workers, eight boot-only workers and the same learning settings as the
 previous memory-enabled calibration. It starts from the exact-weight frozen
-initializer, not the already-trained short result. It is a bounded comparison,
-excluded from the collector; freezing is a hypothesis, not an established fix.
+initializer, not the already-trained short result. Its
+[ten complete evaluations](results/defense/training/recurrent-frozen-calibration-01/checkpoint/evaluation.json)
+averaged **10,453**, median **10,460**, best **10,480**, all stage-1 losses.
+That is **421** above the matched unfrozen-memory mean 10,032, and **153** above
+the memory-disabled control's 10,300, but still **21 below** the untouched
+parent's 10,474. This is better short-run retention, not new stage reach or
+proof that recurrence improves on the original parent.
+
+It completed **32** boot games and **10** restored segments during training,
+then exited normally. The full checkpoint, optimizer, configuration, log and
+[2,551-action verified replay](results/defense/training/recurrent-frozen-calibration-01/replay/replay.html)
+are preserved. The [post-training comparison](results/defense/training/recurrent-frozen-calibration-01/comparison.json)
+checks all **12** base arrays against the original feedforward parent:
+**exactly unchanged**, while all **eight** memory/residual arrays changed.
+The optimizer still has **18** arrays and no base slots. Both recurrent arms'
+learning and environment settings match; freezing changes the trainable
+parameter set, and all seeds are reused validation seeds, not fresh tests.
+The bounded check remains excluded from the collector.
+
+The improved retention supports an exploratory longer trial,
+`defense-ppo-30-frozen-memory`, continuing this calibration's full optimizer
+at **131,072** (plus the inherited base's **10,447,616** pretraining actions).
+The [configuration](results/defense/training/ppo-30-frozen-memory/resume-config.json)
+keeps 32 workers, 256-step rollouts, batch 512, 128 memory units, 32-step
+sequences, learning rate 0.000125, entropy 0.002, value coefficient 0.5,
+gamma 0.997, lambda 0.99, 100,000-T-state actions, stride 1, life boundaries,
+shared own-score resets, eight boot-only workers and lookback 32. Training
+and games are uncapped; ten-game validation runs every 200,000 actions.
+Episodes, neural memory and own-state archives restart, not the optimizer.
+Runs 24 and 29 continue independently. The sole collector was cleanly
+restarted with the recurrent loader and this new full-run source, retaining
+all historical sources and excluding all short checks. It still requires
+frozen-policy replay verification before replacing the shared best.
 
 ```bash
 venv/bin/python -u -m rl.defense_train \
@@ -2448,6 +2482,13 @@ venv/bin/python -u -m rl.defense_train \
   --artifacts runs/defense-recurrent-frozen-calibration-reproduction/artifacts \
   --resume results/defense/training/recurrent-frozen-initial-01/checkpoint \
   --steps 131072
+
+# Continue the verified calibration without a training/action limit:
+venv/bin/python -u -m rl.defense_train \
+  --run runs/defense-frozen-memory-reproduction \
+  --artifacts runs/defense-frozen-memory-reproduction/artifacts \
+  --resume results/defense/training/recurrent-frozen-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Independent Double-DQN training path
