@@ -25,15 +25,17 @@ does not solve the shared failure pattern.
 Full trials 33/34 now continue the verified shorter-lookback reset arm and
 its matched high-exploration no-reset comparator, retaining complete-game
 evaluation and automatic verified replay collection.
-Their first three full-run mean differences (resets minus control) are
-**+62 / −305 / +240**. All games remain stage-1 losses.
+Their first five full-run mean differences (resets minus control) are
+**+62 / −305 / +240 / +39 / +596**. All games remain stage-1 losses.
 A read-only prediction/return diagnostic does not support
 gross near-loss Q-value inflation as the explanation.
 A bounded archive-diversity pair favored screen fingerprints over score bins
 by 384 mean points, with equal maximum archive capacity and identical parent
 state. Both still fell below the parent and lost every evaluation in stage 1.
-Full trials 35/36 continue those capacity-matched archive-selection arms;
-their first full-run evaluations are pending.
+Full trials 35/36 continue those capacity-matched archive-selection arms.
+Their first full round averages **10,198 / 10,133**, respectively, but every
+game still loses in stage 1. Verified replay loss panels show the same broad
+right-opening barrier sequence; archive diversity has not resolved it.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -3389,6 +3391,15 @@ games across the three rounds lost in stage 1. Complete third-round game
 records and model hashes are archived in that report; the earlier, stronger
 full optimizer checkpoints and verified replays remain the preserved references.
 
+The [five-round record through **7,762,144**](results/defense/training/dqn-33-persistent-resets/comparison-through-000007762144.json)
+adds reset/control means **10,193 / 10,154** and **10,227 / 9,631**.
+All **100** complete games across the five paired rounds lost in stage 1;
+no mission or later stage was observed. These are repeatedly reused validation
+seeds, not independent test games. The record includes complete per-game
+results and immutable local model hashes; earlier stronger full optimizer
+states and verified replays remain the archived references. The changing
+score margin still does not demonstrate progression beyond the shared obstacle.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
   --run runs/defense-persistent-reset-reproduction \
@@ -3506,6 +3517,40 @@ Historical sources remain included; short checks remain excluded. Any shared
 best replacement still requires independent frozen-policy action/screen/reward
 verification. The new capacity-matched pair is an experiment, not a claim that
 screen cells have resolved the failure point.
+
+The [first full round at **7,293,216**](results/defense/training/dqn-35-screen-archive/comparison-at-000007293216.json)
+is now complete, after **200,000** new actions per arm:
+
+| Archive selection | Ten-game mean | Median | Best | Verified replay |
+| --- | ---: | ---: | ---: | --- |
+| Screen fingerprints | 10,198 | 10,210 | 10,280 | [2,536 actions](results/defense/training/dqn-35-screen-archive/first-replay/replay.html) |
+| Score bins, matched limit | 10,133 | 10,395 | 10,440 | [2,533 actions](results/defense/training/dqn-36-score-archive-control/first-replay/replay.html) |
+
+The +65 mean difference comes from three higher and seven lower paired screen
+scores. Its lower median and best score qualify the apparent mean advantage;
+all twenty games lost in stage 1. Both full online/target/optimizer/RNG
+checkpoints and manifest-checked, independently replay-verified bundles are
+preserved. The stronger shared best is unchanged.
+
+Screen selection completed **79** new boot games and **48** restored segments;
+score selection completed **77 / 59**. All logged training episodes also
+remained in stage 1. Latest terminal inventories contained **128** screen
+entries versus **31** score entries per worker. Both reserved boot workers
+remained boot-only and all archive events retained exact 32-action lookbacks.
+More occupied cells have not yet yielded a later-stage experience.
+
+The [read-only loss comparison](results/defense/diagnostics/shared-loss-screen-archive-01/report.json)
+uses these frozen replays, with no training examples or parameter changes.
+Screen selection gained **2,570 on all four lives**; score selection gained
+**2,580 / 2,620 / 2,620 / 2,620**. Their
+[screen-arm panels](results/defense/diagnostics/shared-loss-screen-archive-01/policy-1-losses.png)
+and [control panels](results/defense/diagnostics/shared-loss-screen-archive-01/policy-2-losses.png)
+show the same broad right-opening barrier sequence with the ship toward the
+centre/left near losses. This is visual evidence of the recurring bottleneck,
+not proof of identical collisions or a prescribed route. Flash alignment can
+lag a collision; final-life settling can skip the flash entirely. Neither
+score alone nor these selected high-scoring traces establish general success.
+The full pair continues unchanged for its next matched evaluation.
 
 ```bash
 # Use distinct paths and curriculum-cells score for the capacity-matched control.
