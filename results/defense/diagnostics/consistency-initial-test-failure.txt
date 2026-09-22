@@ -1,0 +1,95 @@
+.EFEE
+======================================================================
+ERROR: test_learning_terminal_mask_preserves_td_loss_and_gradients (tests.test_defense_consistency.ConsistencyTests.test_learning_terminal_mask_preserves_td_loss_and_gradients)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/sascha/source/trs-dqn/tests/test_defense_consistency.py", line 45, in test_learning_terminal_mask_preserves_td_loss_and_gradients
+    _, a = nn.value_and_grad(agent.online, agent._joint_loss)(agent.online, *batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/venv/lib/python3.12/site-packages/mlx/nn/utils.py", line 35, in wrapped_value_grad_fn
+    value, grad = value_grad_fn(model.trainable_parameters(), *args, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: [gather_axis] Cannot calculate VJP with respect to indices. Use stop_gradient on indices to stop gradients from being computed.
+
+======================================================================
+ERROR: test_online_choice_importance_weights_mask_and_stop_gradient (tests.test_defense_consistency.ConsistencyTests.test_online_choice_importance_weights_mask_and_stop_gradient)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/sascha/source/trs-dqn/tests/test_defense_consistency.py", line 28, in test_online_choice_importance_weights_mask_and_stop_gradient
+    gradient = mx.grad(lambda q: consistency_loss(q, target, discounts, weights)[0])(online)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: [gather_axis] Cannot calculate VJP with respect to indices. Use stop_gradient on indices to stop gradients from being computed.
+
+======================================================================
+ERROR: test_real_update_keeps_target_fixed_and_priorities_td_only (tests.test_defense_consistency.ConsistencyTests.test_real_update_keeps_target_fixed_and_priorities_td_only)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/sascha/source/trs-dqn/tests/test_defense_consistency.py", line 62, in test_real_update_keeps_target_fixed_and_priorities_td_only
+    loss, errors, q = agent.train(batch)
+                      ^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/rl/defense_consistency.py", line 50, in train
+    result = self.update(*(mx.array(x) for x in batch))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/rl/defense_consistency.py", line 43, in _update
+    (loss, (errors, q, td, consistency, gap, active)), grads = nn.value_and_grad(
+                                                               ^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/venv/lib/python3.12/site-packages/mlx/nn/utils.py", line 35, in wrapped_value_grad_fn
+    value, grad = value_grad_fn(model.trainable_parameters(), *args, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: [gather_axis] Cannot calculate VJP with respect to indices. Use stop_gradient on indices to stop gradients from being computed.
+
+======================================================================
+FAIL: test_native_learning_resume_and_standard_policy_replay (tests.test_defense_consistency.ConsistencyTests.test_native_learning_resume_and_standard_policy_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/sascha/source/trs-dqn/tests/test_defense_consistency.py", line 100, in test_native_learning_resume_and_standard_policy_replay
+    first = run('first', ['--tc-weight', '1', '--envs', '2', '--capacity', '256', '--compact-replay',
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/tests/test_defense_consistency.py", line 98, in run
+    self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+AssertionError: 1 != 0 : {"wall_seconds": 0.0, "event": "start", "steps": 0, "config": {"run": "/var/folders/8f/r70sc5nd2h78wd1xr55g533h0000gn/T/tmpose9qcre/first", "artifacts": "/var/folders/8f/r70sc5nd2h78wd1xr55g533h0000gn/T/tmpose9qcre/first-artifacts", "resume": null, "init_from_dqn": null, "learned_repeats": null, "repeat_n_step": 1, "steps": 128, "seed": 97, "envs": 2, "batch_size": 4, "capacity": 256, "compact_replay": true, "learning_rate": 0.0001, "gamma": 0.997, "n_step": 5, "greedy_trace_cut": false, "spr_weight": 0.0, "inverse_weight": 0.0, "tc_weight": 1.0, "reward_scale": 0.01, "life_terminal": true, "allow_enter": false, "warmup": 16, "train_every": 4, "epsilon_steps": 1000000, "epsilon_final": 0.05, "exploration_max_repeat": 1, "exploration_exponent": 1.5, "exploration_actions": "uniform", "bootstrap_heads": 0, "bootstrap_probability": 0.5, "bootstrap_prior_scale": 1.0, "bootstrap_epsilon": 0.01, "quantiles": 0, "quantile_exploration_power": 0.0, "target_every": 2, "tstates": 100000, "observation_stride": 1, "max_episode_steps": 12, "eval_every": 1000, "eval_games": 10, "eval_envs": 8, "eval_seed": 10000, "eval_max_steps": 0, "mlx_cache_mb": 64, "curriculum_probability": 0, "curriculum_share": false, "curriculum_boot_envs": 0, "curriculum_boot_epsilon": null, "curriculum_lookback": 0, "curriculum_trigger": "progress", "curriculum_restored_life_only": false, "curriculum_cells": "score", "curriculum_score_interval": 20, "curriculum_bins": 16, "curriculum_per_bin": 4, "curriculum_screen_interval": 32, "game": "defense", "algorithm": "dueling-double-dqn-per-nstep", "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644", "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828", "environment_version": "obstacle-run-screen-v1", "environment_source_sha256": "f49b8c032e4e928513f6c8dd7b69ebf59d7b97bce251a485f708e0a1b965d394", "trainer_source_sha256": "66f821c14033821aae0ef92d0117eefb4d856060c789808cd9b9b9114af59e33", "model_source_sha256": "7a5c67db42356a549f16981a24fc50608d9afbd532feb1c7e702fec3622d55ce", "replay_source_sha256": "a7d7a1f57cd52c27ddd128d2ae5074a39c59435a22b9a2e48dc6d87ce67fc1c3", "action_names": ["NOOP", "UP", "DOWN", "LEFT", "RIGHT", "UP+LEFT", "UP+RIGHT", "DOWN+LEFT", "DOWN+RIGHT", "SPACE", "UP+SPACE", "DOWN+SPACE", "LEFT+SPACE", "RIGHT+SPACE", "UP+LEFT+SPACE", "UP+RIGHT+SPACE", "DOWN+LEFT+SPACE", "DOWN+RIGHT+SPACE", "LEFT+RIGHT", "LEFT+RIGHT+SPACE"], "mlx": "0.32.2", "observation": "four raw 16x64 video-memory frames", "reward": "visible score difference only, constant scale for optimizer", "training_policy": "epsilon-greedy learned Q-values; uniform random exploration", "policy": "learned Q-values, greedy", "evaluation_policy": "learned Q-values, greedy", "replay_resume": "refill from new own experience; no saved trajectories loaded", "resume_semantics": "online, target, optimizer and RNG restored; episodes restart from boot", "priority_alpha": 0.6, "priority_beta": "0.4 to 1 over epsilon-steps aggregate actions", "consistency_source_sha256": "57752df4e101a87704cec014c42e806f5f46b8ae40bc1c5528a934d8f27add1a", "consistency_target": "current online greedy bootstrap action; stopped saved-target value", "consistency_loss": "PER importance-weighted next-value Huber, masked when n-step discount is zero", "consistency_priority": "ordinary absolute TD error only; no auxiliary priority", "consistency_resume": "standard online/target/Adam/RNG restore; local diagnostic counters restart", "consistency_reference": "https://arxiv.org/html/1805.11593#S3.SS3", "replay_storage": "exact-visible-frame-interning-v1", "frame_storage_source_sha256": "a3fc66b02b3bb8659177e5ab1be8186b7b032548dc57a46ba919b1dc6796e0b1"}}
+{"wall_seconds": 0.43, "event": "workers_started", "workers": [{"pid": 64904, "mlx_loaded": false}, {"pid": 64905, "mlx_loaded": false}]}
+{"wall_seconds": 0.54, "event": "episode", "worker": 0, "action_counter": 23, "episode": 1, "score": 0, "lives": 4, "stage": 1, "game_over": false, "mission_complete": false, "highest_stage": 1, "missions_completed": 0, "mission_completed": false, "life_lost": false, "steps": 12, "terminated": false, "truncated": true, "episode_reward": 0.0, "hud_settle_tstates": 0, "terminal_settle_tstates": 0, "start_tstates": 27563}
+{"wall_seconds": 0.54, "event": "episode", "worker": 1, "action_counter": 24, "episode": 2, "score": 0, "lives": 4, "stage": 1, "game_over": false, "mission_complete": false, "highest_stage": 1, "missions_completed": 0, "mission_completed": false, "life_lost": false, "steps": 12, "terminated": false, "truncated": true, "episode_reward": 0.0, "hud_settle_tstates": 0, "terminal_settle_tstates": 0, "start_tstates": 66969}
+{"wall_seconds": 0.55, "event": "error", "error": "ValueError('[gather_axis] Cannot calculate VJP with respect to indices. Use stop_gradient on indices to stop gradients from being computed.')", "steps": 24}
+Traceback (most recent call last):
+  File "/Users/sascha/source/trs-dqn/rl/defense_dqn.py", line 632, in main
+    loss, errors, q = agent.train(batch)
+                      ^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/rl/defense_consistency.py", line 50, in train
+    result = self.update(*(mx.array(x) for x in batch))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/rl/defense_consistency.py", line 43, in _update
+    (loss, (errors, q, td, consistency, gap, active)), grads = nn.value_and_grad(
+                                                               ^^^^^^^^^^^^^^^^^^
+  File "/Users/sascha/source/trs-dqn/venv/lib/python3.12/site-packages/mlx/nn/utils.py", line 35, in wrapped_value_grad_fn
+    value, grad = value_grad_fn(model.trainable_parameters(), *args, **kwargs)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: [gather_axis] Cannot calculate VJP with respect to indices. Use stop_gradient on indices to stop gradients from being computed.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/sascha/source/trs-dqn/rl/defense_dqn.py", line 700, in <module>
+    main()
+  File "/Users/sascha/source/trs-dqn/rl/defense_dqn.py", line 692, in main
+    checkpoint(agent, args.run/"latest", state())
+  File "/Users/sascha/source/trs-dqn/rl/defense_dqn.py", line 261, in checkpoint
+    base_checkpoint(learner, directory, saved)
+  File "/Users/sascha/source/trs-dqn/rl/train.py", line 31, in checkpoint
+    model.save_weights(str(temp))
+  File "/Users/sascha/source/trs-dqn/venv/lib/python3.12/site-packages/mlx/nn/layers/base.py", line 220, in save_weights
+    mx.save_safetensors(file, params_dict)
+RuntimeError: [eval] Attempting to eval an array without a primitive.
+If you are compiling a function, make sure all the inputs and outputs are captured:
+https://ml-explore.github.io/mlx/build/html/usage/compile.html#pure-functions.
+If you are not using compile, this may be a bug. Please file an issue here:
+https://github.com/ml-explore/mlx/issues.
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.841s
+
+FAILED (failures=1, errors=3)

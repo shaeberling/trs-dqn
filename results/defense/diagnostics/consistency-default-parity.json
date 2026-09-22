@@ -1,0 +1,19 @@
+{
+  "before": "runs/defense-tc-default-before",
+  "after": "runs/defense-tc-default-after",
+  "new_base_actions": 16384,
+  "new_updates": 398,
+  "model_sha256": "bac2b5fe86b21bdee0d71f2b7451b2b7bae0a025e78cc1ff72f4e3d65c58edb4",
+  "target_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+  "optimizer_arrays_equal": 26,
+  "all_nonconfiguration_state_equal": true,
+  "equal_game_and_archive_events": 201,
+  "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+  "original_trainer_commit": "f19125b",
+  "original_executed_trainer_sha256": "28548224c90435d56edf2886afb5b2721fb81d91717bced71509515bcb7b2bdb",
+  "new_trainer_sha256": "66f821c14033821aae0ef92d0117eefb4d856060c789808cd9b9b9114af59e33",
+  "limits": [
+    "Deterministic disabled-feature check with optimizer updates; not temporal-consistency performance.",
+    "Before trainer ran before the optional code change; both jobs use the default-disabled regularizer."
+  ]
+}
