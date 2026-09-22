@@ -1,0 +1,27 @@
+{
+  "schema": "defense-own-dynamics-v1",
+  "purpose": "new-own-experience-for-world-model",
+  "checkpoint": "/Users/sascha/source/trs-dqn/runs/defense-imagination-feedback-04/update-001500/model.safetensors",
+  "parent_hashes": {
+    "model.safetensors": "b28ddccd30b4b60808bd152e6bcbd2536932695c4d2bbeff7d15dae58ca9982e",
+    "state.json": "6bcbf6775b1e455b0791150fc6d6ad902cca7d6904dc026602f311bd55386cb4"
+  },
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "collection_source_sha256": "a340c436d29e3e653e8f58f15aa8766e0fba1cda2729e4be48169bd796e38f99",
+  "tstates": 100000,
+  "observation_stride": 1,
+  "games": 24,
+  "heldout_games": 4,
+  "first_seed": 68000,
+  "epsilon": 0.0,
+  "exploration_max_repeat": 1,
+  "exploration_exponent": 1.5,
+  "behavior": "learned categorical actor at temperature 1; no action overrides",
+  "algorithm": "gaussian-rssm-imagined-reinforce",
+  "architecture": "screen-rssm-imagined-actor-v1",
+  "assignment": "final heldout_games sequential seeds fixed before collection",
+  "policy_imitation": false,
+  "hidden_state": false,
+  "existing_evaluation_data": false
+}

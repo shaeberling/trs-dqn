@@ -1,0 +1,45 @@
+{
+  "file_hashes": {
+    "episode-0018.npz": "be423a5245d29de226ec7a3a77facc98bacb1e6f3d8b3dbf9e8a8946bbfd9e40",
+    "episode-0019.npz": "4327bd2a6d23f198a12bec56f83bbf66c76bf34eb0dcfd73701b17e45f1a7898",
+    "episode-0022.npz": "190d22cfecf5ef98511ae79629a5539e1c61e9bacd5064ecaea450a567511397",
+    "episode-0023.npz": "feb8a3464197750628d228ffb22613089eb7e0e386001f2d7d88c5150b8aa466",
+    "episode-0009.npz": "0f1044bda743617d48aea56b5bf8cb4aa0d95eb86bd6a3c59dfd16a55f568d31",
+    "episode-0021.npz": "2dd314e0f6a7101397755e983e41d690497894f8ade87adc35f8b979f5ceb8f8",
+    "episode-0020.npz": "2b0a11a257e45f1f33b8a7c50dc7e7f1aa385244b238430e22588bd73d444363",
+    "episode-0008.npz": "5305e7e4ec9f64484a352eb1d69791094eb57c8b9b29a309cda900bbe7544271",
+    "episode-0011.npz": "56fd43e2b08bbda1d38aa2f4b109930a7b5fb18fd63f19a89c1f5c8a0cba88f8",
+    "episode-0005.npz": "fe0c4bcadd8085b8963c53e4cf77b659377bfdd08b933fe7d0ca091b288458d2",
+    "episode-0004.npz": "ab25fa64ebd639da65e3ee67751a6feeae8f99fa90cd56c98d389f342143d1d3",
+    "episode-0010.npz": "33c7a9ab25887f230549c0eb1724938d2967c8f9809a0919e4b8a84f9762d078",
+    "episode-0006.npz": "7e183753d675cbb7ff9f75e71434aaa5b36d5a340e2964bd96d7687c1e06d4fe",
+    "episode-0012.npz": "979dd544857548838e3fc673f2f5555a309a837f39319b4491ce15663e9acb3c",
+    "episode-0013.npz": "cb5445a3d462f5c66c2265fa73adfd15c1101b845e8a158f45c6b7677e340fd9",
+    "episode-0007.npz": "451b2e4943e2d833ff53a373ce53646e01f2dc6e5872c528488c496adabeb9fe",
+    "episode-0003.npz": "85c598fff71d1ad79e912d27f101713c5bb20b1f7513c9712f3bf7193bd71e5c",
+    "episode-0017.npz": "728cf962f552f6576ac2120edca50177cb1db077f5cbe801f5fa9c82cd99dd9f",
+    "episode-0016.npz": "242e7579b29eebf93002ac516a8eb070ff10b98925778db5831c461935187d16",
+    "episode-0002.npz": "410c49691e441e63f0f6d220d56123b97ed40629d839275c16f541469e8ee70f",
+    "manifest.json": "f3c5338f463963619263240ed797fe1f7457e51e3a2e949e951de92c335156fe",
+    "episode-0014.npz": "91ea09e5b9ac15628e219ea158f1474d7e6b90d87414386301c7747c084503fc",
+    "episode-0000.npz": "74849e85222664f100dfc91b8557829b588c6a930fb90545e75d623ae187d966",
+    "collection-config.json": "5b60a94663b531be9921b4f00bebed112a0bf99530ca05576bc26d506b471729",
+    "episode-0001.npz": "17b15fc4363279605890059c0251dc7fc8d44927ab13eb506346081475c148b3",
+    "episode-0015.npz": "4739ba3c4174672b492ed806658b74f1d0d83af08656fef64d082165d51e5147",
+    "progress.json": "13b47a62daede08581f0ac2db2355835126ecd1460c8c85916286c37acc7fcdd"
+  },
+  "splits": {
+    "train": {
+      "games": 20,
+      "actions": 30130,
+      "mean_score": 278.0
+    },
+    "heldout": {
+      "games": 4,
+      "actions": 6063,
+      "mean_score": 270.0
+    }
+  },
+  "training_updates": 0,
+  "description": "New own learned-actor experience; no action override or replay/evaluation imports."
+}

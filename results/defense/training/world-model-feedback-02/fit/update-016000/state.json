@@ -1,0 +1,54 @@
+{
+  "updates": 16000,
+  "burn": 8,
+  "sampling_rng": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 96395147933870406097776417897221205464,
+      "inc": 87136372517582989555478159403783844777
+    },
+    "has_uint32": 1,
+    "uinteger": 2724849330
+  },
+  "metadata": {
+    "data": "/Users/sascha/source/trs-dqn/runs/defense-world-data-feedback-02",
+    "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+    "architecture": "small-gaussian-rssm-v1",
+    "reward_scale": 0.01,
+    "batch": 8,
+    "length": 32,
+    "burn": 8,
+    "train_games": 80,
+    "heldout_games": 16,
+    "boundary_fraction": 0.0,
+    "train_windows": 144145,
+    "heldout_windows": 28871,
+    "fit_source_sha256": "ed4172ce69dee9925a826e37761e1a1d9d6ea9a4aa9904cdd9a2e7ec454f7d6c",
+    "model_source_sha256": "86c4aad27f5ab5dbcbd3f870381f8dd6e8dc830f6194daeff46252dec186f3df",
+    "dynamics_only": true,
+    "promotion_eligible": false,
+    "source_paper": "https://arxiv.org/abs/1912.01603",
+    "args": {
+      "data": "runs/defense-world-data-feedback-02",
+      "output": "runs/defense-world-fit-07-actor-feedback",
+      "updates": 16000,
+      "batch": 8,
+      "length": 32,
+      "burn": 8,
+      "audit_windows": 64,
+      "every": 1000,
+      "seed": 0,
+      "resume": "runs/defense-world-fit-06-actor-feedback/update-014000",
+      "extend_data": true,
+      "boundary_fraction": 0.0,
+      "change_sampling": false
+    },
+    "previous_dataset_sha256": "da829f67d708fc5ce99cb8270f42c307dba18ec214a8ee2d12653b8cf26adefe",
+    "dataset_extension": true
+  },
+  "hashes": {
+    "world.safetensors": "7ae9aa4d1568839ca29b36b1e38cecc293e89a138d3662d359bd0121dbb96d24",
+    "optimizer.npz": "810e3451350583af9f6ebe71e942e40080148b427a2570786d24ebf0e4c2a76e",
+    "random.npz": "43ce599e2be387b64bcdba5881d645a35f9db19ef5a03959d5144549b4aca075"
+  }
+}
