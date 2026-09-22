@@ -5,10 +5,12 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
-Status: **screen-only PPO training is running independently of Breakdown**, with
-parallel emulator workers, resumable checkpoints, complete-game validation and
-automatic verified best-effort replays. See the commands and monitoring paths
-below. A successful mission has not yet been verified.
+Status: **Defense learners are paused at saved checkpoints because free disk
+space fell below the existing 5 GiB safety threshold.** Training remains
+independent of Breakdown, with parallel emulator workers, resumable checkpoints,
+complete-game validation and automatic verified best-effort replays. No history
+has been deleted. Free additional storage before restarting an unlimited run;
+see the pause checkpoints below. A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
@@ -205,7 +207,7 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live progress: `runs/defense-dqn-24-bootstrap/status.json`,
+- Latest progress (learners currently paused): `runs/defense-dqn-24-bootstrap/status.json`
   and `runs/defense-ppo-29-value-weight/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
@@ -2216,8 +2218,114 @@ stability or a depth gain, and the tied best does not replace the global replay.
 Run 29 later reached [mean **10,461**, median **10,460**, best **10,480** at
 11,250,432](results/defense/training/ppo-29-value-weight/step-000011250432/evaluation.json).
 Its full optimizer checkpoint is preserved. Subsequent means fluctuated and
-fell to **8,105** at **15,248,128**; all remained stage-1 losses. It is still
-running, but this is not evidence that more compute has solved progression.
+fell to **8,105** at **15,248,128**; all remained stage-1 losses. It subsequently
+paused cleanly for disk pressure at **15,674,112** inherited actions
+(**5,226,496** new actions). All **26** complete validation batches stayed in
+stage 1; the last mean was **7,879** at **15,657,728**. The
+[pause checkpoint](results/defense/training/ppo-29-value-weight/pause-checkpoint-000015674112/state.json),
+[validation history](results/defense/training/ppo-29-value-weight/validation-at-000015674112.json)
+and [losslessly compressed complete log](results/defense/training/ppo-29-value-weight/metrics-at-000015674112.jsonl.gz)
+are preserved. This is not evidence that more compute has solved progression.
+
+### Recurrent screen-history experiment
+
+`rl.defense_train --recurrent-hidden 128 --sequence-length 32` adds a GRU to
+the existing CNN's 256-feature output, with residual actor/value projections.
+The motivating question is whether learned memory of earlier visible screens
+helps beyond the four-frame input. Memory has been studied in
+[Deep Recurrent Q-Learning](https://arxiv.org/abs/1507.06527); this implementation
+is **residual GRU PPO**, not a reproduction of that paper's LSTM DQN. We have
+not established that insufficient history causes the current stage-1 plateau.
+
+Only the policy's own screen history enters the recurrent state. There are
+no game-private inputs, position labels, routes, oracle actions or extra
+rewards. Memory starts at zero on boot or a real environment reset (including
+a reset to an opaque own-reached state), not at a visible ship loss. Evaluation
+always starts from boot; parallel games have independent memory keyed by game
+identity, and evaluation never advances the learner's carried memory.
+
+Training shuffles contiguous within-worker sequences, not individual frames.
+The sequence length controls truncated backpropagation, while inference memory
+can persist for the full game. Initial sequence states are detached from the
+gradient; no burn-in is implemented. Carried states can therefore be stale
+after an optimizer update. Resuming restores weights, optimizer and action RNG,
+but emulator episodes and neural memory restart from boot. Own-state archives
+do not contain saved neural memory. These are experiment limitations, not
+claims of exact trajectory continuation.
+
+`--initialize-policy` copies the entire compatible **own learned** feedforward
+PPO into the residual base. The memory output projections start at zero,
+preserving the parent's initial logits and values; the optimizer and action
+counters start fresh. The base remains trainable. Saved provenance includes
+the parent's model/configuration hashes and its **10,447,616** pretraining
+actions: this is transfer from our own policy, not learning from scratch or
+from demonstrations. `--memory-scale 0` supplies a matched memory-disabled
+control with the same initialization and sequence batching. Default
+`--recurrent-hidden 0` preserves the original feedforward path.
+
+The [zero-update initializer](results/defense/training/recurrent-initial-01/checkpoint/state.json)
+reproduced **all ten parent game records exactly** on reused validation seeds
+10000–10009: mean **10,474**, median/best **10,480**, all stage-1 losses.
+Its [replay](results/defense/training/recurrent-initial-01/replay/replay.html)
+reverified **2,553** neural actions. This proves initial-policy preservation,
+not an improvement. The initializer's checkpoint, fresh optimizer, provenance,
+[parity record](results/defense/training/recurrent-initial-01/parity.json) and
+complete-game evaluation are preserved separately from the shared best.
+
+Regression tests cover sequence ordering, zero-residual identity, within-sequence
+resets, per-game parallel memory, memory learning, disabled-memory gradients,
+bootstrap/evaluation isolation, native full-game serial/parallel agreement,
+saved-policy replay verification, invalid modes and real training/resume.
+SIL and actor-noise modes are rejected with recurrent training until separately
+implemented and tested.
+
+The two **32,768-action** checks completed normally, using the same initializer,
+four workers, 256-step rollouts, batch 512, 32-step sequences, learning rate
+0.000125, entropy 0.002, value coefficient 0.5, 100,000-T-state actions and
+stride 1. Shared own-score resets used probability 0.5, one boot-only worker
+and lookback 32. Configuration differs only in memory scale and output paths.
+
+| Memory | Mean | Median | Best | Verified replay actions |
+| --- | ---: | ---: | ---: | ---: |
+| [Enabled](results/defense/training/recurrent-memory-01/checkpoint/evaluation.json) | 9,499 | 10,300 | 10,440 | 2,462 |
+| [Disabled control](results/defense/training/recurrent-control-01/checkpoint/evaluation.json) | 10,169 | 10,395 | 10,480 | 2,489 |
+
+Both evaluated ten complete boot games on reused seeds 10000–10009; every
+game lost in stage 1. Memory was **670 points worse in mean** than its matched
+control and both regressed from the untouched parent's 10,474. This short
+comparison does not establish a benefit from recurrence. The enabled check
+completed **12** boot games and **one** restored segment during learning;
+the control completed **10** boot games and **four** restored segments.
+All checkpoints, optimizers, configurations, full logs and separately verified
+replays are preserved. Neither short check enters the shared collector.
+
+The initial full suite passed **258 tests**. After strengthening memory tests,
+the **259-test** suite passed all seven recurrent tests and the other
+non-supervisor checks, but **three supervisor checks failed** when actual free
+disk space fell below **5 GiB**. The safety threshold and tests were not
+weakened. No unlimited recurrent run was launched; additional disk space and
+a clean full-suite rerun are needed before further production experiments.
+
+```bash
+# Save an exact-policy recurrent initializer without learning:
+venv/bin/python -m rl.defense_train --run runs/defense-recurrent-initial-reproduction \
+  --artifacts runs/defense-recurrent-initial-reproduction/artifacts \
+  --initialize-policy results/defense/training/ppo-12-lookback/step-000010447616 \
+  --initialize-only --recurrent-hidden 128 --sequence-length 32 \
+  --envs 4 --rollout 256 --batch-size 512 --learning-rate .000125 \
+  --entropy .002 --gae-lambda .99 --life-terminal \
+  --curriculum-probability .5 --curriculum-share --curriculum-boot-envs 1 \
+  --curriculum-lookback 32 --eval-envs 4 --eval-every 32768 --mlx-cache-mb 256
+
+# Matched bounded checks; initialize-only is deliberately not inherited:
+venv/bin/python -m rl.defense_train --run runs/defense-recurrent-memory-reproduction \
+  --artifacts runs/defense-recurrent-memory-reproduction/artifacts \
+  --resume results/defense/training/recurrent-initial-01/checkpoint --steps 32768
+venv/bin/python -m rl.defense_train --run runs/defense-recurrent-control-reproduction \
+  --artifacts runs/defense-recurrent-control-reproduction/artifacts \
+  --resume results/defense/training/recurrent-initial-01/checkpoint \
+  --memory-scale 0 --steps 32768
+```
 
 ### Independent Double-DQN training path
 
@@ -2813,7 +2921,15 @@ with a [2,578-action verified replay](results/defense/training/dqn-24-bootstrap/
 Both full online/target/prior/optimizer checkpoints are preserved. This is
 continued improvement within the bootstrap lineage, but still below the
 shared 10,480-point best and entirely stage-1 losses. At 7,200,000 its mean
-was 10,170, best 10,200; the learner remains active.
+was 10,170, best 10,200. The learner subsequently paused cleanly for disk
+pressure at **7,383,056** actions, **460,815** updates and **3,661** complete
+training games. All **36** complete validation batches stayed in stage 1.
+Its [pause checkpoint](results/defense/training/dqn-24-bootstrap/pause-checkpoint-000007383056/state.json),
+[validation history](results/defense/training/dqn-24-bootstrap/validation-at-000007383056.json)
+and [losslessly compressed complete log](results/defense/training/dqn-24-bootstrap/metrics-at-000007383056.jsonl.gz)
+are preserved. Resuming restores weights, target, priors, optimizer and RNG,
+but refills replay from new own experience; it is not an exact continuation
+of the in-memory training buffer. No historical files were removed.
 
 A [frozen-head diagnostic](results/defense/diagnostics/bootstrap-800000-heads.json)
 then compared this exact checkpoint's greedy ensemble with each individual

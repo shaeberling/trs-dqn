@@ -29,7 +29,11 @@ def main():
     start.add_argument("--resume", type=Path)
     start.add_argument("--initialize-encoder", type=Path,
                        help="fresh learner using only an own Defense checkpoint's screen encoder")
+    start.add_argument("--initialize-policy", type=Path,
+                       help="own feedforward PPO checkpoint for a zero-output recurrent residual base")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
+    parser.add_argument("--initialize-only", action="store_true",
+                        help="save initialized weights/optimizer and exit without learning")
     parser.add_argument("--seed", type=int, default=41)
     parser.add_argument("--envs", type=int, default=32)
     parser.add_argument("--rollout", type=int, default=128)
@@ -39,6 +43,11 @@ def main():
     parser.add_argument("--entropy", type=float, default=.02)
     parser.add_argument("--value-coefficient", type=float, default=.5,
                         help="weight on half mean-squared value error; default preserves prior PPO")
+    parser.add_argument("--recurrent-hidden", type=int, default=0,
+                        help="0 preserves feedforward PPO; positive adds screen-history GRU memory")
+    parser.add_argument("--sequence-length", type=int, default=32)
+    parser.add_argument("--memory-scale", type=float, default=1.,
+                        help="recurrent residual scale; 0 is a matched memory-disabled control")
     parser.add_argument("--policy-bias-noise", type=float, default=0,
                         help="training-only actor bias noise std, fixed per life; 0 disables")
     parser.add_argument("--policy-weight-noise", type=float, default=0,
@@ -86,7 +95,7 @@ def main():
         prior = json.loads((args.resume/"state.json").read_text())
         explicit = {word.split("=", 1)[0] for word in sys.argv[1:] if word.startswith("--")}
         for key, value in prior["config"].items():
-            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder")
+            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_only")
                     and "--"+key.replace("_", "-") not in explicit
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
@@ -98,6 +107,10 @@ def main():
             parser.error("Resume requires a compatible Defense checkpoint")
         if args.allow_enter != config.get("allow_enter", False):
             parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
+        from .recurrent_policy import RECURRENT_ARCHITECTURE
+        if (args.recurrent_hidden != config.get('recurrent_hidden', 0)
+                or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else None)):
+            parser.error("Changing recurrent architecture requires initialization, not an optimizer resume")
         if not (args.resume/"optimizer.npz").exists():
             parser.error("Resume requires an original learner checkpoint with optimizer state")
     if min(args.envs, args.rollout, args.batch_size, args.epochs, args.eval_every,
@@ -105,6 +118,14 @@ def main():
         parser.error("counts and intervals must be positive")
     if args.envs*args.rollout % args.batch_size:
         parser.error("envs * rollout must be divisible by batch-size")
+    if (args.recurrent_hidden < 0 or args.sequence_length < 1
+            or not np.isfinite(args.memory_scale) or not 0 <= args.memory_scale <= 1
+            or (args.recurrent_hidden and (args.rollout % args.sequence_length
+                                          or args.batch_size % args.sequence_length))
+            or (not args.recurrent_hidden and (args.initialize_policy or args.memory_scale != 1))
+            or (args.recurrent_hidden and (args.initialize_encoder or args.sil_updates
+                                          or args.policy_bias_noise or args.policy_weight_noise))):
+        parser.error("invalid recurrent configuration, sequence sizes or unsupported SIL/noise/encoder-only mode")
     if min(args.steps, args.max_episode_steps, args.eval_max_steps, args.mlx_cache_mb) < 0:
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
@@ -142,8 +163,15 @@ def main():
     import mlx.core as mx
     from mlx.utils import tree_unflatten
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
-    agent = PPO(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
-                action_count=len(action_names(args.allow_enter)), value_coefficient=args.value_coefficient)
+    agent_class, extra_agent = PPO, {}
+    if args.recurrent_hidden:
+        from .defense_recurrent import RecurrentPPO
+        from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
+        agent_class = RecurrentPPO
+        extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale)
+    agent = agent_class(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
+                        action_count=len(action_names(args.allow_enter)),
+                        value_coefficient=args.value_coefficient, **extra_agent)
     rng = np.random.default_rng(args.seed)
     steps, episodes = 0, 0
     initialization = None
@@ -155,7 +183,15 @@ def main():
         rng.bit_generator.state = prior["rng"]
         steps, episodes = prior["steps"], prior["episodes"]
     else:
-        if args.initialize_encoder:
+        if args.initialize_policy:
+            from .defense_initialization import initialize_policy
+            try:
+                initialization = initialize_policy(agent.model, args.initialize_policy,
+                                                    allow_enter=args.allow_enter, tstates=args.tstates,
+                                                    observation_stride=args.observation_stride)
+            except (OSError, ValueError, KeyError) as error:
+                parser.error(str(error))
+        elif args.initialize_encoder:
             from .defense_initialization import initialize_encoder
             try:
                 initialization = initialize_encoder(agent.model, args.initialize_encoder,
@@ -163,8 +199,10 @@ def main():
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
         # Broad initial exploration; no preference for a hand-selected action.
-        agent.model.advantage.weight *= .1
-        agent.model.advantage.bias *= .1
+        if not args.initialize_policy:
+            head = agent.model.base.advantage if args.recurrent_hidden else agent.model.advantage
+            head.weight *= .1
+            head.bias *= .1
         agent.compile()
     sil = None
     if args.sil_updates:
@@ -205,6 +243,14 @@ def main():
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
+    if args.recurrent_hidden:
+        config.update(architecture=RECURRENT_ARCHITECTURE,
+                      recurrent_source_sha256=sha256(Path(__file__).with_name('defense_recurrent.py')),
+                      recurrent_policy_source_sha256=sha256(Path(__file__).with_name('recurrent_policy.py')),
+                      policy='learned recurrent categorical, sampled; screen-history memory',
+                      memory_reset='zero at boot/actual environment reset, not visible life loss; cleared on resume',
+                      recurrent_training='contiguous within-worker truncated BPTT; rollout initial states detached',
+                      resume_semantics='optimizer and policy RNG restored; episodes and neural memory restart from boot')
     if initialization is not None:
         config.update(initialization=initialization,
                       initialization_source_sha256=sha256(Path(__file__).with_name("defense_initialization.py")))
@@ -279,12 +325,20 @@ def main():
                             max_steps=args.max_episode_steps, allow_enter=args.allow_enter,
                             observation_stride=args.observation_stride, **curriculum)
         obs = workers.observations
+        if args.recurrent_hidden:
+            agent.reset_memory(args.envs)
+            episode_starts = np.ones(args.envs, dtype=bool)
         log(dict(event="workers_started", workers=workers.runtime()))
         agent.save(args.run/"latest", state())
-        while not stop and (not args.steps or steps < args.steps):
+        while not stop and not args.initialize_only and (not args.steps or steps < args.steps):
             screens, actions_buffer, logps, values_buffer, rewards, boundaries = [], [], [], [], [], []
+            hidden_buffer, starts_buffer = [], []
             noise_rollout = None if noise is None else NoiseRollout(noise)
             for _ in range(args.rollout):
+                if args.recurrent_hidden:
+                    hidden_buffer.append(agent.memory.copy())
+                    starts_buffer.append(episode_starts.copy())
+                    episode_starts[:] = False
                 exploration = {} if noise is None else {noise_argument: noise_rollout.record()}
                 actions, logp, values = agent.act(obs, rng, **exploration)
                 screens.append(obs)
@@ -307,7 +361,8 @@ def main():
                         if segment is not None:
                             log(dict(event="sil_segment", action_counter=steps+worker+1, **segment))
                     if truncated and not learning_terminal:
-                        _, value = agent.predict(mx.array(frame[None]))
+                        value = (agent.bootstrap_value(frame[None], [worker]) if args.recurrent_hidden
+                                 else agent.predict(mx.array(frame[None]))[1])
                         reward += args.gamma*float(value[0].item())
                     reward_row.append(reward)
                     boundary_row.append(learning_terminal or truncated)
@@ -316,6 +371,8 @@ def main():
                         log(dict(event="curriculum_archive", worker=worker, action_counter=steps+worker+1,
                                  **info["curriculum_archive_add"]))
                     if terminal or truncated:
+                        if args.recurrent_hidden:
+                            episode_starts[worker] = True
                         episodes += 1
                         if info.get("full_game", True):
                             boot_episodes += 1
@@ -328,24 +385,34 @@ def main():
                 rewards.append(reward_row)
                 boundaries.append(boundary_row)
                 obs = np.stack(next_obs)
+                if args.recurrent_hidden:
+                    agent.reset_done(episode_starts)
                 if noise is not None:
                     noise_rollout.redraw(noise_boundaries)
                 steps += args.envs
-            _, last_value = agent.predict(mx.array(obs))
+            last_value = (agent.bootstrap_value(obs) if args.recurrent_hidden
+                          else agent.predict(mx.array(obs))[1])
             advantages, returns = gae(np.asarray(rewards, np.float32), np.asarray(values_buffer),
                                       np.asarray(boundaries, np.float32), np.array(last_value),
                                       args.gamma, args.gae_lambda)
             advantages = (advantages-advantages.mean())/(advantages.std()+1e-8)
-            data = (np.concatenate(screens), np.concatenate(actions_buffer), np.concatenate(logps),
-                    advantages.reshape(-1), returns.reshape(-1))
+            if args.recurrent_hidden:
+                data = tuple(sequence_batches(x, args.sequence_length) for x in
+                             (screens, actions_buffer, logps, advantages, returns))
+                data += (sequence_batches(hidden_buffer, args.sequence_length)[:, 0],
+                         sequence_batches(starts_buffer, args.sequence_length))
+            else:
+                data = (np.concatenate(screens), np.concatenate(actions_buffer), np.concatenate(logps),
+                        advantages.reshape(-1), returns.reshape(-1))
             if noise is not None:
                 noise_bank, noise_ids = noise_rollout.arrays()
             metrics = []
             for _ in range(args.epochs):
                 order = rng.permutation(len(data[0]))
                 epoch_metrics = []
-                for start in range(0, len(order), args.batch_size):
-                    indices = order[start:start+args.batch_size]
+                chunk_batch = args.batch_size // args.sequence_length if args.recurrent_hidden else args.batch_size
+                for start in range(0, len(order), chunk_batch):
+                    indices = order[start:start+chunk_batch]
                     extra = {} if noise is None else {noise_argument: mx.array(noise_bank[noise_ids[indices]])}
                     loss, aux = agent.update(*(mx.array(x[indices]) for x in data), **extra)
                     mx.eval(loss, aux, agent.state)

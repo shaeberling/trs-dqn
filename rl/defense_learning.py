@@ -35,6 +35,15 @@ BOOTSTRAP_ALGORITHM = "bootstrapped-dueling-double-dqn-prior-per-nstep"
 
 def policy_description(config, temperature=1.0):
     algorithm = config.get("algorithm", "ppo")
+    from .recurrent_policy import RECURRENT_ARCHITECTURE
+    architecture = config.get("architecture")
+    if architecture is not None:
+        if architecture != RECURRENT_ARCHITECTURE or algorithm != 'ppo':
+            raise ValueError("Unsupported Defense policy architecture")
+        return ("learned recurrent categorical, sampled; screen-history memory" if temperature == 1 else
+                "learned recurrent categorical, temperature-scaled; screen-history memory")
+    if config.get('recurrent_hidden', 0):
+        raise ValueError("Missing recurrent policy architecture")
     if algorithm == DQN_ALGORITHM:
         return "learned Q-values, greedy"
     if algorithm == BOOTSTRAP_ALGORITHM:
@@ -99,6 +108,17 @@ def load_policy(checkpoint, *, temperature=1.0):
             or config.get("environment_version") != ENVIRONMENT_VERSION
             or config.get("action_names") != list(names)):
         raise ValueError("Checkpoint is not compatible with this Defense environment")
+    if config.get("architecture") is not None:
+        from .defense_recurrent import ResidualRecurrentNetwork
+        from .recurrent_policy import RecurrentPolicy
+        model = ResidualRecurrentNetwork(len(names), config['recurrent_hidden'], config['memory_scale'])
+        model.load_weights(str(checkpoint))
+        mx.eval(model.state)
+        predict = mx.compile(model.step, inputs=model.state)
+        def infer(obs, hidden):
+            logits, _, updated = predict(mx.array(obs), mx.array(hidden))
+            return np.array(logits), np.array(updated)
+        return RecurrentPolicy(infer, config['recurrent_hidden'], temperature=temperature), config
     if config.get("algorithm") == BOOTSTRAP_ALGORITHM:
         from .defense_bootstrap import BootstrapQ
         model = BootstrapQ(len(names), config["bootstrap_heads"], config["bootstrap_prior_scale"])
