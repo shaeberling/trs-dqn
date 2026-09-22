@@ -1,0 +1,34 @@
+{
+  "stopped": {
+    "wall_seconds": 632.74,
+    "event": "stopped",
+    "steps": 7093216,
+    "stop_requested": false
+  },
+  "new_actions": 131072,
+  "new_updates": 7566,
+  "new_boot_games": 55,
+  "new_restored_segments": 37,
+  "archive_events": 1282,
+  "all_archive_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true,
+  "inverse": {
+    "local_updates": 7566,
+    "own_pairs": 484224,
+    "weight": 0.01,
+    "last_weighted_cross_entropy": 0.6301912665367126,
+    "last_sampled_accuracy": 0.09375
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "ff2639f92fb3e7aaba86d585997713f5f47e8a49b306f4334390498c81bef749",
+    "state.json": "58731d8e40eb4ba701cf5878cb30a0c64fa084ab33a1d5bde5845db28971d620",
+    "inverse-head.safetensors": "f648058915478b0ecfaf874e68edbc159894767cc54ecbd9e134ae48cc64bf4b",
+    "target.safetensors": "8ba5010e1de9200506283ca27a02d47f77438483d264f4cfad4a92f32a7c21b5",
+    "inverse-optimizer.npz": "3a4edd35e11a7780831950fe01c17aa8b531061446d80755b06365e1d049ad5b",
+    "optimizer.npz": "f9c8eb08fb32de11d677dbbbf6f2ce159c2c277e4d9fa77f9f39ebccd93f2386",
+    "evaluation.json": "3e4540ab559332ad9fa48510d4f3dd3b6a4a7686ab2eec202d07df2534093893"
+  },
+  "complete_log_sha256": "32422d3774f22cf19a6e75a7ffbaf975f2230114d0952b49cdbdd61bbacace52",
+  "peak_mlx_bytes": 509635520
+}

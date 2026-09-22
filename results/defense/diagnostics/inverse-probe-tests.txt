@@ -1,0 +1,8 @@
+test_frozen_calibration_determinism_and_provenance (tests.test_defense_inverse_probe.InverseProbeTests.test_frozen_calibration_determinism_and_provenance) ... ok
+test_invalid_inputs_and_no_mutation (tests.test_defense_inverse_probe.InverseProbeTests.test_invalid_inputs_and_no_mutation) ... ok
+test_uniform_and_exact_predictions (tests.test_defense_inverse_probe.InverseProbeTests.test_uniform_and_exact_predictions) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 2.701s
+
+OK
