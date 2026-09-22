@@ -100,8 +100,8 @@ class WorldModel(nn.Module):
         return self.decoder[-1](x).reshape(*features.shape[:-1], 48, 128, 2)
 
     def loss(self, frames, actions, rewards, continuation, key, burn=8,
-             overshoot_distance=1, overshoot_weight=0.):
-        states, kl = self.observe(frames, actions, key)
+             overshoot_distance=1, overshoot_weight=0., filtered=None):
+        states, kl = self.observe(frames, actions, key) if filtered is None else filtered
         features = self.features(states)[:, burn+1:]
         # Reward[i] belongs to action[i] and the resulting frame[i+1].
         target = self.pixels(frames[:, burn+1:])
@@ -180,6 +180,8 @@ class WorldLearner:
         saved = json.loads((directory/'state.json').read_text())
         if saved['burn'] != self.burn:
             raise ValueError('incompatible burn-in')
+        if (saved.get('byte_reconstruction') or {}).get('weight', 0.) and not allow_objective_change:
+            raise ValueError('byte reconstruction checkpoint requires its full learner or explicit objective change')
         previous = saved.get('overshooting', dict(distance=1, weight=0.))
         if previous != self.overshooting and not allow_objective_change:
             raise ValueError('world objective differs; explicit change required')

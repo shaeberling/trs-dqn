@@ -83,6 +83,8 @@ def main():
     parser.add_argument('--overshoot-distance', type=int, default=1)
     parser.add_argument('--overshoot-weight', type=float, default=0.)
     parser.add_argument('--change-objective', action='store_true')
+    parser.add_argument('--byte-weight', type=float, default=0.,
+                        help='optional mean categorical visible-byte reconstruction loss')
     args = parser.parse_args()
     if (args.output.exists() or min(args.updates, args.batch, args.every, args.audit_windows) < 1
             or not 0 < args.burn < args.length or not np.isfinite(args.boundary_fraction)
@@ -98,19 +100,30 @@ def main():
         parser.error('overshooting distance exceeds post-burn sequence')
     if args.change_objective and not args.resume:
         parser.error('objective change requires a full optimizer/RNG resume')
+    if not np.isfinite(args.byte_weight) or args.byte_weight < 0:
+        parser.error('byte weight must be finite and nonnegative')
+    if args.byte_weight and args.overshoot_weight:
+        parser.error('combined byte and overshooting objectives are not supported')
     mx.set_cache_limit(128*1024*1024)
     train, held = Sequences(args.data, 'train', args.length), Sequences(args.data, 'heldout', args.length)
     if set(train.files) & set(held.files):
         raise ValueError('train/held-out overlap')
     rng = np.random.default_rng(args.seed)
     frozen = held.sample(args.audit_windows, np.random.default_rng(82731))
-    learner = WorldLearner(seed=args.seed, burn=args.burn,
-        overshoot_distance=args.overshoot_distance, overshoot_weight=args.overshoot_weight)
+    if args.byte_weight:
+        from .defense_world_bytes import ByteWorldLearner
+        learner = ByteWorldLearner(seed=args.seed, burn=args.burn, byte_weight=args.byte_weight)
+    else:
+        learner = WorldLearner(seed=args.seed, burn=args.burn,
+            overshoot_distance=args.overshoot_distance, overshoot_weight=args.overshoot_weight)
     metadata = dict(data=str(args.data.resolve()), dataset_sha256=sha256(args.data/'manifest.json'),
         architecture='small-gaussian-rssm-v1', reward_scale=.01, batch=args.batch,
         length=args.length, burn=args.burn, train_games=len(train.episodes), heldout_games=len(held.episodes),
         boundary_fraction=args.boundary_fraction,
         overshooting=learner.overshooting,
+        byte_reconstruction=getattr(learner, 'byte_reconstruction', None),
+        byte_source_sha256=sha256(Path(__file__).with_name('defense_world_bytes.py')) if args.byte_weight else None,
+        byte_audit_source_sha256=sha256(Path(__file__).with_name('defense_world_byte_audit.py')) if args.byte_weight else None,
         train_windows=int(train.ends[-1]), heldout_windows=int(held.ends[-1]),
         fit_source_sha256=sha256(Path(__file__)),
         model_source_sha256=sha256(Path(__file__).with_name('defense_world_model.py')),
@@ -121,6 +134,12 @@ def main():
         old_objective = previous.get('overshooting', dict(distance=1, weight=0.))
         if old_objective != learner.overshooting:
             metadata['previous_overshooting'] = old_objective
+            metadata['objective_changed'] = True
+        old_bytes = previous.get('byte_reconstruction')
+        if old_bytes != metadata['byte_reconstruction']:
+            if not args.change_objective:
+                parser.error('byte objective differs; declare --change-objective')
+            metadata['previous_byte_reconstruction'] = old_bytes
             metadata['objective_changed'] = True
         if args.extend_data:
             union = json.loads((args.data/'manifest.json').read_text())
@@ -170,6 +189,13 @@ def main():
             learner.save(destination, rng, metadata)
             report = audit(learner.model, frozen, args.burn)
             write_json(destination/'audit.json', report)
+            if args.byte_weight:
+                from .defense_world_byte_audit import audit_bytes
+                byte_report = audit_bytes(learner.model, learner.decoder, frozen, args.burn)
+                write_json(destination/'byte-audit.json', byte_report)
+                record(dict(event='byte_audit', updates=learner.updates,
+                    observed=byte_report['measurements']['observed']['groups'],
+                    final=byte_report['measurements'][list(byte_report['measurements'])[-1]]['groups']))
             record(dict(event='audit', updates=learner.updates, first=report['horizons'][0],
                         last=report['horizons'][-1]))
         preserve()
