@@ -87,6 +87,8 @@ def main():
     parser.add_argument("--curriculum-boot-epsilon", type=float,
                         help="optional fixed post-warmup epsilon for reserved boot-only workers")
     parser.add_argument("--curriculum-lookback", type=int, default=0)
+    parser.add_argument("--curriculum-trigger", choices=("progress", "life-loss"), default="progress",
+                        help="archive on progress (default) or rewind from own visible life losses")
     parser.add_argument("--curriculum-cells", choices=("score", "screen"), default="score",
                         help="training archive selection only; policy observations stay unchanged")
     parser.add_argument("--curriculum-score-interval", type=int, default=20)
@@ -150,6 +152,9 @@ def main():
             or (args.curriculum_share and not args.curriculum_probability)
             or (args.curriculum_boot_envs and not args.curriculum_share)):
         parser.error("invalid own-experience curriculum settings")
+    if args.curriculum_trigger == "life-loss" and (
+            not args.curriculum_probability or not args.curriculum_lookback):
+        parser.error("life-loss archive requires positive curriculum probability and lookback")
     if args.curriculum_boot_epsilon is not None and (
             not args.curriculum_boot_envs or not np.isfinite(args.curriculum_boot_epsilon)
             or not 0 <= args.curriculum_boot_epsilon <= 1):
@@ -321,6 +326,7 @@ def main():
                           curriculum_share=args.curriculum_share,
                           curriculum_boot_envs=args.curriculum_boot_envs,
                           curriculum_lookback=args.curriculum_lookback,
+                          curriculum_trigger=args.curriculum_trigger,
                           curriculum_cells=args.curriculum_cells,
                           curriculum_score_interval=args.curriculum_score_interval,
                           curriculum_bins=args.curriculum_bins, curriculum_per_bin=args.curriculum_per_bin,
@@ -329,6 +335,10 @@ def main():
         config.update(curriculum_archive_saved=False,
                       curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
                       snapshot_source_sha256=sha256(Path(__file__).with_name("defense_snapshot.py")))
+        if args.curriculum_trigger == "life-loss":
+            config.update(curriculum_trigger_semantics=(
+                "actual same-life state L decisions before visible loss; immediate stage entry; "
+                "not a physical-collision timestamp; no snapshots restored during evaluation"))
         if args.curriculum_cells == "screen":
             from .defense_cells import CELL_ENCODING
             config.update(curriculum_cell_encoding=CELL_ENCODING,

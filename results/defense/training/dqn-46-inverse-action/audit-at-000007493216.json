@@ -1,0 +1,22 @@
+{
+  "checkpoint_hashes": {
+    "model.safetensors": "c8e743b35d4a9cd8bf0749d68851cb8bfa330bc3bf2eefe90884c565a4b22916",
+    "state.json": "4f5c690574505f208f083ad596812fbb28b1309e339ab6045131beebeb0c090e",
+    "inverse-head.safetensors": "eadd482fc59de6a4c9fda3c9e1fb7abe255588ad446c8b00449d324fd9116c45",
+    "target.safetensors": "8515ce31c51b672b60493a317f4f1a22217ccc16f9fbce72b74903902c63c58f",
+    "inverse-optimizer.npz": "d5a5126ede0c61c3b944912172de44465a67587b75e17b0d7b9ac9c63939760e",
+    "optimizer.npz": "9ce5203fbe0dd78d2da1fcecc51818edecdb45f1df1cf4add7c02ea2123cc16e",
+    "evaluation.json": "1887420de3444b42838bdd0dce4926e972076270d51f4e4123d332ee4d178baa"
+  },
+  "log_prefix_sha256": "0c7f536d3836811802a53d42b6ab9df6c427fb54ac4d7d70b8e681a4c671f109",
+  "log_prefix_bytes": 2311478,
+  "verified_actions": 2494,
+  "new_actions": 400000,
+  "new_updates": 24374,
+  "new_boot_games": 188,
+  "new_restored_segments": 132,
+  "archive_events": 3856,
+  "all_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true
+}

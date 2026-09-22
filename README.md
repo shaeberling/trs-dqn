@@ -50,6 +50,11 @@ and experimental limitations in [DEFENSE.md](DEFENSE.md).
 Its default score-based archive selection is unchanged; `--curriculum-cells
 screen` optionally uses the existing coarse visible-screen fingerprints, with
 explicit archive-capacity controls and no extra reward or policy input.
+Optional DQN `--curriculum-trigger life-loss --curriculum-lookback 64` instead
+archives actual own states 64 decisions before a visible ship loss. This is a
+training-reset experiment, not a collision oracle or an evaluation-time aid;
+the default remains progress-triggered archives. See
+[the own-loss reset experiment](DEFENSE.md#own-loss-triggered-reset-experiment).
 Experimental `--quantiles 32` learns distributions of score returns; optional
 `--quantile-exploration-power 1.5` changes training action selection only.
 Evaluation still uses greedy mean values. An own scalar DQN can initialize

@@ -1,0 +1,42 @@
+{
+  "before": "runs/defense-loss-trigger-default-before",
+  "after": "runs/defense-loss-trigger-default-after",
+  "steps": 4096,
+  "arrays_bit_exact": {
+    "model.safetensors": 12,
+    "target.safetensors": 12,
+    "optimizer.npz": 26
+  },
+  "all_nonconfig_state_fields_equal": true,
+  "archive_and_episode_events_equal": 41,
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-loss-trigger-default-before/artifacts",
+      "runs/defense-loss-trigger-default-after/artifacts"
+    ],
+    "run": [
+      "runs/defense-loss-trigger-default-before",
+      "runs/defense-loss-trigger-default-after"
+    ],
+    "trainer_source_sha256": [
+      "529bd7608a1a6aa0b6006d69791af8d4d9cda85b0405ae2ec2d327eb19f2213c",
+      "b3bbabb34d81105dda8e66201430ef85ad7e266ac838a4be41d06095ae505f02"
+    ],
+    "curriculum_trigger": [
+      null,
+      "progress"
+    ],
+    "curriculum_source_sha256": [
+      "25af83ddc4673a83d2d8e5a6b87be12dc59eb0cfc78e0b0824ba44853c2459a3",
+      "a3cb48f85cac6b66ed441a2679d66fad2db0d030efad80da89a08de6b8ab210d"
+    ]
+  },
+  "after_file_hashes": {
+    "model.safetensors": "3a8f10959bd1fd036ef1ff041f395580b29572b25e35903114f46bbda6ceb44d",
+    "state.json": "400ef867814321087987e382408c515ffa578591f04950ced8afb6bff6b28482",
+    "target.safetensors": "6611f6005d0e420028b818d5850a66b991c6edc9adb23906335a9be9d9b48ea0",
+    "optimizer.npz": "ff2e731f1ad9aaa29eda1d4ae8df7be6d389f61d13efa056afa39e5465446b2c"
+  },
+  "performance_evidence": false,
+  "limits": "Bounded 512-action diagnostic episodes, not complete-game evaluation."
+}

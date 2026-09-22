@@ -1,0 +1,39 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "baseline": "results/defense/training/mid-lookback-split-calibration-01",
+  "new_actions_each": 131072,
+  "config_differences": {
+    "curriculum_trigger_semantics": [
+      null,
+      "actual same-life state L decisions before visible loss; immediate stage entry; not a physical-collision timestamp; no snapshots restored during evaluation"
+    ],
+    "run": [
+      "runs/defense-mid-lookback-split-calibration-01",
+      "runs/defense-loss-trigger-split-calibration-01"
+    ],
+    "curriculum_source_sha256": [
+      "25af83ddc4673a83d2d8e5a6b87be12dc59eb0cfc78e0b0824ba44853c2459a3",
+      "a3cb48f85cac6b66ed441a2679d66fad2db0d030efad80da89a08de6b8ab210d"
+    ],
+    "curriculum_trigger": [
+      null,
+      "life-loss"
+    ],
+    "trainer_source_sha256": [
+      "529bd7608a1a6aa0b6006d69791af8d4d9cda85b0405ae2ec2d327eb19f2213c",
+      "93c86a0039a15d8d56d09c4302e4d8678a29a41ddc9bf01230851f5af7a6e31b"
+    ],
+    "artifacts": [
+      "runs/defense-mid-lookback-split-calibration-01/artifacts",
+      "runs/defense-loss-trigger-split-calibration-01/artifacts"
+    ]
+  },
+  "unchanged_policy_reward_environment_replay_exploration": true,
+  "motivation": "Align own training-reset snapshots to actual visible life loss rather than score-bin changes.",
+  "limits": [
+    "Same historical parent and reused complete boot evaluation seeds; not fresh success-rate evidence.",
+    "Visible loss is not an exact collision timestamp; earlier state is not guaranteed recoverable.",
+    "Own opaque states only; no demonstration, route, reward bonus or evaluation data in learning.",
+    "Short calibration is excluded from shared collector."
+  ]
+}

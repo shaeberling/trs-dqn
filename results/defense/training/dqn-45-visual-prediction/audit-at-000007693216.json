@@ -1,0 +1,24 @@
+{
+  "checkpoint_hashes": {
+    "model.safetensors": "d579fb4d866aa403bfdbf5a8d16af2fc855b8d56d3603272244f6c0365fe98af",
+    "state.json": "1fa4160664e546ff92c2367c8c66a7467016aa7d0cf6684c3e0dca5ac099aabd",
+    "target.safetensors": "1660a988154850c38a1ec3fb747af7b9472c649e72d3cf5896f5ce444ec10491",
+    "spr-ema.safetensors": "c0d32e4617b59a991a0da72c4f6089731d74d24f8e596c66279ff3a50c8aedba",
+    "spr-rng.npz": "9a56c36052a03a5efc2f173f3dff3b0206fce8fa9539b83be665dfa35670508e",
+    "optimizer.npz": "f3f2c5a02c2251c53be72078494c42741600e0928f88d223ce098de7b1a80b72",
+    "evaluation.json": "74fb6d396656461b8292ee91c26cfea8a5d7c22be50065a989c6a1a17c3d0e97",
+    "spr-optimizer.npz": "162927220dbe10c34fd800573143413b341fa1334d571474f097273fb27d3769",
+    "spr-aux.safetensors": "55ac6350e38b7f53c791cb4ca521dd4991d318b8154e8b525c3a04e6b07b5aa9"
+  },
+  "log_prefix_sha256": "e61bcfe106d472db2d3851a136ad778456b21b7970e993aca625f60bc65a7f33",
+  "log_prefix_bytes": 3800033,
+  "verified_actions": 2585,
+  "new_actions": 600000,
+  "new_updates": 36874,
+  "new_boot_games": 252,
+  "new_restored_segments": 189,
+  "archive_events": 5884,
+  "all_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true
+}

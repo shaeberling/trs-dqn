@@ -1,0 +1,26 @@
+{
+  "run": "runs/defense-loss-trigger-production-smoke",
+  "new_actions": 16384,
+  "new_updates": 398,
+  "new_boot_games": 8,
+  "new_restored_segments": 1,
+  "archive_events": 38,
+  "all_own_life_loss_offsets_64": true,
+  "reserved_boot_workers_protected": true,
+  "mlx_peak_bytes": 289622052,
+  "stopped": {
+    "wall_seconds": 22.04,
+    "event": "stopped",
+    "steps": 6978528,
+    "stop_requested": false
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "132ae07787cb1aeb6cc115b5f9a48d85a9ff6da095429e747a92b3a7ae50bf68",
+    "state.json": "3be33294e7f564b4c187137961eba48ebd82b0589c0cd61eb366f8519c767726",
+    "target.safetensors": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+    "optimizer.npz": "0215cf3e3fcb88478db7e85157f368dcdca4ea7c0ca5c5d7fcc6c8a0074ced22"
+  },
+  "log_sha256": "b7624d77edb8e5e3b79a2b42d839720e4be7bca2a4b088053867328592a27ddd",
+  "performance_evidence": false,
+  "used_as_performance_parent": false
+}

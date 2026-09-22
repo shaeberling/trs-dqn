@@ -19,13 +19,18 @@ class DefenseCurriculumEnv(DefenseEnv):
                  curriculum_per_bin=4, curriculum_bins=16, curriculum_share=False,
                  worker_id=None, curriculum_reset=True, curriculum_lookback=0,
                  curriculum_cells="score", curriculum_screen_interval=32,
-                 curriculum_age_interval=32, **config):
+                 curriculum_age_interval=32, curriculum_trigger="progress", **config):
         if not np.isfinite(curriculum_probability) or not 0 <= curriculum_probability <= 1:
             raise ValueError("invalid curriculum probability")
         self.interval = positive_integer(curriculum_score_interval, "score interval", allow_zero=True)
         self.per_bin = positive_integer(curriculum_per_bin, "entries per bin")
         self.bins = positive_integer(curriculum_bins, "bins per stage")
         self.lookback = positive_integer(curriculum_lookback, "curriculum lookback", allow_zero=True)
+        if curriculum_trigger not in ("progress", "life-loss"):
+            raise ValueError("invalid curriculum trigger")
+        if curriculum_trigger == "life-loss" and not self.lookback:
+            raise ValueError("life-loss archive requires a positive lookback")
+        self.trigger = curriculum_trigger
         if curriculum_cells not in ("score", "screen", "age"):
             raise ValueError("invalid curriculum cell representation")
         self.cells = curriculum_cells
@@ -140,6 +145,12 @@ class DefenseCurriculumEnv(DefenseEnv):
         self.total_actions += 1
         self.life_steps += 1
         stage_entry = self.stage != previous_stage
+        if (self.curriculum_probability and self.trigger == "life-loss"
+                and info["life_lost"] and not stage_entry):
+            # The history still belongs to the lost life. Select an actual
+            # earlier state BEFORE clearing it or changing its score baseline.
+            # A visible loss is not a known physical-collision timestamp.
+            self._archive_before_loss(info)
         if stage_entry or info["life_lost"]:
             self.progress_start_score = self.score
             self.life_steps = 0
@@ -166,7 +177,7 @@ class DefenseCurriculumEnv(DefenseEnv):
                     segment_source_action=self.segment_source_action,
                     episode_reward=float(self.score-self.segment_start_score))
         if (self.curriculum_probability and not self.done and not info["life_lost"]
-                and (stage_entry or progress_entry)):
+                and (stage_entry or (self.trigger == "progress" and progress_entry))):
             saved = None
             if self.lookback and not stage_entry:
                 # A new stage is always captured immediately. Other archive
@@ -210,3 +221,40 @@ class DefenseCurriculumEnv(DefenseEnv):
             info["curriculum_archive_counts"] = {f"{stage}:{bucket}": len(bank)
                                                 for (stage, bucket), bank in self.archive.items()}
         return obs, reward, terminal, truncated, info
+
+    def _archive_before_loss(self, info):
+        # Current (loss) state was not appended; -L is exactly L actions ago.
+        # No borrowing from a previous life/reset when this history is short.
+        if len(self.history) < self.lookback:
+            return
+        saved = self.history[-self.lookback]
+        if self.total_actions-saved.source_action != self.lookback:
+            raise RuntimeError("noncontiguous own-life snapshot history")
+        key = self._key(saved.stage, saved.score, saved.progress_start_score,
+                        saved.frames[::saved.observation_stride], saved.life_steps)
+        slot = self._reserve_slot(key)
+        if slot is None and not self.curriculum_share:
+            return
+        if slot is not None:
+            self._install(key, saved, slot)
+        event = dict(
+            stage=saved.stage, score=saved.score, progress=saved.score-saved.progress_start_score,
+            progress_bin=(saved.score-saved.progress_start_score)//self.interval if self.interval else 0,
+            entry_kind="life_loss_lookback", source_action=saved.source_action,
+            source_episode_steps=saved.steps, source_full_game=saved.source_full_game,
+            source_lives=saved.lives, source_life_steps=saved.life_steps,
+            retained=slot is not None, shared=self.curriculum_share,
+            source_parent_worker=self.segment_source_worker,
+            source_parent_action=self.segment_source_action,
+            lookback_actions=self.total_actions-saved.source_action,
+            trigger_action=self.total_actions, trigger_score=self.score,
+            trigger_progress=self.score-self.progress_start_score,
+            trigger_life_steps=self.life_steps, trigger_lives=self.lives,
+            trigger_terminal=bool(info["terminated"]))
+        if self.cells == "screen":
+            event["screen_cell"] = key[1]
+        if self.cells == "age":
+            event.update(life_steps=saved.life_steps, life_age_bin=key[1])
+        info["curriculum_archive_add"] = event
+        if self.curriculum_share:
+            info["_curriculum_snapshot"] = saved
