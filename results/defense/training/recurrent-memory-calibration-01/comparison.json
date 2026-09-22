@@ -1,0 +1,33 @@
+{
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-recurrent-memory-calibration-01/artifacts",
+      "runs/defense-recurrent-control-calibration-01/artifacts"
+    ],
+    "run": [
+      "runs/defense-recurrent-memory-calibration-01",
+      "runs/defense-recurrent-control-calibration-01"
+    ],
+    "memory_scale": [
+      1.0,
+      0.0
+    ]
+  },
+  "paired_score_differences": [
+    -30,
+    -50,
+    -10,
+    50,
+    1420,
+    -1520,
+    50,
+    30,
+    -2620,
+    0
+  ],
+  "mean_difference": -268.0,
+  "new_training_actions_each": 131072,
+  "parent_training_actions_each": 10447616,
+  "validation_seeds": "reused 10000-10009; not fresh test",
+  "all_stage_one_losses": true
+}

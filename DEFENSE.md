@@ -2261,6 +2261,13 @@ stage 1; the last mean was **7,879** at **15,657,728**. The
 and [losslessly compressed complete log](results/defense/training/ppo-29-value-weight/metrics-at-000015674112.jsonl.gz)
 are preserved. This is not evidence that more compute has solved progression.
 
+After storage recovery, run 29's
+[first resumed validation at **15,887,104**](results/defense/training/ppo-29-value-weight/step-000015887104/evaluation.json)
+averaged **8,966**, median **9,935**, best **10,440**, all ten stage-1 losses.
+That is above its last pre-pause mean of 7,879, but below its preserved peak
+10,461 and the shared best's score. The full optimizer checkpoint is preserved;
+the continuation did not replace the global replay.
+
 ### Recurrent screen-history experiment
 
 `rl.defense_train --recurrent-hidden 128 --sequence-length 32` adds a GRU to
@@ -2337,8 +2344,40 @@ The initial full suite passed **258 tests**. After strengthening memory tests,
 the **259-test** suite passed all seven recurrent tests and the other
 non-supervisor checks, but **three supervisor checks failed** when actual free
 disk space fell below **5 GiB**. The safety threshold and tests were not
-weakened. No unlimited recurrent run was launched; additional disk space and
-a clean full-suite rerun are needed before further production experiments.
+weakened. No unlimited recurrent run was launched during that pause. After the
+user freed space, all **259 tests passed**; the log is linked in the restart
+section above.
+
+A larger matched comparison then used the normal **32 workers** and
+**131,072** new actions per arm, starting from the original zero-update
+initializer, not either four-worker short-check result. Both used eight
+boot-only workers, the same 256-step rollouts and 32-step sequences, batch 512,
+and unchanged learning/timing settings. Each evaluated ten complete games on
+the same reused validation seeds; all were stage-1 losses.
+
+| Memory, 32-worker check | Mean | Median | Best | Verified replay actions |
+| --- | ---: | ---: | ---: | ---: |
+| [Enabled](results/defense/training/recurrent-memory-calibration-01/checkpoint/evaluation.json) | 10,032 | 10,430 | 10,480 | 2,521 |
+| [Disabled control](results/defense/training/recurrent-control-calibration-01/checkpoint/evaluation.json) | 10,300 | 10,445 | 10,480 | 2,560 |
+
+The enabled run completed **32** boot games and **12** restored training
+segments; the control completed **32** boot games and **11** restored segments.
+Both exited normally. Their configurations differ only in memory scale and
+output paths, as recorded in the
+[paired comparison](results/defense/training/recurrent-memory-calibration-01/comparison.json).
+Memory was **268 points lower in mean**, and both remained below the
+untouched parent's 10,474. This does not establish a benefit from this recurrent
+setup at either tested size; it does not rule out all recurrent methods.
+Neither check was promoted to an unlimited run or added to the collector.
+Full model/optimizer checkpoints, configurations, logs and verified replays
+are preserved, with the parent's 10,447,616 pretraining actions recorded in
+both lineages. These are reused-seed tuning results, not fresh success rates.
+
+To reproduce this larger pair, use the two bounded commands below with
+`--envs 32 --curriculum-boot-envs 8 --steps 131072 --eval-every 131072
+--eval-envs 8 --mlx-cache-mb 512` and new run/artifact paths. The two checks
+still start from the same saved initializer; only the control sets memory
+scale to zero.
 
 ```bash
 # Save an exact-policy recurrent initializer without learning:
