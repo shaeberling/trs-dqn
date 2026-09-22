@@ -1,0 +1,54 @@
+{
+  "reports": [
+    {
+      "run": "dqn-49-restored-life-control",
+      "steps": 7293216,
+      "new_actions": 200000,
+      "log_sha256": "e76d46be42f363215242a825a20943efcd9de0157680bf2ca00231b49ec6cbcb",
+      "completed_restored_segments": 192,
+      "total_segment_actions": 138285,
+      "initial_restored_life_actions_lower": 3953,
+      "initial_restored_life_actions_upper": 10757,
+      "first_life_certainly_exceeds_64_decisions": 31,
+      "first_life_may_exceed_64_decisions": 31,
+      "segment_duration_percentiles": {
+        "0": 9.0,
+        "25": 44.25,
+        "50": 905.0,
+        "75": 1309.25,
+        "90": 1436.8,
+        "99": 1510.25,
+        "100": 1605.0
+      },
+      "focused_first_life_endpoints_verified": false
+    },
+    {
+      "run": "dqn-50-restored-life-focused",
+      "steps": 7293216,
+      "new_actions": 200000,
+      "log_sha256": "bc772662b563f17b340b78a48a249f05119854928693fd771e8b5aae3ab7e7c7",
+      "completed_restored_segments": 3304,
+      "total_segment_actions": 140721,
+      "initial_restored_life_actions_lower": 140721,
+      "initial_restored_life_actions_upper": 140721,
+      "first_life_certainly_exceeds_64_decisions": 360,
+      "first_life_may_exceed_64_decisions": 360,
+      "segment_duration_percentiles": {
+        "0": 8.0,
+        "25": 24.0,
+        "50": 39.0,
+        "75": 62.0,
+        "90": 65.0,
+        "99": 119.9699999999998,
+        "100": 259.0
+      },
+      "focused_first_life_endpoints_verified": true
+    }
+  ],
+  "limitations": [
+    "Read-only hash-checked log audit; no training data or parameters changed.",
+    "Completed segments only; boot games, later native lives and active segments can also provide useful practice.",
+    "Initial life duration is not obstacle distance or physical survival; visible loss can lag collision.",
+    "More than 64 decisions does not prove a previously fatal obstacle was passed; trajectories diverge."
+  ]
+}
