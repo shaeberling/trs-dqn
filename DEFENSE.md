@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **376-test** suite now passes, including
+(23 GiB available at restart). The full **382-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
@@ -22,6 +22,15 @@ in stage 1. The [current screen review](results/defense/diagnostics/consistency-
 confirms the recurring barrier approach, not new navigation progress.
 Full states, log prefixes and verified replays are preserved. No success is
 inferred from learning losses or near-ceiling scores.
+The second full consistency/control means are **10,023 / 10,418** and the
+third **10,328 / 10,214**, again all stage 1. The control's second replay
+matches 10,480 (2,577 verified commands); consistency's third reaches 10,400
+(2,523 verified commands). Neither promotes over the shared best.
+A new [world-model preflight](results/defense/training/world-model-preflight-01/README.md)
+has collected 46,962 fresh own actions and fitted a recurrent predictor for
+1,000 updates. Held-out average graphics prediction improves, but action
+dependence is weak and impending visible losses remain poorly predicted.
+Further dynamics fitting is active; no imagined-behavior policy exists yet.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.

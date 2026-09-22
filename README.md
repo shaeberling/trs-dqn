@@ -26,6 +26,11 @@ random action persistence, with ordinary learned greedy evaluation unchanged.
 The default `1` preserves the original independent-action exploration. See
 [the controlled comparison](DEFENSE.md#persistent-random-exploration) for its
 motivation, rate calibration and limitations.
+A separate experimental [learned-dynamics preflight](results/defense/training/world-model-preflight-01/README.md)
+collects new own experience and trains a small recurrent world model through
+`rl.defense_world_data` and `rl.defense_world_fit`. This is not yet a playing
+policy: its first held-out checks show weak action and life-loss prediction.
+It adds no oracle, demonstrations, reward bonuses or evaluation data to training.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
