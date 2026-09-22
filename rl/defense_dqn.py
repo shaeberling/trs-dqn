@@ -17,7 +17,7 @@ import time
 import numpy as np
 
 from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256, validate_observation_stride
-from .defense_learning import (BOOTSTRAP_ALGORITHM, DQN_ALGORITHM, evaluate, greedy_policy,
+from .defense_learning import (BOOTSTRAP_ALGORITHM, DQN_ALGORITHM, QUANTILE_ALGORITHM, evaluate, greedy_policy,
                                policy_description, publish_best, sha256, summarize, write_json)
 from .replay import NStep, Replay
 from .vector import VectorEnv
@@ -28,6 +28,8 @@ def main():
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--artifacts", type=Path, required=True)
     parser.add_argument("--resume", type=Path)
+    parser.add_argument("--init-from-dqn", type=Path,
+                        help="fresh quantile learner initialized from own scalar DQN online weights")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
     parser.add_argument("--seed", type=int, default=97)
     parser.add_argument("--envs", type=int, default=8)
@@ -56,6 +58,10 @@ def main():
     parser.add_argument("--bootstrap-prior-scale", type=float, default=1.)
     parser.add_argument("--bootstrap-epsilon", type=float, default=.01,
                         help="constant random-action probability after bootstrap warmup")
+    parser.add_argument("--quantiles", type=int, default=0,
+                        help="0 preserves scalar DQN; 2..256 enables fixed-quantile regression")
+    parser.add_argument("--quantile-exploration-power", type=float, default=0.,
+                        help="training-only upper-return power distortion, 0..4; 0 uses the mean")
     parser.add_argument("--target-every", type=int, default=2000,
                         help="optimizer updates per target-network copy")
     parser.add_argument("--tstates", type=int, default=100_000)
@@ -85,17 +91,19 @@ def main():
         prior = json.loads((args.resume/"state.json").read_text())
         explicit = {word.split("=", 1)[0] for word in sys.argv[1:] if word.startswith("--")}
         for key, value in prior["config"].items():
-            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps")
+            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "init_from_dqn")
                     and "--"+key.replace("_", "-") not in explicit
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
         config = prior["config"]
-        expected_algorithm = BOOTSTRAP_ALGORITHM if args.bootstrap_heads else DQN_ALGORITHM
+        expected_algorithm = (BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
+                              QUANTILE_ALGORITHM if args.quantiles else DQN_ALGORITHM)
         if (config.get("algorithm") != expected_algorithm or config.get("game") != "defense"
                 or config.get("game_sha256") != GAME_SHA256
                 or config.get("environment_version") != ENVIRONMENT_VERSION
                 or config.get("action_names") != list(action_names(args.allow_enter))
-                or config.get("bootstrap_heads", 0) != args.bootstrap_heads):
+                or config.get("bootstrap_heads", 0) != args.bootstrap_heads
+                or config.get("quantiles", 0) != args.quantiles):
             parser.error("Resume requires a compatible Defense DQN checkpoint")
         if not all((args.resume/name).is_file() for name in
                    ("model.safetensors", "target.safetensors", "optimizer.npz")):
@@ -143,6 +151,30 @@ def main():
         parser.error(str(error))
     if args.bootstrap_heads and args.exploration_max_repeat > 1:
         parser.error("persistent random exploration currently supports ordinary DQN only")
+    if (args.quantiles != 0 and not 2 <= args.quantiles <= 256
+            or not np.isfinite(args.quantile_exploration_power)
+            or not 0 <= args.quantile_exploration_power <= 4
+            or args.quantile_exploration_power and not args.quantiles):
+        parser.error("invalid quantile count or exploration power")
+    if args.quantiles and (args.bootstrap_heads or args.exploration_max_repeat > 1):
+        parser.error("quantile DQN does not combine with bootstrap heads or persistent actions")
+    initialization = None
+    if args.init_from_dqn:
+        if args.resume or not args.quantiles:
+            parser.error("scalar initialization requires fresh quantile DQN, not --resume")
+        parent = json.loads((args.init_from_dqn/"state.json").read_text())
+        pc = parent['config']
+        if (pc.get('algorithm') != DQN_ALGORITHM or pc.get('game') != 'defense'
+                or pc.get('game_sha256') != GAME_SHA256 or pc.get('environment_version') != ENVIRONMENT_VERSION
+                or pc.get('action_names') != list(action_names(args.allow_enter))
+                or pc.get('tstates') != args.tstates
+                or pc.get('observation_stride', 1) != args.observation_stride):
+            parser.error("scalar initialization requires compatible Defense DQN screen/action timing")
+        initialization = dict(checkpoint=str(args.init_from_dqn), steps=parent['steps'],
+                              model_sha256=sha256(args.init_from_dqn/'model.safetensors'),
+                              state_sha256=sha256(args.init_from_dqn/'state.json'),
+                              semantics="parent online encoder and dueling values tiled into coincident quantiles; "
+                                        "target equals transferred online; fresh Adam, RNG, counters and replay")
 
     # MLX is main-process-only: spawned emulator workers never import it.
     import mlx.core as mx
@@ -155,8 +187,18 @@ def main():
         agent = BootstrapLearner(args.learning_rate, args.seed,
                                  action_count=len(action_names(args.allow_enter)),
                                  heads=args.bootstrap_heads, prior_scale=args.bootstrap_prior_scale)
+    elif args.quantiles:
+        from .defense_quantile import QuantileLearner
+        agent = QuantileLearner(args.learning_rate, args.seed,
+                                action_count=len(action_names(args.allow_enter)),
+                                quantiles=args.quantiles, exploration_power=args.quantile_exploration_power)
     else:
         agent = Learner(args.learning_rate, args.seed, action_count=len(action_names(args.allow_enter)))
+    if initialization is not None:
+        agent.initialize_scalar(args.init_from_dqn/'model.safetensors')
+        if (sha256(args.init_from_dqn/'model.safetensors') != initialization['model_sha256']
+                or sha256(args.init_from_dqn/'state.json') != initialization['state_sha256']):
+            raise RuntimeError("scalar initialization source changed during load")
     rng = np.random.default_rng(args.seed)
     bootstrap_rng = np.random.default_rng(args.seed+2_000_000)
     steps, updates, episodes = 0, 0, 0
@@ -184,7 +226,8 @@ def main():
                                           args.exploration_max_repeat, args.exploration_exponent,
                                           exploration_rng)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
-    config.update(game="defense", algorithm=BOOTSTRAP_ALGORITHM if args.bootstrap_heads else DQN_ALGORITHM,
+    config.update(game="defense", algorithm=(BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
+                                            QUANTILE_ALGORITHM if args.quantiles else DQN_ALGORITHM),
                   game_sha256=GAME_SHA256,
                   native_sha256=sha256(Path("libtrs.so")),
                   environment_version=ENVIRONMENT_VERSION,
@@ -208,6 +251,19 @@ def main():
                       bootstrap_priority="mean absolute TD error over all heads",
                       bootstrap_resume="masks/replay refill; head redrawn for new boot game; priors restored from weights",
                       policy=policy_description(config), evaluation_policy=policy_description(config))
+    if args.quantiles:
+        config.update(quantile_source_sha256=sha256(Path(__file__).with_name("defense_quantile.py")),
+                      quantile_locations="fixed midpoint fractions (i+0.5)/N; no prediction sorting",
+                      quantile_loss="sum predicted quantiles, mean target quantiles; Huber kappa 1",
+                      quantile_priority="unweighted per-transition quantile Huber loss divided by N",
+                      quantile_target="online mean-greedy action, target quantiles; no risk distortion",
+                      training_policy="epsilon-greedy learned quantiles; fixed training-only power distortion",
+                      quantile_distortion="bin mass b**(1+power)-a**(1+power); return risk, not epistemic uncertainty",
+                      policy=policy_description(config), evaluation_policy=policy_description(config))
+        if initialization is not None:
+            config['quantile_initialization'] = initialization
+        elif prior and 'quantile_initialization' in prior['config']:
+            config['quantile_initialization'] = prior['config']['quantile_initialization']
     curriculum = {}
     if args.curriculum_probability:
         curriculum = dict(curriculum=True, curriculum_probability=args.curriculum_probability,
