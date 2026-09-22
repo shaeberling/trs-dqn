@@ -132,3 +132,11 @@ of longer approaches: the first collection's exploratory training-game mean
 was only **2,746**, despite starting from a stronger greedy policy. This
 second collection is not yet part of the active fit, and no improvement is
 assumed before checking its completed records.
+
+That [second collection](../world-model-collection-02/README.md) subsequently
+completed: 46,617 training actions and 9,412 held-out actions, all stage 1.
+The training-game mean is 7,466, supporting broader later-approach coverage,
+not deeper stage passage. No updates have used it yet. The original fit's
+[3,000-update boundary review](continuation/review-3000/report.json) remains
+poor (continuation Brier .99600 at the selected losses); its full model and
+optimizer are preserved separately. The 5,000-update continuation is live.

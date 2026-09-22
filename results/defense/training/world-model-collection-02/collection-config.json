@@ -1,0 +1,24 @@
+{
+  "schema": "defense-own-dynamics-v1",
+  "purpose": "new-own-experience-for-world-model",
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-33-persistent-resets/step-000006962144/model.safetensors",
+  "parent_hashes": {
+    "model.safetensors": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+    "state.json": "31f9edb00c6771de93c2a72430f875e0b062321a6368ce4933b5244ece9f5947"
+  },
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "collection_source_sha256": "b978e47e4ce180f9ff01b9613ff27787ea821ca1659ed227e0caa20aa3fdcbc8",
+  "tstates": 100000,
+  "observation_stride": 1,
+  "games": 24,
+  "heldout_games": 4,
+  "first_seed": 66000,
+  "epsilon": 0.05,
+  "exploration_max_repeat": 64,
+  "exploration_exponent": 1.5,
+  "assignment": "final heldout_games sequential seeds fixed before collection",
+  "policy_imitation": false,
+  "hidden_state": false,
+  "existing_evaluation_data": false
+}
