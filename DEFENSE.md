@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **262-test** suite now passes, including
+(23 GiB available at restart). The full **269-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24 and PPO 29 resumed their preserved pause checkpoints with
 unlimited training. PPO 30 now tests frozen-base screen-history memory after
@@ -495,6 +495,106 @@ does not support redundant fire choices as the dominant source of apparent
 exploration. It is not an all-state or later-stage result. The diagnostic
 changed no weights, controls or training inputs, and the 20-action set remains
 unchanged.
+
+The later `rl.defense_alias_probe` extends this to whole **verified own-policy
+replays**, including recurrent memory carried across ship losses. It reconstructs
+boot-padded screen stacks at the saved stride and must reproduce every original
+sampled action using the original RNG before reporting statistics. Source hashes
+are checked before and after. This is replay analysis, **not a new native game
+evaluation**; the original native verification is retained in the report.
+Float32 sampling is unchanged; entropy uses float64-renormalized probabilities
+to remove small softmax rounding errors (maximum observed sum error below
+0.000005 in these traces).
+
+| Selected replay | Raw entropy (nats) | Grouped entropy (nats) | Alias share | Movement probability |
+| --- | ---: | ---: | ---: | ---: |
+| [Original best, 2,580 actions](results/defense/diagnostics/aliases-global-best-8342272.json) | 0.37958 | 0.25838 | 31.9% | 55.5% |
+| [Frozen memory at 335,872, 2,494 actions](results/defense/diagnostics/aliases-frozen-memory-335872.json) | 0.61472 | 0.47975 | 22.0% | 57.5% |
+
+Grouping merges forward-fire IDs 9–17 only; it describes the stage-one command
+handler, not necessarily distinct physical outcomes. In the four 128-action
+windows before **visible** ship-loss reports, alias entropy shares ranged from
+15.3–25.9% for the original best and 22.0–25.4% for the recurrent replay.
+The whole trajectories include animations, and visible loss can lag collision.
+These two selected games have different seeds and trajectories: this is not a
+matched-state causal comparison or a fresh success-rate estimate. Neither
+trace shows redundant firing as most of its action entropy. This does not rule
+out benefits from a different action set, but does not establish aliasing as
+the dominant bottleneck here; controls and training remain unchanged. No
+diagnostic frames/actions are used as training data or promotion candidates.
+
+```bash
+venv/bin/python -m rl.defense_alias_probe \
+  results/defense/training/ppo-30-frozen-memory/first-replay \
+  --output runs/defense-alias-reproduction.json
+```
+
+### Shared failure location: screen evidence
+
+The user's observation that the policies fail at the same place prompted a
+[four-policy, sixteen-life comparison](results/defense/diagnostics/shared-loss-01/report.json).
+`rl.defense_loss_probe` reads only preserved, hash-checked, originally verified
+own-policy traces. It reconciles each life total with recorded visible score
+increments and renders the original screen bytes, without running new games,
+reading private RAM, generating demonstrations, or changing training.
+
+| Selected policy replay | Points earned on each of its four lives | Screen comparison |
+| --- | --- | --- |
+| Original global best | 2,620 / 2,620 / 2,620 / 2,620 | [Four lives](results/defense/diagnostics/shared-loss-01/policy-1-losses.png) |
+| PPO 12 best effort | 2,620 / 2,620 / 2,620 / 2,620 | [Four lives](results/defense/diagnostics/shared-loss-01/policy-2-losses.png) |
+| Frozen-memory PPO 30, 933,888 | 2,620 / 2,620 / 2,620 / 2,620 | [Four lives](results/defense/diagnostics/shared-loss-01/policy-3-losses.png) |
+| Independently trained bootstrap DQN 24 | 2,550 / 2,620 / 2,620 / 2,620 | [Four lives](results/defense/diagnostics/shared-loss-01/policy-4-losses.png) |
+
+Visual inspection shows the same broad horizontal barrier approaching the
+ship, with a large opening at the right, while these ships remain near the
+center/left. Some frames show small breaks in the barrier; this is not proof
+that one particular route or action is required. The selected actions differ
+across policies and lives, but none of these traces negotiates this obstacle.
+This supports a **shared behavioral bottleneck**, not just similar final
+scores. It is still a selected-replay observation, not a population failure
+rate, measured course index, or proof of the exact collision mechanism.
+
+Rows of each sheet are lives; columns are 64, 32, 8 and 1 decisions before
+an alignment marker. For the first three lives, the marker is the first sampled
+frame in the last 128 with more than half the non-HUD cells solid white.
+These flashes precede the visible life decrement by **11–18 decisions**.
+They are **not exact physical collision timestamps**; even a preceding frame
+can already be in the death animation. No such flash is sampled on the final
+life (terminal settling advances the original animation), so that row explicitly
+uses the visible loss endpoint instead. The sheets do not pretend these
+different markers are precisely time-aligned collision events.
+
+The records also show large **750–770** and **1,500–1,520** visible-score
+increments shortly before this failure. A plausible learning explanation is
+that the policies reliably collect the earlier reward but have not discovered
+the longer sequence needed to continue past the barrier. This remains a
+hypothesis, not a demonstrated cause. Movement choices still account for
+34–72% of the selected 64-decision windows; action counts alone do not establish
+effective displacement, and "the agent never moves" would be inaccurate.
+
+The training implication is to judge subsequent experiments by escaping this
+failure pattern and reaching new stages, not by another tiny increase in mean
+score at the same 10,480 ceiling. Earlier lookback, longer-return, action-timing
+and parameter-noise experiments are already documented below and did not clear
+it; simply repeating them is not a new diagnosis. The live frozen-memory trial
+continues as a controlled test, with no hand-coded right-turn rule, screen-derived
+collision reward, or replay examples added to learning.
+
+All **269 regression tests** pass. The new read-only checks cover synthetic
+loss-window boundaries, absent-flash fallback, score reconciliation, invalid
+traces, original-source immutability and checksum rejection, plus exact
+feedforward/recurrent action reconstruction in the separate alias diagnostic.
+The [full test log](results/defense/diagnostics/shared-loss-regression-tests.txt)
+is preserved. No learner or environment behavior changed in this diagnostic.
+
+```bash
+venv/bin/python -m rl.defense_loss_probe \
+  results/defense/learned/best \
+  results/defense/training/ppo-12-lookback/best-effort \
+  results/defense/training/ppo-30-frozen-memory/replay-peak-933888 \
+  results/defense/training/dqn-24-bootstrap/replay-10410 \
+  --output runs/defense-shared-loss-reproduction
+```
 
 ### Lower-entropy continuation
 
@@ -2488,6 +2588,19 @@ calibration, training completed **55** additional boot games and **17** restored
 segments. This is continued retention, slightly above calibration's mean
 10,453 but below the original parent's 10,474; it is not a stage clear. The
 tied best score does not replace the global replay. Unlimited learning continues.
+
+The [next four validation rounds](results/defense/training/ppo-30-frozen-memory/validation-through-000001138688.json)
+had means **10,464**, **10,382**, **10,476** and **10,464**. The peak at
+**933,888** is preserved as a
+[full optimizer checkpoint](results/defense/training/ppo-30-frozen-memory/step-000000933888/evaluation.json).
+Independent frozen re-evaluation exactly reproduced **all ten game records**,
+and its [2,551-action replay](results/defense/training/ppo-30-frozen-memory/replay-peak-933888/replay.html)
+reproduced every neural action, reward and screen from boot. All twelve base
+arrays remain exactly equal to the original parent; no base optimizer slots
+were introduced. Mean 10,476 is only **two points** above that parent's 10,474,
+and below run 21's earlier 10,478. All games still end in stage 1, with no
+mission. This separately preserved evaluation-only replay does not replace
+the tied global best or supply training data.
 
 ```bash
 venv/bin/python -u -m rl.defense_train \
