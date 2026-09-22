@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **276-test** suite now passes, including
+(23 GiB available at restart). The full **279-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
@@ -26,7 +26,9 @@ Full trials 33/34 now continue the verified shorter-lookback reset arm and
 its matched high-exploration no-reset comparator, retaining complete-game
 evaluation and automatic verified replay collection.
 Their first full-run round favors resets by 62 mean points, down from the
-bounded check's 224; all twenty games still lost in stage 1.
+bounded check's 224; the second favors no resets by 305. All games remain
+stage-1 losses. A read-only prediction/return diagnostic does not support
+gross near-loss Q-value inflation as the explanation.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -626,6 +628,59 @@ venv/bin/python -m rl.defense_loss_probe \
   results/defense/training/ppo-30-frozen-memory/replay-peak-933888 \
   results/defense/training/dqn-24-bootstrap/replay-10410 \
   --output runs/defense-shared-loss-reproduction
+```
+
+### Frozen DQN prediction/return diagnostic
+
+To test whether the shared losses accompany grossly inflated future-score
+predictions, `rl.defense_q_probe` compares a frozen ordinary DQN's selected
+Q-values with discounted returns on **that model's own verified replay**.
+It reconstructs the exact boot-padded visible four-frame stacks, checks every
+greedy action against the recorded action, and computes returns using the
+checkpoint's gamma **0.997**, reward scale **0.01** and actual visible life
+learning boundaries. It does not count the next life's rewards across a
+learning terminal. Results are reported in discounted **score units** by
+undoing the fixed optimizer scale, not as new game scores or optimal values.
+
+Three selected traces reproduce **7,648** actions in total, with every source
+file hash unchanged. Their native action/screen/reward verification was already
+performed when the replays were published; this diagnostic does **not** run
+the emulator again, update parameters, choose new actions or write training data.
+
+| Frozen model / selected replay | Reconstructed actions | Whole-replay mean prediction minus realized discounted return |
+| --- | ---: | ---: |
+| [DQN 33 reset, 6,962,144](results/defense/diagnostics/q-return-reset-6962144.json) | 2,564 | −130.89 points |
+| [DQN 34 no-reset, 6,962,144](results/defense/diagnostics/q-return-control-6962144.json) | 2,558 | −133.46 points |
+| [DQN 31 low-rate persistence, 7,031,072](results/defense/diagnostics/q-return-persistent-7031072.json) | 2,526 | −137.93 points |
+
+In their twelve 64-action windows before the visual alignment marker, mean
+prediction-minus-return errors range from **−45.71 to +124.00** points. For
+the nine lives with sampled white-flash windows, predicted remaining score
+averages **7.15–81.56**, while the actual remaining return in those windows is
+zero. Predictions generally fall sharply after the large score gains. Thus
+these traces do **not** support the specific explanation that the selected
+models consistently expect thousands more points while dying. Whole-trace
+underprediction is not evidence of a general pessimistic bias: these are
+selected high-scoring replays, not unbiased samples of expected return.
+
+Neither small nor large error would establish the correct route or a causal
+training defect. Approximation, partial observations, changes in policy and
+selected-trajectory effects can all contribute. Flash alignment is not a
+physical collision timestamp; final losses without a sampled flash use the
+explicit visible-loss endpoint. No counterfactual action sequence is supplied,
+and no policy/reward/environment setting changes on the basis of this check.
+The matched exploration/reset trials continue unchanged.
+
+Three focused tests pass: analytic discounted-return/life-boundary isolation,
+invalid/incomplete input rejection, and exact frozen action reconstruction
+with source immutability and checksum rejection. The full **279-test**
+[regression suite passes](results/defense/diagnostics/q-probe-regression-tests.txt).
+Reproduce into a new output path:
+
+```bash
+venv/bin/python -m rl.defense_q_probe \
+  results/defense/training/dqn-33-persistent-resets/first-replay \
+  --output runs/defense-q-return-reproduction.json
 ```
 
 ### Lower-entropy continuation
@@ -3286,6 +3341,18 @@ within-life source score **2,600**, and both reserved workers stayed boot-only.
 These counts describe retained events over time, not current archive contents
 or measured obstacle positions. Both learners continue unchanged for further
 matched rounds; no new source data, reward or controller was introduced.
+
+The [second full round at **7,162,144**](results/defense/training/dqn-33-persistent-resets/comparison-at-000007162144.json)
+reverses that small advantage: resets averaged **9,942**, median **9,930**,
+best **10,040**, versus control mean **10,247**, median **10,230**, best
+**10,320**. The mean difference is now **−305**, with all ten paired reset
+scores lower. All twenty complete games
+again lost in stage 1, after **400,000** additional actions per arm since
+calibration. Both complete online/target/optimizer/RNG checkpoints and game
+records are preserved. Their first-round verified replays scored higher and
+remain unchanged; no new replay is claimed for this lower-scoring round.
+The inconsistent mean ranking does not establish a durable reset benefit or
+stage-depth progress. Both full runs continue unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
