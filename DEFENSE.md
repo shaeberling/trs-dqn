@@ -31,11 +31,16 @@ gross near-loss Q-value inflation as the explanation.
 A bounded archive-diversity pair favored screen fingerprints over score bins
 by 384 mean points, with equal maximum archive capacity and identical parent
 state. Both still fell below the parent and lost every evaluation in stage 1.
-Full trials 35/36 continue those capacity-matched archive-selection arms.
+Full trials 35/36 tested those capacity-matched archive-selection arms.
 Their first three full rounds average **10,198 / 10,133**, **9,836 / 10,172**
 and **10,085 / 10,198**, respectively; every game still loses in stage 1.
 Verified replay loss panels show the same broad
 right-opening barrier sequence; archive diversity has not resolved it.
+Run 35 later retired after six rounds without a stage clear, with its full
+final state preserved. Run 36 continues; its sixth-round mean is **10,418**,
+best **10,460**, still stage 1. Run 39 now gives the earlier 128-action-lookback
+calibration a full continuation, testing more preparation time rather than
+treating its lower short-check score as evidence against eventual progression.
 A matched quantile-DQN calibration found risk distortion worse than neutral
 exploration (**10,146 / 10,280** mean), without a later stage. Full trials
 37/38 now continue both quantile arms from their own checked states. They add
@@ -3296,7 +3301,9 @@ and remains below the common parent's 10,344. Its best
 [2,596-action replay](results/defense/training/persistent-reset-calibration-01/replay/replay.html)
 was independently reproduced from frozen weights; full online/target/optimizer/
 RNG state and complete compressed logs are preserved. It stopped normally at
-the declared budget and is not promoted to an unlimited run.
+the declared calibration budget and initially was not continued. The later
+full run 39 revisits this decision after the shorter-lookback and archive
+diversity trials failed to produce a stage clear; see below.
 
 Training completed **50** new boot games and **39** restored segments, all
 without a later-stage event. Both reserved workers stayed boot-only. All
@@ -3439,6 +3446,58 @@ venv/bin/python -u -m rl.defense_dqn \
   --steps 0 --eval-every 200000
 # For the matched comparator, use distinct output paths and resume
 # results/defense/training/persistent-rate-high-01/checkpoint instead.
+```
+
+### Longer preparation-context continuation
+
+Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)
+continues the original **lookback-128** persistent-exploration calibration at
+**6,762,144**. That check received only **131,072** new actions and **39**
+completed restored segments, versus the shorter-lookback run 33's later
+**1,371,392** additional actions and **362** restored segments. Run 33 never
+cleared stage 1. The earlier 186-point short-check advantage for lookback 32
+was not evidence that the longer preparation context cannot help stage depth.
+Lower source score is not proof of less useful preparation: score is not
+position, and the goal is passage rather than maximizing a short-run mean.
+
+This is a continuation of an already checked experiment, not a new controller
+or a claimed solution. It restores the long arm's online/target/Adam and both
+RNG streams, with nominal 25% persistent exploration, durations 1–64/exponent
+1.5, eight workers, compact replay 200,000, batch 64, learning rate 1e-4,
+gamma .997, n-step 5, life terminals, 100,000 T-states and stride 1. Own resets
+remain probability .5, shared score cells 16×4, two boot-only workers and
+**128 actions before an archive event**, not a scripted collision timestamp.
+All learning/exploration/archive settings match the preserved parent.
+Replay and native-state archives refill from new own experience. No archived
+evaluation trace or foreign native state is loaded.
+
+The [startup log-prefix audit through **6,874,360**](results/defense/training/dqn-39-long-lookback/startup-audit.json)
+observes **43** completed boot games, **32** restored segments and **1,314**
+archive events, all with exact 128-action source/trigger offsets. Reserved
+workers remain boot-only. All completed episodes are still stage 1. Retained
+save events reach source within-life score **210**, while triggers reach
+**2,640**; these are not position, collision or stage-clear measurements.
+
+Only output paths, the limit to unlimited, and the full evaluation interval
+of **200,000** change. Its first full evaluation is due at **6,962,144**.
+The historical shorter-lookback/no-reset arms 33/34 provide same-lineage
+comparators at matching additional action counts, not fresh independent or
+contemporaneous replications. Later progression must still be observed in
+complete from-boot play, with a verified replay; earlier static/visual evidence
+does not establish success.
+
+Run 35's retired slot supplies compute. Runs 36/37/38 continue unchanged.
+The prior collector exited cleanly before the new sole collector started
+with [all 35 full-run sources](results/defense/training/dqn-39-long-lookback/collector-config.json).
+Historical sources remain; calibration and evaluation-only probes remain
+excluded. Shared best promotion still requires frozen-policy verification.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-persistent-long-lookback-full-reproduction \
+  --artifacts runs/defense-persistent-long-lookback-full-reproduction/artifacts \
+  --resume results/defense/training/persistent-reset-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Quantile score-return experiment
@@ -3772,6 +3831,24 @@ advantage from screen diversity. Full per-game records and model hashes are
 preserved in the curve; first-round full checkpoints and stronger verified
 replays remain archived. The newer matched quantile experiment is separate;
 neither evaluation data nor replay traces enter its training buffer.
+
+The [six-round curve through **8,293,216**](results/defense/training/dqn-35-screen-archive/comparison-through-000008293216.json)
+extends the mean differences to **+65 / −336 / −113 / +50 / −419 / −212**
+(screen minus score). All **120** reused evaluation games lost in stage 1.
+The sixth round is screen mean **10,206**, median **10,200**, best **10,220**,
+versus score mean **10,418**, median **10,415**, best **10,460**. Both complete
+evaluated checkpoints are archived. The score arm's new
+[2,521-action verified replay](results/defense/training/dqn-36-score-archive-control/replay-10460/replay.html)
+is preserved without replacing the stronger shared best.
+
+Screen selection then [stopped cleanly at **8,451,456**](results/defense/training/dqn-35-screen-archive/retirement.json),
+after **1,358,240** new actions, **534** new boot games and **336** restored
+segments since its calibration. All logged completed training episodes also
+remained in stage 1. Final online/target/Adam/RNG, the last evaluated full
+checkpoint and complete compressed log are preserved; final post-update
+weights were not separately evaluated. Its depth plateau and lack of a durable
+mean advantage prompted reallocating the slot, not a wall-clock limit. Run 36
+continues. No checkpoint, replay or log was deleted.
 
 ```bash
 # Use distinct paths and curriculum-cells score for the capacity-matched control.
