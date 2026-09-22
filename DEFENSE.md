@@ -3607,6 +3607,40 @@ Historical sources remain included; short calibrations and evaluation-only
 probes remain excluded. The shared 10,480-point best is unchanged, and future
 promotion still requires complete frozen-policy replay verification.
 
+At the matched **100,000-new-action** cutoff (**7,193,216**), the
+[split startup audit](results/defense/training/dqn-40-worker-epsilon-split/startup-audit-000007193216.json)
+records **42** completed boot games and **26** restored segments; **21/26**
+completed restores originated from the two reserved low-exploration workers.
+Those workers supplied **82/110** retained save events. The
+[uniform control audit](results/defense/training/dqn-41-worker-epsilon-control/startup-audit-000007193216.json)
+records **47** boot games and **34** restored segments; **8/34** came from
+reserved workers, which supplied **11/59** retained events. Both preserve
+boot-only reservations and exact 128-action archive offsets, and all logged
+episodes remain stage 1. The role separation is producing a different supply
+of own practice states, but this is mechanism evidence, not a performance or
+stage-clear result. Each audit records the exact log-prefix hash and byte count;
+its exploration counters come from the last progress row before the cutoff.
+
+The [first full paired evaluation at **7,293,216**](results/defense/training/dqn-40-worker-epsilon-split/comparison-at-000007293216.json)
+adds **200,000** actions per arm after calibration (**331,072** since their
+common parent): split mean **9,755**, median **10,190**, best **10,340**;
+control mean **9,832**, median **9,810**, best **9,940**. All twenty complete
+games remain stage-1 losses. Split scores are higher on eight paired seeds,
+lower on two (**−1,930**, **−2,020**), for mean difference **−77**. The higher
+median/best does not establish a depth benefit or reliable superiority.
+
+Both full online/target/Adam/RNG checkpoints and independently verified
+[split replay, **2,581 actions**](results/defense/training/dqn-40-worker-epsilon-split/first-replay/replay.html)
+and [control replay, **2,579 actions**](results/defense/training/dqn-41-worker-epsilon-control/first-replay/replay.html)
+are preserved. The [split audit](results/defense/training/dqn-40-worker-epsilon-split/audit-at-000007293216.json)
+records **82** new boot games and **61** restored segments, versus
+[control's **99** and **61**](results/defense/training/dqn-41-worker-epsilon-control/audit-at-000007293216.json).
+Retained save events number **137** versus **62**, maximum source within-life
+score **190** versus **120**, and maximum trigger within-life score **2,620**
+versus **2,450**. All offsets and reserved-worker boundaries remain correct;
+all completed training episodes also remain stage 1. These are archive-event
+statistics, not proof of course advancement. Both learners continue unchanged.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)
@@ -3674,6 +3708,15 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/persistent-reset-calibration-01/checkpoint \
   --steps 0 --eval-every 200000
 ```
+
+At **7,562,144**, the longer-lookback run's
+[four-round curve](results/defense/training/dqn-39-long-lookback/curve-through-000007562144.json)
+reaches mean **10,345**, median **10,330**, best **10,460**. Its
+[2,562-action verified replay](results/defense/training/dqn-39-long-lookback/replay-10460/replay.html)
+and complete online/target/Adam/RNG checkpoint are preserved. This improves
+its own score record, but all forty validation games remain stage-1 losses;
+no mission or later-stage progress has been observed. The run continues
+unchanged, and the global best is not replaced by this lower score.
 
 ### Quantile score-return experiment
 
