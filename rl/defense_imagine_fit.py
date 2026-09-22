@@ -1,4 +1,4 @@
-"""Frozen learned-world actor calibration with real complete-game evaluation.
+"""Learned-world actor fitting with real complete-game evaluation.
 
 This is not yet an online Dreamer training loop. Forecast errors are measured
 separately; only original-emulator outcomes may publish a local best replay.
@@ -32,9 +32,13 @@ def main():
     parser.add_argument('--horizon', type=int, default=15)
     parser.add_argument('--gamma', type=float, default=.999)
     parser.add_argument('--resume', type=Path)
+    parser.add_argument('--refresh-world', action='store_true',
+                        help='retain full behavior state but use its explicitly updated descendant world')
     args = parser.parse_args()
     if args.output.exists() or min(args.updates, args.every, args.batch, args.games, args.eval_envs) < 1:
         parser.error('positive counts and a new output required')
+    if args.refresh_world and not args.resume:
+        parser.error('world refresh requires full actor/critic/optimizer/RNG resume')
     world_state = json.loads((args.world/'state.json').read_text())
     for name, digest in world_state['hashes'].items():
         if sha256(args.world/name) != digest:
@@ -67,9 +71,14 @@ def main():
         args={k:str(v) if isinstance(v, Path) else v for k,v in vars(args).items()})
     if args.resume:
         previous = learner.restore(args.resume, rng)
-        for key in ('world_sha256', 'dataset_sha256', 'tstates', 'observation_stride'):
-            if previous[key] != config[key]:
-                parser.error('incompatible actor continuation: '+key)
+        if args.refresh_world:
+            from .defense_world_refresh import refresh_world
+            config.update(refresh_world(learner, previous, config, args.world, metadata))
+            config['parent_actor_sha256'] = sha256(args.resume/'model.safetensors')
+        else:
+            for key in ('world_sha256', 'dataset_sha256', 'tstates', 'observation_stride'):
+                if previous[key] != config[key]:
+                    parser.error('incompatible actor continuation: '+key)
     if learner.updates >= args.updates:
         parser.error('target must exceed restored actor updates')
     disk_guard(args.output.parent)

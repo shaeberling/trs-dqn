@@ -31,8 +31,9 @@ A separate new test covers that opt-in and provenance preservation.
 The first feedback fit continues the uniform world model from 12,000 updates
 using the new checked union: **60 training games / 116,495 actions**, with
 **12 held-out games / 23,304 actions**. It targets 14,000 total dynamics
-updates. This is the first world update incorporating actual new actor
-experience; refreshing the actor afterward remains the next step. It is not
+updates and has now finished; see the [full feedback world archive](../world-model-feedback-01/README.md).
+This is the first world update incorporating actual new actor
+experience; an explicit full-state actor continuation follows. It is not
 yet a fully automated online Dreamer loop or evidence of successful play.
 
 ```bash

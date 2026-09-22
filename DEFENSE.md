@@ -50,10 +50,13 @@ updates, with all 60 baseline and trained games losing in stage 1. Rewards,
 inputs, game and held-out assignments remain unchanged. These offline results
 motivate [new actor experience](results/defense/training/world-model-actor-collection-03/README.md)
 for model feedback, not claiming that the recurring barrier has been solved.
-That collection has finished 24 fresh games, and the first feedback world fit
-now uses 60 training games / 116,495 actions with twelve whole games held out.
-Refreshing the actor afterward remains work in progress. Two further focused
-tests passed after the full 393-test suite.
+That collection finished 24 fresh games, and the [first feedback world fit](results/defense/training/world-model-feedback-01/README.md)
+completed 14,000 total updates using 60 training games / 116,495 actions with
+twelve whole games held out. The [first actor feedback continuation](results/defense/training/imagination-feedback-01/README.md)
+retained its complete learned behavior/optimizer/RNG state but finished with
+mean 276 after 1,000 additional imagined updates, still all stage 1. Three
+further focused tests passed after the full 393-test suite; the original five
+actor tests were rerun successfully after adding explicit world refresh.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
