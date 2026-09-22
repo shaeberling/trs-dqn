@@ -14,8 +14,8 @@ frozen-base screen-history memory after
 a verified bounded comparison. Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 Full DQN trials 31/32 now compare persistent random exploration with the
-unchanged control. The positive but weak short-run comparison reversed in
-their first full-run validation; all games still lost in stage 1.
+unchanged control. Their first two full-run rounds disagree on mean-score
+ranking; all games still lost in stage 1.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -2958,6 +2958,26 @@ replays are preserved. The earlier, higher-scoring calibration replays are
 unchanged. This does not establish that persistence helps; both trials continue
 unchanged for further matched rounds, without treating a single batch as a
 success or a definitive rejection. Neither replaced the shared 10,480 best.
+
+The [second matched round at **6,631,072**](results/defense/training/dqn-31-persistent/comparison-at-000006631072.json)
+adds **400,000** actions per arm after calibration (**531,072** after the common
+parent). [Persistence](results/defense/training/dqn-31-persistent/step-000006631072/evaluation.json)
+averaged **10,344**, median **10,350**, best **10,430**;
+[control](results/defense/training/dqn-32-persistent-control/step-000006631072/evaluation.json)
+averaged **10,042**, median **10,220**, best **10,360**. The mean difference is
+now **+302**, with eight higher and two lower paired seeds, reversing the
+first round's −905. All twenty games still lost in stage 1. Persistence is
+54 points above the untouched parent's mean 10,290, but this fluctuating
+comparison is not a durable advantage or a depth gain.
+
+Both full checkpoints and their independently verified
+[2,538-action persistent replay](results/defense/training/dqn-31-persistent/replay-10430/replay.html)
+and [2,579-action control replay](results/defense/training/dqn-32-persistent-control/replay-10360/replay.html)
+are preserved. Since calibration, they completed **174** and **170** new boot
+games respectively, with no restored segments. The cumulative measured
+persistent exploratory-step fraction was **4.930%**. Earlier checkpoints and
+higher-scoring calibration replays remain untouched. Both learners continue
+unchanged, and the shared best is still the original verified 10,480 replay.
 
 ```bash
 # Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
