@@ -1,0 +1,59 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions_each": 131072,
+  "baseline": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-long-persistence-split-calibration-01/artifacts"
+    ],
+    "exploration_max_repeat": [
+      64,
+      256
+    ],
+    "exploration_mean_duration": [
+      6.17854988568226,
+      12.28981648392851
+    ],
+    "greedy_trace_cut": [
+      null,
+      false
+    ],
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-long-persistence-split-calibration-01"
+    ],
+    "trainer_source_sha256": [
+      "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+      "8c2979f671a7813b2b100ae93a1dcdc5ff9f39dccb22c2eac8d64948443cc9e6"
+    ]
+  },
+  "unchanged_helper_model_replay_environment_hashes": true,
+  "default_path_parity": "results/defense/diagnostics/trace-cut-default-parity.json",
+  "mechanism": [
+    {
+      "maximum": 64,
+      "expected_uninterrupted_duration": 6.17854988568226,
+      "probability_hold_above_64": 0.0,
+      "start_probability_at_epsilon_05": 0.008446484706973104,
+      "start_probability_at_epsilon_9": 0.5929420180309577
+    },
+    {
+      "maximum": 256,
+      "expected_uninterrupted_duration": 12.28981648392851,
+      "probability_hold_above_64": 0.04990928158011494,
+      "start_probability_at_epsilon_05": 0.004264273884666029,
+      "start_probability_at_epsilon_9": 0.4227373217046761
+    }
+  ],
+  "hypothesis": "Test broader temporal persistence of uniformly random training actions without increasing nominal exploratory-step occupancy or supplying a route.",
+  "limitations": [
+    "Historical same-parent comparison, not simultaneous replication or fresh test.",
+    "All 20 actions remain uniform; no preferred direction, obstacle trigger or action override in evaluation.",
+    "Each primitive action retains its own screen/reward/learning step; timing is unchanged.",
+    "Boundary cancellation changes realized duration and occupancy; measure actual counts.",
+    "Not combined with trace cutting or higher gamma; isolates duration cap.",
+    "Uses only new own training trajectories and opaque own-state resets, never evaluation traces.",
+    "Ten complete uncapped boot validation games on reused seeds 10000..10009."
+  ]
+}

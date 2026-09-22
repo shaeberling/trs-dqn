@@ -1,0 +1,25 @@
+{
+  "steps": 7293216,
+  "new_actions": 200000,
+  "new_updates": 11874,
+  "new_boot_games": 88,
+  "new_restored_segments": 65,
+  "archive_events": 1723,
+  "all_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true,
+  "greedy_trace": {
+    "sampled_backups": 759936,
+    "backup_action_histogram": [
+      632173,
+      45350,
+      21474,
+      12470,
+      48469
+    ],
+    "mean_backup_actions": 1.4205406771096514,
+    "policy_cut_backups": 704642,
+    "policy_cut_fraction": 0.9272386095671215
+  },
+  "log_prefix_through_validation_start_sha256": "0fe1bc158357a55db831b19656b98db7942327dc83868231e459093c71510a87"
+}

@@ -6,17 +6,20 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **309-test** suite now passes, including
+(23 GiB available at restart). The full **311-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are worker-split exploration (40), higher discount (42),
-and full current-policy trace cutting (43). Uniform control 41 has
-retired after seven evaluation rounds without a later stage.
+Current experiments are higher discount (42), full current-policy trace cutting
+(43), and longer persistence (44). Worker-split exploration
+(40) and its uniform control (41) retired after nine and seven evaluation
+rounds, respectively, without a later stage.
 Runs 33–39 have retired with full final state and logs preserved; the historical
 updates below record their earlier trajectories. None has reached stage 2.
 The trace-cut check changes training targets only, using the same own learned
 parent and settings as the preserved five-step comparison. Its completed
 calibration regressed to mean **8,324** versus **9,466**, all stage 1; run 43
 tests longer adaptation, not a claimed solution to the recurring barrier.
+The longer-persistence calibration improved mean to **10,097** versus **9,466**,
+but all games remain stage-1 losses; run 44 tests whether it can advance.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
 Training remains independent of Breakdown, with complete-game
@@ -3688,6 +3691,18 @@ evaluated. This retires the depth-plateaued control without deleting its stronge
 first-round verified replay; the split arm continues. Compute is available to
 the trace-cut calibration, not a claim that trace cutting has succeeded.
 
+The split arm (40) subsequently stopped cleanly at **8,903,168**, after
+**1,809,952** new actions, **765** complete boot games, **592** restored segments
+and **nine** complete ten-game evaluation rounds. Its last mean was **10,256**,
+median **10,240**, best **10,310**. Every logged training episode and all
+90 validation games remained in stage 1. The
+[retirement record](results/defense/training/dqn-40-worker-epsilon-split/retirement.json),
+complete compressed log, last evaluated checkpoint and final full optimizer
+checkpoint are preserved. Final post-update weights were not separately
+evaluated; the earlier 10,430-point verified replay stays available. The depth
+plateau, not a wall-clock limit, prompted reallocating compute to the duration
+and return-target experiments.
+
 ### One-step target calibration under heavy exploration
 
 The worker-allocation trial changes which experience is generated, but still
@@ -4116,6 +4131,113 @@ venv/bin/python -u -m rl.defense_dqn \
   --run runs/defense-greedy-trace-cut-full-reproduction \
   --artifacts runs/defense-greedy-trace-cut-full-reproduction/artifacts \
   --resume results/defense/training/trace-cut-split-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
+```
+
+Run 43's [first full comparison at **7,293,216**](results/defense/training/dqn-43-greedy-trace-cut/comparison-at-000007293216.json)
+gives mean **8,681**, median **8,300**, best **9,820**, versus the historical
+five-step split arm's mean **9,755**. The mean difference is **−1,074**, with
+nine paired scores lower and one higher. All games remain stage-1 losses.
+The full checkpoint and [2,530-action verified replay](results/defense/training/dqn-43-greedy-trace-cut/first-replay/replay.html)
+are preserved. The [audit](results/defense/training/dqn-43-greedy-trace-cut/audit-at-000007293216.json)
+records **88** new boot games, **65** restored segments and **1,723** archive
+events with correct lookback and protected boot workers. All logged training
+episodes remain stage 1. Mean sampled backup length is **1.4205**, with
+**92.724%** ending at a nongreedy later action. This first continuation batch
+does not demonstrate a benefit; the original shared best is unchanged.
+
+### Longer random-persistence calibration
+
+The [new isolated duration check](results/defense/training/long-persistence-split-calibration-01/resume-config.json)
+changes the random-hold cap **64 → 256** relative to the historical worker-split
+calibration. It uses the same original DQN 33 parent at **6,962,144**, not
+trace-cut or high-discount weights. It collects **131,072** new actions, then
+plays ten complete uncapped boot games on reused seeds 10000–10009.
+This asks whether a broader duration tail discovers useful own experience
+beyond the repeated barrier. It is not a scripted escape, preferred direction,
+obstacle-triggered start, reward bonus or demonstration.
+
+The method remains the existing bounded adaptation of
+[temporally extended epsilon-greedy exploration](https://arxiv.org/abs/2006.01782):
+uniformly sample one of all 20 actions and a power-law duration with exponent
+1.5. Only **4.991%** of planned holds exceed 64 decisions, while expected
+uninterrupted duration changes **6.17855 → 12.28982**. The start-probability
+calibration retains the same nominal exploratory-step fractions: boot workers
+.05, other workers .9. Their idle-start probabilities become **.00426427**
+and **.42273732**, respectively. Life/episode cuts can still alter realized
+occupancy, so actual duration/action/cancellation and worker counts are measured.
+
+Every held primitive step still has its own screen, score reward and normal
+learning opportunity. Life loss/episode boundaries cancel outstanding holds;
+greedy boot evaluation has no random persistence. Gamma .997, n-step 5,
+lookback 128, own-reset rules, optimizer, action cadence and observations all
+remain unchanged. Trace cutting is **off**: this check does not combine two
+new learning changes. The [configuration audit](results/defense/training/long-persistence-split-calibration-01/design.json)
+records the cap/derived mean, paths and newer trainer hash/explicit false trace
+flag; helper/model/replay/environment hashes remain identical to baseline.
+The preserved default-path parity check covers the intervening trainer branch.
+
+All [12 focused exploration tests](results/defense/diagnostics/long-persistence-focused-tests.txt)
+pass, now including native parity at cap 256, occupancy for both worker rates,
+observed long-tail samples and cancellation of maximum-length holds. These
+sampler/native checks are not game-performance results or training parents.
+The [complete 311-test suite](results/defense/diagnostics/long-persistence-regression-tests.txt)
+also passes, including the terminal-screen Q-diagnostic regression.
+Existing full trials 42/43 continue unchanged; the short check remains excluded
+from shared promotion. This is a historical same-parent comparison, not an
+independent replication or fresh success-rate estimate. Actual stage progression
+and ultimately the original mission ending must still be observed and verified.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-long-persistence-split-reproduction \
+  --artifacts runs/defense-long-persistence-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128 \
+  --exploration-max-repeat 256
+```
+
+#### Longer-persistence result and full continuation
+
+The [completed comparison](results/defense/training/long-persistence-split-calibration-01/comparison.json)
+gives cap 256 mean **10,097**, median **10,370**, best **10,430**, versus cap 64
+mean **9,466**, median **10,310**, best **10,410**. Six paired scores are higher
+and four lower; the **+631** mean difference includes a **+5,690** outlier and
+a **−2,620** regression. It is a small, uneven validation improvement, not
+evidence of reliable progress: all twenty compared games lose in stage 1.
+Its [2,561-action verified replay](results/defense/training/long-persistence-split-calibration-01/replay/replay.html),
+full online/target/Adam/RNG state and complete compressed log are preserved.
+The bounded check exited normally; both arms performed **7,566** new updates.
+
+The [mechanism audit](results/defense/training/long-persistence-split-calibration-01/audit.json)
+records **57** new boot games, **46** completed restored segments, **1,246**
+archive events and **111** retained save events. All offsets are exactly 128
+actions and reserved workers remain boot-only; every logged training episode
+is stage 1. Retained source within-life score reaches **190**, trigger **2,640**;
+neither establishes a new passage. There are **376** planned holds above 64,
+including **154** above 128, with maximum **256**. These are sampled durations,
+not a claim that boundary-truncated holds all executed fully. Actual exploratory
+fractions are **2.974% / 3.562%** for the two boot workers and **87.654–89.537%**
+for the others. Nominal rates match baseline, but the realized rates do not
+exactly match because trajectories, cancellations and finite samples differ.
+
+Full [DQN 44](results/defense/training/dqn-44-long-persistence/resume-config.json)
+continues this calibration unchanged, with unlimited actions and ten-game
+evaluations every **200,000**, first at **7,293,216**. Replay and native archives
+refill with new own experience; calibration replay actions are not training data.
+The short comparison warrants testing the duration setting longer, not claiming
+a solved barrier. Runs 42/43 remain unchanged. The prior collector exited
+cleanly before its sole replacement started with
+[all 40 full-run sources](results/defense/training/dqn-44-long-persistence/collector-config.json),
+including retired sources but no short calibrations. Independent frozen-policy
+native replay verification remains required before shared best promotion.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-long-persistence-full-reproduction \
+  --artifacts runs/defense-long-persistence-full-reproduction/artifacts \
+  --resume results/defense/training/long-persistence-split-calibration-01/checkpoint \
   --steps 0 --eval-every 200000
 ```
 
