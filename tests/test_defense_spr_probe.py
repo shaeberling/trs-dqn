@@ -5,11 +5,36 @@ import unittest
 
 import numpy as np
 
-from rl.defense_spr_probe import path_starts, probe, summarize
+from rl.defense_spr_probe import path_starts, probe, summarize, trajectory_predictions
 from rl.defense_learning import sha256
 
 
 class SprProbeTests(unittest.TestCase):
+    def test_dropout_path_matches_actual_auxiliary_loss(self):
+        import mlx.core as mx
+        from rl.defense_spr import SprLearner, cosine_distance
+        learner = SprLearner(seed=151, horizon=3)
+        rng = np.random.default_rng(57)
+        observations = mx.array(rng.integers(128, 192, (2, 4, 16, 64), dtype=np.uint8))
+        following = mx.array(rng.integers(128, 192, (2, 3, 4, 16, 64), dtype=np.uint8))
+        actions = mx.array([[0, 4, 8], [1, 2, 15]], dtype=mx.int32)
+        for dropout in (0., .5):
+            learner.dropout = dropout
+            key = mx.random.key(19)
+            actual, count = learner.auxiliary_loss(learner.training_model, observations, actions, following, key)
+            values = trajectory_predictions(learner.online, learner.ema, learner.aux,
+                observations, actions, following, key, dropout)
+            loss = mx.mean(cosine_distance(values[1], values[0]), axis=1)
+            np.testing.assert_allclose(np.array(actual), np.array(loss), rtol=1e-6, atol=1e-6)
+            self.assertEqual(int(count.item()), 6)
+            repeated = trajectory_predictions(learner.online, learner.ema, learner.aux,
+                observations, actions, following, key, dropout)
+            changed = trajectory_predictions(learner.online, learner.ema, learner.aux,
+                observations, actions, following, mx.random.key(20), dropout)
+            for a, b in zip(values, repeated): np.testing.assert_array_equal(np.array(a), np.array(b))
+            if dropout: self.assertFalse(np.array_equal(np.array(values[0]), np.array(changed[0])))
+            else: np.testing.assert_array_equal(np.array(values[0]), np.array(changed[0]))
+
     def test_constant_and_nonconstant_features(self):
         constant = np.ones((8, 4))
         report = summarize(constant, constant, constant, constant)
@@ -51,6 +76,9 @@ class SprProbeTests(unittest.TestCase):
         self.assertEqual(first['statistics']['vectors'], 1600)
         self.assertEqual(first['parameter_updates'], 0)
         self.assertFalse(first['training_data_written'])
+        reference=json.loads(Path('results/defense/diagnostics/spr-calibration-representation-with-persistence-7093216.json').read_text())
+        for name, value in reference['statistics'].items():
+            self.assertAlmostEqual(first['statistics'][name], value, places=6)
         self.assertEqual(before, hashes())
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)

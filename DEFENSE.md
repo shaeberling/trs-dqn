@@ -8,9 +8,9 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **317-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are full current-policy trace cutting (43), longer
-persistence (44), and visual prediction (45). Higher discount (42) retired after
-seven stage-1-only rounds. Visual prediction's calibration improved mean score
+Current experiments are full current-policy trace cutting (43) and visual
+prediction (45). Longer persistence (44) retired after six stage-1-only rounds;
+higher discount (42) retired after seven. Visual prediction's calibration improved mean score
 but still failed at the recurring barrier; its full continuation tests longer
 adaptation, not an established fix.
 Worker-split exploration
@@ -4294,6 +4294,20 @@ lose in stage 1. Its third median is **10,250**, best **10,260**; the full
 checkpoint and [2,541-action verified replay](results/defense/training/dqn-44-long-persistence/replay-10260/replay.html)
 are preserved. The 10,480-point shared best remains unchanged.
 
+Run 44 subsequently [retired gracefully](results/defense/training/dqn-44-long-persistence/retirement.json)
+at **8,335,312**: **1,242,096** new actions, **525** boot games and **448** restored
+segments since its calibration. All logged training episodes and all **60**
+complete evaluation games remained stage 1. The full final online/target/Adam
+state, full latest evaluated state at **8,293,216**, and complete compressed log
+are preserved; final weights were not separately evaluated. Its prior verified
+10,260-point replay and third-round checkpoint remain intact.
+The [six-round comparison](results/defense/training/dqn-44-long-persistence/comparison-through-000008293216.json)
+has means **6,404 / 9,904 / 10,248 / 9,384 / 9,900 / 10,123**. Differences from
+the cap-64 historical arm are **−3,351 / +1,053 / −51 / +2,074 / +116 / +1,074**;
+later scoring gains never produced passage. Compute was reallocated to the
+visual-prediction continuation based on this stage-depth plateau, not a wall-clock
+limit. The collector retains 44's immutable best as a historical source.
+
 ### Auxiliary visual prediction
 
 Optional `--spr-weight .1` tests an auxiliary visual-representation objective
@@ -4440,6 +4454,36 @@ All [12 focused diagnostic/SPR tests](results/defense/diagnostics/spr-probe-test
 pass, including deterministic repeated inference on this replay, source
 immutability, invalid provenance, constant-feature fixtures, boundary masking,
 and the existing native training/resume/replay checks. Training code is unchanged.
+
+The follow-up `--training-dropout --seed N` diagnostic uses the saved auxiliary
+dropout rate (**.5**) and explicit local noise keys. Its root/target key splitting
+and future-screen batch layout exactly match `SprLearner.auxiliary_loss`, checked
+against the actual unweighted auxiliary loss. It never uses or changes the
+learner's saved random key. Four [focused tests](results/defense/diagnostics/spr-dropout-probe-tests.txt)
+pass, including noise-key determinism, dropout-free numerical parity with the
+earlier report, provenance checks and source immutability.
+
+On the same frozen replay, the [seed-0](results/defense/diagnostics/spr-calibration-dropout-seed0-7093216.json)
+and [seed-1](results/defense/diagnostics/spr-calibration-dropout-seed1-7093216.json)
+checks produce:
+
+| Dropout diagnostic | Seed 0 | Seed 1 |
+| --- | ---: | ---: |
+| Recorded-action prediction distance | .062168 | .061343 |
+| Rotated-action prediction distance | .062397 | .061425 |
+| Constant-target distance | .101320 | .102411 |
+| Unchanged-current-target distance | .060971 | .059287 |
+| Unit-target variance sum | .198184 | .200934 |
+| Prediction action sensitivity | .000705 | .000738 |
+
+The representation remains nonconstant with dropout. Learned prediction gets
+closer to the persistence baseline than in the clean diagnostic, but still does
+not outperform it on either noise seed; the recorded-versus-rotated action
+difference remains small. This narrows the earlier concern without establishing
+useful controllable dynamics. Independent noise in current/future encodings is
+part of these distances. None of these unweighted results equals the logged
+PER-weighted loss, and neither same-replay noise repeat is an independent game
+or training replication. Trial 45's settings remain unchanged while it adapts.
 
 Full trial **45** resumes this exact checked state with unchanged settings and
 ten complete uncapped boot games every **200,000** further actions. It tests

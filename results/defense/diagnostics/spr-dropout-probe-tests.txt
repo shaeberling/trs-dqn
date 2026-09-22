@@ -1,0 +1,9 @@
+test_boundaries_and_invalid_inputs (tests.test_defense_spr_probe.SprProbeTests.test_boundaries_and_invalid_inputs) ... ok
+test_constant_and_nonconstant_features (tests.test_defense_spr_probe.SprProbeTests.test_constant_and_nonconstant_features) ... ok
+test_dropout_path_matches_actual_auxiliary_loss (tests.test_defense_spr_probe.SprProbeTests.test_dropout_path_matches_actual_auxiliary_loss) ... ok
+test_frozen_own_replay_determinism_and_provenance (tests.test_defense_spr_probe.SprProbeTests.test_frozen_own_replay_determinism_and_provenance) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 3.511s
+
+OK
