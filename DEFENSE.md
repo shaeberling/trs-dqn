@@ -2206,6 +2206,14 @@ and all historical sources; short checks remain excluded.
 To reproduce, use run 27's command above with distinct output paths and
 `--learning-rate 0.000125 --value-coefficient 1`.
 
+Run 29's [first ten complete games at 10,660,608](results/defense/training/ppo-29-value-weight/step-000010660608/evaluation.json)
+(**212,992** new actions) averaged **10,210**, median **10,460**, best
+**10,480**. The full optimizer checkpoint and
+[5,044-action verified replay](results/defense/training/ppo-29-value-weight/first-replay/replay.html)
+are preserved. Its mean exceeds run 27's same-counter 9,933 by 277, but all
+games still lost in stage 1. This is early retention, not proof of durable
+stability or a depth gain, and the tied best does not replace the global replay.
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -2487,6 +2495,25 @@ stage 2. Matched short continuation checks now compare learning rates
 0.0001 and 0.000025 from the **6,100,000** peak, with otherwise identical
 fresh-buffer restart settings. Neither check is a collector source or a
 claimed improvement before its complete-game results are available.
+
+Those short checks have now finished. Both started from the same peak and
+added **32,768** actions, ending at **6,132,768**, with eight workers and the
+same 200,000-transition compact capacity. Each buffer refilled from new own
+experience with the existing 10,000-transition random warmup; no saved
+training or evaluation trajectories were loaded. Their configurations differ
+only in learning rate and output paths.
+
+| Learning rate | Mean | Median | Best | Verified replay actions |
+| --- | ---: | ---: | ---: | ---: |
+| [0.0001 control](results/defense/training/dqn-peak-control-01/checkpoint/evaluation.json) | 9,734 | 10,245 | 10,310 | [2,388](results/defense/training/dqn-peak-control-01/replay/replay.html) |
+| [0.000025](results/defense/training/dqn-peak-low-lr-01/checkpoint/evaluation.json) | 5,367 | 5,190 | 7,580 | [2,286](results/defense/training/dqn-peak-low-lr-01/replay/replay.html) |
+
+All twenty complete evaluation games lost in stage 1. Both means are below
+the frozen parent's 10,290; the lower rate is substantially worse than the
+matched restart control and is **not** being promoted to a full run. This
+does not show that slowing updates fixes the long-run regression. Both
+checks exited normally; full online/target/optimizer states, configuration,
+logs and verified replays are preserved, separate from the collector.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-large-replay-reproduction \
