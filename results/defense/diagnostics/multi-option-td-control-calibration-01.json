@@ -1,0 +1,106 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/repeat-five-control-calibration-01/replay",
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/repeat-five-control-calibration-01/checkpoint",
+  "source_hashes": {
+    "model.safetensors": "7e2b93b855337a6b16908a9e10cdc1f7d7deb41a6b0934976202e33b69c77e3d",
+    "state.json": "6dcab2520e615731bca1b63a08f18b0cdd91754b39664672c43e86ed33b4daf1",
+    "trace.npz": "5827c7e243160271ac4c26eb84b4020fa362a5d5b722f48dbef1e8757e0fbea5",
+    "verification.json": "f1735ba3b5a7fc2cb0d39de6176a6e610dfc03992063700ebda1c9a0345db4a0"
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "7e2b93b855337a6b16908a9e10cdc1f7d7deb41a6b0934976202e33b69c77e3d",
+    "target.safetensors": "2ce7e4a0f0c13a93e60e12ddab7e492820dff9549a438c6879c8c1c79373107a",
+    "state.json": "6dcab2520e615731bca1b63a08f18b0cdd91754b39664672c43e86ed33b4daf1"
+  },
+  "probe_source_sha256": "8daffc88dcfd12bf6314bc9e10a370c57bed1ef9e896f98692817fe9299b5c6c",
+  "result": {
+    "seed": 10003,
+    "score": 8660,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2481,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 8660.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1802000,
+    "start_tstates": 63588
+  },
+  "repeat_n_step": 5,
+  "durations": [
+    1
+  ],
+  "reward_scale": 0.01,
+  "gamma": 0.997,
+  "commands_reproduced": 2481,
+  "completed_options": 2481,
+  "interrupted_options": 0,
+  "terminal_returns": 20,
+  "td": {
+    "transitions": 2481,
+    "mean_absolute_td": 0.3228900134563446,
+    "p90_absolute_td": 0.5807933807373047,
+    "maximum_absolute_td": 15.715293884277344,
+    "linear_huber_fraction": 0.0354695687222894,
+    "mean_unit_weight_huber": 0.14317594468593597,
+    "mean_predicted_value": 9.762848854064941,
+    "mean_label": 9.710463523864746,
+    "mean_observed_return": 0.17348238825798035,
+    "maximum_observed_return": 15.199999809265137,
+    "groups": [
+      {
+        "group": "zero_observed_return",
+        "transitions": 2246,
+        "huber_loss_share": 0.8629509806632996,
+        "mean_absolute_td": 0.3107587397098541,
+        "linear_huber_fraction": 0.03250222617987533
+      },
+      {
+        "group": "positive_observed_return",
+        "transitions": 235,
+        "huber_loss_share": 0.13704895973205566,
+        "mean_absolute_td": 0.43883436918258667,
+        "linear_huber_fraction": 0.06382978723404255
+      }
+    ]
+  },
+  "raw_reward_counts": {
+    "0.0": 2434,
+    "20.0": 36,
+    "100.0": 3,
+    "120.0": 1,
+    "750.0": 4,
+    "1500.0": 2,
+    "1520.0": 1
+  },
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 2481,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "7e2b93b855337a6b16908a9e10cdc1f7d7deb41a6b0934976202e33b69c77e3d",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "native_reexecution": false,
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "parameter_updates": 0,
+  "ranking_eligible": false,
+  "limitations": [
+    "One selected frozen boot replay, not prioritized or exploratory training samples.",
+    "Unit-weight Huber summaries are not actual PER loss weighting or gradient contributions.",
+    "Frozen checkpoint Double-Q labels, not Monte Carlo truth or optimal counterfactual returns.",
+    "Observed return groups classify reward sums, not obstacle positions or recoverability.",
+    "Magnitude or saturation does not establish a causal learning defect.",
+    "Original native verification reused; only recorded visible screens and own choices reconstructed.",
+    "No rewards, policy choices, parameters or training data are changed."
+  ]
+}

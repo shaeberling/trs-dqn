@@ -1,0 +1,104 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-56-repeat-five-variable/replay-420",
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-56-repeat-five-variable/step-000000331072",
+  "source_hashes": {
+    "model.safetensors": "c58b9733f5d3013fc86f8ad6d1a8b9cebe4a297e95d592aa64ca1d1c0cbc06ba",
+    "state.json": "0521bd607f370bd7d213ad38aef053415df7cd3b006f25d00a5957a5da598e7b",
+    "trace.npz": "0c2a96eff3445676550bd453fb47e2e0200acbd4c08b278c3110b58250ec22cc",
+    "verification.json": "c11794d8fed3c37bf18f28b5db16d43ce466122e731742a02d2d55effc5d933a"
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "c58b9733f5d3013fc86f8ad6d1a8b9cebe4a297e95d592aa64ca1d1c0cbc06ba",
+    "target.safetensors": "0f9775a0fa84d15f118ab3897f8f4792e72ba4662fc978a5aff6d1a99b8fb92e",
+    "state.json": "0521bd607f370bd7d213ad38aef053415df7cd3b006f25d00a5957a5da598e7b"
+  },
+  "probe_source_sha256": "8daffc88dcfd12bf6314bc9e10a370c57bed1ef9e896f98692817fe9299b5c6c",
+  "result": {
+    "seed": 10003,
+    "score": 420,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 1774,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 420.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1502000,
+    "start_tstates": 63588
+  },
+  "repeat_n_step": 5,
+  "durations": [
+    1,
+    4,
+    16,
+    64
+  ],
+  "reward_scale": 0.01,
+  "gamma": 0.997,
+  "commands_reproduced": 1774,
+  "completed_options": 614,
+  "interrupted_options": 2,
+  "terminal_returns": 20,
+  "td": {
+    "transitions": 614,
+    "mean_absolute_td": 0.8129450678825378,
+    "p90_absolute_td": 2.056158447265628,
+    "maximum_absolute_td": 8.452254295349121,
+    "linear_huber_fraction": 0.2263843648208469,
+    "mean_unit_weight_huber": 0.47562175989151,
+    "mean_predicted_value": 6.158799648284912,
+    "mean_label": 6.141672611236572,
+    "mean_observed_return": 0.0334237702190876,
+    "maximum_observed_return": 0.3724628686904907,
+    "groups": [
+      {
+        "group": "zero_observed_return",
+        "transitions": 512,
+        "huber_loss_share": 0.8735072016716003,
+        "mean_absolute_td": 0.8304190039634705,
+        "linear_huber_fraction": 0.232421875
+      },
+      {
+        "group": "positive_observed_return",
+        "transitions": 102,
+        "huber_loss_share": 0.12649275362491608,
+        "mean_absolute_td": 0.7252328395843506,
+        "linear_huber_fraction": 0.19607843137254902
+      }
+    ]
+  },
+  "raw_reward_counts": {
+    "0.0": 1753,
+    "20.0": 21
+  },
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 1774,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "c58b9733f5d3013fc86f8ad6d1a8b9cebe4a297e95d592aa64ca1d1c0cbc06ba",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "native_reexecution": false,
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "parameter_updates": 0,
+  "ranking_eligible": false,
+  "limitations": [
+    "One selected frozen boot replay, not prioritized or exploratory training samples.",
+    "Unit-weight Huber summaries are not actual PER loss weighting or gradient contributions.",
+    "Frozen checkpoint Double-Q labels, not Monte Carlo truth or optimal counterfactual returns.",
+    "Observed return groups classify reward sums, not obstacle positions or recoverability.",
+    "Magnitude or saturation does not establish a causal learning defect.",
+    "Original native verification reused; only recorded visible screens and own choices reconstructed.",
+    "No rewards, policy choices, parameters or training data are changed."
+  ]
+}

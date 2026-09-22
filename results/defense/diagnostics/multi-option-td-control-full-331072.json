@@ -1,0 +1,107 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-55-repeat-five-control/replay-10200",
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-55-repeat-five-control/step-000000331072",
+  "source_hashes": {
+    "model.safetensors": "b8914f6dbca80eeee01eb4103cc6d0d12e32a7e765303bceb6b2a3fa2e5a5431",
+    "state.json": "9b849c7e83dc7f71ad9f431aa2bef199420b98e25ee19945942b2261d8638190",
+    "trace.npz": "0691a267a1784d37f2bd4197010ddd95b111978dd064ac36f49c6e4d45c39115",
+    "verification.json": "638be5305879051acdaaccec450c6c366e1d94c585e64a7b47ceac09ea4035e8"
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "b8914f6dbca80eeee01eb4103cc6d0d12e32a7e765303bceb6b2a3fa2e5a5431",
+    "target.safetensors": "9d39c8344448bc95c237e249cd96214ffef82832c6452d4cbac2017de2ad6555",
+    "state.json": "9b849c7e83dc7f71ad9f431aa2bef199420b98e25ee19945942b2261d8638190"
+  },
+  "probe_source_sha256": "8daffc88dcfd12bf6314bc9e10a370c57bed1ef9e896f98692817fe9299b5c6c",
+  "result": {
+    "seed": 10001,
+    "score": 10200,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2520,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 10200.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1502000,
+    "start_tstates": 89846
+  },
+  "repeat_n_step": 5,
+  "durations": [
+    1
+  ],
+  "reward_scale": 0.01,
+  "gamma": 0.997,
+  "commands_reproduced": 2520,
+  "completed_options": 2520,
+  "interrupted_options": 0,
+  "terminal_returns": 20,
+  "td": {
+    "transitions": 2520,
+    "mean_absolute_td": 0.32806676626205444,
+    "p90_absolute_td": 0.638136863708496,
+    "maximum_absolute_td": 7.4227399826049805,
+    "linear_huber_fraction": 0.047619047619047616,
+    "mean_unit_weight_huber": 0.14590226113796234,
+    "mean_predicted_value": 9.628097534179688,
+    "mean_label": 9.618022918701172,
+    "mean_observed_return": 0.20117031037807465,
+    "maximum_observed_return": 15.199999809265137,
+    "groups": [
+      {
+        "group": "zero_observed_return",
+        "transitions": 2280,
+        "huber_loss_share": 0.8961591124534607,
+        "mean_absolute_td": 0.32138094305992126,
+        "linear_huber_fraction": 0.04649122807017544
+      },
+      {
+        "group": "positive_observed_return",
+        "transitions": 240,
+        "huber_loss_share": 0.10384087264537811,
+        "mean_absolute_td": 0.39158201217651367,
+        "linear_huber_fraction": 0.058333333333333334
+      }
+    ]
+  },
+  "raw_reward_counts": {
+    "0.0": 2472,
+    "20.0": 35,
+    "50.0": 2,
+    "100.0": 3,
+    "750.0": 2,
+    "770.0": 2,
+    "1500.0": 1,
+    "1520.0": 3
+  },
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 2520,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "b8914f6dbca80eeee01eb4103cc6d0d12e32a7e765303bceb6b2a3fa2e5a5431",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "native_reexecution": false,
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "parameter_updates": 0,
+  "ranking_eligible": false,
+  "limitations": [
+    "One selected frozen boot replay, not prioritized or exploratory training samples.",
+    "Unit-weight Huber summaries are not actual PER loss weighting or gradient contributions.",
+    "Frozen checkpoint Double-Q labels, not Monte Carlo truth or optimal counterfactual returns.",
+    "Observed return groups classify reward sums, not obstacle positions or recoverability.",
+    "Magnitude or saturation does not establish a causal learning defect.",
+    "Original native verification reused; only recorded visible screens and own choices reconstructed.",
+    "No rewards, policy choices, parameters or training data are changed."
+  ]
+}

@@ -6,11 +6,14 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **369-test** suite now passes, including
+(23 GiB available at restart). The full **371-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 are now live. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
+Their first full means are 358 / 9,128: variable duration has regressed,
+while the control recovers score without clearing stage 1.
+The second means are 1,136 / 9,502, again without a later stage.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
@@ -5870,6 +5873,73 @@ continue their respective calibration optimizers with unlimited learning and
 200,000-base-action evaluations. Fresh boots refill their own replay and reset
 archives. The sole collector now includes **52** full-trial sources; the short
 calibrations remain excluded and the stronger shared best is unchanged.
+
+Their [first full comparison at 331,072](results/defense/training/dqn-56-repeat-five-variable/comparison-at-000000331072.json)
+gives control mean **9,128**, best **10,200**, versus variable-duration mean
+**358**, best **420**. All twenty complete games lose in stage 1. The
+[control replay](results/defense/training/dqn-55-repeat-five-control/replay-10200/replay.html)
+verifies **2,520** base commands and the
+[variable replay](results/defense/training/dqn-56-repeat-five-variable/replay-420/replay.html)
+verifies **1,774**. Both full optimizer states, log prefixes and return/reset
+accounting audits are preserved. This first round reverses neither the
+global plateau nor the variable arm's regression; both trials continue.
+
+At [531,072](results/defense/training/dqn-56-repeat-five-variable/comparison-at-000000531072.json),
+the second full round gives control mean/median/best **9,502 / 9,800 / 9,820**
+and variable-duration **1,136 / 340 / 5,080**. All twenty games remain stage-1
+losses. Both full states and log-prefix audits are preserved; the variable
+arm's new [5,080 replay](results/defense/training/dqn-56-repeat-five-variable/replay-5080/replay.html)
+verified **2,024** base commands. The control retains its earlier 10,200
+run-best. Neither run changes the global best.
+
+#### Frozen option-return error scale
+
+Before attributing failure to the game's uneven award sizes, the read-only
+`rl.defense_td_probe` reconstructs a selected verified replay's actual option
+starts, executed durations and one/five-option returns. Every base command
+must match the frozen policy. It loads the **matching saved target network**,
+checks configuration/step/online-model identity and source hashes, then forms
+the usual frozen Double-Q labels in scaled score units. Visible life boundaries
+flush all return starts; every completed option must produce one diagnostic
+row. Neither these rows nor the recorded trajectories enter training.
+
+| Selected replay | Option-return rows | Mean absolute TD error | Fraction in linear Huber region | Unit-weight loss share from zero observed returns |
+| --- | --- | --- | --- | --- |
+| [Five-option control calibration](results/defense/diagnostics/multi-option-td-control-calibration-01.json) | 2,481 | 0.323 | 3.55% | 86.30% |
+| [Five-option variable calibration](results/defense/diagnostics/multi-option-td-variable-calibration-01.json) | 1,284 | 1.481 | 36.92% | 82.92% |
+| [Control full 331,072](results/defense/diagnostics/multi-option-td-control-full-331072.json) | 2,520 | 0.328 | 4.76% | 89.62% |
+| [Variable full 331,072](results/defense/diagnostics/multi-option-td-variable-full-331072.json) | 614 | 0.813 | 22.64% | 87.35% |
+
+The variable arm's selected full replay has lower mean TD error than its
+calibration replay despite much worse score. Neither small residuals nor
+lower diagnostic loss establish successful play. In all four traces, most
+unit-weight Huber loss belongs to returns whose observed reward sum is zero,
+not positive-award returns. This does **not** support the narrow explanation
+that large observed awards dominate this particular diagnostic loss.
+Zero observed reward does not mean zero bootstrap, and these groups are not
+obstacle or collision labels.
+
+The caveats matter: these are selected greedy boot replays, not samples of
+the exploratory, restored-state, prioritized training distribution. Unit-weight
+loss shares do not measure PER weighting or parameter-gradient contributions.
+Saved-target labels are bootstrapped estimates, not ground-truth returns.
+This analysis cannot rule out reward-scale problems or establish their cause.
+The probe exports aggregate counts only, preserves all source files, reuses
+the original native verification and makes no parameter updates.
+
+Two focused tests pass, covering Huber arithmetic/group accounting, degenerate
+losses, source integrity, exact one/five-option command reconstruction,
+complete-boundary flushing and rejection of a mismatched target checkpoint.
+The [full 371-test suite](results/defense/diagnostics/multi-option-td-regression-tests.txt)
+passed in **382.737 seconds**. No learner or acting implementation changed
+during this diagnostic review.
+
+For possible future experiments, [Pohlen et al., section 3.2](https://arxiv.org/html/1805.11593#S3.SS2)
+describe transforming value targets while keeping rewards unaltered. Section
+3.3 separately proposes temporal-consistency regularization. Neither is
+implemented or claimed validated here. Their full algorithm also uses expert
+demonstrations, which remain excluded by this project's rules. Current live
+training, reward scaling and acting policies are unchanged by this diagnostic.
 
 Reproduce the five-option calibration with the command below plus
 `--repeat-n-step 5`; use `--learned-repeats 1` and separate paths for its control.
