@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **403-test** suite passes, including
+(23 GiB available at restart). The full **409-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
@@ -62,7 +62,7 @@ regressed to mean 110. A subsequent [matched four-step latent regularizer](resul
 also failed to improve loss forecasts or play; final control/regularized actor
 means are 120 / 112, all stage 1. Both complete states, all intermediate
 checkpoints and verified local bests are retained. The global collector now
-watches 63 sources and still preserves the stronger 10,480-point replay.
+watches 65 sources and still preserves the stronger 10,480-point replay.
 A [frozen text-reconstruction diagnostic](results/defense/diagnostics/world-text-reconstruction-01/README.md)
 finds weak reconstruction of changed visible text even when observing the
 arrival screen. It includes tolerance and star/space checks to avoid equating
@@ -77,6 +77,15 @@ games lose in stage 1. These weak actors fail earlier than the strong shared
 best. Full world/actor/decoder optimizer states, logs and verified local bests
 are preserved. Five new byte/readout tests pass together after the full
 403-test suite (the final frozen-readout test was added afterward).
+A [frozen life-loss readout and head-only continuation](results/defense/training/world-life-readout-01/README.md)
+then separated recognition from anticipation. Refitting the continuation head
+with its full Adam preserved improves recognition but not play. Extending from
+2,000 to 20,000 head-only updates worsens held-out one-step calibration; both
+actor tests still lose in stage 1, finishing at means 102 / 104. Their 60 new
+complete validation games use reused seeds, not fresh success estimates. Both
+1,628-command local best replays and every intermediate state are preserved.
+Six new readout/head tests pass after the full 409-test suite; the last
+head-only test was added afterward. Further head-only fitting is retired.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.

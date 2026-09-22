@@ -1,0 +1,68 @@
+{
+  "updates": 21000,
+  "burn": 8,
+  "overshooting": {
+    "distance": 1,
+    "weight": 0.0
+  },
+  "sampling_rng": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 52504440775211026034011725442502065990,
+      "inc": 87136372517582989555478159403783844777
+    },
+    "has_uint32": 0,
+    "uinteger": 2209754477
+  },
+  "metadata": {
+    "data": "/Users/sascha/source/trs-dqn/runs/defense-world-data-feedback-02",
+    "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+    "architecture": "small-gaussian-rssm-v1",
+    "reward_scale": 0.01,
+    "batch": 8,
+    "length": 32,
+    "burn": 8,
+    "train_games": 80,
+    "heldout_games": 16,
+    "boundary_fraction": 0.0,
+    "overshooting": {
+      "distance": 1,
+      "weight": 0.0
+    },
+    "byte_reconstruction": null,
+    "byte_source_sha256": null,
+    "byte_audit_source_sha256": null,
+    "train_windows": 144145,
+    "heldout_windows": 28871,
+    "fit_source_sha256": "b0040afe513ab764be6ff6645eac93cb695e6e9e0b3afecf410b3f7935dac8d0",
+    "model_source_sha256": "c2aa4ae572e9d2d0c9d62bfd93ff37e43c2e4c008d6e86ff04f2f28e48b39139",
+    "dynamics_only": true,
+    "promotion_eligible": false,
+    "source_paper": "https://arxiv.org/abs/1912.01603",
+    "args": {
+      "world": "runs/defense-world-fit-10-byte-control/update-020000",
+      "data": "runs/defense-world-data-feedback-02",
+      "output": "runs/defense-world-head-continuation-12",
+      "updates": 2000,
+      "every": 1000,
+      "batch": 1024,
+      "features": "observed",
+      "stratified": false,
+      "resume": "/Users/sascha/source/trs-dqn/runs/defense-world-fit-10-byte-control/update-020000"
+    },
+    "parent_world_sha256": "5c7b0e699fdb21ad1d342d60e5df0d55077a269ea8562505ba9c8ca61265fdc9",
+    "parent_updates": 20000,
+    "training_phase": "continuation-head-only, cached mean-latent own features",
+    "head_features": "observed",
+    "head_batch": 1024,
+    "head_stratified": false,
+    "head_additional_updates": 2000,
+    "full_parent_optimizer_retained": true,
+    "feature_source_sha256": "c00dab90fc4f8d48e1256049d0fa8f7700f4b69f1490173c90f15563c5ab22de"
+  },
+  "hashes": {
+    "world.safetensors": "61f2c3f4bd1fcc09f4b98b222c968a6792f2a5918f6d5b9257d8b768e6c89adb",
+    "optimizer.npz": "ed414d82f73c065ef072ed35b60b367eaa7c6a35502a811cd1544666fe5c9206",
+    "random.npz": "43570d42bb5ef0f7e9625f8d2f15abc4df2b6bb01723dc0393276d74f6ebaa33"
+  }
+}

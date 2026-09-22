@@ -1,0 +1,11 @@
+test_extraction_alignment_and_readout_does_not_modify_parent (tests.test_defense_world_life_probe.LifeProbeTests.test_extraction_alignment_and_readout_does_not_modify_parent) ... ok
+test_metrics_ties_class_direction_and_perfect_prediction (tests.test_defense_world_life_probe.LifeProbeTests.test_metrics_ties_class_direction_and_perfect_prediction) ... ok
+test_prior_feature_never_observes_its_arrival (tests.test_defense_world_life_probe.LifeProbeTests.test_prior_feature_never_observes_its_arrival) ... ok
+test_stratified_weights_preserve_empirical_objective (tests.test_defense_world_life_probe.LifeProbeTests.test_stratified_weights_preserve_empirical_objective) ... ok
+test_window_coverage_is_unique_and_includes_tail (tests.test_defense_world_life_probe.LifeProbeTests.test_window_coverage_is_unique_and_includes_tail) ... ok
+test_partial_update_preserves_other_moments_and_exact_resume (tests.test_defense_world_head_fit.HeadFitTests.test_partial_update_preserves_other_moments_and_exact_resume) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.134s
+
+OK

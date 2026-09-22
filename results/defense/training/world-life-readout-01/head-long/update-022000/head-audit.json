@@ -1,0 +1,74 @@
+{
+  "train": {
+    "observed": {
+      "rows": 145985,
+      "losses": 320,
+      "prevalence": 0.002192006028016577,
+      "brier": 0.0015755277382081326,
+      "always_survive_brier": 0.002192006028016577,
+      "log_loss": 0.006496372287177456,
+      "loss_brier": 0.6418943278731579,
+      "mean_loss_probability_at_loss": 0.2493290778474792,
+      "mean_loss_probability_elsewhere": 0.0016644224478483917,
+      "loss_average_precision": 0.44296351331462064,
+      "threshold_half": {
+        "true_positive": 70,
+        "false_positive": 8,
+        "false_negative": 250
+      }
+    },
+    "prior_1": {
+      "rows": 145985,
+      "losses": 320,
+      "prevalence": 0.002192006028016577,
+      "brier": 0.001973032423283945,
+      "always_survive_brier": 0.002192006028016577,
+      "log_loss": 0.008701624230429987,
+      "loss_brier": 0.8390793392877416,
+      "mean_loss_probability_at_loss": 0.0899424181783041,
+      "mean_loss_probability_elsewhere": 0.0016457574092683328,
+      "loss_average_precision": 0.17113325910266639,
+      "threshold_half": {
+        "true_positive": 5,
+        "false_positive": 0,
+        "false_negative": 315
+      }
+    }
+  },
+  "heldout": {
+    "observed": {
+      "rows": 29239,
+      "losses": 64,
+      "prevalence": 0.002188857348062519,
+      "brier": 0.0017446223131216325,
+      "always_survive_brier": 0.002188857348062519,
+      "log_loss": 0.007896477995753609,
+      "loss_brier": 0.6918312689900387,
+      "mean_loss_probability_at_loss": 0.21937536734679702,
+      "mean_loss_probability_elsewhere": 0.0017996890595099856,
+      "loss_average_precision": 0.3357069811769019,
+      "threshold_half": {
+        "true_positive": 13,
+        "false_positive": 5,
+        "false_negative": 51
+      }
+    },
+    "prior_1": {
+      "rows": 29239,
+      "losses": 64,
+      "prevalence": 0.002188857348062519,
+      "brier": 0.002008145387324276,
+      "always_survive_brier": 0.002188857348062519,
+      "log_loss": 0.009730511032183007,
+      "loss_brier": 0.8522839038849421,
+      "mean_loss_probability_at_loss": 0.0821351970275391,
+      "mean_loss_probability_elsewhere": 0.0016786890122046177,
+      "loss_average_precision": 0.1456362436757118,
+      "threshold_half": {
+        "true_positive": 0,
+        "false_positive": 1,
+        "false_negative": 64
+      }
+    }
+  }
+}

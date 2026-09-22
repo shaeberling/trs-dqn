@@ -1,0 +1,36 @@
+{
+  "train": {
+    "rows": 145985,
+    "losses": 320,
+    "prevalence": 0.002192006028016577,
+    "brier": 0.0019233060286921245,
+    "always_survive_brier": 0.002192006028016577,
+    "log_loss": 0.007941544966316683,
+    "loss_brier": 0.823910590832682,
+    "mean_loss_probability_at_loss": 0.09788505466379041,
+    "mean_loss_probability_elsewhere": 0.001661064152134536,
+    "loss_average_precision": 0.21925002946523614,
+    "threshold_half": {
+      "true_positive": 2,
+      "false_positive": 2,
+      "false_negative": 318
+    }
+  },
+  "heldout": {
+    "rows": 29239,
+    "losses": 64,
+    "prevalence": 0.002188857348062519,
+    "brier": 0.0019802097587841997,
+    "always_survive_brier": 0.002188857348062519,
+    "log_loss": 0.00914507672247704,
+    "loss_brier": 0.8522827912598412,
+    "mean_loss_probability_at_loss": 0.08267312214092434,
+    "mean_loss_probability_elsewhere": 0.0016307455176915724,
+    "loss_average_precision": 0.1854991368893101,
+    "threshold_half": {
+      "true_positive": 0,
+      "false_positive": 0,
+      "false_negative": 64
+    }
+  }
+}

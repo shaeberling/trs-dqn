@@ -1,0 +1,38 @@
+{
+  "updates": 1500,
+  "arm": "observed-uniform",
+  "sampling_rng": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 277099712583902868109629518611544679525,
+      "inc": 87136372517582989555478159403783844777
+    },
+    "has_uint32": 1,
+    "uinteger": 1056209175
+  },
+  "config": {
+    "world": "/Users/sascha/source/trs-dqn/runs/defense-world-fit-10-byte-control/update-020000",
+    "world_sha256": "5c7b0e699fdb21ad1d342d60e5df0d55077a269ea8562505ba9c8ca61265fdc9",
+    "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+    "source_sha256": "c00dab90fc4f8d48e1256049d0fa8f7700f4b69f1490173c90f15563c5ab22de",
+    "model_source_sha256": "c2aa4ae572e9d2d0c9d62bfd93ff37e43c2e4c008d6e86ff04f2f28e48b39139",
+    "args": {
+      "world": "runs/defense-world-fit-10-byte-control/update-020000",
+      "data": "runs/defense-world-data-feedback-02",
+      "output": "runs/defense-world-life-readout-01",
+      "updates": 2000,
+      "every": 500,
+      "batch": 1024
+    },
+    "diagnostic_only": true,
+    "promotion_eligible": false,
+    "policy_training": false,
+    "feature_filter": "mean latent; 32-action windows with 8-action burn; unique post-burn transitions",
+    "readout": "parent continuation head weights, separate fresh Adam 6e-4 eps1e-5",
+    "stratification": "half each class, weights 2*class_fraction; unbiased empirical BCE, no changed target"
+  },
+  "hashes": {
+    "head.safetensors": "f1916e6bf8a5812168a1a9e62b53f704324300ea4302b6423752911a0fd590dd",
+    "optimizer.npz": "69dd5c7ebf996ff1d250920b4acc30c4e4684f6055ed0e58b6a731adc47afad1"
+  }
+}
