@@ -1,0 +1,191 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-50-restored-life-focused/replay-10460",
+  "source_hashes": {
+    "model.safetensors": "f7faa4e5acf6a8710b4c8d3dfbaa7d44294d590eabd697c55422efff270d029c",
+    "state.json": "049960b9cc614abafd0f2d9158286d7727427f72a26594aa507e90f8917f48f9",
+    "trace.npz": "90c377ebdee167f9191da898d324cd46d4d856ba55383c0e175eca090499adab",
+    "verification.json": "8cd9fa2aa6400c8d215043ef0e1dfe5905456c5d047de214ca31e01fd7d0874b"
+  },
+  "probe_source_sha256": "c5c9b19f10e4d7262af80a27fbfc0ccc3caa72d367bb300dc674c69e0c69f7a8",
+  "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+  "original_native_trajectory_reproduced": 2568,
+  "original_neural_verification_reused": true,
+  "diagnostic_only": true,
+  "branch_horizon": 4,
+  "branches_per_anchor": 20,
+  "anchors": [
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 128,
+      "decision": 276,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 9,
+      "distinct_gameplay_graphics_sequences": 9,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 64,
+      "decision": 340,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 7,
+      "distinct_gameplay_graphics_sequences": 7,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 32,
+      "decision": 372,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 9,
+      "distinct_gameplay_graphics_sequences": 9,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 8,
+      "decision": 396,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 1,
+      "distinct_gameplay_graphics_sequences": 1,
+      "any_gameplay_graphics_response": false,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 128,
+      "decision": 989,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 6,
+      "distinct_gameplay_graphics_sequences": 6,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 64,
+      "decision": 1053,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 7,
+      "distinct_gameplay_graphics_sequences": 7,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 32,
+      "decision": 1085,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 12,
+      "distinct_gameplay_graphics_sequences": 12,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 8,
+      "decision": 1109,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 1,
+      "distinct_gameplay_graphics_sequences": 1,
+      "any_gameplay_graphics_response": false,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 128,
+      "decision": 1725,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 7,
+      "distinct_gameplay_graphics_sequences": 7,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 64,
+      "decision": 1789,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 7,
+      "distinct_gameplay_graphics_sequences": 7,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 32,
+      "decision": 1821,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 9,
+      "distinct_gameplay_graphics_sequences": 9,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 8,
+      "decision": 1845,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 1,
+      "distinct_gameplay_graphics_sequences": 1,
+      "any_gameplay_graphics_response": false,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 128,
+      "decision": 2440,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 6,
+      "distinct_gameplay_graphics_sequences": 6,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 64,
+      "decision": 2504,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 7,
+      "distinct_gameplay_graphics_sequences": 7,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 32,
+      "decision": 2536,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 7,
+      "distinct_gameplay_graphics_sequences": 7,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 8,
+      "decision": 2560,
+      "common_observed_decisions": 4,
+      "distinct_screen_sequences": 8,
+      "distinct_gameplay_graphics_sequences": 8,
+      "any_gameplay_graphics_response": true,
+      "branches_ending_at_visible_boundary": 0
+    }
+  ],
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "ranking_eligible": false,
+  "snapshots_decoded": false,
+  "chosen_action_or_route_output": false,
+  "limitations": [
+    "Selected verified replay anchors, not all live training-reset states.",
+    "Nonidentical graphics prove short-horizon input responsiveness, not movement, survival, recoverability or obstacle passage.",
+    "Identical graphics do not prove death: action effects can be delayed or visually hidden.",
+    "Offsets refer to visible ship loss, never an exact physical collision.",
+    "Branch diagnostics are not complete-game evaluation and never enter training, reset archives or replay ranking.",
+    "Only opaque own-state copying and visible observations are used; no native payload is decoded."
+  ]
+}

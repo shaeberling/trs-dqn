@@ -6,12 +6,14 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **350-test** suite now passes, including
+(23 GiB available at restart). The full **353-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are the matched restored-life-only continuations (49/50)
-and the balanced-command continuation (51).
+The balanced-command continuation (51) remains live. The matched restored-life
+continuations (49/50) retired cleanly after six stage-1-only evaluations each,
+with all final state and logs preserved. The balanced run's first three means
+are below its uniform-action comparison, without a later stage.
 The separate 128-action own-loss-lookback calibration finished below its
-64-action counterpart, and an optional command-balanced exploration sampler is
+64-action counterpart, and an optional command-balanced exploration sampler
 has completed a near-tied calibration and begun a longer continuation. The 64-action
 score-triggered / own-loss-triggered pair (47/48) retired after six stage-1-only
 rounds with full state preserved. The focused calibration improved mean by 251
@@ -5374,6 +5376,86 @@ available as a matched action-count comparison with its own calibration parent;
 the full trajectories and RNG states differ. The sole collector now includes
 all **47** full-trial sources, retaining every historical source and excluding
 short calibrations. The shared verified 10,480-point stage-1 best is unchanged.
+
+The first two full balanced evaluations, at **7,293,216 / 7,493,216**, average
+**7,324 / 8,836**, versus uniform focused run 50's **9,340 / 9,641** at the
+same action counts. Both are regressions, and all twenty games lose in stage 1.
+The [first comparison](results/defense/training/dqn-51-balanced-actions/comparison-at-000007293216.json)
+and [second comparison](results/defense/training/dqn-51-balanced-actions/comparison-at-000007493216.json)
+retain all reused-seed results. Both full Q/target/Adam checkpoints and log
+prefixes are preserved, along with the first run-best
+[10,180-point replay](results/defense/training/dqn-51-balanced-actions/replay-10180/replay.html).
+The balanced continuation is still a test, not evidence of improved navigation.
+
+Its [third complete evaluation](results/defense/training/dqn-51-balanced-actions/comparison-at-000007693216.json),
+at **7,693,216**, averages **9,235**, median **9,820**, best **9,890**,
+versus uniform focused's mean **9,860**. All ten games remain stage-1 losses;
+the full checkpoint and log prefix are preserved without a new replay best.
+
+The uniform control/focused pair subsequently completed rounds five and six.
+At **8,093,216**, mean scores were **10,236 / 10,180**; at **8,293,216**,
+**9,875 / 9,955**. Every game still lost in stage 1. Full checkpoint states,
+log prefixes and [fifth](results/defense/training/dqn-50-restored-life-focused/comparison-at-000008093216.json)
+and [sixth](results/defense/training/dqn-50-restored-life-focused/comparison-at-000008293216.json)
+comparisons are preserved. Across all six rounds, focused minus control mean
+differences were **−78, −191, −352, +248, −56, +80**. Concentrating restored
+practice on the initial life did not produce a stage clear in this experiment.
+
+Both retired gracefully after that depth plateau, not a wall-clock limit:
+control at **8,466,104** and focused at **8,434,768**. The
+[control retirement](results/defense/training/dqn-49-restored-life-control/retirement.json)
+records **1,372,888** additional actions, **150** boot games and **1,246**
+completed restored segments; the
+[focused retirement](results/defense/training/dqn-50-restored-life-focused/retirement.json)
+records **1,341,552**, **147** and **22,612**, respectively. Neither logged a
+later training stage or mission. Final Q/target/Adam states, complete compressed
+logs and all previous best replays remain available. The collector retains
+both historical sources while run 51 continues.
+
+### Is the pre-loss practice state already unresponsive?
+
+The repeated barrier failures also raise a timing question: the displayed
+ship loss might lag the decisive mistake. An extended
+[static binary audit](results/defense/diagnostics/loss-delay-static-audit.json)
+confirms separate overlap, loss and HUD-refresh routines. The loss routine
+decrements its internal counter, waits, and draws later; HUD formatting is
+also gated by a countdown. This is read-only analysis of the original CMD,
+not a runtime hidden-state input, a collision timestamp or a policy rule.
+
+`rl.defense_response_probe` tests the narrower question of input responsiveness.
+It first reproduces an already verified own-policy replay exactly, then makes
+isolated opaque copies at fixed offsets before each visible loss. Each of the
+20 legal actions is tested for four decisions from the identical state.
+Only aggregate screen diversity is reported: no preferred action, branch
+score, route, demonstration, training/reset data or replay-ranking candidate.
+Original neural verification is reused; the original native trajectory is
+reexecuted and every frame, reward and ending is checked. Source hashes are
+checked again afterward, and the snapshot payload is never decoded.
+
+The [balanced calibration probe](results/defense/diagnostics/balanced-actions-response-calibration-02.json)
+exactly reproduced **2,540** actions; the
+[focused full-run probe](results/defense/diagnostics/focused-actions-response-full-7493216.json)
+reproduced **2,568**. In both replays, all four lives showed different gameplay
+graphics for different inputs at **128, 64 and 32 decisions before visible loss**.
+At eight decisions, the first three lives showed identical graphics; the final
+life still showed differences. All branches lasted the full four decisions
+without a visible boundary. HUD text is excluded from this graphics comparison.
+
+This rules out input-inactive animations for these particular 64-decision
+anchors, but **does not prove recoverability, movement or obstacle passage**.
+It also does not cover every live training reset. Conversely, identical graphics
+do not prove death: effects can be delayed or visually hidden. The final-life
+ending uses different settling, so these offsets are not aligned physical
+collision times. No training settings changed because of this diagnostic.
+
+Three new tests cover graphics/HUD separation, common-prefix comparison and
+repeatable exact native replay without source mutation or training output;
+all **18** focused environment/audit/probe tests and the
+[full 353-test suite](results/defense/diagnostics/response-probe-regression-tests.txt)
+passed. The initial diagnostic
+report is retained with its [exact source](results/defense/diagnostics/response-probe-source-v1.py);
+the linked second report additionally asserts restored native video equality
+before each branch. Neither version writes training examples.
 
 ### Quantile score-return experiment
 

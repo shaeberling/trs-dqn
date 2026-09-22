@@ -1,0 +1,113 @@
+{
+  "game": "Obstacle Run / Missile Defense",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "cmd_entry": "0xA870",
+  "method": "read-only CMD decoding and instruction-byte contracts",
+  "original_stage_cycle": [
+    1,
+    2,
+    3,
+    1
+  ],
+  "success_text": "     YOU did it      ",
+  "loss_text": "** GAME OVER PLAYER 1 **",
+  "stage_one_course": {
+    "start": "0x76A9",
+    "end_marker": "0x7BD8",
+    "rows": 126,
+    "command_counts": {
+      "0": 126,
+      "1": 1,
+      "2": 247,
+      "3": 27,
+      "4": 104
+    },
+    "progression": "Automatic obstacle-stream exhaustion; not a score threshold",
+    "policy_progress_measured": false
+  },
+  "successful_gameplay_observed": false,
+  "conclusion": "Three-stage mission cycles; no finite last-level exit in the audited dispatcher. A loss GAME OVER is not a mission victory.",
+  "remaining": "Observe the successful completion screen and subsequent stage wrap in an unmodified learned-policy playthrough.",
+  "checks": [
+    {
+      "address": "0x7578",
+      "bytes": "cd 17 60 3a 4b 60 32 0f 70 b7 c0 c3 7e 74",
+      "interpretation": "Stage 1 tests the rendered player sprite for overlap, stores the outcome and returns on nonzero; this is not a HUD ship-count update."
+    },
+    {
+      "address": "0x6FAD",
+      "bytes": "3a 0f 70 b7 c4 10 70 20 12",
+      "interpretation": "After stage return, a nonzero outcome calls the separate loss routine before dispatch continues."
+    },
+    {
+      "address": "0x701A",
+      "bytes": "3a ef 7c 3d 32 ef 7c",
+      "interpretation": "The loss routine decrements P1's internal ship count before the later visible HUD refresh; this address is never read by the policy or environment."
+    },
+    {
+      "address": "0x7031",
+      "bytes": "21 10 27 cd 11 67",
+      "interpretation": "After decrement, the original loss routine calls a 10,000-iteration busy wait before subsequent drawing; this is static code, not a measured collision timestamp."
+    },
+    {
+      "address": "0x6711",
+      "bytes": "e5 f5 2b 7c b5 20 fb f1 e1 c9",
+      "interpretation": "Busy wait decrements HL until zero; no movement-key handling in this loop."
+    },
+    {
+      "address": "0x7E01",
+      "bytes": "3a 02 7f 3d 32 02 7f c2 f2 7e",
+      "interpretation": "HUD formatting is gated by a decrementing countdown, so individual refresh calls need not redraw the ship count."
+    },
+    {
+      "address": "0x7E8C",
+      "bytes": "13 3a ef 7c b7 28 40 47 3e 2a 12 13 10 fc",
+      "interpretation": "When the P1 HUD is formatted, draw stars from the current ship count; this static audit does not provide a live collision or reward signal."
+    },
+    {
+      "address": "0x7432",
+      "bytes": "21 a9 76 22 9b 81 3e 06 32 9a 81",
+      "interpretation": "Stage 1 initializes its obstacle-stream pointer to 76A9 and row-update countdown to six."
+    },
+    {
+      "address": "0x747E",
+      "bytes": "cd 07 ac cd de 7f 2a 9b 81 7e 32 0f 70 b7 c8",
+      "interpretation": "After the stage-1 update, copy the next stream byte to the outcome flag; return success when it is zero, not at a score threshold."
+    },
+    {
+      "address": "0x80F2",
+      "bytes": "3a 9a 81 3d 32 9a 81 20 42 3e 06 32 9a 81",
+      "interpretation": "Decrement row-update countdown; decode a new stream row only at zero, then reload six."
+    },
+    {
+      "address": "0x811E",
+      "bytes": "2a 9b 81 11 00 45 7e b7 28 0c 3d 28 1a 3d 28 2a 3d 28 34 3d 28 14 23 22 9b 81 f1 c1 d1 e1 c9 21 46 00 cd 11 67 18 f3 23 18 dc 3e bf 1e 00 12 1e 3f 12 13 12 1e 7f 12 23 18 cc 23 5e 23 46 23 7e 23 12 13 10 fc 18 bf e5 d5 21 06 5e 11 09 00 06 1d 7e b7 28 03 19 10 f9 2b e5 c1 d1 e1 23 7e 02 03 3e 01 02 03 23 7e 02 23 03 7a 02 03 7e 02 af 03 02 03 02 03 02 03 02 23 c3 24 81",
+      "interpretation": "Stream decoder: zero ends a row; commands 1/4 occupy one byte, and commands 2/3 consume three parameter bytes. Store pointer just past the row terminator."
+    },
+    {
+      "address": "0x6F97",
+      "bytes": "3a ed 7c 3d 28 08 3d 28 0a cd 02 a0 18 08 cd d0 73 18 03 cd e4 81",
+      "interpretation": "Read P1 stage. Stage 1 calls 73D0; stage 2 calls 81E4; stage 3 calls A002."
+    },
+    {
+      "address": "0x6FB6",
+      "bytes": "3a ed 7c 3c 32 ed 7c fe 04 20 c5 3e 01 32 ed 7c 18 be",
+      "interpretation": "After success increment P1 stage. Compare 4; if equal reset stage to 1. Both branches return to 6F86."
+    },
+    {
+      "address": "0xA016",
+      "bytes": "3a 0f 70 b7 cc f9 a2",
+      "interpretation": "Stage 3 calls completion animation A2F9 only when outcome flag is zero (success)."
+    },
+    {
+      "address": "0xA358",
+      "bytes": "21 6f a3 11 16 3e 01 15 00 ed b0",
+      "interpretation": "Copy 21 bytes of completion text from A36F to visible screen 3E16, row 8 column 22."
+    },
+    {
+      "address": "0x7070",
+      "bytes": "21 95 70 11 d4 3d 01 18 00 ed b0",
+      "interpretation": "Loss routine copies the 24-character GAME OVER message to row 7 column 20."
+    }
+  ]
+}
