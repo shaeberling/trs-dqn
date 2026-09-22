@@ -5047,6 +5047,15 @@ run-best, so the previously verified replays remain unchanged.
 
 ### Restored-life-only practice
 
+The older probability-.5 reset pair completed two further rounds. At
+**7,893,216**, [control versus own-loss](results/defense/training/dqn-48-loss-trigger/comparison-at-000007893216.json)
+means were **10,426 / 10,280** (difference **−146**). At **8,093,216**,
+[means were 8,328 / 9,934](results/defense/training/dqn-48-loss-trigger/comparison-at-000008093216.json)
+(difference **+1,606**), reversing the ranking as the control regressed.
+All forty games remained stage-1 losses. Full states and checked log prefixes
+are preserved for both rounds, with no new run-best replay. Score-rank reversal
+does not establish a consistent progression benefit from either trigger.
+
 The coverage audit above motivates a separate optional
 `--curriculum-restored-life-only` experiment. An already-restored training
 segment now truncates at its first **visible** life loss, unless that loss
@@ -5139,6 +5148,18 @@ The sole collector now retains **46** full-trial sources, including all
 historical sources and both new continuations, but no short calibrations.
 The shared verified 10,480-point stage-1 replay remains unchanged. Runs 47/48
 continue unchanged alongside the new pair.
+
+Frozen read-only value probes reconstruct all **2,519 / 2,502** greedy actions
+in the [control](results/defense/diagnostics/restored-life-control-calibration-values-01.json)
+and [focused](results/defense/diagnostics/restored-life-focused-calibration-values-01.json)
+calibration replays. Whole-replay mean absolute errors against realized
+life-terminal discounted score are **166.29 / 182.50** points. Across the four
+64-decision pre-marker windows, control signed errors are
+**−14.28 / −1.93 / −20.91 / −51.97**, versus focused
+**+70.23 / +122.50 / +129.11 / +76.16**. This does not demonstrate improved
+calibration from focused practice. These are different selected trajectories,
+not matched states or optimal counterfactual returns; flashes are not exact
+collision timestamps. No actions, parameters, rewards or training data changed.
 
 The auxiliary trials freed their slots after depth plateaus, not time limits.
 [Visual prediction](results/defense/training/dqn-45-visual-prediction/retirement.json)
