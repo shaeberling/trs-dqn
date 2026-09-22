@@ -1,0 +1,8 @@
+{
+  "parent_evaluation": "results/defense/training/ppo-12-lookback/step-000010447616/evaluation.json",
+  "recurrent_model_sha256": "c94cc341da40dc91d043b7aacc8da5a22eaafd700eb98e85a2911397904814e5",
+  "all_ten_game_records_exact": true,
+  "training_actions": 0,
+  "parent_training_actions": 10447616,
+  "validation_seeds": "reused 10000-10009; not fresh test"
+}

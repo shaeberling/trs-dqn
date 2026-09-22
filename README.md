@@ -30,6 +30,10 @@ and experimental limitations in [DEFENSE.md](DEFENSE.md).
 `--compact-replay` optionally shares byte-identical visible frames in DQN's
 training buffer, preserving exact observations and sampling while reducing
 screen-storage duplication. It works with ordinary and bootstrap DQN.
+Defense PPO also supports optional learned screen-history memory through
+`--recurrent-hidden 128`: a residual GRU, sequence training and independently
+reset evaluation memory. This is experimental, not a verified stage clear;
+see [the recurrent experiment](DEFENSE.md#recurrent-screen-history-experiment).
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh

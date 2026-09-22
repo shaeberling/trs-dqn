@@ -1,0 +1,33 @@
+{
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-recurrent-memory-01/artifacts",
+      "runs/defense-recurrent-control-01/artifacts"
+    ],
+    "memory_scale": [
+      1.0,
+      0.0
+    ],
+    "run": [
+      "runs/defense-recurrent-memory-01",
+      "runs/defense-recurrent-control-01"
+    ]
+  },
+  "paired_score_differences": [
+    0,
+    70,
+    960,
+    -20,
+    -60,
+    -2470,
+    -2520,
+    -2500,
+    -100,
+    -60
+  ],
+  "mean_difference": -670.0,
+  "new_training_actions_each": 32768,
+  "parent_training_actions_each": 10447616,
+  "validation_seeds": "reused 10000-10009; not fresh test",
+  "all_stage_one_losses": true
+}
