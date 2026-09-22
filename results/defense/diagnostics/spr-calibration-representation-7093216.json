@@ -1,0 +1,67 @@
+{
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/spr-split-calibration-01/checkpoint",
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/spr-split-calibration-01/replay",
+  "source_hashes": {
+    "state.json": "01e3b425e5124f3af28a1edfd78246cf4a6ab44f9fcba34cdce709da69239011",
+    "model.safetensors": "dfb77ee3bc19bef3373283147a1e9f6bdc8426a66f8a2a9b34b6ebd386096bad",
+    "spr-aux.safetensors": "49dcb3fd906cd62e34df822eec1ad55c178490e23fb942f6fcddb05107f85bbb",
+    "spr-ema.safetensors": "19ca2fc5480f4d0b91929ce815d2de818a9b285f3fcf7aa3b519dcd5331d6c59",
+    "spr-optimizer.npz": "5e24baeebe9bbb72c441e960d59d92c1e4358d2ef68b7e7b7d93a0034c9b0900",
+    "spr-rng.npz": "2bf079f4453fb9b903507ad1f51063f0baa2d5fb001fab8bf229e2e930be8f67"
+  },
+  "trace_hashes": {
+    "model.safetensors": "dfb77ee3bc19bef3373283147a1e9f6bdc8426a66f8a2a9b34b6ebd386096bad",
+    "state.json": "01e3b425e5124f3af28a1edfd78246cf4a6ab44f9fcba34cdce709da69239011",
+    "trace.npz": "ef538afa9b393aa358be59b22661583e650ea3c254e0f9eafbf888b8ab17e70e",
+    "verification.json": "cf4da365970f734908f0f9fc6f865992c0e51ea14620dade32711cba1a4cffec"
+  },
+  "probe_sha256": "579e1740392f5dbece2090ce9ee15d27118542e1aef4bbd22218a9f3f6dd2488",
+  "diagnostic_only": true,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "native_reexecution": false,
+  "promotion_eligible": false,
+  "dropout": 0.0,
+  "replay_actions_reproduced": 2567,
+  "paths": 320,
+  "horizon": 5,
+  "result": {
+    "seed": 10000,
+    "score": 10460,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2567,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 10460.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1202000,
+    "start_tstates": 33283
+  },
+  "statistics": {
+    "vectors": 1600,
+    "comparison_vectors": 800,
+    "mean_raw_feature_std": 0.11411622166633606,
+    "mean_unit_feature_std": 0.018084657358885772,
+    "unit_variance_sum": 0.3187144873044745,
+    "zero_target_vectors": 0,
+    "recorded_action_distance": 0.10474622541812917,
+    "rotated_action_distance": 0.10472822152963422,
+    "constant_target_distance": 0.17402381402143552,
+    "prediction_action_sensitivity": 0.00041640177279162464
+  },
+  "limitations": [
+    "Selected verified replay only, not the exploratory training distribution.",
+    "Dropout-free unweighted diagnostic, not the logged PER-weighted objective.",
+    "Fixed action-label rotation is a sensitivity probe, not simulated counterfactual evidence.",
+    "Constant baseline uses first-half targets; all distances compare on the second half.",
+    "Small variance or weak action sensitivity suggests a concern, not a causal proof.",
+    "Noncollapsed features or lower distance do not prove useful control or mission progress."
+  ]
+}

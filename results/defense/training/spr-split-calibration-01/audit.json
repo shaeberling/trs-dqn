@@ -1,0 +1,44 @@
+{
+  "stopped": {
+    "wall_seconds": 989.17,
+    "event": "stopped",
+    "steps": 7093216,
+    "stop_requested": false
+  },
+  "new_actions": 131072,
+  "new_updates": 7566,
+  "new_boot_games": 52,
+  "new_restored_segments": 50,
+  "archive_events": 1286,
+  "retained_save_events": 113,
+  "all_archive_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true,
+  "spr": {
+    "local_updates": 7566,
+    "valid_future_predictions": 2398124,
+    "last_weighted_cosine_loss": 0.01442763302475214,
+    "weight": 0.1,
+    "ema": 0.99,
+    "dropout": 0.5
+  },
+  "spr_auxiliary_hashes": {
+    "spr-aux.safetensors": "49dcb3fd906cd62e34df822eec1ad55c178490e23fb942f6fcddb05107f85bbb",
+    "spr-ema.safetensors": "19ca2fc5480f4d0b91929ce815d2de818a9b285f3fcf7aa3b519dcd5331d6c59",
+    "spr-optimizer.npz": "5e24baeebe9bbb72c441e960d59d92c1e4358d2ef68b7e7b7d93a0034c9b0900",
+    "spr-rng.npz": "2bf079f4453fb9b903507ad1f51063f0baa2d5fb001fab8bf229e2e930be8f67"
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "dfb77ee3bc19bef3373283147a1e9f6bdc8426a66f8a2a9b34b6ebd386096bad",
+    "state.json": "01e3b425e5124f3af28a1edfd78246cf4a6ab44f9fcba34cdce709da69239011",
+    "target.safetensors": "b69d42b6a0ccc90bd921396a8af1a50786db539716b57d5e13968f9315ffafdd",
+    "spr-ema.safetensors": "19ca2fc5480f4d0b91929ce815d2de818a9b285f3fcf7aa3b519dcd5331d6c59",
+    "spr-rng.npz": "2bf079f4453fb9b903507ad1f51063f0baa2d5fb001fab8bf229e2e930be8f67",
+    "optimizer.npz": "cf377a3ecb311fc1c8e59433bac3a006ad19061a1da8d8223f4159e7d95be919",
+    "evaluation.json": "797e8e48362959e0ae20f468cedf21155bf0fd255f97381c0ad3ea2bd0028404",
+    "spr-optimizer.npz": "5e24baeebe9bbb72c441e960d59d92c1e4358d2ef68b7e7b7d93a0034c9b0900",
+    "spr-aux.safetensors": "49dcb3fd906cd62e34df822eec1ad55c178490e23fb942f6fcddb05107f85bbb"
+  },
+  "complete_log_sha256": "034f31ce9a29962c6598499569c38b055d0b9ce667b7b741a0c5727cfa22c48d",
+  "peak_mlx_bytes": 688619040
+}

@@ -8,9 +8,11 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **317-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are full current-policy trace cutting (43) and longer
-persistence (44). Higher discount (42) retired after seven stage-1-only rounds;
-a visual-prediction auxiliary task is now running an isolated checked calibration.
+Current experiments are full current-policy trace cutting (43), longer
+persistence (44), and visual prediction (45). Higher discount (42) retired after
+seven stage-1-only rounds. Visual prediction's calibration improved mean score
+but still failed at the recurring barrier; its full continuation tests longer
+adaptation, not an established fix.
 Worker-split exploration
 (40) and its uniform control (41) retired after nine and seven evaluation
 rounds, respectively, without a later stage.
@@ -4371,7 +4373,8 @@ It retains gamma .997, n-step 5, random-hold cap 64, two boot workers at epsilon
 The original Q optimizer resumes; only the new auxiliary optimizer starts fresh.
 This is a historical same-parent comparison, not an independent replication or
 fresh success-rate estimate. The short calibration is excluded from the shared
-collector. Results are pending; the original mission goal remains unachieved.
+collector. Its completed results and full continuation are below; the original
+mission goal remains unachieved.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
@@ -4380,6 +4383,78 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
   --steps 7093216 --eval-every 131072 --epsilon-final .9 \
   --curriculum-boot-epsilon .05 --curriculum-lookback 128 --spr-weight .1
+```
+
+#### Visual-prediction calibration result and diagnostic
+
+The [completed calibration](results/defense/training/spr-split-calibration-01/comparison.json)
+at **7,093,216** has mean **10,362**, median **10,355**, best **10,460**, with all
+ten games lost in stage 1. Its mean exceeds the historical same-parent baseline
+by **896** points: six seed-paired scores increased and four decreased. Most of
+the aggregate difference comes from two formerly poor games (**+5,650** and
+**+2,460**); this is not evidence of a reliable new capability. The frozen
+[2,567-action replay](results/defense/training/spr-split-calibration-01/replay/replay.html)
+is independently verified. Its [loss panels](results/defense/diagnostics/shared-loss-spr-calibration-01/policy-1-losses.png)
+again show the right-opening barrier sequence with the ship near centre/left;
+life scores are **2,600 / 2,620 / 2,620 / 2,620**. Exact collision causes remain
+unproven. The shared 10,480-point best is unchanged.
+
+The [audit](results/defense/training/spr-split-calibration-01/audit.json) records
+**131,072** new actions, **7,566** updates, **52** complete boot training games,
+**50** restored segments and **1,286** archive events. All archive offsets are
+128 and the reserved boot workers remained boot-only. All logged episodes stay
+in stage 1. The auxiliary branch made **2,398,124** valid future predictions;
+its final weighted cosine loss is **.01443**. Peak logged MLX allocation was
+**688,619,040 bytes**. The process exited normally; full Q/target/Adam and all
+four auxiliary state files, evaluation, hashes and complete compressed log are
+preserved in the calibration directory.
+
+`python -m rl.defense_spr_probe CHECKPOINT REPLAY --output NEW_JSON` is a
+separate read-only diagnostic, never imported by training. It verifies full
+auxiliary hashes and matching replay provenance, reconstructs every greedy
+action, and checks source hashes again after inference. It samples five-step
+paths without crossing visible life boundaries. Dropout is disabled and PER
+weights are absent, so its values are **not** the logged training objective.
+
+The [diagnostic including a persistence baseline](results/defense/diagnostics/spr-calibration-representation-with-persistence-7093216.json)
+uses **320** paths / **1,600** target vectors. These representations are not
+constant: total unit-vector variance is **.3187** and no target vector is zero.
+On the second half of collected vectors, cosine distances are:
+
+| Prediction | Mean distance (lower is better) |
+| --- | ---: |
+| Learned transitions, recorded actions | .104746 |
+| Learned transitions, fixed rotated action labels | .104728 |
+| Constant fitted to first-half targets | .174024 |
+| Unchanged current EMA representation | .015516 |
+
+Thus the learned predictor beats a constant but is substantially worse than
+simply persisting the current features. Its mean prediction change under action
+rotation is only **.000416** cosine distance. This gives no evidence yet of
+useful action-conditioned prediction, despite its small training loss. It is
+not a proof of representation collapse or a causal explanation of navigation:
+nearby screens are correlated, this is one selected greedy game rather than
+exploratory training data, and rotated actions are not simulated trajectories.
+The initial report without the persistence baseline is retained separately.
+All [12 focused diagnostic/SPR tests](results/defense/diagnostics/spr-probe-tests.txt)
+pass, including deterministic repeated inference on this replay, source
+immutability, invalid provenance, constant-feature fixtures, boundary masking,
+and the existing native training/resume/replay checks. Training code is unchanged.
+
+Full trial **45** resumes this exact checked state with unchanged settings and
+ten complete uncapped boot games every **200,000** further actions. It tests
+longer adaptation, not a claimed solution. Its
+[configuration](results/defense/training/dqn-45-visual-prediction/resume-config.json)
+changes only run/artifact/parent paths, the unlimited step budget and evaluation
+interval. The sole [collector now includes 41 full trials](results/defense/training/dqn-45-visual-prediction/collector-config.json);
+all short calibrations remain excluded. No diagnostic trace enters training.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-spr-full-reproduction \
+  --artifacts runs/defense-spr-full-reproduction/artifacts \
+  --resume results/defense/training/spr-split-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Quantile score-return experiment
