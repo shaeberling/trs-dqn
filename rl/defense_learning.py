@@ -33,6 +33,7 @@ DQN_ALGORITHM = "dueling-double-dqn-per-nstep"
 BOOTSTRAP_ALGORITHM = "bootstrapped-dueling-double-dqn-prior-per-nstep"
 QUANTILE_ALGORITHM = "quantile-dueling-double-dqn-per-nstep"
 REPEAT_ALGORITHM = "joint-action-duration-dueling-double-dqn-per"
+IMAGINATION_ALGORITHM = "gaussian-rssm-imagined-reinforce"
 
 
 def policy_description(config, temperature=1.0, *, quantile_power=None):
@@ -44,6 +45,12 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
     from .recurrent_policy import RECURRENT_ARCHITECTURE
     architecture = config.get("architecture")
+    if algorithm == IMAGINATION_ALGORITHM:
+        if (architecture != 'screen-rssm-imagined-actor-v1' or config.get('allow_enter', False)
+                or config.get('world_hidden') != 128 or config.get('world_stochastic') != 32):
+            raise ValueError('unsupported learned-world policy configuration')
+        return ('learned imagined-return actor, categorical sampling; screen/own-action memory'
+                if temperature == 1 else 'learned imagined-return actor, temperature-scaled; screen/own-action memory')
     if architecture is not None:
         if architecture != RECURRENT_ARCHITECTURE or algorithm != 'ppo':
             raise ValueError("Unsupported Defense policy architecture")
@@ -125,6 +132,12 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
             or config.get("environment_version") != ENVIRONMENT_VERSION
             or config.get("action_names") != list(names)):
         raise ValueError("Checkpoint is not compatible with this Defense environment")
+    if config.get('algorithm') == IMAGINATION_ALGORITHM:
+        from .defense_imagination import WorldActor, acting_policy
+        model = WorldActor()
+        model.load_weights(str(checkpoint))
+        mx.eval(model.state)
+        return acting_policy(model, temperature), config
     if config.get("architecture") is not None:
         from .defense_recurrent import ResidualRecurrentNetwork
         from .recurrent_policy import RecurrentPolicy

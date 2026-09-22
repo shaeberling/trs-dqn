@@ -1,0 +1,51 @@
+{
+  "updates": 9000,
+  "burn": 8,
+  "sampling_rng": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 198798090664361680796883614260060636355,
+      "inc": 87136372517582989555478159403783844777
+    },
+    "has_uint32": 0,
+    "uinteger": 2832116254
+  },
+  "metadata": {
+    "data": "/Users/sascha/source/trs-dqn/runs/defense-world-data-merged-01",
+    "dataset_sha256": "789bf02b355e01c2ebe5d0c169befce1d0954016dad443a23c7e09ed838520d6",
+    "architecture": "small-gaussian-rssm-v1",
+    "reward_scale": 0.01,
+    "batch": 8,
+    "length": 32,
+    "burn": 8,
+    "train_games": 40,
+    "heldout_games": 8,
+    "train_windows": 84539,
+    "heldout_windows": 16964,
+    "fit_source_sha256": "cbf8ab8d817227bc1063a9d2edfd01497c710795117d8e8cc60a7eff5dc0cb17",
+    "model_source_sha256": "86c4aad27f5ab5dbcbd3f870381f8dd6e8dc830f6194daeff46252dec186f3df",
+    "dynamics_only": true,
+    "promotion_eligible": false,
+    "source_paper": "https://arxiv.org/abs/1912.01603",
+    "args": {
+      "data": "runs/defense-world-data-merged-01",
+      "output": "runs/defense-world-fit-03-mixed",
+      "updates": 10000,
+      "batch": 8,
+      "length": 32,
+      "burn": 8,
+      "audit_windows": 64,
+      "every": 1000,
+      "seed": 0,
+      "resume": "runs/defense-world-fit-02/update-005000",
+      "extend_data": true
+    },
+    "previous_dataset_sha256": "4b23356979781fe5c75439cbb5bcd433c9873678a827aa906ea69791d5fc8aad",
+    "dataset_extension": true
+  },
+  "hashes": {
+    "world.safetensors": "ea02f47f6ea7be7b7fd66249545bcaf9c97fb2695890a0ee1e9db3d618370323",
+    "optimizer.npz": "05e1209636f966909d6d83fd2acd35de538ea054c9d8aad9688aceb90b406dfb",
+    "random.npz": "e712ddbbc2a47fb35d574c1b01f5112786c8c8a64a8ac2413d5638b393d62fd6"
+  }
+}
