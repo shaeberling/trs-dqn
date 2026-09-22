@@ -3720,6 +3720,75 @@ Its best replay remains available; no artifact was deleted. Retirement is
 for the depth plateau, not a wall-clock budget. Runs 39/40/41 continue, and
 the short one-step check is excluded from the shared collector.
 
+#### One-step result: regression, not continued
+
+The [one-step comparison](results/defense/training/one-step-split-calibration-01/comparison.json)
+finished normally at **7,093,216** with mean **2,383**, median **540**, best
+**7,500**, all ten stage-1 losses. Against the five-step control's **9,466**
+mean, this is **−7,083**; nine paired scores are lower and one is higher.
+The configuration is **not extended into a full run**. This rejects the tested
+short conversion as an improvement, not every possible one-step learner or
+the general concern about off-policy multi-step returns.
+
+Its [2,302-action verified replay](results/defense/training/one-step-split-calibration-01/replay/replay.html),
+full online/target/Adam/RNG and compressed training log are preserved. The
+[audit](results/defense/training/one-step-split-calibration-01/audit.json)
+records **59** boot games, **33** restored segments, exact 128-action offsets
+and protected boot-only workers; no training episode reached a later stage.
+It performed **7,568** new updates, versus control's **7,566**, because of
+the shorter replay insertion lag. Both received exactly **131,072** new actions.
+
+Read-only Q checks reconstruct every action on each model's own verified
+selected replay: [one-step, **2,302 actions**](results/defense/diagnostics/one-step-split-q-calibration-7093216.json)
+and [five-step, **2,440 actions**](results/defense/diagnostics/five-step-split-q-calibration-7093216.json).
+Whole-replay mean predicted minus realized discounted score is **+68.08**
+versus **−100.66**, with mean absolute errors **248.68** versus **186.90**.
+These are different selected trajectories, not matched-state counterfactuals
+or estimates of optimal returns; they do not establish the cause of the
+performance regression. Sources remain unchanged, and neither diagnostic
+provides data or parameter updates to training.
+
+### Longer-discount calibration with five-step targets
+
+The next [isolated calibration](results/defense/training/long-discount-split-calibration-01/resume-config.json)
+returns to the five-step target and changes only **gamma .997 → .9995**
+relative to the original worker-split calibration. Its
+[configuration comparison](results/defense/training/long-discount-split-calibration-01/design.json)
+asserts that only gamma and output paths differ, including identical production
+source hashes. It starts from the same own DQN 33 checkpoint at **6,962,144**,
+not from the regressed one-step weights, restores full online/target/Adam/RNG,
+and collects **131,072** new actions before ten complete uncapped boot games.
+Replay and native archives refill from own new experience.
+
+This tests whether stronger weighting of later **actual score** helps the
+current learned policy escape the early-reward routine. The reward itself,
+screen input, action set, timing, persistent exploration split, own resets,
+learning rate and target-copy interval are unchanged. The half-weight delay
+increases from approximately **231 to 1,386 actions**; a reward 512 actions
+later has weight approximately **.215 versus .774**. Visible ship-loss
+learning terminals still stop credit across lives. Higher gamma cannot supply
+an undiscovered reward, prove a new route, or guarantee better exploration.
+
+The earlier long-horizon PPO trial also failed to advance. This is not a new
+claim that longer horizons solve the game; it is a controlled parameter check
+in the present value-learning, high-exploration setting. The same-parent
+five-step calibration is a historical comparator, not a fresh simultaneous
+replication, and seeds 10000–10009 remain reused validation seeds.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-long-discount-split-reproduction \
+  --artifacts runs/defense-long-discount-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128 --gamma .9995
+```
+
+The check uses the now-finished one-step slot; runs 39/40/41 and the sole
+37-source collector continue unchanged. Both short calibrations are excluded
+from global promotion. The 10,480-point stage-1 best remains verified and
+available; the mission goal is not achieved.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)

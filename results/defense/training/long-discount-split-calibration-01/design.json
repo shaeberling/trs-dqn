@@ -1,0 +1,48 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions_each": 131072,
+  "five_step_control": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-long-discount-split-calibration-01"
+    ],
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-long-discount-split-calibration-01/artifacts"
+    ],
+    "gamma": [
+      0.997,
+      0.9995
+    ]
+  },
+  "production_source_hashes_match": true,
+  "discount_weights": [
+    {
+      "gamma": 0.997,
+      "half_weight_actions": 230.70231304914802,
+      "weights_at_delays": {
+        "128": 0.6807384224674946,
+        "512": 0.21474400849948888,
+        "1024": 0.046114989186428555
+      }
+    },
+    {
+      "gamma": 0.9995,
+      "half_weight_actions": 1385.947758641408,
+      "weights_at_delays": {
+        "128": 0.9379899865663176,
+        "512": 0.7740924087715096,
+        "1024": 0.599219057317678
+      }
+    }
+  ],
+  "comparison": "Return to five-step backup, change discount only. Historical same-parent/configuration control, not a simultaneous or independent replication.",
+  "limitations": [
+    "Higher future-score weighting does not discover unseen rewards or establish a stage-clear benefit.",
+    "Visible-life learning terminals still stop credit across ship loss.",
+    "Earlier long-horizon PPO trial also remained stage 1; this is a different value-learning/exploration setting.",
+    "Existing target and Adam are restored, not reinitialized for the new discount.",
+    "Ten reused uncapped boot evaluation seeds 10000..10009."
+  ]
+}

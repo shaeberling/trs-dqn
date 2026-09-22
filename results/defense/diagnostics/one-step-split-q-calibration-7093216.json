@@ -1,0 +1,299 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/runs/defense-one-step-split-calibration-01/artifacts/versions/step-000007093216-4da3b42afd48-seed-10005",
+  "source_hashes": {
+    "model.safetensors": "4da3b42afd48a900fc23ab9400fa4bcb9c68198a3b34d650becffa0d6efb251a",
+    "state.json": "39b0fca48811f363cf13a69058cf0afbb4c3c38de96ea6deb12309e44c71b03c",
+    "trace.npz": "eb17724539694f951bad3e420b104af54f508ad4926e8495e151d5fa58508bc1",
+    "verification.json": "1aff3bb37432980bc8868efe1f5afa075ba7331a4ce83cbe44d32dcc8ad85c8d"
+  },
+  "probe_source_sha256": "e457c287363668636f3441c7ed752fed68cc7ee2391b236e58f2395967f3b744",
+  "result": {
+    "seed": 10005,
+    "score": 7500,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2302,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 7500.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1802000,
+    "start_tstates": 67063
+  },
+  "gamma": 0.997,
+  "reward_scale": 0.01,
+  "life_terminal": true,
+  "diagnostic_only": true,
+  "promotion_eligible": false,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "native_reexecution": false,
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 2302,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "4da3b42afd48a900fc23ab9400fa4bcb9c68198a3b34d650becffa0d6efb251a",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "replay_actions_reproduced": 2302,
+  "whole_replay": {
+    "observations": 2302,
+    "mean_predicted_discounted_score": 911.6509183024345,
+    "mean_realized_discounted_score": 843.5677884841081,
+    "mean_prediction_minus_return": 68.08312981832643,
+    "median_prediction_minus_return": 59.913575242199215,
+    "mean_absolute_error": 248.6822028999865,
+    "p90_absolute_error": 573.6112285910964
+  },
+  "lives": [
+    {
+      "life": 1,
+      "life_score": 2450,
+      "visible_loss_frame": 410,
+      "flash_alignment_frame": 398,
+      "pre_marker_window": [
+        334,
+        398
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 557.127893390134,
+        "mean_realized_discounted_score": 500.1991962199942,
+        "mean_prediction_minus_return": 56.92869717013982,
+        "median_prediction_minus_return": 46.80069607052848,
+        "mean_absolute_error": 67.84391340352121,
+        "p90_absolute_error": 151.87827296615043
+      },
+      "after_flash": {
+        "observations": 12,
+        "mean_predicted_discounted_score": 22.431673109531403,
+        "mean_realized_discounted_score": 0.0,
+        "mean_prediction_minus_return": 22.431673109531403,
+        "median_prediction_minus_return": 20.26680037379265,
+        "mean_absolute_error": 22.431673109531403,
+        "p90_absolute_error": 29.817839562892914
+      },
+      "anchors": [
+        {
+          "decision": 270,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1911.7164611816406,
+          "realized_discounted_score": 1859.2394092651857
+        },
+        {
+          "decision": 334,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1616.9384002685547,
+          "realized_discounted_score": 1448.3066743488073
+        },
+        {
+          "decision": 366,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 279.33504581451416,
+          "realized_discounted_score": 18.664597843027014
+        },
+        {
+          "decision": 390,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 63.087040185928345,
+          "realized_discounted_score": 0.0
+        },
+        {
+          "decision": 397,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 27.648311853408813,
+          "realized_discounted_score": 0.0
+        }
+      ]
+    },
+    {
+      "life": 2,
+      "life_score": 2520,
+      "visible_loss_frame": 1119,
+      "flash_alignment_frame": 1108,
+      "pre_marker_window": [
+        1044,
+        1108
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 804.7003189567477,
+        "mean_realized_discounted_score": 753.116165147539,
+        "mean_prediction_minus_return": 51.58415380920861,
+        "median_prediction_minus_return": 85.24095798263122,
+        "mean_absolute_error": 135.0169837378965,
+        "p90_absolute_error": 250.7967637714234
+      },
+      "after_flash": {
+        "observations": 11,
+        "mean_predicted_discounted_score": 67.41102662953463,
+        "mean_realized_discounted_score": 0.0,
+        "mean_prediction_minus_return": 67.41102662953463,
+        "median_prediction_minus_return": 67.4021065235138,
+        "mean_absolute_error": 67.41102662953463,
+        "p90_absolute_error": 86.43118143081665
+      },
+      "anchors": [
+        {
+          "decision": 980,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1903.971290588379,
+          "realized_discounted_score": 1800.9379687436272
+        },
+        {
+          "decision": 1044,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1588.6226654052734,
+          "realized_discounted_score": 1399.6004977850268
+        },
+        {
+          "decision": 1076,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 1204.0460586547852,
+          "realized_discounted_score": 1519.3498114323613
+        },
+        {
+          "decision": 1100,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 87.75570392608643,
+          "realized_discounted_score": 0.0
+        },
+        {
+          "decision": 1107,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 125.88688135147095,
+          "realized_discounted_score": 0.0
+        }
+      ]
+    },
+    {
+      "life": 3,
+      "life_score": 100,
+      "visible_loss_frame": 1637,
+      "flash_alignment_frame": 1625,
+      "pre_marker_window": [
+        1561,
+        1625
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 1027.1368239074945,
+        "mean_realized_discounted_score": 23.058021833365338,
+        "mean_prediction_minus_return": 1004.0788020741293,
+        "median_prediction_minus_return": 943.9673631284952,
+        "mean_absolute_error": 1004.0788020741293,
+        "p90_absolute_error": 1471.831499779321
+      },
+      "after_flash": {
+        "observations": 12,
+        "mean_predicted_discounted_score": 69.43724453449249,
+        "mean_realized_discounted_score": 0.0,
+        "mean_prediction_minus_return": 69.43724453449249,
+        "median_prediction_minus_return": 67.08471179008484,
+        "mean_absolute_error": 69.43724453449249,
+        "p90_absolute_error": 85.41339814662933
+      },
+      "anchors": [
+        {
+          "decision": 1497,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 1129.586124420166,
+          "realized_discounted_score": 66.69858924089402
+        },
+        {
+          "decision": 1561,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 1433.6516380310059,
+          "realized_discounted_score": 35.6798995065134
+        },
+        {
+          "decision": 1593,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 1069.7823524475098,
+          "realized_discounted_score": 18.608604049497934
+        },
+        {
+          "decision": 1617,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 637.1376037597656,
+          "realized_discounted_score": 20.0
+        },
+        {
+          "decision": 1624,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 52.29189395904541,
+          "realized_discounted_score": 0.0
+        }
+      ]
+    },
+    {
+      "life": 4,
+      "life_score": 2430,
+      "visible_loss_frame": 2302,
+      "flash_alignment_frame": null,
+      "pre_marker_window": [
+        2238,
+        2302
+      ],
+      "pre_marker": {
+        "observations": 64,
+        "mean_predicted_discounted_score": 1677.1146966610104,
+        "mean_realized_discounted_score": 1560.2163668256499,
+        "mean_prediction_minus_return": 116.89832983536041,
+        "median_prediction_minus_return": 123.80928210433876,
+        "mean_absolute_error": 152.72251910607488,
+        "p90_absolute_error": 275.70694448281904
+      },
+      "after_flash": null,
+      "anchors": [
+        {
+          "decision": 2174,
+          "requested_actions_before_marker": 128,
+          "predicted_discounted_score": 861.113166809082,
+          "realized_discounted_score": 1666.3585756426237
+        },
+        {
+          "decision": 2238,
+          "requested_actions_before_marker": 64,
+          "predicted_discounted_score": 2113.7683868408203,
+          "realized_discounted_score": 1976.3675602502253
+        },
+        {
+          "decision": 2270,
+          "requested_actions_before_marker": 32,
+          "predicted_discounted_score": 1633.6261749267578,
+          "realized_discounted_score": 1402.9426801797106
+        },
+        {
+          "decision": 2294,
+          "requested_actions_before_marker": 8,
+          "predicted_discounted_score": 1283.899974822998,
+          "realized_discounted_score": 1486.5404595
+        },
+        {
+          "decision": 2301,
+          "requested_actions_before_marker": 1,
+          "predicted_discounted_score": 35.14638841152191,
+          "realized_discounted_score": 0.0
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "One selected verified replay, not a fresh evaluation or expected-return estimate.",
+    "Returns follow the frozen greedy policy on this trajectory; they are not optimal counterfactual returns.",
+    "Visible life boundaries match learning terminals but can lag physical collision.",
+    "White flashes align windows; they are not exact collision timestamps.",
+    "Prediction errors can reflect approximation, partial observations or policy/value mismatch; they do not prove a causal bug.",
+    "No policy action, reward, training input or parameter is changed."
+  ]
+}
