@@ -8,10 +8,12 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **344-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are the matched 64-action score-triggered / own-loss-triggered
-reset continuations (47/48), plus the matched restored-life-only continuations
-(49/50). The new calibration improved mean by 251 over its control, but still
-lost all ten games in stage 1; longer training is not a claimed breakthrough.
+Current experiments are the matched restored-life-only continuations (49/50)
+and a separate 128-action own-loss-lookback calibration. The 64-action
+score-triggered / own-loss-triggered pair (47/48) retired after six stage-1-only
+rounds with full state preserved. The focused calibration improved mean by 251
+over its control, but the first full round scored 78 lower; all games still
+lost in stage 1. Longer training is not a claimed breakthrough.
 Visual prediction (45) and inverse-action classification (46) retired after
 five and six stage-1-only evaluations, preserving final optimizers and logs.
 The own-loss calibration completed below its
@@ -5147,7 +5149,7 @@ retain lineage; episodes restart and archives/replay refill from new own play.
 The sole collector now retains **46** full-trial sources, including all
 historical sources and both new continuations, but no short calibrations.
 The shared verified 10,480-point stage-1 replay remains unchanged. Runs 47/48
-continue unchanged alongside the new pair.
+subsequently retired after six rounds, as recorded below.
 
 Frozen read-only value probes reconstruct all **2,519 / 2,502** greedy actions
 in the [control](results/defense/diagnostics/restored-life-control-calibration-values-01.json)
@@ -5160,6 +5162,57 @@ life-terminal discounted score are **166.29 / 182.50** points. Across the four
 calibration from focused practice. These are different selected trajectories,
 not matched states or optimal counterfactual returns; flashes are not exact
 collision timestamps. No actions, parameters, rewards or training data changed.
+
+At **7,293,216**, the [first full comparison](results/defense/training/dqn-50-restored-life-focused/comparison-at-000007293216.json)
+adds **200,000** actions per arm. Control mean/median/best are
+**9,418 / 10,245 / 10,380**; focused results are **9,340 / 9,905 / 10,330**.
+All twenty games lose in stage 1. Five paired scores improve and five regress;
+focused mean difference is **−78**, so the short calibration's score advantage
+has not held in this round. Both full optimizer states and checked log prefixes
+are preserved with independently verified [2,560-action control](results/defense/training/dqn-49-restored-life-control/replay-10380/replay.html)
+and [2,494-action focused](results/defense/training/dqn-50-restored-life-focused/replay-10330/replay.html)
+replays. Neither displaces the shared best.
+
+Each arm made **11,874** updates and completed **26** boot games. Control has
+**192** completed restored segments; focused has **3,304**, including **1,915**
+first-loss cuts. Every reset source joins to its own logged archive event;
+offsets and boot-worker protection remain correct. A separate
+[first-life coverage audit](results/defense/diagnostics/restored-life-full-first-coverage.json)
+finds control initial-life contribution **3,953–10,757** actions versus focused
+**140,721**, all among completed restored segments. Focused median duration is
+**39** decisions; **360/3,304** exceed 64, versus **31/192** initial control
+lives. Longer duration is not proof of obstacle passage or recoverability:
+the actions differ, visible losses can lag collision, and active segments are
+excluded. The intended allocation change persists, but progression does not.
+The new full pair continues unchanged for another matched round.
+
+The older probability-.5 trigger pair finished its
+[sixth comparison](results/defense/training/dqn-48-loss-trigger/comparison-at-000008293216.json)
+at **8,293,216**: control mean/median/best **10,318 / 10,325 / 10,430**,
+own-loss **10,225 / 10,230 / 10,330**, all stage 1. Own-loss has one higher,
+seven lower and two tied paired scores (mean difference **−93**). Its new
+full-run best [10,330-point replay](results/defense/training/dqn-48-loss-trigger/replay-10330/replay.html)
+verified **2,509** actions; the control's earlier verified 10,480 replay remains
+its best. Both latest evaluation optimizers and full audited prefixes are saved.
+
+The pair then stopped gracefully after the depth plateau:
+[47 at 8,325,680](results/defense/training/dqn-47-mid-lookback-control/retirement.json)
+(**1,232,464** new actions, **552** boot games, **407** restored segments), and
+[48 at 8,318,096](results/defense/training/dqn-48-loss-trigger/retirement.json)
+(**1,224,880**, **517**, **384**). Complete final Q/target/Adam checkpoints,
+logs and all six evaluations are preserved. Neither training nor evaluation
+logged a later stage or mission. The collector retains both historical sources.
+
+A new [earlier-start calibration](results/defense/training/restored-life-long-lookback-calibration-01/resume-config.json)
+tests **128** decisions of own-loss lookback against the preserved **64**-decision
+focused calibration. Configuration comparison confirms only lookback and output
+paths differ. Both start from the same original DQN-33 parent at **6,962,144**,
+not their trial's final or smoke state; this new check gets the same **131,072**
+actions and ten uncapped complete boot evaluations. It retains probability 1,
+first-restored-life-only segments, split epsilon, protected boot workers,
+unchanged score-only targets and no auxiliary loss. This tests more time to
+change approach before a visible loss, not known collision lead time or a
+scripted route. The short check is excluded from the collector; 49/50 continue.
 
 The auxiliary trials freed their slots after depth plateaus, not time limits.
 [Visual prediction](results/defense/training/dqn-45-visual-prediction/retirement.json)
