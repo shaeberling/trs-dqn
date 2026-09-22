@@ -73,6 +73,12 @@ def main():
     parser.add_argument("--curriculum-share", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--curriculum-boot-envs", type=int, default=0)
     parser.add_argument("--curriculum-lookback", type=int, default=0)
+    parser.add_argument("--curriculum-cells", choices=("score", "screen"), default="score",
+                        help="training archive selection only; policy observations stay unchanged")
+    parser.add_argument("--curriculum-score-interval", type=int, default=20)
+    parser.add_argument("--curriculum-bins", type=int, default=16)
+    parser.add_argument("--curriculum-per-bin", type=int, default=4)
+    parser.add_argument("--curriculum-screen-interval", type=int, default=32)
     args = parser.parse_args()
     prior = None
     if args.resume:
@@ -122,7 +128,9 @@ def main():
     if args.artifacts.resolve() == args.run.resolve():
         parser.error("checkpoint and replay-artifact roots must be separate")
     if (not np.isfinite(args.curriculum_probability) or not 0 <= args.curriculum_probability <= 1
-            or args.curriculum_lookback < 0 or not 0 <= args.curriculum_boot_envs < args.envs
+            or min(args.curriculum_lookback, args.curriculum_score_interval) < 0
+            or min(args.curriculum_bins, args.curriculum_per_bin, args.curriculum_screen_interval) < 1
+            or not 0 <= args.curriculum_boot_envs < args.envs
             or (args.curriculum_share and not args.curriculum_probability)
             or (args.curriculum_boot_envs and not args.curriculum_share)):
         parser.error("invalid own-experience curriculum settings")
@@ -206,12 +214,19 @@ def main():
                           curriculum_share=args.curriculum_share,
                           curriculum_boot_envs=args.curriculum_boot_envs,
                           curriculum_lookback=args.curriculum_lookback,
-                          curriculum_cells="score", curriculum_score_interval=20,
-                          curriculum_bins=16, curriculum_per_bin=4)
+                          curriculum_cells=args.curriculum_cells,
+                          curriculum_score_interval=args.curriculum_score_interval,
+                          curriculum_bins=args.curriculum_bins, curriculum_per_bin=args.curriculum_per_bin,
+                          curriculum_screen_interval=args.curriculum_screen_interval)
         config.update({k: v for k, v in curriculum.items() if k != "curriculum"})
         config.update(curriculum_archive_saved=False,
                       curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
                       snapshot_source_sha256=sha256(Path(__file__).with_name("defense_snapshot.py")))
+        if args.curriculum_cells == "screen":
+            from .defense_cells import CELL_ENCODING
+            config.update(curriculum_cell_encoding=CELL_ENCODING,
+                          curriculum_cell_source_sha256=sha256(Path(__file__).with_name("defense_cells.py")),
+                          curriculum_selection="bounded bottom-k screen fingerprints; uniform cell reset")
     if args.compact_replay:
         config.update(replay_storage="exact-visible-frame-interning-v1",
                       frame_storage_source_sha256=sha256(Path(__file__).with_name("frame_storage.py")))
