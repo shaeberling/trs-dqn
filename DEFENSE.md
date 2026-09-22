@@ -206,8 +206,7 @@ continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
 - Live progress: `runs/defense-dqn-24-bootstrap/status.json`,
-  `runs/defense-dqn-26-own-resets/status.json` and
-  `runs/defense-ppo-29-value-weight/status.json`, each with an adjacent
+  and `runs/defense-ppo-29-value-weight/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -2214,6 +2213,12 @@ are preserved. Its mean exceeds run 27's same-counter 9,933 by 277, but all
 games still lost in stage 1. This is early retention, not proof of durable
 stability or a depth gain, and the tied best does not replace the global replay.
 
+Run 29 later reached [mean **10,461**, median **10,460**, best **10,480** at
+11,250,432](results/defense/training/ppo-29-value-weight/step-000011250432/evaluation.json).
+Its full optimizer checkpoint is preserved. Subsequent means fluctuated and
+fell to **8,105** at **15,248,128**; all remained stage-1 losses. It is still
+running, but this is not evidence that more compute has solved progression.
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -2633,6 +2638,22 @@ checkpoints and replays, are preserved. Through 8,100,000, none reached stage
 2 or a mission; the latest mean had fallen to 2,462. The learner continues
 under review rather than treating its best score as current reliability.
 
+Run 26 subsequently improved to **10,280** at **9,300,000**:
+[mean 9,849, median 10,230](results/defense/training/dqn-26-own-resets/step-000009300000/evaluation.json),
+with a [2,585-action verified replay](results/defense/training/dqn-26-own-resets/replay-10280/replay.html).
+Its peak mean was [**10,130**, median/best **10,160**, at **9,100,000**](results/defense/training/dqn-26-own-resets/step-000009100000/evaluation.json).
+All new best checkpoints and replays are preserved, including 9,780, 10,060,
+10,180 and 10,220 points. After a sharp regression, its last seven validation
+means were **334, 320, 316, 330, 400, 478, 472**. It stopped cleanly at
+**10,487,648** actions, with **654,852** updates, **4,672** complete boot games
+and **3,072** restored segments. None of its **104** complete validation
+batches reached stage 2 or a mission. The
+[final optimizer/target checkpoint](results/defense/training/dqn-26-own-resets/final-checkpoint/state.json),
+[last validated checkpoint](results/defense/training/dqn-26-own-resets/step-000010400000/evaluation.json)
+and [losslessly compressed full log](results/defense/training/dqn-26-own-resets/metrics.jsonl.gz)
+are preserved. The original log and all local history remain intact. Its
+sustained regression, not a wall-clock limit, prompted freeing its compute.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-own-resets-reproduction \
   --artifacts runs/defense-dqn-own-resets-reproduction/artifacts --seed 97 \
@@ -2782,6 +2803,17 @@ The next two means fell to 7,773 and 6,476, so this is a saved capability,
 not a claim that the current policy is equally reliable. This run continues;
 its earlier 800,000-action diagnostic below is not evidence about these
 later learned heads.
+
+At **6,000,000**, the ensemble improved to
+[mean 10,258, median 10,260, best 10,280](results/defense/training/dqn-24-bootstrap/step-000006000000/evaluation.json),
+with a [2,485-action verified replay](results/defense/training/dqn-24-bootstrap/replay-10280/replay.html).
+At **7,000,000**, it reached
+[mean **10,334**, median **10,330**, best **10,410**](results/defense/training/dqn-24-bootstrap/step-000007000000/evaluation.json),
+with a [2,578-action verified replay](results/defense/training/dqn-24-bootstrap/replay-10410/replay.html).
+Both full online/target/prior/optimizer checkpoints are preserved. This is
+continued improvement within the bootstrap lineage, but still below the
+shared 10,480-point best and entirely stage-1 losses. At 7,200,000 its mean
+was 10,170, best 10,200; the learner remains active.
 
 A [frozen-head diagnostic](results/defense/diagnostics/bootstrap-800000-heads.json)
 then compared this exact checkpoint's greedy ensemble with each individual
