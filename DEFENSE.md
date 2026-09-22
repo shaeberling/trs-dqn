@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **274-test** suite now passes, including
+(23 GiB available at restart). The full **276-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24 and PPO 29 later retired after a depth plateau and sustained
 regression respectively, with all results preserved. PPO 30 tests
@@ -14,11 +14,13 @@ frozen-base screen-history memory after
 a verified bounded comparison. Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 Full DQN trials 31/32 now compare persistent random exploration with the
-unchanged control. Their first three full-run rounds disagree on mean-score
+unchanged control. Their first four full-run rounds disagree on mean-score
 ranking; all games still lost in stage 1.
 A bounded matched check of 5% versus 25% nominal persistent exploration
 finished without a new stage; the higher rate scored worse. Neither full
 run's settings changed.
+Bounded follow-ups combine persistent exploration with their own newly
+reached-state resets and compare two archive lookbacks; evaluations are pending.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -231,6 +233,10 @@ fresh-test seeds to tune the model.
   `runs/defense-persistent-rate-control-01/status.json` and
   `runs/defense-persistent-rate-high-01/status.json`, with adjacent logs.
   These short checks are excluded from the global collector.
+- Bounded persistent-exploration/own-reset follow-up:
+  `runs/defense-persistent-reset-calibration-01/status.json` (lookback 128) and
+  `runs/defense-persistent-reset-short-calibration-01/status.json` (lookback 32),
+  with adjacent logs. Both sources are excluded from the global collector.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/` and `runs/defense-dqn-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -2994,6 +3000,17 @@ games again lost in stage 1. Both full checkpoints and complete game records
 are preserved; neither beat its earlier archived best replay, so those verified
 replays remain the references. This is no stage-depth improvement.
 
+At the [fourth round, **7,031,072**](results/defense/training/dqn-31-persistent/comparison-at-000007031072.json),
+persistence reached a new personal peak mean **10,450**, median **10,455**,
+best **10,480**. Its independently verified
+[2,526-action replay](results/defense/training/dqn-31-persistent/replay-10480/replay.html)
+is preserved with the full online/target/optimizer/RNG checkpoint. Control
+averaged **10,199**, median/best **10,220**. All ten paired differences favor
+persistence, averaging **+251**, but all twenty games still lost in stage 1.
+The runs have completed **342** and **343** new boot games since calibration.
+This matches the global score ceiling without passing it or establishing a
+stage clear; the existing shared replay remains unchanged.
+
 ```bash
 # Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
 venv/bin/python -u -m rl.defense_dqn \
@@ -3082,6 +3099,68 @@ venv/bin/python -u -m rl.defense_dqn \
   --artifacts runs/defense-persistent-rate-reproduction/artifacts \
   --resume results/defense/training/dqn-31-persistent/step-000006631072 \
   --steps 6762144 --eval-every 131072 --epsilon-final 0.25
+```
+
+### Persistent exploration with own-state resets
+
+The higher-rate trial above mostly repeated full boot games without escaping
+the common obstacle sequence. A bounded follow-up tests whether reusing states
+reached during **its own new training** gives sustained random exploration more
+opportunities from later positions. This is a hypothesis about training-state
+coverage, not a claim that the archive necessarily concentrates on a specific
+obstacle or contains a solution.
+
+`defense-persistent-reset-calibration-01` starts from the **same 6,631,072**
+online/target/optimizer/RNG parent as both rate checks, **not** from the
+higher-rate trial's final weights. It adds **131,072** actions with nominal
+persistent exploration 25%, lengths 1–64 and exponent 1.5. Its comparator is
+the already completed `persistent-rate-high-01`, so the changed treatment is
+the own-state reset setup: probability **0.5**, sharing, **two of eight**
+workers permanently boot-only, and **128-action** archive lookback. All other
+learning, observation, action timing, replay capacity and evaluation settings
+match. This is one sequential paired lineage, not simultaneous independent
+replicates. Wall-clock throughput is not its outcome measure.
+
+The archive begins empty and uses the existing bounded visible-score cells.
+Only newly reached opaque native snapshots are shared inside this run; none
+are decoded, fabricated or taken from an evaluation replay or another learner.
+Restored starting score is not credited as reward. Every primitive action
+still comes from the learned policy or uniform, screen-independent random
+exploration. The longer lookback is the existing generic archive setting,
+not an obstacle detector or steering instruction. Boot games and restored
+segments are reported separately, and all ten uncapped greedy evaluation
+games start from boot. This short source is excluded from the global collector.
+
+Two new regression tests cover this combination without changing production
+code. A synthetic boundary fixture confirms held actions cancel both at a
+visible life loss and at an own-state reset, replay ends on the actual terminal
+screen, reset observations start new transitions, and only new score increments
+are recorded. A real-emulator test exercises compact replay, new archive
+creation, a reserved boot worker, restored segments and optimizer updates.
+Its deliberately truncated episodes test plumbing, not successful gameplay.
+All seven focused persistent-exploration tests pass. The full **276-test**
+suite also [passes](results/defense/diagnostics/persistent-reset-regression-tests.txt).
+
+An [interim training-only archive audit at **6,698,992**](results/defense/diagnostics/persistent-reset-interim-6698992.json) found that retained
+save events had source progress at most **170** points within a life, despite
+trigger progress reaching **2,620**. Looking back 128 actions rewinds across
+the large score jumps. This does not by itself identify obstacle positions or
+prove those states are unhelpful, but it cautions against claiming that this
+configuration provides near-failure practice. A second bounded arm,
+`defense-persistent-reset-short-calibration-01`, therefore starts from the same
+6,631,072 parent with identical settings except **lookback 32** and output
+paths. Its outcome is not yet known. Compare both actual archive coverage and
+complete from-boot evaluation against lookback 128 and the existing no-reset
+high-exploration comparator. Neither reset arm imports the other's experience.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-persistent-reset-reproduction \
+  --artifacts runs/defense-persistent-reset-reproduction/artifacts \
+  --resume results/defense/training/dqn-31-persistent/step-000006631072 \
+  --steps 6762144 --eval-every 131072 --epsilon-final .25 \
+  --curriculum-probability .5 --curriculum-share \
+  --curriculum-boot-envs 2 --curriculum-lookback 128
 ```
 
 ### Lossless compact training replay
