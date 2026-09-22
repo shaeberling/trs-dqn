@@ -3558,6 +3558,55 @@ alignment is not a collision timestamp, and the final loss can omit the flash
 between sampled screens. These are selected best replays, not representative
 training rollouts; no diagnostic screen or action is supplied to training.
 
+#### Worker-allocation calibration result and longer trial
+
+Both checks exited normally at **7,093,216**. Their
+[paired ten-game comparison](results/defense/training/worker-epsilon-split-calibration-01/comparison.json)
+does **not** establish improvement: every game lost in stage 1, and both
+means are below the parent's **10,259**.
+
+| Allocation | Mean | Median | Best | Verified replay |
+| --- | ---: | ---: | ---: | --- |
+| Split .05/.9 | 9,466 | 10,310 | 10,410 | [2,440 actions](results/defense/training/worker-epsilon-split-calibration-01/replay/replay.html) |
+| Uniform .6875 | 9,694 | 10,160 | 10,240 | [2,528 actions](results/defense/training/worker-epsilon-uniform-control-01/replay/replay.html) |
+
+Split minus control averages **−228**; seven paired scores are higher and
+three lower, including differences **−5,530** and **−2,310**. This is neither
+a reliable benefit nor a fresh-seed success-rate estimate. Full online/target,
+Adam/RNG, configs, logs and verified replay bundles are preserved for both.
+
+The [split audit](results/defense/training/worker-epsilon-split-calibration-01/audit.json)
+records **53** boot games and **42** restored segments, **1,251** archive
+events and **122** retained save events. The
+[control audit](results/defense/training/worker-epsilon-uniform-control-01/audit.json)
+records **65**, **33**, **1,034** and **50** respectively. All source/trigger
+offsets equal 128 and reserved workers remain boot-only. Realized exploration
+is approximately **6.1%/3.7%** on the two split boot workers and **89–90%**
+on the others; control workers are approximately **67–69%**. Boundary cuts
+and finite sampling explain why these are not exactly the nominal rates.
+
+Retained source within-life scores reach **190** versus **100**, with trigger
+scores **2,620** versus **180**. This shows a difference in states supplying
+the archive, not a verified route, collision location or new stage. Retained
+events are not distinct current-state counts. All logged training episodes
+also remain stage 1. The split design was exercised, but the passage goal
+remains unmet.
+
+Full [DQN 40 split](results/defense/training/dqn-40-worker-epsilon-split/resume-config.json)
+and [DQN 41 control](results/defense/training/dqn-41-worker-epsilon-control/resume-config.json)
+now continue their respective complete calibration states. Only output paths,
+the limit to **unlimited**, and the full evaluation interval **200,000** change;
+first full evaluation is due at **7,293,216**. Replay/native archives refill
+from new own experience. This extends the matched trial's exposure, rather
+than declaring the split arm superior based on its best score or reset count.
+DQN 37 and 39 continue in the other two slots.
+
+The old sole collector exited cleanly before its replacement started with
+[all 37 full-run sources](results/defense/training/dqn-40-worker-epsilon-split/collector-config.json).
+Historical sources remain included; short calibrations and evaluation-only
+probes remain excluded. The shared 10,480-point best is unchanged, and future
+promotion still requires complete frozen-policy replay verification.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)
