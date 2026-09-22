@@ -1,7 +1,10 @@
 # Candidate: auxiliary prediction of own future visual representations
 
-Status: design review only. **Not implemented, not trained, no performance
-claim.** Existing trials 42/43/44 and their acting policies are unchanged.
+Status: the optional `--spr-weight` implementation and native/gradient/resume
+tests now exist. No performance benefit is established. This document retains
+the initial design and acceptance criteria; see the current calibration status
+in [DEFENSE.md](../../../DEFENSE.md#auxiliary-visual-prediction).
+Existing live trials 43/44 and their acting policies are unchanged.
 
 ## Reason to test
 

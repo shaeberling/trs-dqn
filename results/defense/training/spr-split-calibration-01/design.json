@@ -1,0 +1,81 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions_each": 131072,
+  "baseline": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-spr-split-calibration-01/artifacts"
+    ],
+    "greedy_trace_cut": [
+      null,
+      false
+    ],
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-spr-split-calibration-01"
+    ],
+    "spr_architecture": [
+      null,
+      "spatial-own-future-v1"
+    ],
+    "spr_conversion": [
+      null,
+      "own scalar Q/target/Adam/RNG preserved; auxiliary fresh; EMA copies online"
+    ],
+    "spr_dropout": [
+      null,
+      0.5
+    ],
+    "spr_ema": [
+      null,
+      0.99
+    ],
+    "spr_inference": [
+      null,
+      "ordinary QNetwork only; no dropout, predictor or future observations"
+    ],
+    "spr_objective": [
+      null,
+      "PER-weighted mean valid-step cosine distance plus unchanged scalar TD loss"
+    ],
+    "spr_replay_source_sha256": [
+      null,
+      "547aa0f62d6dd30048718b153784691ee8d8806d330d4d9d5a150b643fede922"
+    ],
+    "spr_resume": [
+      null,
+      "full Q/target/Adam plus auxiliary/EMA/Adam/key; own replay refills"
+    ],
+    "spr_sequence_source_sha256": [
+      null,
+      "7666431a7d73d8a38abff719f4d34a8cea090aa05a479e0a718f2169f4eb887d"
+    ],
+    "spr_source_sha256": [
+      null,
+      "07ab81c705724296b901c93cca4395e77adc6f7281f06e3ba85c1ffb199e6b82"
+    ],
+    "spr_weight": [
+      null,
+      0.1
+    ],
+    "trainer_source_sha256": [
+      "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+      "47ccc6f31e2519bacff51e49f657f57c4e8d866eeb631a1b72d32631045b7d37"
+    ]
+  },
+  "unchanged_acting_model_environment_replay_exploration_archive_hashes": true,
+  "parity_reports": [
+    "results/defense/diagnostics/spr-default-parity.json",
+    "results/defense/diagnostics/spr-parent-conversion-parity.json"
+  ],
+  "limitations": [
+    "Historical same-parent comparison, not simultaneous independent replication.",
+    "Auxiliary prediction changes representation learning, not game reward or acting inputs.",
+    "Own scalar Q/target/Adam/main and persistent RNG preserved; auxiliary state starts fresh and EMA copies online.",
+    "No trace cutting, longer holds or higher gamma combined into this first comparison.",
+    "Ten reused complete uncapped boot validation seeds 10000..10009.",
+    "Smoke/conversion checkpoints and all evaluation traces are excluded from performance training.",
+    "Short calibration is excluded from the global replay collector; mission completion remains unachieved."
+  ]
+}

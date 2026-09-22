@@ -1,0 +1,49 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "converted": "runs/defense-spr-parent-conversion/latest",
+  "files": {
+    "model.safetensors": {
+      "arrays": 12,
+      "arrays_exact": true,
+      "parent_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+      "converted_sha256": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d"
+    },
+    "target.safetensors": {
+      "arrays": 12,
+      "arrays_exact": true,
+      "parent_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+      "converted_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538"
+    },
+    "optimizer.npz": {
+      "arrays": 26,
+      "arrays_exact": true,
+      "parent_sha256": "bfa7ee30f1065da566838dfa906d1f3e2bdee5d937c17ad095d0cadd542fd14c",
+      "converted_sha256": "1176d7248c3f9699b7cb3f405fc5855413c67d12a48ca41c20e34ae1ee14381c"
+    }
+  },
+  "state_keys_exact": [
+    "steps",
+    "updates",
+    "episodes",
+    "boot_episodes",
+    "restored_segments",
+    "rng",
+    "persistent_exploration_rng"
+  ],
+  "ema_equals_parent_online": true,
+  "spr": {
+    "local_updates": 0,
+    "valid_future_predictions": 0,
+    "last_weighted_cosine_loss": 0.0,
+    "weight": 0.1,
+    "ema": 0.99,
+    "dropout": 0.5
+  },
+  "auxiliary_hashes": {
+    "spr-aux.safetensors": "c13ea51835aff1b6f4427ea60da0082063c16f408196b953bba863d081d47ac4",
+    "spr-ema.safetensors": "47ce2b8c3d6dbdb10c14b8546ea20268c34a8267703d5ef5980e67c24b4b101d",
+    "spr-optimizer.npz": "9a7a75c5c23efc6e331ee47b1147691eaea64c34f7b124d0958d9d1baa476658",
+    "spr-rng.npz": "365798d94714ed056563d0d9eb5fb03547f3381863880372f4a315d152809e74"
+  },
+  "limitation": "Zero-update conversion only, not a performance result or training parent. Original Q/target/Adam and main/persistent RNG preserved; auxiliary and EMA initialization are explicit."
+}

@@ -34,6 +34,10 @@ Optional `--greedy-trace-cut` tests current-policy cuts in scalar DQN's
 multi-step training targets. It requires compact replay, retains only own
 visible trajectories, and leaves acting/evaluation unchanged. See the
 [controlled calibration](DEFENSE.md#current-policy-trace-cutting-calibration).
+Optional `--spr-weight .1` adds an SPR-inspired auxiliary prediction loss on
+the learner's own visible trajectories. Acting remains ordinary greedy DQN;
+future screens are training targets only, not policy inputs or extra rewards.
+See [the visual-prediction experiment](DEFENSE.md#auxiliary-visual-prediction).
 Both Defense trainers support `--observation-stride` to space their four
 visible input frames independently of action duration (default 1 preserves
 existing models). Checkpoint evaluation and verified replays retain that setting.

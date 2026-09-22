@@ -1,0 +1,11 @@
+test_auxiliary_gradients_masks_and_target_stop_gradient (test_defense_spr.SprTests.test_auxiliary_gradients_masks_and_target_stop_gradient) ... ok
+test_invalid_cli_and_auxiliary_checkpoint (test_defense_spr.SprTests.test_invalid_cli_and_auxiliary_checkpoint) ... ok
+test_joint_update_ema_rng_and_unchanged_acting_path (test_defense_spr.SprTests.test_joint_update_ema_rng_and_unchanged_acting_path) ... ok
+test_native_auxiliary_with_actual_own_resets (test_defense_spr.SprTests.test_native_auxiliary_with_actual_own_resets) ... ok
+test_native_default_conversion_resume_and_frozen_loader (test_defense_spr.SprTests.test_native_default_conversion_resume_and_frozen_loader) ... ok
+test_replay_preserves_exact_td_fields_sampling_and_boundaries (test_defense_spr.SprTests.test_replay_preserves_exact_td_fields_sampling_and_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 35.699s
+
+OK

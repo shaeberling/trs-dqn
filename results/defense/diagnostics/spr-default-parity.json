@@ -1,0 +1,30 @@
+{
+  "before": "runs/defense-spr-default-before/latest",
+  "after": "runs/defense-spr-default-after/latest",
+  "steps": 64,
+  "updates": 15,
+  "files": {
+    "model.safetensors": {
+      "arrays": 12,
+      "arrays_exact": true,
+      "before_sha256": "afa885445607f5b3289bbd2fd22c909f56d95a02f7a15fc2d5379b1744607ec2",
+      "after_sha256": "afa885445607f5b3289bbd2fd22c909f56d95a02f7a15fc2d5379b1744607ec2"
+    },
+    "target.safetensors": {
+      "arrays": 12,
+      "arrays_exact": true,
+      "before_sha256": "e12fc131e016e47eb196ff9bdec6d81c36c9eaaaace2b395474fa63d223889bc",
+      "after_sha256": "e12fc131e016e47eb196ff9bdec6d81c36c9eaaaace2b395474fa63d223889bc"
+    },
+    "optimizer.npz": {
+      "arrays": 26,
+      "arrays_exact": true,
+      "before_sha256": "80290c0af652f6763346b2184f5dcf109b842da3d266864e092b45407c4c5ec6",
+      "after_sha256": "80290c0af652f6763346b2184f5dcf109b842da3d266864e092b45407c4c5ec6"
+    }
+  },
+  "state_except_config_exact": true,
+  "old_trainer_sha256": "8c2979f671a7813b2b100ae93a1dcdc5ff9f39dccb22c2eac8d64948443cc9e6",
+  "new_trainer_sha256": "47ccc6f31e2519bacff51e49f657f57c4e8d866eeb631a1b72d32631045b7d37",
+  "limitation": "Tiny truncated 64-action native integration check, not a performance result, demonstration or training parent."
+}

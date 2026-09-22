@@ -1,0 +1,39 @@
+{
+  "run": "runs/defense-spr-production-smoke",
+  "stopped": {
+    "wall_seconds": 54.26,
+    "event": "stopped",
+    "steps": 6978528,
+    "stop_requested": false
+  },
+  "new_actions": 16384,
+  "new_updates": 398,
+  "spr": {
+    "local_updates": 398,
+    "valid_future_predictions": 126367,
+    "last_weighted_cosine_loss": 0.015436658635735512,
+    "weight": 0.1,
+    "ema": 0.99,
+    "dropout": 0.5
+  },
+  "mlx_peak_bytes": 688636200,
+  "source_hashes": {
+    "environment_source_sha256": "f49b8c032e4e928513f6c8dd7b69ebf59d7b97bce251a485f708e0a1b965d394",
+    "trainer_source_sha256": "47ccc6f31e2519bacff51e49f657f57c4e8d866eeb631a1b72d32631045b7d37",
+    "model_source_sha256": "7a5c67db42356a549f16981a24fc50608d9afbd532feb1c7e702fec3622d55ce",
+    "replay_source_sha256": "a7d7a1f57cd52c27ddd128d2ae5074a39c59435a22b9a2e48dc6d87ce67fc1c3",
+    "curriculum_source_sha256": "25af83ddc4673a83d2d8e5a6b87be12dc59eb0cfc78e0b0824ba44853c2459a3",
+    "snapshot_source_sha256": "88dff0f6b58e44c3d9cdb01cf0fc0c2824af022506974bdff80e68c238149e4d",
+    "frame_storage_source_sha256": "a3fc66b02b3bb8659177e5ab1be8186b7b032548dc57a46ba919b1dc6796e0b1",
+    "exploration_source_sha256": "846e66fc13e173ce2ae76210b3c1c94dbb3164375f2401c2fac2a438317a1c0a",
+    "exploration_worker_source_sha256": "846e66fc13e173ce2ae76210b3c1c94dbb3164375f2401c2fac2a438317a1c0a",
+    "spr_source_sha256": "07ab81c705724296b901c93cca4395e77adc6f7281f06e3ba85c1ffb199e6b82",
+    "spr_replay_source_sha256": "547aa0f62d6dd30048718b153784691ee8d8806d330d4d9d5a150b643fede922",
+    "spr_sequence_source_sha256": "7666431a7d73d8a38abff719f4d34a8cea090aa05a479e0a718f2169f4eb887d"
+  },
+  "complete_log_sha256": "af1369cf9f728172ba6cefd070d8b4872dc197a7b82eb495899959d6fdf4d2e2",
+  "limitations": [
+    "Native batch-64/eight-worker/five-step resource and integration check only, not a performance evaluation.",
+    "No checkpoints or trajectories from this check are used as the performance-training parent."
+  ]
+}
