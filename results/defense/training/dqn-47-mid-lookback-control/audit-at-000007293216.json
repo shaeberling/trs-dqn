@@ -1,0 +1,683 @@
+{
+  "checkpoint_hashes": {
+    "model.safetensors": "555972be050284e8d264004b55d0dd1c32aaa773a14f3fb7369fbd36f5d365d9",
+    "state.json": "1d8a7dd4f715df567529c75d9730494728059fcdc06e4c7b5721b4e65f8e4f29",
+    "target.safetensors": "565f6f8e4c5882baf2976b27cdb1d101816f088b2cf183fc2bed58a6b9320a7f",
+    "optimizer.npz": "7a8d474918a427eecea258b062e315ed5c511fb30614de946afd621d1d333179",
+    "evaluation.json": "6997121b7ff9ae3030a88b88043a8d54ff07d0b195bca76407d59c64033a5c84"
+  },
+  "log_prefix_sha256": "b41a9061aaf06d2dca99607fcffde4e23b86a4da41d171b4e794cb1835810175",
+  "log_prefix_bytes": 1263826,
+  "verified_actions": 2569,
+  "new_actions": 200000,
+  "new_updates": 11874,
+  "new_boot_games": 89,
+  "new_restored_segments": 64,
+  "archive_events": 2164,
+  "all_archive_offsets_correct": true,
+  "reserved_workers_boot_only": true,
+  "highest_logged_training_stage": 1,
+  "logged_training_missions": 0,
+  "selected_reset_source_progress_counts": {
+    "0": 2,
+    "20": 7,
+    "40": 7,
+    "60": 3,
+    "80": 6,
+    "100": 5,
+    "140": 4,
+    "160": 6,
+    "190": 1,
+    "210": 1,
+    "230": 4,
+    "260": 6,
+    "280": 4,
+    "290": 2,
+    "310": 3,
+    "330": 3
+  },
+  "selected_resets_from_boot_only_workers": 51,
+  "selected_reset_origins": [
+    {
+      "source_worker": 1,
+      "source_action": 1421,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 83,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 1028,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 540,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 934,
+      "source_progress": 0,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 160.0,
+      "segment_steps": 626,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 539,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1011,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 539,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1086,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 5,
+      "source_action": 2078,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1068,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2106,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 990.0,
+      "segment_steps": 1399,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2072,
+      "source_progress": 290,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1455,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 1573,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 61,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2075,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1354,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 3154,
+      "source_progress": 210,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 970.0,
+      "segment_steps": 536,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2075,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 240.0,
+      "segment_steps": 1417,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 3507,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 250.0,
+      "segment_steps": 546,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1608,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 33,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 5934,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 433,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5303,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 495,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6078,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 48,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6078,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 35,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2824,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 930.0,
+      "segment_steps": 997,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 1396,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 60,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4697,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 1050.0,
+      "segment_steps": 1023,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 7712,
+      "source_progress": 0,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 160,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 6078,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 41,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 1527,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 49,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 7744,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 972,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5387,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 555,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5841,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 60.0,
+      "segment_steps": 132,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2106,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 2530.0,
+      "segment_steps": 1467,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4649,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 970.0,
+      "segment_steps": 1409,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4014,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 240.0,
+      "segment_steps": 1383,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 10597,
+      "source_progress": 230,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 770.0,
+      "segment_steps": 51,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 5956,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 59,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 8396,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 551,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 10559,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 602,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 4577,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 902,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 7,
+      "source_action": 9657,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1042,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 12372,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 534,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2949,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 548,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 2949,
+      "source_progress": 40,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 578,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 6908,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 620,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 6,
+      "source_action": 1421,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 60,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2000,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1410,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 13743,
+      "source_progress": 190,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 63,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 4232,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 190.0,
+      "segment_steps": 64,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 11457,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 38,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 3,
+      "source_action": 3818,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 280.0,
+      "segment_steps": 1502,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2084,
+      "source_progress": 290,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 260.0,
+      "segment_steps": 1449,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 17227,
+      "source_progress": 80,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 160.0,
+      "segment_steps": 960,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1571,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 40.0,
+      "segment_steps": 44,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10167,
+      "source_progress": 310,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 180.0,
+      "segment_steps": 971,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10882,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 537,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 9294,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 35,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 18080,
+      "source_progress": 330,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 850.0,
+      "segment_steps": 545,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1608,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 0.0,
+      "segment_steps": 18,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 17253,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 100.0,
+      "segment_steps": 506,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 10882,
+      "source_progress": 260,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 870.0,
+      "segment_steps": 523,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 2000,
+      "source_progress": 100,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 220.0,
+      "segment_steps": 1375,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 2,
+      "source_action": 13127,
+      "source_progress": 20,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 200.0,
+      "segment_steps": 1002,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 17253,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 80.0,
+      "segment_steps": 491,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 20469,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 90.0,
+      "segment_steps": 74,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 0,
+      "source_action": 22106,
+      "source_progress": 60,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 120.0,
+      "segment_steps": 524,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 16239,
+      "source_progress": 160,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 140.0,
+      "segment_steps": 62,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 1692,
+      "source_progress": 280,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 20.0,
+      "segment_steps": 49,
+      "highest_stage": 1
+    },
+    {
+      "source_worker": 1,
+      "source_action": 11826,
+      "source_progress": 140,
+      "source_kind": "score_progress",
+      "source_life_steps": null,
+      "segment_new_score": 390.0,
+      "segment_steps": 1405,
+      "highest_stage": 1
+    }
+  ],
+  "selection_limits": "Completed restored segments, not all resets or occupancy. Score is not exact course position."
+}
