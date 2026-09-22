@@ -6,12 +6,15 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **353-test** suite now passes, including
+(23 GiB available at restart). The full **355-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-The balanced-command continuation (51) remains live. The matched restored-life
+The lower-exploration focused continuation (52) is now live. Its calibration
+averaged 10,297 versus high exploration's 10,214, but only one of ten paired
+scores improved and all games remained in stage 1. The matched restored-life
 continuations (49/50) retired cleanly after six stage-1-only evaluations each,
-with all final state and logs preserved. The balanced run's first three means
-are below its uniform-action comparison, without a later stage.
+with all final state and logs preserved. Balanced-command run 51 also retired
+after six stage-1-only evaluations; all six means were below its uniform-action
+comparison. Final state and complete logs remain preserved.
 The separate 128-action own-loss-lookback calibration finished below its
 64-action counterpart, and an optional command-balanced exploration sampler
 has completed a near-tied calibration and begun a longer continuation. The 64-action
@@ -5392,6 +5395,23 @@ at **7,693,216**, averages **9,235**, median **9,820**, best **9,890**,
 versus uniform focused's mean **9,860**. All ten games remain stage-1 losses;
 the full checkpoint and log prefix are preserved without a new replay best.
 
+The remaining balanced-action rounds also stay in stage 1. At
+**7,893,216 / 8,093,216 / 8,293,216**, means are **9,918 / 9,345 / 9,568**,
+versus uniform focused's **10,066 / 10,180 / 9,955**. Complete paired records
+and full checkpoint states are preserved for rounds
+[four](results/defense/training/dqn-51-balanced-actions/comparison-at-000007893216.json),
+[five](results/defense/training/dqn-51-balanced-actions/comparison-at-000008093216.json)
+and [six](results/defense/training/dqn-51-balanced-actions/comparison-at-000008293216.json).
+All six full-round means are lower; none of these sixty complete games reached
+a later stage. This is negative evidence for the tested distribution change.
+
+Run 51 then [retired gracefully](results/defense/training/dqn-51-balanced-actions/retirement.json)
+at **8,315,744**, after **1,222,528** new actions, **137** complete boot games
+and **23,060** completed restored segments. No training stage 2 or mission was
+logged. Its final Q/target/Adam state, complete compressed log and verified
+10,180-point full-run replay remain preserved, as does its separate 10,280-point
+calibration replay. The collector retains this historical source.
+
 The uniform control/focused pair subsequently completed rounds five and six.
 At **8,093,216**, mean scores were **10,236 / 10,180**; at **8,293,216**,
 **9,875 / 9,955**. Every game still lost in stage 1. Full checkpoint states,
@@ -5456,6 +5476,110 @@ passed. The initial diagnostic
 report is retained with its [exact source](results/defense/diagnostics/response-probe-source-v1.py);
 the linked second report additionally asserts restored native video equality
 before each branch. Neither version writes training examples.
+
+### Random survival diagnostic and lower-exploration practice
+
+A follow-up input audit found the expected keyboard mapping: emulator masks
+08/10/20/40 correspond to up/down/left/right, matching the original stage-one
+comparisons at 75E4. The original routine at AC0E reads keyboard row 3840
+before dispatch. This revealed no mapping mismatch and required no native,
+game or environment change; it does not establish that any particular route
+is feasible.
+
+The [isolated random-survival probe](results/defense/diagnostics/focused-random-survival-7493216.json)
+first reproduces all **2,568** actions of the focused run's verified replay.
+It then tests **256** random rollouts from each of **12** opaque states:
+256, 128 and 64 decisions before each visible loss. Each rollout ends at
+its first visible loss or at offset + 256 decisions. Actions use the existing
+fixed balanced distribution and power-law persistence up to 64 decisions,
+with epsilon 1. Common random sequences are used across anchors; neither
+screens nor branch outcomes choose a preferred action or sequence.
+
+All **3,072** rollouts lost the current life before the diagnostic horizon;
+none reached stage 2, and none outlasted the original loss time by more than
+32 decisions. At the 64-decision anchors, **59 / 16 / 56 / 7** rollouts,
+respectively, outlasted the original visible-loss time at all; maximum observed
+durations were **69 / 82 / 69 / 67** decisions. At 128 decisions, just one
+rollout lasted longer than the reference, by three decisions; at 256, none did.
+Random actions often lost earlier, especially from the earlier starts.
+
+This does **not** prove unavoidability: finite random sampling is not exhaustive,
+the anchors are selected replay states, and decision counts are neither exact
+collision times nor course positions. Actions can also change the amount of
+emulated work per decision. Only aggregate duration/censoring/stage counts are
+exported, not action sequences, scores, snapshots or trajectories. Nothing from
+these diagnostic rollouts enters the learner, its reset archive or ranking.
+
+This motivates a bounded lower-exploration check, not a claimed diagnosis or
+fix. [Its configuration](results/defense/training/restored-life-low-exploration-calibration-01/resume-config.json)
+returns to the **same original 6,962,144-action Q/target/Adam/RNG checkpoint**
+as the high-exploration focused calibration. Only nominal practice-worker
+epsilon changes from **.9 to .25**, aside from paths/provenance and an explicit
+`uniform` sampler default. Previously verified exact disabled-sampler parity
+covers the newer sampler code. Boot workers retain .05; own-loss lookback is
+64, probability is 1, and restored segments end at first visible loss.
+Eight workers, two protected boot workers, uniform action starts, persistence
+up to 64, gamma .997, five-step returns and all learner settings are unchanged.
+
+The check permits **131,072 new actions**, followed by ten ordinary complete
+uncapped boot games on the same reused validation seeds. It loads no diagnostic
+trajectories or evaluation snapshots. This tests whether retaining more learned
+behavior during focused practice is useful; earlier low-epsilon experiments
+used different reset/segment configurations and did not clear the barrier.
+The short check remains excluded from the best-replay collector.
+
+The check finished normally at **7,093,216**. Its
+[ten complete games](results/defense/training/restored-life-low-exploration-calibration-01/comparison.json)
+average **10,297**, median **10,310**, best **10,380**, versus high exploration's
+**10,214 / 10,375 / 10,460**. The +83 mean difference is driven by one +1,490
+recovery; the other nine paired scores decline by 10–200 points. All games
+remain stage-1 losses. This is not evidence of reliable improvement or a
+resolved navigation bottleneck.
+
+Full Q/target/Adam state and the complete log are preserved with the
+[2,509-action verified replay](results/defense/training/restored-life-low-exploration-calibration-01/replay/replay.html).
+The [loss windows](results/defense/diagnostics/low-exploration-calibration-losses-01/report.json)
+show life totals **[2600, 2580, 2580, 2620]**, still around the familiar barrier
+sequence, with some earlier failures. No physical collision timestamps or
+specific steering instructions are inferred from these panels.
+
+The [practice audit](results/defense/training/restored-life-low-exploration-calibration-01/audit.json)
+records **7,566** updates, **20** complete boot games, **1,342** completed
+restored segments, **1,037** first-loss cuts and **608** exact-64 archive events.
+Protected workers stayed boot-only. Completed restored initial lives account
+for **88,445** decisions, versus the high-exploration check's **89,015** across
+2,200 segments: fewer, longer segments, not proven obstacle passage.
+Exploration occupied **20,183 / 121,040** post-warmup decisions (**16.67%**
+across all workers), consistent with lower practice epsilon, the protected
+workers' .05 and cancellation at boundaries. All 20 actions were sampled.
+
+Full run **52** continues this checked calibration's optimizer with
+[unchanged settings](results/defense/training/dqn-52-low-exploration-focused/resume-config.json),
+unlimited training and evaluations every 200,000 actions. Historical focused
+run 50 supplies the same-action-count comparison; its own calibration and
+later random trajectories differ. The sole collector now retains all **48**
+full-trial sources, excluding short calibrations and every diagnostic branch.
+The stronger shared 10,480-point replay and model remain unchanged.
+
+Two diagnostic tests cover aggregate survival/censoring calculations, exact
+native replay reproduction, repeatability, source checks and absence of
+exported action sequences or training data. The
+[full 355-test suite](results/defense/diagnostics/survival-probe-regression-tests.txt)
+passed. No learner implementation, policy input, reward or original-game byte
+changed in this experiment.
+
+```sh
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-low-exploration-reproduction \
+  --artifacts runs/defense-low-exploration-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --envs 8 --eval-envs 8 \
+  --capacity 200000 --compact-replay --epsilon-final .25 \
+  --curriculum-boot-epsilon .05 --curriculum-probability 1 \
+  --curriculum-share --curriculum-boot-envs 2 --curriculum-lookback 64 \
+  --curriculum-trigger life-loss --curriculum-restored-life-only \
+  --spr-weight 0 --inverse-weight 0 --exploration-actions uniform
+```
 
 ### Quantile score-return experiment
 

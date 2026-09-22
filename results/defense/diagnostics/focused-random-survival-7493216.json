@@ -1,0 +1,300 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/dqn-50-restored-life-focused/replay-10460",
+  "source_hashes": {
+    "model.safetensors": "f7faa4e5acf6a8710b4c8d3dfbaa7d44294d590eabd697c55422efff270d029c",
+    "state.json": "049960b9cc614abafd0f2d9158286d7727427f72a26594aa507e90f8917f48f9",
+    "trace.npz": "90c377ebdee167f9191da898d324cd46d4d856ba55383c0e175eca090499adab",
+    "verification.json": "8cd9fa2aa6400c8d215043ef0e1dfe5905456c5d047de214ca31e01fd7d0874b"
+  },
+  "probe_source_sha256": "914b39db729aac61c311f5669540820b89c49e3c4cf912d939274af2dc0d6651",
+  "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+  "original_native_trajectory_reproduced": 2568,
+  "original_neural_verification_reused": true,
+  "diagnostic_only": true,
+  "random_seed": 104729,
+  "branches_per_anchor": 256,
+  "extra_decisions": 256,
+  "random_policy": {
+    "epsilon": 1.0,
+    "max_repeat": 64,
+    "exponent": 1.5,
+    "fixed_action_probabilities": [
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.08333333333333333,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.009259259259259259,
+      0.08333333333333333,
+      0.08333333333333333
+    ]
+  },
+  "anchors": [
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 256,
+      "decision": 148,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        17.0,
+        30.0,
+        41.0,
+        43.0,
+        114.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 128,
+      "decision": 276,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        31.0,
+        56.0,
+        59.0,
+        72.0,
+        131.0
+      ],
+      "alive_beyond_original_visible_loss": 1,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 64,
+      "decision": 340,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        16.0,
+        31.0,
+        49.5,
+        64.0,
+        69.0
+      ],
+      "alive_beyond_original_visible_loss": 59,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 256,
+      "decision": 861,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        29.0,
+        42.0,
+        48.0,
+        56.0,
+        112.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 128,
+      "decision": 989,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        44.0,
+        61.75,
+        72.0,
+        83.25,
+        127.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 64,
+      "decision": 1053,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        17.0,
+        31.0,
+        31.0,
+        33.0,
+        82.0
+      ],
+      "alive_beyond_original_visible_loss": 16,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 256,
+      "decision": 1597,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        16.0,
+        32.0,
+        41.5,
+        43.0,
+        200.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 128,
+      "decision": 1725,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        31.0,
+        54.75,
+        60.0,
+        72.0,
+        128.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 64,
+      "decision": 1789,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        16.0,
+        30.75,
+        49.5,
+        64.0,
+        69.0
+      ],
+      "alive_beyond_original_visible_loss": 56,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 256,
+      "decision": 2312,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        16.0,
+        28.0,
+        38.5,
+        44.0,
+        102.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 128,
+      "decision": 2440,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        33.0,
+        52.75,
+        58.0,
+        75.0,
+        123.0
+      ],
+      "alive_beyond_original_visible_loss": 0,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 64,
+      "decision": 2504,
+      "branches": 256,
+      "visible_losses": 256,
+      "horizon_censored": 0,
+      "observed_duration_quantiles": [
+        13.0,
+        19.0,
+        21.0,
+        22.0,
+        67.0
+      ],
+      "alive_beyond_original_visible_loss": 7,
+      "alive_beyond_original_plus_32": 0,
+      "alive_beyond_original_plus_128": 0,
+      "stage_2_or_higher": 0,
+      "stage_3": 0
+    }
+  ],
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "ranking_eligible": false,
+  "snapshots_decoded": false,
+  "chosen_action_or_route_output": false,
+  "limitations": [
+    "Selected own replay states, not all training resets or representative complete games.",
+    "Longer visible survival is not physical collision timing or measured course passage.",
+    "Actions can change emulated work per decision; decision duration is not course position.",
+    "Failure to survive under finite random sampling does not prove unavoidability.",
+    "Censored durations are lower bounds, not time-to-loss measurements.",
+    "Common random action sequences across anchors; no actions are selected based on outcomes.",
+    "No actions, scores, trajectories, snapshots or branch examples are exported to training."
+  ]
+}
