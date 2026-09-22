@@ -20,8 +20,9 @@ A bounded matched check of 5% versus 25% nominal persistent exploration
 finished without a new stage; the higher rate scored worse. Neither full
 run's settings changed.
 Bounded follow-ups combine persistent exploration with their own newly
-reached-state resets. Lookback 128 finished without a new stage; the matched
-lookback-32 trial is still running.
+reached-state resets. Both have finished without a new stage; the 32-action
+lookback improves the bounded comparison's mean and archive coverage, but
+does not solve the shared failure pattern.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -234,10 +235,10 @@ fresh-test seeds to tune the model.
   `runs/defense-persistent-rate-control-01/status.json` and
   `runs/defense-persistent-rate-high-01/status.json`, with adjacent logs.
   These short checks are excluded from the global collector.
-- Bounded persistent-exploration/own-reset follow-up:
+- Completed bounded persistent-exploration/own-reset follow-up:
   `runs/defense-persistent-reset-calibration-01/status.json` (lookback 128,
   finished) and `runs/defense-persistent-reset-short-calibration-01/status.json`
-  (lookback 32, running), with adjacent logs. Both sources are excluded from
+  (lookback 32, finished), with adjacent logs. Both sources are excluded from
   the global collector.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/` and `runs/defense-dqn-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
@@ -3151,7 +3152,7 @@ prove those states are unhelpful, but it cautions against claiming that this
 configuration provides near-failure practice. A second bounded arm,
 `defense-persistent-reset-short-calibration-01`, therefore starts from the same
 6,631,072 parent with identical settings except **lookback 32** and output
-paths. Its outcome is not yet known. Compare both actual archive coverage and
+paths. The intended comparison includes both actual archive coverage and
 complete from-boot evaluation against lookback 128 and the existing no-reset
 high-exploration comparator. Neither reset arm imports the other's experience.
 
@@ -3171,7 +3172,30 @@ without a later-stage event. Both reserved workers stayed boot-only. All
 save events reached at most **190** points of source within-life progress,
 while triggers reached 2,620. This confirms the earlier coverage limitation
 through the end of this check, without claiming score measures course distance.
-The shorter-lookback arm remains live; its outcome is still unproven.
+The shorter-lookback result follows below.
+
+The [32-action-lookback arm](results/defense/training/persistent-reset-short-calibration-01/comparison.json)
+also stopped normally at **6,762,144**. Its ten complete greedy games averaged
+**10,339**, median **10,340**, best **10,390**, all stage-1 losses. Relative to
+the no-reset high-exploration comparator this is **+224**, with all ten paired
+scores higher. Relative to lookback 128 it is **+186**, with seven higher and
+three tied. It is still **5 points below the common parent's mean**, with no
+stage-depth gain. This one sequential paired lineage on reused seeds suggests
+a useful setting to test further, not a demonstrated solution or fresh success
+rate. Full weights/target/optimizer/RNG, compressed logs and its independently
+verified [2,580-action replay](results/defense/training/persistent-reset-short-calibration-01/replay/replay.html)
+are preserved. No global replay was replaced.
+
+Training completed **54** new boot games and **30** restored segments, all
+stage 1. Both boot-only workers remained boot-only. All **1,723** archive
+events used exactly 32-action lookback; **191** retained save events reached
+source within-life progress **2,570**, versus the long-lookback arm's **190**.
+This establishes different saved-state coverage by visible score, not an
+obstacle coordinate, exact collision timing, or a count of current archive
+contents. The [read-only loss report](results/defense/diagnostics/shared-loss-persistent-reset-01/report.json)
+records best-replay life scores of **2,500 / 2,570 / 2,620 / 2,620** for lookback
+128 and **2,600 / 2,570 / 2,600 / 2,620** for lookback 32. These remain near the
+old score ceiling, with no verified barrier passage or stage transition.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
