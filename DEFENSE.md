@@ -8,8 +8,9 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **309-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are worker-split exploration (40), its uniform control
-(41), higher discount (42), and an isolated current-policy trace-cut calibration.
+Current experiments are worker-split exploration (40), higher discount (42),
+and an isolated current-policy trace-cut calibration. Uniform control 41 has
+retired after seven evaluation rounds without a later stage.
 Runs 33–39 have retired with full final state and logs preserved; the historical
 updates below record their earlier trajectories. None has reached stage 2.
 The trace-cut check changes training targets only, using the same own learned
@@ -3673,6 +3674,18 @@ allocation better retains scoring in these later rounds, but all **120**
 games across six paired rounds remain stage-1 losses. This is neither a new
 stage nor an independent test success rate. Earlier stronger checkpoints and
 verified replays remain preserved; live runs have not replaced the global best.
+
+The uniform control (41) later stopped cleanly at **8,572,656**, after
+**1,479,440** new actions, **738** complete boot games, **459** restored segments
+and **seven** complete ten-game evaluation rounds. Its last mean recovered to
+**7,228**, median **7,540**, best **8,300**, still below its calibration and
+earlier peak. Every logged training episode and validation game stayed in
+stage 1. The [retirement record](results/defense/training/dqn-41-worker-epsilon-control/retirement.json),
+complete compressed log, last evaluated checkpoint and final full optimizer
+checkpoint are preserved. The final post-update weights were not separately
+evaluated. This retires the depth-plateaued control without deleting its stronger
+first-round verified replay; the split arm continues. Compute is available to
+the trace-cut calibration, not a claim that trace cutting has succeeded.
 
 ### One-step target calibration under heavy exploration
 
