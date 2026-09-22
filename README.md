@@ -34,6 +34,9 @@ Defense PPO also supports optional learned screen-history memory through
 `--recurrent-hidden 128`: a residual GRU, sequence training and independently
 reset evaluation memory. This is experimental, not a verified stage clear;
 see [the recurrent experiment](DEFENSE.md#recurrent-screen-history-experiment).
+Its optional `--freeze-recurrent-base` trains only the memory and residual heads
+over an own learned, frozen policy; it requires compatible full-policy
+initialization and does not introduce a scripted controller or demonstrations.
 
 The committed screen-only model reached **level 5** in a complete validation
 game: [watch the 278-point replay](results/level5/replay.html). On **100 fresh

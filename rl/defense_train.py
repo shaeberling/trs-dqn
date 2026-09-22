@@ -48,6 +48,8 @@ def main():
     parser.add_argument("--sequence-length", type=int, default=32)
     parser.add_argument("--memory-scale", type=float, default=1.,
                         help="recurrent residual scale; 0 is a matched memory-disabled control")
+    parser.add_argument("--freeze-recurrent-base", action=argparse.BooleanOptionalAction, default=False,
+                        help="train only recurrent residuals over an own initialized, frozen PPO base")
     parser.add_argument("--policy-bias-noise", type=float, default=0,
                         help="training-only actor bias noise std, fixed per life; 0 disables")
     parser.add_argument("--policy-weight-noise", type=float, default=0,
@@ -111,6 +113,8 @@ def main():
         if (args.recurrent_hidden != config.get('recurrent_hidden', 0)
                 or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else None)):
             parser.error("Changing recurrent architecture requires initialization, not an optimizer resume")
+        if args.freeze_recurrent_base != config.get('freeze_recurrent_base', False):
+            parser.error("Changing frozen parameters requires fresh initialization, not an optimizer resume")
         if not (args.resume/"optimizer.npz").exists():
             parser.error("Resume requires an original learner checkpoint with optimizer state")
     if min(args.envs, args.rollout, args.batch_size, args.epochs, args.eval_every,
@@ -126,6 +130,9 @@ def main():
             or (args.recurrent_hidden and (args.initialize_encoder or args.sil_updates
                                           or args.policy_bias_noise or args.policy_weight_noise))):
         parser.error("invalid recurrent configuration, sequence sizes or unsupported SIL/noise/encoder-only mode")
+    if args.freeze_recurrent_base and (not args.recurrent_hidden or args.memory_scale == 0
+                                      or not (args.initialize_policy or args.resume)):
+        parser.error("frozen recurrent base requires own full-policy initialization and enabled memory")
     if min(args.steps, args.max_episode_steps, args.eval_max_steps, args.mlx_cache_mb) < 0:
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
@@ -168,7 +175,8 @@ def main():
         from .defense_recurrent import RecurrentPPO
         from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
         agent_class = RecurrentPPO
-        extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale)
+        extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale,
+                          freeze_base=args.freeze_recurrent_base)
     agent = agent_class(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
                         action_count=len(action_names(args.allow_enter)),
                         value_coefficient=args.value_coefficient, **extra_agent)
@@ -251,6 +259,8 @@ def main():
                       memory_reset='zero at boot/actual environment reset, not visible life loss; cleared on resume',
                       recurrent_training='contiguous within-worker truncated BPTT; rollout initial states detached',
                       resume_semantics='optimizer and policy RNG restored; episodes and neural memory restart from boot')
+        if args.freeze_recurrent_base:
+            config['frozen_parameter_scope'] = 'base CNN, feature layer, actor and value heads; memory and residual heads trainable'
     if initialization is not None:
         config.update(initialization=initialization,
                       initialization_source_sha256=sha256(Path(__file__).with_name("defense_initialization.py")))

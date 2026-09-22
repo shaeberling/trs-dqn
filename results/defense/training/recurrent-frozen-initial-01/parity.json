@@ -1,0 +1,22 @@
+{
+  "reference_initializer": "results/defense/training/recurrent-initial-01/checkpoint",
+  "model_sha256": "c94cc341da40dc91d043b7aacc8da5a22eaafd700eb98e85a2911397904814e5",
+  "model_bytes_identical": true,
+  "policy_rng_identical": true,
+  "inference_config_fields_equal": [
+    "action_names",
+    "tstates",
+    "observation_stride",
+    "architecture",
+    "recurrent_hidden",
+    "memory_scale",
+    "eval_seed"
+  ],
+  "frozen_optimizer_array_count": 18,
+  "unfrozen_optimizer_array_count": 42,
+  "retained_optimizer_arrays_exact": true,
+  "base_optimizer_slots_absent": true,
+  "training_actions": 0,
+  "parent_training_actions": 10447616,
+  "evaluation": "No new evaluation claimed; exact model and inference-setting identity with the previously verified initializer"
+}

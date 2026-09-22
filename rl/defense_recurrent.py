@@ -53,13 +53,19 @@ class ResidualRecurrentNetwork(nn.Module):
 
 class RecurrentPPO(PPO):
     def __init__(self, seed=41, learning_rate=2.5e-4, entropy=.002, action_count=20,
-                 value_coefficient=.5, hidden_size=128, memory_scale=1.):
+                 value_coefficient=.5, hidden_size=128, memory_scale=1., freeze_base=False):
         if (isinstance(value_coefficient, (bool, np.bool_))
                 or not np.isfinite(value_coefficient) or value_coefficient < 0):
             raise ValueError("value coefficient must be finite and nonnegative")
+        if not isinstance(freeze_base, bool):
+            raise ValueError("freeze_base must be boolean")
         _load_backend()  # inherited save() uses the ordinary PPO backend globals.
         mx.random.seed(seed)
         self.model = ResidualRecurrentNetwork(action_count, hidden_size, memory_scale)
+        if freeze_base:
+            # Freeze before creating Adam: no base gradients or optimizer slots.
+            # parameters()/save_weights() still preserve the complete base.
+            self.model.base.freeze()
         self.optimizer = optim.Adam(learning_rate, eps=1e-5)
         self.optimizer.init(self.model.trainable_parameters())
         self.entropy, self.value_coefficient = entropy, value_coefficient
