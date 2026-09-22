@@ -1,0 +1,17 @@
+{
+  "run": "runs/defense-dqn-39-long-lookback",
+  "through_steps": 6874360,
+  "archive_events": 1314,
+  "retained_events": 133,
+  "all_lookbacks": [
+    128
+  ],
+  "all_offsets_exact": true,
+  "completed_boot_games": 43,
+  "completed_restored_segments": 32,
+  "reserved_workers_boot_only": true,
+  "all_completed_episodes_stage_one": true,
+  "maximum_retained_source_life_score": 210,
+  "maximum_trigger_life_score": 2640,
+  "limitation": "Live log-prefix audit, not a frozen policy evaluation or direct inspection of native archive contents. Score does not establish course position or collision timing."
+}

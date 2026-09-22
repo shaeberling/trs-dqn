@@ -1,0 +1,109 @@
+{
+  "run": "runs/defense-dqn-35-screen-archive",
+  "stopped": {
+    "wall_seconds": 4514.13,
+    "event": "stopped",
+    "steps": 8451456,
+    "stop_requested": true
+  },
+  "final_checkpoint": "results/defense/training/dqn-35-screen-archive/final-checkpoint-000008451456",
+  "final_checkpoint_evaluated": false,
+  "final_file_hashes": {
+    "model.safetensors": "19bbcc62349c4ba4cc83f0ef226e0ca3a2b963f8f181d6f54fca1010027e394a",
+    "state.json": "90932a1af521e45b93d782f5ee668a5a8cc7fb80715eedeeb3c24fcaa3221f66",
+    "target.safetensors": "69b7adc6f4da766446cf63c5687045ca2a6207707c8b2e176028bef80b5f5561",
+    "optimizer.npz": "f65bc92e7c44cd500bd26939421d77403ffc69a2fe0cd67e2afb970d6d21603d"
+  },
+  "new_actions": 1358240,
+  "new_boot_games": 534,
+  "new_restored_segments": 336,
+  "all_logged_episodes_stage_one": true,
+  "validation_curve": [
+    {
+      "wall_seconds": 670.44,
+      "event": "validation",
+      "steps": 7293216,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10198.0,
+      "median_score": 10210.0,
+      "best_score": 10280,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 1387.84,
+      "event": "validation",
+      "steps": 7493216,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 9836.0,
+      "median_score": 9800.0,
+      "best_score": 9920,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 1939.94,
+      "event": "validation",
+      "steps": 7693216,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10085.0,
+      "median_score": 10120.0,
+      "best_score": 10220,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 2529.03,
+      "event": "validation",
+      "steps": 7893216,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10232.0,
+      "median_score": 10270.0,
+      "best_score": 10280,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 3240.56,
+      "event": "validation",
+      "steps": 8093216,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 9878.0,
+      "median_score": 9900.0,
+      "best_score": 9920,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    },
+    {
+      "wall_seconds": 3962.16,
+      "event": "validation",
+      "steps": 8293216,
+      "complete_games": 10,
+      "incomplete_games": 0,
+      "mean_score": 10206.0,
+      "median_score": 10200.0,
+      "best_score": 10220,
+      "highest_stage": 1,
+      "mission_games": 0,
+      "stage_2_games": 0,
+      "stage_3_games": 0
+    }
+  ],
+  "complete_log_sha256": "93334024593c243048ecf4c8d2de1a2f1cb8afced6d74806cc4990d548685436",
+  "reason": "Six full rounds without a later stage or mission. Screen selection trailed score selection in four of six matched rounds. Preserve all state and reassign this slot to a longer trial of the earlier lookback-128 calibration; not a wall-clock limit."
+}
