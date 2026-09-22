@@ -1,0 +1,86 @@
+{
+  "new_base_actions": 131072,
+  "updates": 7568,
+  "boot_games": 24,
+  "restored_segments": 1748,
+  "restored_initial_life_actions": 88985,
+  "archive_events": 546,
+  "all_offsets_correct": true,
+  "protected_workers_boot_only": true,
+  "highest_logged_training_stage": 1,
+  "logged_training_missions": 0,
+  "option_starts_by_duration": [
+    131072
+  ],
+  "base_actions_by_duration": [
+    131072
+  ],
+  "option_stats": {
+    "option_starts": [
+      6464,
+      5733,
+      5168,
+      5632,
+      6703,
+      5916,
+      8624,
+      11081,
+      9486,
+      5675,
+      5912,
+      7239,
+      5312,
+      8113,
+      5801,
+      5226,
+      4821,
+      6409,
+      5912,
+      5845
+    ],
+    "base_actions": [
+      6464,
+      5733,
+      5168,
+      5632,
+      6703,
+      5916,
+      8624,
+      11081,
+      9486,
+      5675,
+      5912,
+      7239,
+      5312,
+      8113,
+      5801,
+      5226,
+      4821,
+      6409,
+      5912,
+      5845
+    ],
+    "cancelled_steps": 0,
+    "decisions": 131072,
+    "executed_base_actions": 131072
+  },
+  "completed_options": 131072,
+  "interrupted_options": 0,
+  "pending_requested_steps": 0,
+  "verified_base_actions": 1770,
+  "checkpoint_hashes": {
+    "model.safetensors": "5e30ff3bf49a96f2f928a1368115b9b55a932508d23769bb1ebbfdeec7e5735f",
+    "state.json": "570ce23fc246a0fcd1a7476aff06b609f18fc48bb4a92313421cc46dc5aa3c2a",
+    "target.safetensors": "78f0ca5f19cd99866fcc090c159108ce42caff09cd18f7922b1638a2f54605d8",
+    "optimizer.npz": "a60fe4ff1129657f88aed529b5eae6411f7e05d33619f496288e8d5776bbcf4f",
+    "evaluation.json": "fa2db4bf468f735f27da09a40a2ffe7b80eec59988d68c7d46754b617aa63127"
+  },
+  "complete_log_sha256": "70ebf843a2cdda91924f8d0658e819ccdf9ff991608394c292244f85c92843ae",
+  "normal_stop": {
+    "wall_seconds": 249.4,
+    "event": "stopped",
+    "steps": 131072,
+    "stop_requested": false
+  },
+  "limitations": "Base-action budgets matched; option-start epsilon is not equal realized exploratory time. Own reset histories differ. No diagnostic traces used."
+}

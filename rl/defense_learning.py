@@ -32,6 +32,7 @@ def sha256(path):
 DQN_ALGORITHM = "dueling-double-dqn-per-nstep"
 BOOTSTRAP_ALGORITHM = "bootstrapped-dueling-double-dqn-prior-per-nstep"
 QUANTILE_ALGORITHM = "quantile-dueling-double-dqn-per-nstep"
+REPEAT_ALGORITHM = "joint-action-duration-dueling-double-dqn-per"
 
 
 def policy_description(config, temperature=1.0, *, quantile_power=None):
@@ -50,6 +51,12 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
                 "learned recurrent categorical, temperature-scaled; screen-history memory")
     if config.get('recurrent_hidden', 0):
         raise ValueError("Missing recurrent policy architecture")
+    if algorithm == REPEAT_ALGORITHM:
+        from .defense_repeat import validate_spec
+        validate_spec(len(action_names(config.get('allow_enter', False))), config.get('learned_repeats', ()))
+        if not config.get('life_terminal'):
+            raise ValueError('learned repeats require the declared life-boundary protocol')
+        return "learned joint action-duration Q-values, greedy; holds end at visible life boundaries"
     if algorithm == DQN_ALGORITHM:
         return "learned Q-values, greedy"
     if algorithm == BOOTSTRAP_ALGORITHM:
@@ -129,7 +136,9 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
             logits, _, updated = predict(mx.array(obs), mx.array(hidden))
             return np.array(logits), np.array(updated)
         return RecurrentPolicy(infer, config['recurrent_hidden'], temperature=temperature), config
-    if config.get("algorithm") == BOOTSTRAP_ALGORITHM:
+    if config.get("algorithm") == REPEAT_ALGORITHM:
+        model = QNetwork(action_count=len(names) * len(config['learned_repeats']))
+    elif config.get("algorithm") == BOOTSTRAP_ALGORITHM:
         from .defense_bootstrap import BootstrapQ
         model = BootstrapQ(len(names), config["bootstrap_heads"], config["bootstrap_prior_scale"])
     elif config.get("algorithm") == QUANTILE_ALGORITHM:
@@ -139,6 +148,13 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         model = QNetwork(action_count=len(names))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
+    if config.get("algorithm") == REPEAT_ALGORITHM:
+        if temperature != 1:
+            raise ValueError('temperature overrides do not apply to learned greedy durations')
+        from .defense_repeat import LearnedRepeatPolicy
+        predict = mx.compile(model, inputs=model.state)
+        return LearnedRepeatPolicy(lambda obs: np.array(predict(mx.array(obs))),
+                                   len(names), config['learned_repeats']), config
     if config.get("algorithm") in (DQN_ALGORITHM, BOOTSTRAP_ALGORITHM, QUANTILE_ALGORITHM):
         if temperature != 1:
             raise ValueError("Temperature overrides do not apply to a greedy DQN policy")
@@ -177,6 +193,9 @@ def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
             obs = np.stack([active[i][1] for i in indices])
             actions = policy.sample_with_rngs(obs, [rngs[j] for j in jobs])
             results = workers.step(actions, indices=indices)
+            if hasattr(policy, 'observe_boundaries'):
+                policy.observe_boundaries(np.asarray([t or u or info['life_lost']
+                    for _, _, t, u, info, _ in results], dtype=bool), [rngs[j] for j in jobs])
             for worker, job, result in zip(indices, jobs, results, strict=True):
                 obs, _, terminal, truncated, info, _ = result
                 if terminal or truncated:
@@ -211,6 +230,8 @@ def record_game(policy, seed, *, tstates, max_steps, should_stop=lambda: False, 
                 raise InterruptedError("Recording interrupted; previous best remains intact")
             action = int(policy(obs[None])[0])
             obs, reward, done, truncated, info = env.step(action)
+            if hasattr(policy, 'observe_boundaries'):
+                policy.observe_boundaries(np.asarray([done or truncated or info['life_lost']], dtype=bool))
             frames.append(obs[-1])
             actions.append(action)
             rewards.append(reward)

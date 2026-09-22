@@ -1,0 +1,12 @@
+{
+  "before": "runs/defense-repeat-default-before",
+  "after": "runs/defense-repeat-default-after",
+  "new_base_actions": 4096,
+  "model_sha256": "076f0478fdfabd073d9d0bcfd463c9cb50d90777e5e3ada07fa46e04d49e2871",
+  "target_sha256": "352a4c88fc30795bea19b8d438d9fb51dbdc6b5e371f0a415c4771963c797538",
+  "optimizer_arrays_equal": 26,
+  "all_nonconfiguration_state_equal": true,
+  "equal_game_and_archive_events": 67,
+  "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+  "limits": "Disabled-feature deterministic short run, not a learned-duration performance result."
+}
