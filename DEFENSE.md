@@ -20,7 +20,8 @@ A bounded matched check of 5% versus 25% nominal persistent exploration
 finished without a new stage; the higher rate scored worse. Neither full
 run's settings changed.
 Bounded follow-ups combine persistent exploration with their own newly
-reached-state resets and compare two archive lookbacks; evaluations are pending.
+reached-state resets. Lookback 128 finished without a new stage; the matched
+lookback-32 trial is still running.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -234,9 +235,10 @@ fresh-test seeds to tune the model.
   `runs/defense-persistent-rate-high-01/status.json`, with adjacent logs.
   These short checks are excluded from the global collector.
 - Bounded persistent-exploration/own-reset follow-up:
-  `runs/defense-persistent-reset-calibration-01/status.json` (lookback 128) and
-  `runs/defense-persistent-reset-short-calibration-01/status.json` (lookback 32),
-  with adjacent logs. Both sources are excluded from the global collector.
+  `runs/defense-persistent-reset-calibration-01/status.json` (lookback 128,
+  finished) and `runs/defense-persistent-reset-short-calibration-01/status.json`
+  (lookback 32, running), with adjacent logs. Both sources are excluded from
+  the global collector.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/` and `runs/defense-dqn-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -3152,6 +3154,24 @@ configuration provides near-failure practice. A second bounded arm,
 paths. Its outcome is not yet known. Compare both actual archive coverage and
 complete from-boot evaluation against lookback 128 and the existing no-reset
 high-exploration comparator. Neither reset arm imports the other's experience.
+
+The [lookback-128 trial has finished](results/defense/training/persistent-reset-calibration-01/comparison.json)
+at **6,762,144**, with ten complete greedy games averaging **10,153**, median
+**10,130**, best **10,310**, all stage-1 losses. That is **+38** over the
+no-reset comparator's 10,115, with six higher and four lower paired scores,
+and remains below the common parent's 10,344. Its best
+[2,596-action replay](results/defense/training/persistent-reset-calibration-01/replay/replay.html)
+was independently reproduced from frozen weights; full online/target/optimizer/
+RNG state and complete compressed logs are preserved. It stopped normally at
+the declared budget and is not promoted to an unlimited run.
+
+Training completed **50** new boot games and **39** restored segments, all
+without a later-stage event. Both reserved workers stayed boot-only. All
+**1,639** archive events had exactly 128-action lookback; the **127** retained
+save events reached at most **190** points of source within-life progress,
+while triggers reached 2,620. This confirms the earlier coverage limitation
+through the end of this check, without claiming score measures course distance.
+The shorter-lookback arm remains live; its outcome is still unproven.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
