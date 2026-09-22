@@ -9,7 +9,10 @@ Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **337-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Current experiments are full visual prediction (45), inverse-action
-classification (46), and a controlled own-loss-triggered reset calibration.
+classification (46), and the matched 64-action score-triggered / own-loss-triggered
+reset continuations (47/48). The own-loss calibration completed below its
+score-triggered control, with no stage passage; the longer pair tests adaptation,
+not a demonstrated advantage.
 Trace cutting (43) and longer persistence (44) retired
 after six stage-1-only rounds each;
 higher discount (42) retired after seven. Visual prediction's calibration improved mean score
@@ -4858,16 +4861,16 @@ offset own-loss archive events with boot workers protected. Its measured MLX
 peak was **289,622,052 bytes**; it exited normally. This verifies execution,
 not improved gameplay.
 
-The [running controlled calibration](results/defense/training/loss-trigger-split-calibration-01/resume-config.json)
-starts from original DQN 33 at **6,962,144**,
+The [controlled calibration](results/defense/training/loss-trigger-split-calibration-01/resume-config.json)
+started from original DQN 33 at **6,962,144**,
 not the smoke or either auxiliary learner. It uses the same settings as the
 completed intermediate-rewind check: 64-action lookback, gamma .997, five-step
 returns, hold cap 64, split epsilon .05/.9, eight workers, reset probability .5,
 score cells 16×4 and no auxiliary losses. The [configuration audit](results/defense/training/loss-trigger-split-calibration-01/design.json)
 confirms that only the trigger changes, apart from paths and source provenance. Compare
 131,072 new actions and ten complete uncapped boot games on the reused seeds;
-judge actual stage passage separately from mean score. It is excluded from
-the shared best collector until a full trial is warranted.
+judge actual stage passage separately from mean score. The short calibration
+is excluded from the shared best collector.
 
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
@@ -4877,6 +4880,65 @@ venv/bin/python -u -m rl.defense_dqn \
   --steps 7093216 --eval-every 131072 --epsilon-final .9 \
   --curriculum-boot-epsilon .05 --curriculum-lookback 64 \
   --curriculum-trigger life-loss --spr-weight 0 --inverse-weight 0
+```
+
+The calibration exited normally at **7,093,216**. Its
+[ten complete games](results/defense/training/loss-trigger-split-calibration-01/checkpoint/evaluation.json)
+averaged **10,198**, median **10,180**, best **10,260**, all stage-1 losses.
+The [paired comparison](results/defense/training/loss-trigger-split-calibration-01/comparison.json)
+is **−200** relative to the 64-action progress-triggered control's 10,398;
+all ten paired scores fell. This is a negative short result, not a navigation
+improvement. The complete online/target/Adam state, full compressed log and
+[2,493-action independently verified replay](results/defense/training/loss-trigger-split-calibration-01/replay/replay.html)
+are preserved with checked hashes. The
+[loss panels](results/defense/diagnostics/shared-loss-trigger-calibration-01/policy-1-losses.png)
+show the recurring right-opening sequence and an earlier centre-opening loss;
+life scores are **2,570 / 2,570 / 2,550 / 2,570**. Exact physical collision causes
+remain unproven.
+
+The [audit](results/defense/training/loss-trigger-split-calibration-01/audit.json)
+records **7,566** updates, **61** boot games, **31** completed restored segments,
+and **306** actual own-loss archive events. All offsets and life-age differences
+are exactly 64, source lives precede the observed decrement, and reserved boot
+workers remain protected. No logged training episode reached a later stage.
+Every completed restored segment joins to a preceding same-run archive event
+with matching starting score/stage; **24/31** sources came from boot-only workers.
+Source progress reaches **1,100**, compared with the control archive's maximum
+330. This confirms changed sampling, not a correct route or improved gameplay.
+The [two-arm selected-reset report](results/defense/diagnostics/selected-reset-origins-mid64-vs-loss64.json)
+preserves the actual selections and complete-log provenance, rather than
+inferring reuse from archive occupancy.
+
+Full **DQN 47** [continues the progress-triggered control](results/defense/training/dqn-47-mid-lookback-control/resume-config.json),
+and **DQN 48** [continues the own-loss arm](results/defense/training/dqn-48-loss-trigger/resume-config.json),
+each from its own exact calibrated optimizer at **7,093,216**, with unlimited
+learning and evaluations every 200,000 actions. Their
+[paired design](results/defense/training/dqn-48-loss-trigger/paired-design.json)
+keeps all learning settings equal except the trigger and its semantics; paths
+and their separately learned parent states differ. Own archives/replay refill
+from new experience on resume. A negative short score comparison does not prove
+that further exposure cannot help, but neither is continuation evidence that it
+will. Both runs must be judged by actual boot-game stage/mission reach, with
+matched action-count comparisons and the stronger global best preserved.
+
+The previous collector exited cleanly before its replacement started. The sole
+[collector now watches 44 full-trial sources](results/defense/training/dqn-48-loss-trigger/collector-config.json),
+including 47/48 and every prior source, while excluding short calibrations.
+Shared-best promotion still requires independent native replay verification.
+The existing 10,480-point best remains unchanged.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-mid-lookback-full-reproduction \
+  --artifacts runs/defense-mid-lookback-full-reproduction/artifacts \
+  --resume results/defense/training/mid-lookback-split-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
+
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-loss-trigger-full-reproduction \
+  --artifacts runs/defense-loss-trigger-full-reproduction/artifacts \
+  --resume results/defense/training/loss-trigger-split-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Quantile score-return experiment
