@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **409-test** suite passes, including
+(23 GiB available at restart). The full **414-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
@@ -62,7 +62,7 @@ regressed to mean 110. A subsequent [matched four-step latent regularizer](resul
 also failed to improve loss forecasts or play; final control/regularized actor
 means are 120 / 112, all stage 1. Both complete states, all intermediate
 checkpoints and verified local bests are retained. The global collector now
-watches 65 sources and still preserves the stronger 10,480-point replay.
+watches 67 sources and still preserves the stronger 10,480-point replay.
 A [frozen text-reconstruction diagnostic](results/defense/diagnostics/world-text-reconstruction-01/README.md)
 finds weak reconstruction of changed visible text even when observing the
 arrival screen. It includes tolerance and star/space checks to avoid equating
@@ -86,6 +86,14 @@ complete validation games use reused seeds, not fresh success estimates. Both
 1,628-command local best replays and every intermediate state are preserved.
 Six new readout/head tests pass after the full 409-test suite; the last
 head-only test was added afterward. Further head-only fitting is retired.
+A [matched direct-prior-output experiment](results/defense/training/world-prior-output-01/README.md)
+adds optional supervision of the next screen, score change and continuation
+without observing the arrival screen. It improves some broad graphics errors
+but not 24-step changed-object error or useful loss anticipation. Continued
+actor means finish at 120 control / 110 treatment, with all 60 games still
+stage-1 losses. Full states, logs and both verified 340-point local replays
+are preserved. The default objective remains parameter-exact in a real-data
+parity check, and the full 414-test suite passes.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.

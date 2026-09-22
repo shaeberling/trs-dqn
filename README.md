@@ -51,6 +51,10 @@ A subsequent [life-loss head-only continuation](results/defense/training/world-l
 improves recognition but not gameplay; a longer fit worsens held-out one-step
 prediction. Both learned actor comparisons remain in stage 1, with full states
 and verified local replays preserved.
+A [direct-prior-output comparison](results/defense/training/world-prior-output-01/README.md)
+trains next-screen/score/continuation predictions without arrival-screen input.
+It improves some visual errors but not gameplay; both actors still lose in
+stage 1. This auxiliary objective is opt-in and keeps the original rewards.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
