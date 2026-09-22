@@ -30,8 +30,8 @@ displacement, and firing with an arrow suppresses movement in stage 1.
 
 ## Consequence for training
 
-Repeated near-ceiling scores are not evidence of passage. The pending SPR
-calibration tests whether an auxiliary task predicting the learner's own future
+Repeated near-ceiling scores are not evidence of passage. The SPR
+experiment tests whether an auxiliary task predicting the learner's own future
 visual features helps the shared encoder learn temporal information. It does
 not establish that representation learning is the cause or the remedy.
 Its score reward, screen-only acting inputs and ordinary greedy evaluation are
@@ -42,3 +42,21 @@ Judge it using complete boot games, independently verified replay, actual
 stage reach, and comparable failure windows. Preserve the stronger existing
 best regardless of its outcome. No hand-coded route, steering override,
 collision label, extra reward, or demonstration follows from this review.
+
+## Follow-up evidence
+
+The SPR calibration and first two full evaluations still lost in stage 1.
+An inverse-action auxiliary trial also remains in stage 1; neither has yet
+demonstrated that its representation task fixes the bottleneck.
+
+The [actual selected-reset audit](../selected-reset-origins-45-46.json) found
+that completed restored segments came from low per-life-score approach states.
+These snapshots are rewound from score-bin events, **not from collisions**.
+That motivated a controlled 64-action versus 128-action rewind comparison.
+
+The shorter rewind's ten-game mean improved to 10,398 from 9,466, mainly by
+recovering two weak baseline games. All ten still lost in stage 1. Its
+[new screen panels](../shared-loss-mid-lookback-01/policy-1-losses.png) repeat
+the familiar barrier sequence; life totals are 2,620 / 2,620 / 2,580 / 2,620.
+This is improved score consistency on reused evaluation seeds, not evidence
+of successful navigation. The verified global best remains preserved.

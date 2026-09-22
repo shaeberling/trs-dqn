@@ -1,0 +1,44 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions_each": 131072,
+  "baseline": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-mid-lookback-split-calibration-01/artifacts"
+    ],
+    "trainer_source_sha256": [
+      "fc24d70b63ce17d27fa82767a71b0e87cbd4783febe259d60eff6559acb3a0eb",
+      "529bd7608a1a6aa0b6006d69791af8d4d9cda85b0405ae2ec2d327eb19f2213c"
+    ],
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-mid-lookback-split-calibration-01"
+    ],
+    "inverse_weight": [
+      null,
+      0.0
+    ],
+    "curriculum_lookback": [
+      128,
+      64
+    ],
+    "greedy_trace_cut": [
+      null,
+      false
+    ],
+    "spr_weight": [
+      null,
+      0.0
+    ]
+  },
+  "unchanged_acting_model_environment_replay_exploration_archive_hashes": true,
+  "motivation": "Selected restored states remain low per-life score under fixed rewind 128. Test intermediate rewind 64, not collision labels or a supplied route.",
+  "parity_report": "results/defense/diagnostics/inverse-default-parity.json",
+  "limitations": [
+    "Historical same-parent comparison with reused complete uncapped boot seeds 10000..10009.",
+    "No SPR or inverse auxiliary loss, trace cuts, higher discount or longer exploration holds.",
+    "PPO has previously used rewind 64; this is a controlled scalar-DQN worker-split comparison, not the first-ever use of 64.",
+    "Short calibration excluded from global collector; native snapshots remain actual opaque own states."
+  ]
+}

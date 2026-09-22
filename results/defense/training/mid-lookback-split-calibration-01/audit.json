@@ -1,0 +1,27 @@
+{
+  "stopped": {
+    "wall_seconds": 385.16,
+    "event": "stopped",
+    "steps": 7093216,
+    "stop_requested": false
+  },
+  "checkpoint_hashes": {
+    "model.safetensors": "80e03410e5b3951946d31af86bd2fe5660f725857c6f5a2df9433c33d83e399f",
+    "state.json": "d29ff0c5d6baffd613c118fda40a3b308082042e251b9a5bcbc045c53fb5b021",
+    "target.safetensors": "795163f5d25ef5f17cdb5507e791a2f811a695dcd7376acb10d262f2dea52762",
+    "optimizer.npz": "ec684a9eeed5027898a4ad742b700bf4fdd22de3c0626bae9bba14fcb3773620",
+    "evaluation.json": "4225709ca17ad763ca979d7d43f0058f0f32de52f7ea6fe8653af6f1b0a7dedc"
+  },
+  "complete_log_sha256": "636433dfcf12402adc5972b2a02f4fdab0a9a9a5a8030fc4acae8dd9c6fec049",
+  "new_actions": 131072,
+  "new_updates": 7566,
+  "new_boot_games": 55,
+  "new_restored_segments": 34,
+  "archive_events": 1409,
+  "all_archive_offsets_64": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true,
+  "maximum_archive_source_progress": 330,
+  "maximum_archive_trigger_progress": 2620,
+  "verified_actions": 2502
+}

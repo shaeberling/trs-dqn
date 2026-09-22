@@ -1,0 +1,29 @@
+{
+  "steps": 7293216,
+  "new_actions": 200000,
+  "new_updates": 11874,
+  "new_boot_games": 95,
+  "new_restored_segments": 70,
+  "archive_events": 1903,
+  "all_archive_offsets_128": true,
+  "reserved_workers_boot_only": true,
+  "all_logged_episodes_stage_one": true,
+  "inverse": {
+    "local_updates": 11874,
+    "own_pairs": 759936,
+    "weight": 0.01,
+    "last_weighted_cross_entropy": 0.5569259524345398,
+    "last_sampled_accuracy": 0.109375
+  },
+  "full_checkpoint_hashes": {
+    "model.safetensors": "eb221c0db99941cc573b083050491db7cdff01e659e86bb18a4d581d95e1eb99",
+    "state.json": "5f35ac5da31e610102bcdcb94974ddfd018cb654df009b093406524012c569e8",
+    "inverse-head.safetensors": "f443a328d08b2df94f973e7c30b859d527a0d8a025dc67fd67875018e10d128b",
+    "target.safetensors": "0f2cb2a8ff63f95a940374d1d74e172c936e8c444a84e3688083b49de54d3f6c",
+    "inverse-optimizer.npz": "eac2a380b3d2ea06c5bd41998e83f90611bb87cfc25d781c6f4fc0ed24deecc3",
+    "optimizer.npz": "bd7c6c2a2ad72e90a97b31de84a974ed909061877730f4e66fed215c6d2cd3a8",
+    "evaluation.json": "1a207be8ec580f03bc53a94abad87271f9eb90e2fd5c133732d00eb087654839"
+  },
+  "log_prefix_sha256": "ac24c909b290e464f8f0374d9e908795e12f787565252fa115091d2a24b87bf8",
+  "verified_replay_actions": 2455
+}
