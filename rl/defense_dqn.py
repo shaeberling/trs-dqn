@@ -58,6 +58,8 @@ def main():
                         help="1 preserves ordinary epsilon-greedy; >1 enables training-only action persistence")
     parser.add_argument("--exploration-exponent", type=float, default=1.5,
                         help="bounded power-law duration exponent; must exceed one")
+    parser.add_argument("--exploration-actions", choices=("uniform", "stage1-balanced"), default="uniform",
+                        help="fixed training-only random-action distribution; greedy evaluation stays unchanged")
     parser.add_argument("--bootstrap-heads", type=int, default=0,
                         help="0 = ordinary DQN; at least 2 = per-game value-head exploration")
     parser.add_argument("--bootstrap-probability", type=float, default=.5)
@@ -166,6 +168,10 @@ def main():
     if args.bootstrap_heads and args.curriculum_probability:
         parser.error("own-state resets currently support ordinary DQN only")
     from .persistent_exploration import duration_distribution, worker_epsilons
+    from .defense_exploration_actions import action_probabilities
+    if args.exploration_actions != "uniform" and (args.exploration_max_repeat <= 1 or args.allow_enter):
+        parser.error("balanced exploration requires persistent exploration and the standard 20 actions")
+    exploration_action_probabilities = action_probabilities(args.exploration_actions, len(action_names(args.allow_enter)))
     try:
         duration_distribution(args.exploration_max_repeat, args.exploration_exponent)
     except ValueError as error:
@@ -284,7 +290,7 @@ def main():
             exploration_rng.bit_generator.state = prior["persistent_exploration_rng"]
         persistent = PersistentExploration(args.envs, len(action_names(args.allow_enter)),
                                           args.exploration_max_repeat, args.exploration_exponent,
-                                          exploration_rng)
+                                          exploration_rng, exploration_action_probabilities)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
     config.update(game="defense", algorithm=(BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
                                             QUANTILE_ALGORITHM if args.quantiles else DQN_ALGORITHM),
@@ -365,6 +371,14 @@ def main():
                       exploration_warmup="unchanged independent uniform actions until replay warmup",
                       exploration_reset="cancel on visible ship loss, termination or truncation; no screen-triggered starts",
                       exploration_resume="restore separate RNG; active holds and local counters clear with new boot episodes")
+    if exploration_action_probabilities is not None:
+        config.update(training_policy="learned Q-values with training-only persistent fixed-distribution random exploration",
+                      exploration_action_probabilities=exploration_action_probabilities.tolist(),
+                      exploration_actions_source_sha256=sha256(Path(__file__).with_name("defense_exploration_actions.py")),
+                      exploration_actions_semantics=(
+                          "equal mass for twelve stage-1 command groups; forward-fire aliases share one group; "
+                          "fixed across all screens/stages; all twenty actions remain possible; "
+                          "warmup and greedy evaluation unchanged; not a route or state-conditioned rule"))
     if args.curriculum_boot_epsilon is not None:
         config.update(exploration_worker_roles="first curriculum_boot_envs use fixed boot epsilon; others use schedule",
                       exploration_worker_warmup="all workers remain independent uniform until replay warmup",

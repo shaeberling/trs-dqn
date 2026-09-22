@@ -51,11 +51,18 @@ def worker_epsilons(epsilon, envs, boot_envs, boot_epsilon=None):
 
 
 class PersistentExploration:
-    def __init__(self, envs, action_count, max_repeat, exponent, rng):
+    def __init__(self, envs, action_count, max_repeat, exponent, rng, action_probabilities=None):
         self.lengths, self.probabilities = duration_distribution(max_repeat, exponent)
         self.envs, self.action_count = operator.index(envs), operator.index(action_count)
         if self.envs < 1 or self.action_count < 1:
             raise ValueError('positive worker and action counts required')
+        self.action_probabilities = None
+        if action_probabilities is not None:
+            probabilities = np.asarray(action_probabilities, dtype=np.float64)
+            if (probabilities.shape != (self.action_count,) or not np.isfinite(probabilities).all()
+                    or np.any(probabilities <= 0) or not np.isclose(probabilities.sum(), 1., atol=1e-12, rtol=0)):
+                raise ValueError('requires positive normalized probabilities for every action')
+            self.action_probabilities = probabilities.copy()
         self.rng = rng
         self.mean_duration = float(self.lengths@self.probabilities)
         self.remaining = np.zeros(self.envs, np.int32)
@@ -82,7 +89,9 @@ class PersistentExploration:
         starting = idle[self.rng.random(len(idle)) < probability]
         if len(starting):
             duration = self.rng.choice(self.lengths, size=len(starting), p=self.probabilities)
-            self.held[starting] = self.rng.integers(self.action_count, size=len(starting))
+            self.held[starting] = (self.rng.integers(self.action_count, size=len(starting))
+                                  if self.action_probabilities is None else
+                                  self.rng.choice(self.action_count, size=len(starting), p=self.action_probabilities))
             self.remaining[starting] = duration
             self.duration_counts += np.bincount(duration-1, minlength=len(self.lengths))
             self.starts += len(starting)

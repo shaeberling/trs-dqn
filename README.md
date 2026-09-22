@@ -59,6 +59,10 @@ Optional `--curriculum-restored-life-only` ends already-restored training
 segments at their first visible ship loss. It requires life-terminal learning;
 boot games and complete-game evaluation remain unchanged. See
 [the focused-practice comparison](DEFENSE.md#restored-life-only-practice).
+Optional DQN `--exploration-actions stage1-balanced` changes persistent random
+exploration to a fixed distribution over command groups, reducing duplicate
+stage-1 firing choices. All 20 learned actions and greedy evaluation remain
+unchanged; see [the sampler experiment](DEFENSE.md#balanced-command-group-exploration).
 Experimental `--quantiles 32` learns distributions of score returns; optional
 `--quantile-exploration-power 1.5` changes training action selection only.
 Evaluation still uses greedy mean values. An own scalar DQN can initialize
