@@ -6,8 +6,15 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **293-test** suite now passes, including
+(23 GiB available at restart). The full **309-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
+Current experiments are worker-split exploration (40), its uniform control
+(41), higher discount (42), and an isolated current-policy trace-cut calibration.
+Runs 33–39 have retired with full final state and logs preserved; the historical
+updates below record their earlier trajectories. None has reached stage 2.
+The trace-cut check changes training targets only, using the same own learned
+parent and settings as the preserved five-step comparison. It is not a claimed
+solution to the recurring barrier, and its results are pending.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
 Training remains independent of Breakdown, with complete-game
@@ -3659,6 +3666,14 @@ The split arm's full online/target/Adam/RNG checkpoint and
 [2,550-action verified replay](results/defense/training/dqn-40-worker-epsilon-split/replay-10430/replay.html)
 are preserved separately; the global 10,480-point best is unchanged.
 
+The worker-allocation [six-round comparison through **8,293,216**](results/defense/training/dqn-40-worker-epsilon-split/comparison-through-000008293216.json)
+adds split/control means **7,310 / 4,013**, **9,784 / 6,022** and
+**9,049 / 1,207**. The uniform control has substantially regressed; split
+allocation better retains scoring in these later rounds, but all **120**
+games across six paired rounds remain stage-1 losses. This is neither a new
+stage nor an independent test success rate. Earlier stronger checkpoints and
+verified replays remain preserved; live runs have not replaced the global best.
+
 ### One-step target calibration under heavy exploration
 
 The worker-allocation trial changes which experience is generated, but still
@@ -3848,6 +3863,23 @@ the exact collision object or instant; projectile/wall causality is not
 inferred from these panels. Selected replays are not representative training
 rollouts, and no diagnostic frames/actions are supplied to learning.
 
+Full higher-discount run 42's [first three rounds](results/defense/training/dqn-42-long-discount/comparison-through-000007693216.json)
+average **9,927**, **10,230** and **10,262**, recovering the calibration's
+score drop but still losing every game in stage 1. Differences from the
+historical same-count normal-discount split arm are **+172**, **+1,379**
+and **−37**. First-round median is **10,410**, best **10,460**; its
+[2,584-action verified replay](results/defense/training/dqn-42-long-discount/first-replay/replay.html)
+and full online/target/Adam/RNG checkpoint are preserved. Score recovery alone
+does not show improved passage.
+
+The [aligned full-run loss panels](results/defense/diagnostics/shared-loss-full-long-discount-01/report.json)
+compare this replay with the split arm's 10,430-point effort. Higher-discount
+life scores are **[2600, 2620, 2620, 2620]**. Unlike its earlier calibration,
+these panels again show the broad right-opening barrier approaching a ship
+remaining left of the gap. That supports recurrence of the familiar sequence,
+not proof of the exact collision object or timestamp. The final loss has no
+sampled white flash. No diagnostic trajectory becomes training data.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)
@@ -3924,6 +3956,89 @@ and complete online/target/Adam/RNG checkpoint are preserved. This improves
 its own score record, but all forty validation games remain stage-1 losses;
 no mission or later-stage progress has been observed. The run continues
 unchanged, and the global best is not replaced by this lower score.
+
+Run 39 subsequently stopped cleanly at **8,833,696**, after **2,071,552**
+new actions, **813** complete boot games, **580** restored segments and
+**ten** full ten-game validation rounds since its calibration. Every logged
+training episode and validation game remained in stage 1. Its last evaluated
+mean was **10,054**, median **10,050**, best **10,160**. The
+[retirement record](results/defense/training/dqn-39-long-lookback/retirement.json),
+complete compressed log, last evaluated checkpoint and final full optimizer
+checkpoint are preserved. Final post-update weights were not separately
+evaluated. Compute was reassigned because of the depth plateau, not a
+wall-clock limit; its stronger earlier verified replay remains available.
+
+### Current-policy trace-cutting calibration
+
+The repeated obstacle sequence remains unresolved. One possible contributor
+is learning multi-step targets from highly exploratory continuations: a random
+hold after a useful action can change the return attributed to that action.
+The failed one-step conversion does not establish the cause, and discarding
+all longer returns also discards faster credit propagation. This experiment
+tests retaining longer returns only through actions matching the current
+learned greedy policy.
+
+Optional `--greedy-trace-cut` uses at most `--n-step` own transitions. The root
+action may be exploratory. At each later visible state, the **current online
+network** recomputes its deterministic argmax; a different recorded next action
+ends the return *before* that action's reward. The target network supplies
+the bootstrap value of the online-selected action. Greedy continuations retain
+their actual rewards, up to the horizon. Life/episode learning terminals stop
+bootstrap; truncations and partial paths bootstrap from the actual final screen,
+never the next reset. No collection-time greedy label is trusted after learning.
+
+This is a finite-horizon, lagged Double-Q adaptation of Watkins-style cutting.
+For a deterministic target policy, the clipped coefficient in
+[Munos et al.'s Retrace formulation](https://arxiv.org/abs/1606.02647) becomes
+one for its selected action and zero otherwise when lambda is one. That
+motivates the cut without estimating probabilities for history-dependent
+random holds. This implementation is **not** general stochastic-target Retrace
+and does not inherit a tabular convergence guarantee for deep replay learning.
+
+The optional trajectory replay shares exact visible frames with the compact
+frame pool and retains per-step actions/rewards/terminal discounts. It preserves
+the priority sampler and per-worker life/episode queues. Ring overwrites release
+all frame references, including padding. Future recorded screens are used
+**only for training targets**, never acting inputs. The acting model, ordinary
+greedy boot evaluation, reward, native reset rules and action set are unchanged.
+The option requires compact scalar DQN and a horizon of 1–32; it cannot combine
+with quantile or bootstrap heads. With the flag off, the original path remains.
+
+All [309 regression tests](results/defense/diagnostics/trace-cut-regression-tests.txt)
+and [nine focused tests](results/defense/diagnostics/trace-cut-focused-tests.txt)
+passed. Coverage includes target arithmetic, current-network changes, terminals,
+truncation, deterministic ties, gradient isolation, replay priorities/RNG,
+ring refcounts, independent workers, real MLX updates, exact resume, ordinary
+evaluation loading, and actual native own-state resets. Tiny native checks are
+not performance results or training parents. The
+[64-action before/after default-path check](results/defense/diagnostics/trace-cut-default-parity.json)
+preserves both networks, all 26 Adam arrays, RNGs and prior counters exactly.
+The [zero-update real-parent conversion](results/defense/diagnostics/trace-cut-parent-conversion-parity.json)
+also preserves both networks, Adam arrays, both RNGs and global counters.
+Local exploration/trace counters clear on resume; replay and archives refill.
+
+The [isolated calibration](results/defense/training/trace-cut-split-calibration-01/resume-config.json)
+starts from original DQN 33 at **6,962,144**, not a smoke/conversion checkpoint.
+It collects **131,072** new actions before ten uncapped boot games. Relative to
+the historical worker-split five-step calibration, the
+[configuration check](results/defense/training/trace-cut-split-calibration-01/design.json)
+allows only the new trace option/metadata, trainer hash and output paths.
+It retains gamma .997, n-step 5, two boot workers at epsilon .05, six others
+at .9, persistent random holds 1–64, lookback 128 and all optimizer settings.
+Reported backup-length histograms and cut fractions check whether the mechanism
+is active; they are not passage evidence. Seeds 10000–10009 are reused validation
+seeds, not fresh tests, and this historical comparison is not an independent
+replication. No evaluation trace enters training. The calibration is excluded
+from the shared best collector; runs 40/41/42 continue unchanged.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-trace-cut-split-reproduction \
+  --artifacts runs/defense-trace-cut-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128 --greedy-trace-cut
+```
 
 ### Quantile score-return experiment
 
