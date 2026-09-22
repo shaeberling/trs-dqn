@@ -8,10 +8,9 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **276-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Bootstrap DQN 24 and PPO 29 later retired after a depth plateau and sustained
-regression respectively, with all results preserved. PPO 30 tests
-frozen-base screen-history memory after
-a verified bounded comparison. Training remains independent of Breakdown, with complete-game
+Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
+plateaus or sustained regression, with all results preserved.
+Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 Full DQN trials 31/32 now compare persistent random exploration with the
 unchanged control. Their first four full-run rounds disagree on mean-score
@@ -23,6 +22,9 @@ Bounded follow-ups combine persistent exploration with their own newly
 reached-state resets. Both have finished without a new stage; the 32-action
 lookback improves the bounded comparison's mean and archive coverage, but
 does not solve the shared failure pattern.
+Full trials 33/34 now continue the verified shorter-lookback reset arm and
+its matched high-exploration no-reset comparator, retaining complete-game
+evaluation and automatic verified replay collection.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -220,9 +222,10 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live unlimited progress: `runs/defense-ppo-30-frozen-memory/status.json`,
-  `runs/defense-dqn-31-persistent/status.json` and
-  `runs/defense-dqn-32-persistent-control/status.json`, each with an adjacent
+- Live unlimited progress: `runs/defense-dqn-31-persistent/status.json`,
+  `runs/defense-dqn-32-persistent-control/status.json`,
+  `runs/defense-dqn-33-persistent-resets/status.json` and
+  `runs/defense-dqn-34-persistent-rate-control/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -2658,6 +2661,26 @@ seeds, not a fresh success-rate test. Later means varied again (10,328 at
 remains unchanged on a tied best; this selected peak is separately available
 and excluded from training data and automatic evaluation-probe promotion.
 
+PPO 30 subsequently stopped cleanly at **6,340,608** after **31** complete
+ten-game validation rounds, all stage-1 losses, and no later-stage event in
+training. It had not exceeded the score/depth ceiling first achieved at
+1,335,296 after another **5,005,312** actions. Its last validation at
+**6,332,416** again scored 10,480 in all ten games; this is consistent replay
+of the same ceiling, not stage progression. Retirement releases compute for
+the matched persistent-exploration/own-reset experiment, not because of a
+wall-clock limit. All earlier peaks and verified replays remain intact.
+
+The [full final checkpoint](results/defense/training/ppo-30-frozen-memory/final-checkpoint-000006340608/state.json),
+[last complete evaluation and optimizer checkpoint](results/defense/training/ppo-30-frozen-memory/step-000006332416/evaluation.json),
+[31-round retirement record](results/defense/training/ppo-30-frozen-memory/retirement-000006340608.json)
+and [complete compressed log](results/defense/training/ppo-30-frozen-memory/metrics-at-000006340608.jsonl.gz)
+are preserved. Final cumulative counts are **1,884** boot games and **1,291**
+restored segments. The final post-update checkpoint has not itself been
+evaluated and is not substituted for the independently verified selected peak.
+A [read-only final parameter check](results/defense/training/ppo-30-frozen-memory/final-checkpoint-000006340608/base-immutability.json)
+confirms all twelve base arrays remain byte-identical to the original own
+feedforward parent, with only eighteen non-base optimizer arrays.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-recurrent-frozen-calibration-reproduction \
@@ -2948,8 +2971,8 @@ They keep all learning settings, change the validation interval to 200,000,
 and remove the training action cap; full games remain uncapped. Each restores
 its online/target/optimizer and RNG states, boots new games and refills its
 own replay buffer, so this is not exact continuation of prior trajectories.
-They are not independently initialized replicates. Frozen-memory PPO 30
-continues independently; DQN 24 subsequently retired with all state preserved.
+They are not independently initialized replicates. Frozen-memory PPO 30 and
+DQN 24 subsequently retired with all state preserved.
 The sole collector was stopped cleanly,
 confirmed gone, then restarted with both full-run sources and all 26 historical
 sources. Short calibration sources remain excluded. Any new global best still
@@ -3197,6 +3220,32 @@ records best-replay life scores of **2,500 / 2,570 / 2,620 / 2,620** for lookbac
 128 and **2,600 / 2,570 / 2,600 / 2,620** for lookback 32. These remain near the
 old score ceiling, with no verified barrier passage or stage transition.
 
+To test whether the bounded reset result lasts, full runs now continue each
+arm's own **6,762,144** checkpoint:
+[DQN 33 shorter-lookback reset configuration](results/defense/training/dqn-33-persistent-resets/resume-config.json)
+and [DQN 34 no-reset configuration](results/defense/training/dqn-34-persistent-rate-control/resume-config.json).
+Both retain nominal 25% persistent exploration, eight workers, compact replay
+capacity 200,000, batch 64, learning rate 0.0001, n-step 5, discount 0.997,
+life learning boundaries and the original 100,000-T-state/stride-1 timing.
+Run 33 retains 0.5 shared own-state resets, two boot-only workers and lookback
+32; run 34 retains no resets. Training is uncapped, with ten complete greedy
+from-boot evaluations every 200,000 new actions, first at **6,962,144**.
+
+Both restore their own online/target/optimizer and RNG states but refill
+experience from newly booted games; run 33 also rebuilds its archive from
+empty. Thus this is not exact continuation of trajectories, nor independent
+random-seed replication. No evaluation replay or other run's snapshots are
+training data. Trials 31/32 continue unchanged as the low-rate persistence/
+independent-action comparison. Retiring PPO 30 releases capacity for these
+four eight-worker DQN learners.
+
+The sole replay collector was stopped cleanly and confirmed gone before
+restarting with [all 30 full-run sources](results/defense/training/dqn-33-persistent-resets/collector-config.json),
+including the new pair and all historical sources. Short calibrations remain
+excluded. Any global replacement still requires an independently reproduced
+frozen-policy replay and a higher stage/mission/score rank; the existing best
+is never replaced just for a higher mean.
+
 ```bash
 venv/bin/python -u -m rl.defense_dqn \
   --run runs/defense-persistent-reset-reproduction \
@@ -3205,6 +3254,15 @@ venv/bin/python -u -m rl.defense_dqn \
   --steps 6762144 --eval-every 131072 --epsilon-final .25 \
   --curriculum-probability .5 --curriculum-share \
   --curriculum-boot-envs 2 --curriculum-lookback 128
+
+# Unlimited continuation of the verified 32-action-lookback arm:
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-persistent-reset-full-reproduction \
+  --artifacts runs/defense-persistent-reset-full-reproduction/artifacts \
+  --resume results/defense/training/persistent-reset-short-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
+# For the matched comparator, use distinct output paths and resume
+# results/defense/training/persistent-rate-high-01/checkpoint instead.
 ```
 
 ### Lossless compact training replay
