@@ -2807,6 +2807,18 @@ promotion and never supplies actions or traces to training. No production
 evaluation rule was changed. All **248 regression tests** passed, including
 fixed-head selection, shape validation and unchanged evaluation RNG checks.
 
+Repeating the same frozen diagnostic at the much stronger
+[5,200,000-action checkpoint](results/defense/diagnostics/bootstrap-5200000-heads.json)
+again reproduced all ten saved ensemble game records exactly. Head 0 was
+slightly stronger than the ensemble: mean **10,208** versus **10,186**, best
+**10,300** versus **10,220**. Heads 1–4 averaged **7,663**, **9,574**, **6,722**
+and **7,915**, respectively. All **60** games still lost in stage 1, and even
+the best individual head remained below the shared 10,480-point effort.
+Thus this later checkpoint contains a modest single-head score advantage,
+but no hidden stage reach or mission completion on these seeds. Weights and
+configuration were unchanged; no production policy or global replay was
+replaced, and no diagnostic actions entered training.
+
 ```bash
 venv/bin/python -m rl.defense_head_probe \
   results/defense/training/dqn-24-bootstrap/step-000000800000/model.safetensors \
