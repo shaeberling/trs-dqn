@@ -6,13 +6,15 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **317-test** suite now passes, including
+(23 GiB available at restart). The full **327-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Current experiments are full current-policy trace cutting (43) and visual
 prediction (45). Longer persistence (44) retired after six stage-1-only rounds;
 higher discount (42) retired after seven. Visual prediction's calibration improved mean score
 but still failed at the recurring barrier; its full continuation tests longer
 adaptation, not an established fix.
+An isolated inverse-action auxiliary calibration is also running after its
+default-parity, native-game, resume and full regression checks passed.
 Worker-split exploration
 (40) and its uniform control (41) retired after nine and seven evaluation
 rounds, respectively, without a later stage.
@@ -4499,6 +4501,114 @@ venv/bin/python -u -m rl.defense_dqn \
   --artifacts runs/defense-spr-full-reproduction/artifacts \
   --resume results/defense/training/spr-split-calibration-01/checkpoint \
   --steps 0 --eval-every 200000
+```
+
+Run 45's [first full comparison at **7,293,216**](results/defense/training/dqn-45-visual-prediction/comparison-at-000007293216.json)
+has mean **9,766**, median **9,760**, best **9,780**. Every game remains a stage-1
+loss. The historical baseline mean is **9,755**: two paired scores improved,
+eight fell, for a net **+11** mean. The calibration's score advantage has not
+become a convincing advantage in this first continuation round. Full state and
+the [2,439-action verified replay](results/defense/training/dqn-45-visual-prediction/first-replay/replay.html)
+are preserved, without replacing the global best.
+
+The [audit](results/defense/training/dqn-45-visual-prediction/audit-at-000007293216.json)
+records **200,000** new actions, **11,874** joint updates, **86** boot games,
+**66** restored segments and **1,974** archive events, all with correct lookback
+and protected boot workers. No logged episode reached stage 2. The
+[loss panels](results/defense/diagnostics/shared-loss-spr-full-01/policy-1-losses.png)
+show a mixture of earlier centre-opening and recurring right-opening barriers;
+life scores are **2,450 / 2,430 / 2,450 / 2,450**. Neither equal score nor white
+flashes prove exact collision locations or causes.
+
+The [first full checkpoint's dropout diagnostic](results/defense/diagnostics/spr-full-dropout-seed0-7293216.json)
+now gives recorded-action distance **.05225**, below persistence **.05830** and
+the constant baseline **.10345** on its selected replay. However, rotating the
+action labels still gives almost the same distance (**.05264**); prediction
+sensitivity is only **.000636**. Thus it is too strong to say the predictor
+never beats persistence after more training, but there is still no demonstrated
+navigation benefit or substantial use of action labels. These are different
+selected states from the calibration, not matched-state learning curves.
+The [second noise seed](results/defense/diagnostics/spr-full-dropout-seed1-7293216.json)
+gives the same ordering: recorded **.05180**, rotated **.05203**, persistence
+**.06260**, constant **.10372**; this is a noise repeat, not another game.
+Trial 45 continues unchanged.
+
+### Inverse-action representation experiment
+
+The separate optional `--inverse-weight .01` tests whether learning to predict
+recorded actions from adjacent visible screens helps the encoder. This follows
+the inverse-classification idea in [Pathak et al., ICML 2017](https://arxiv.org/abs/1705.05363),
+but **omits ICM's forward model and intrinsic reward**. It is not an ICM
+reproduction. The [design, acceptance checks and limitations](results/defense/diagnostics/inverse-action-design.md)
+are recorded separately. Weak action sensitivity in the SPR diagnostic motivates
+the comparison; it does not prove the source of the navigation failure.
+
+Training encodes each actual before/after four-frame screen stack with the same
+online QNetwork, concatenates the two 256-dimensional features, and classifies
+the recorded action through a 512→256 ReLU layer and a 20-class output. Both
+encoder paths receive auxiliary gradients; the ordinary value/advantage heads
+do not. The root action is paired with its **immediate** next screen, never the
+n-step endpoint or a screen after a reset. Existing compact trajectory storage
+retains exact original TD fields, priority sampling and sampler RNG.
+
+The joint loss adds **.01** times PER-weighted action cross entropy to the
+unchanged scalar Double-Q loss. Priorities remain TD errors only; joint gradients
+are clipped to norm 10. Original Q Adam is preserved and the classifier uses a
+separate Adam at the same learning rate. There is no dropout, EMA, intrinsic
+reward, route label, action-semantic grouping or policy override. Acting and
+evaluation remain ordinary greedy QNetwork inference from four past/current
+visible frames. No classifier or next observation is used to select actions.
+
+Full checkpoints additionally require `inverse-head.safetensors` and
+`inverse-optimizer.npz`, with hashes and architecture identity checked on resume.
+Scalar conversion keeps online/target/Adam and the original RNG states; only the
+classifier and its Adam start fresh. Local exploration counters clear as on all
+normal resumes, while persistent-exploration RNG restores exactly. Native
+archives/replay refill from new own experience. Ordinary Q weights remain
+sufficient for an independently verified replay, not a full training resume.
+
+The [default before/after audit](results/defense/diagnostics/inverse-default-parity.json)
+preserves both networks, all **26** original optimizer arrays and original state
+fields bit-for-bit. The [actual-parent zero-update conversion](results/defense/diagnostics/inverse-parent-conversion-parity.json)
+also preserves those arrays and original counters/RNG. All
+[six focused tests](results/defense/diagnostics/inverse-focused-tests.txt) pass:
+sampler/TD parity through ring wrap and boundaries, immediate-screen alignment,
+gradient routing, TD-only priorities, target sync, default acting, full array-exact
+resume, missing/corrupt auxiliary rejection, real own-state resets, MLX-free
+workers and a complete native game with independent frozen replay verification.
+The [full 327-test regression suite](results/defense/diagnostics/inverse-regression-tests.txt)
+also passes. Existing Breakdown and Defense behavior remains covered.
+
+A separate [production-sized integration check](results/defense/diagnostics/inverse-production-smoke.json)
+used eight workers, capacity 200,000, batch 64 and five-step TD returns for
+**16,384** new actions. It completed **398** joint updates / **25,472** own screen
+pairs, with peak logged MLX allocation **509,643,200 bytes**, and exited normally.
+This is not performance evidence; smoke/conversion models and trajectories are
+not calibration parents or training data.
+
+The [running calibration](results/defense/training/inverse-split-calibration-01/resume-config.json)
+starts directly from the same original DQN-33 checkpoint
+at **6,962,144**, using the historical worker-split baseline settings and
+**131,072** new actions, followed by ten complete uncapped boot games on reused
+seeds 10000–10009. It is not combined with SPR, trace cutting, quantiles or
+bootstrap heads. Existing live trials are unchanged. A later frozen diagnostic
+must compare action prediction with shuffled/repeated next screens and action
+frequency baselines: aliases, persistent actions and starting-screen shortcuts
+can all make classification accuracy misleading. Neither classification accuracy
+nor score improvement alone proves passage through the recurring barrier.
+The [configuration comparison](results/defense/training/inverse-split-calibration-01/design.json)
+permits only inverse settings/provenance, the newer trainer hash and disabled
+SPR/trace flags, and output paths. Acting-model, environment, ordinary replay,
+exploration and archive source hashes match the historical baseline. Results are
+pending; the short calibration remains excluded from the shared collector.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-inverse-split-reproduction \
+  --artifacts runs/defense-inverse-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128 --inverse-weight .01
 ```
 
 ### Quantile score-return experiment

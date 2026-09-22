@@ -38,6 +38,9 @@ Optional `--spr-weight .1` adds an SPR-inspired auxiliary prediction loss on
 the learner's own visible trajectories. Acting remains ordinary greedy DQN;
 future screens are training targets only, not policy inputs or extra rewards.
 See [the visual-prediction experiment](DEFENSE.md#auxiliary-visual-prediction).
+Optional `--inverse-weight .01` instead trains an auxiliary classifier on the
+learner's own adjacent screen pairs and recorded actions. It adds no intrinsic
+reward and changes no acting inputs. See [the inverse-action experiment](DEFENSE.md#inverse-action-representation-experiment).
 Both Defense trainers support `--observation-stride` to space their four
 visible input frames independently of action duration (default 1 preserves
 existing models). Checkpoint evaluation and verified replays retain that setting.

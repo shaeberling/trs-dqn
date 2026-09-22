@@ -44,6 +44,8 @@ def main():
                         help="recompute current-policy cuts in own multi-step trajectories (compact scalar DQN)")
     parser.add_argument("--spr-weight", type=float, default=0.,
                         help="optional own-visual-future auxiliary loss; 0 preserves ordinary DQN")
+    parser.add_argument("--inverse-weight", type=float, default=0.,
+                        help="optional own-adjacent-screen action classification; no intrinsic reward")
     parser.add_argument("--reward-scale", type=float, default=.01)
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False)
@@ -176,6 +178,11 @@ def main():
     if args.spr_weight and (args.bootstrap_heads or args.quantiles or args.greedy_trace_cut
                            or not args.compact_replay or args.n_step > 5):
         parser.error("SPR requires compact scalar DQN, n-step in 1..5, and no trace cuts")
+    if not np.isfinite(args.inverse_weight) or not 0 <= args.inverse_weight <= 10:
+        parser.error("inverse weight must be finite and in 0..10")
+    if args.inverse_weight and (args.bootstrap_heads or args.quantiles or args.greedy_trace_cut
+                               or args.spr_weight or not args.compact_replay or args.n_step > 32):
+        parser.error("inverse task requires compact scalar DQN, n-step in 1..32, and no other auxiliary task")
     initialization = None
     if args.init_from_dqn:
         if args.resume or not args.quantiles:
@@ -204,6 +211,8 @@ def main():
             # Auxiliary files precede the state marker; hashes reject a mixed
             # interrupted latest checkpoint. Ordinary/Breakdown format is unchanged.
             saved = dict(saved, spr_auxiliary_hashes=learner.save_auxiliary(directory))
+        if args.inverse_weight:
+            saved = dict(saved, inverse_auxiliary_hashes=learner.save_auxiliary(directory))
         base_checkpoint(learner, directory, saved)
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
     if args.bootstrap_heads:
@@ -216,6 +225,10 @@ def main():
         agent = QuantileLearner(args.learning_rate, args.seed,
                                 action_count=len(action_names(args.allow_enter)),
                                 quantiles=args.quantiles, exploration_power=args.quantile_exploration_power)
+    elif args.inverse_weight:
+        from .defense_inverse import InverseLearner
+        agent = InverseLearner(args.learning_rate, args.seed,
+                               action_count=len(action_names(args.allow_enter)), weight=args.inverse_weight)
     elif args.spr_weight:
         from .defense_spr import SprLearner
         agent = SprLearner(args.learning_rate, args.seed,
@@ -242,6 +255,8 @@ def main():
         agent.optimizer.learning_rate = args.learning_rate
         if args.spr_weight:
             agent.restore_auxiliary(args.resume if prior['config'].get('spr_weight', 0) else None, prior)
+        elif args.inverse_weight:
+            agent.restore_auxiliary(args.resume if prior['config'].get('inverse_weight', 0) else None, prior)
         else:
             agent.state = [agent.online.state, agent.target.state, agent.optimizer.state]
             agent.update = mx.compile(agent._update, inputs=agent.state, outputs=agent.state)
@@ -351,12 +366,26 @@ def main():
                       spr_inference="ordinary QNetwork only; no dropout, predictor or future observations",
                       spr_resume="full Q/target/Adam plus auxiliary/EMA/Adam/key; own replay refills",
                       spr_conversion="own scalar Q/target/Adam/RNG preserved; auxiliary fresh; EMA copies online")
+    if args.inverse_weight:
+        from .defense_inverse import ARCHITECTURE
+        config.update(inverse_architecture=ARCHITECTURE,
+                      inverse_source_sha256=sha256(Path(__file__).with_name('defense_inverse.py')),
+                      inverse_replay_source_sha256=sha256(Path(__file__).with_name('defense_inverse_replay.py')),
+                      inverse_sequence_source_sha256=sha256(Path(__file__).with_name('defense_trace_replay.py')),
+                      inverse_objective="PER-weighted actual-action cross entropy plus unchanged scalar TD loss",
+                      inverse_inference="ordinary QNetwork only; no next screen or inverse classifier",
+                      inverse_resume="full Q/target/Adam plus inverse head/Adam; own replay refills",
+                      inverse_conversion="own scalar Q/target/Adam/RNG preserved; auxiliary head/Adam fresh")
     args.run.mkdir(parents=True, exist_ok=True)
     write_json(args.run/("resume-config.json" if prior else "config.json"), config)
     if args.bootstrap_heads:
         from .defense_bootstrap_replay import BootstrapReplay
         replay = BootstrapReplay(args.capacity, args.bootstrap_heads, args.bootstrap_probability,
                                  bootstrap_rng, compact=args.compact_replay)
+    elif args.inverse_weight:
+        from .defense_inverse_replay import InverseReplay
+        from .defense_trace_replay import TraceNStep
+        replay = InverseReplay(args.capacity, args.n_step, len(action_names(args.allow_enter)))
     elif args.spr_weight:
         from .defense_spr_replay import SprReplay
         from .defense_trace_replay import TraceNStep
@@ -366,7 +395,7 @@ def main():
         replay = TraceReplay(args.capacity, args.n_step, len(action_names(args.allow_enter)))
     else:
         replay = Replay(args.capacity, compact=args.compact_replay)
-    buffer_type = TraceNStep if args.greedy_trace_cut or args.spr_weight else NStep
+    buffer_type = TraceNStep if args.greedy_trace_cut or args.spr_weight or args.inverse_weight else NStep
     buffers = [buffer_type(replay, args.n_step, args.gamma) for _ in range(args.envs)]
     recent = deque(maxlen=100)
     recent_restored = deque(maxlen=100)
@@ -390,6 +419,8 @@ def main():
             saved["greedy_trace"] = agent.trace_stats()
         if args.spr_weight:
             saved['spr'] = agent.spr_stats()
+        if args.inverse_weight:
+            saved['inverse'] = agent.inverse_stats()
         return saved
 
     def log(row):
@@ -479,6 +510,8 @@ def main():
                     last_metrics['greedy_trace'] = agent.trace_stats()
                 if args.spr_weight:
                     last_metrics['spr'] = agent.spr_stats()
+                if args.inverse_weight:
+                    last_metrics['inverse'] = agent.inverse_stats()
             if time.monotonic()-last_log >= 10:
                 log(dict(event="progress", steps=steps, episodes=episodes, updates=updates,
                          boot_episodes=boot_episodes, restored_segments=restored_segments,
