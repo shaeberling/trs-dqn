@@ -17,7 +17,7 @@ import time
 import numpy as np
 
 from .defense import action_names, ENVIRONMENT_VERSION, GAME_SHA256, validate_observation_stride
-from .defense_learning import (BOOTSTRAP_ALGORITHM, DQN_ALGORITHM, QUANTILE_ALGORITHM, evaluate, greedy_policy,
+from .defense_learning import (BOOTSTRAP_ALGORITHM, DQN_ALGORITHM, QUANTILE_ALGORITHM, REPEAT_ALGORITHM, evaluate, greedy_policy,
                                policy_description, publish_best, sha256, summarize, write_json)
 from .replay import NStep, Replay
 from .vector import VectorEnv
@@ -29,7 +29,9 @@ def main():
     parser.add_argument("--artifacts", type=Path, required=True)
     parser.add_argument("--resume", type=Path)
     parser.add_argument("--init-from-dqn", type=Path,
-                        help="fresh quantile learner initialized from own scalar DQN online weights")
+                        help="fresh quantile/action-duration learner initialized from own scalar DQN online weights")
+    parser.add_argument("--learned-repeats", type=str,
+                        help="optional joint learned action durations, e.g. 1,4,16,64; requires n-step 1")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
     parser.add_argument("--seed", type=int, default=97)
     parser.add_argument("--envs", type=int, default=8)
@@ -110,7 +112,7 @@ def main():
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
         config = prior["config"]
-        expected_algorithm = (BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
+        expected_algorithm = (REPEAT_ALGORITHM if args.learned_repeats else BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
                               QUANTILE_ALGORITHM if args.quantiles else DQN_ALGORITHM)
         if (config.get("algorithm") != expected_algorithm or config.get("game") != "defense"
                 or config.get("game_sha256") != GAME_SHA256
@@ -122,6 +124,20 @@ def main():
         if not all((args.resume/name).is_file() for name in
                    ("model.safetensors", "target.safetensors", "optimizer.npz")):
             parser.error("DQN resume requires online, target and optimizer checkpoints")
+    if args.learned_repeats is not None:
+        from .defense_repeat import validate_spec
+        try:
+            durations = ([int(v) for v in args.learned_repeats.split(',')]
+                         if isinstance(args.learned_repeats, str) else args.learned_repeats)
+            _, args.learned_repeats = validate_spec(len(action_names(args.allow_enter)), durations)
+        except (ValueError, TypeError) as error:
+            parser.error(str(error))
+        if (args.n_step != 1 or not args.life_terminal or args.exploration_max_repeat != 1
+                or args.bootstrap_heads or args.quantiles or args.greedy_trace_cut
+                or args.spr_weight or args.inverse_weight or args.exploration_actions != 'uniform'):
+            parser.error('learned repeats require scalar one-option targets, life boundaries and no other exploration/auxiliary variant')
+        if prior and tuple(prior['config'].get('learned_repeats', ())) != args.learned_repeats:
+            parser.error('learned duration set must match the resumed model')
     if min(args.envs, args.batch_size, args.capacity, args.n_step, args.train_every,
            args.target_every, args.epsilon_steps, args.eval_every, args.eval_games, args.eval_envs) < 1:
         parser.error("counts and intervals must be positive")
@@ -200,8 +216,8 @@ def main():
         parser.error("inverse task requires compact scalar DQN, n-step in 1..32, and no other auxiliary task")
     initialization = None
     if args.init_from_dqn:
-        if args.resume or not args.quantiles:
-            parser.error("scalar initialization requires fresh quantile DQN, not --resume")
+        if args.resume or not (args.quantiles or args.learned_repeats):
+            parser.error("scalar initialization requires fresh quantile/action-duration DQN, not --resume")
         parent = json.loads((args.init_from_dqn/"state.json").read_text())
         pc = parent['config']
         if (pc.get('algorithm') != DQN_ALGORITHM or pc.get('game') != 'defense'
@@ -215,6 +231,9 @@ def main():
                               state_sha256=sha256(args.init_from_dqn/'state.json'),
                               semantics="parent online encoder and dueling values tiled into coincident quantiles; "
                                         "target equals transferred online; fresh Adam, RNG, counters and replay")
+        if args.learned_repeats:
+            initialization['semantics'] = ('parent encoder/value copied, advantages tiled by duration; '
+                'target equals transferred online; fresh Adam, RNG, counters and replay; no true duration-value equality assumed')
 
     # MLX is main-process-only: spawned emulator workers never import it.
     import mlx.core as mx
@@ -230,7 +249,11 @@ def main():
             saved = dict(saved, inverse_auxiliary_hashes=learner.save_auxiliary(directory))
         base_checkpoint(learner, directory, saved)
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
-    if args.bootstrap_heads:
+    if args.learned_repeats:
+        from .defense_repeat_model import RepeatLearner
+        agent = RepeatLearner(args.learning_rate, args.seed,
+                             len(action_names(args.allow_enter)), args.learned_repeats)
+    elif args.bootstrap_heads:
         from .defense_bootstrap import BootstrapLearner
         agent = BootstrapLearner(args.learning_rate, args.seed,
                                  action_count=len(action_names(args.allow_enter)),
@@ -292,7 +315,7 @@ def main():
                                           args.exploration_max_repeat, args.exploration_exponent,
                                           exploration_rng, exploration_action_probabilities)
     config = {k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()}
-    config.update(game="defense", algorithm=(BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
+    config.update(game="defense", algorithm=(REPEAT_ALGORITHM if args.learned_repeats else BOOTSTRAP_ALGORITHM if args.bootstrap_heads else
                                             QUANTILE_ALGORITHM if args.quantiles else DQN_ALGORITHM),
                   game_sha256=GAME_SHA256,
                   native_sha256=sha256(Path("libtrs.so")),
@@ -309,6 +332,23 @@ def main():
                   replay_resume="refill from new own experience; no saved trajectories loaded",
                   resume_semantics="online, target, optimizer and RNG restored; episodes restart from boot",
                   priority_alpha=.6, priority_beta="0.4 to 1 over epsilon-steps aggregate actions")
+    repeated = None
+    if args.learned_repeats:
+        from .defense_repeat import RepeatedActions, OptionReturns, LearnedRepeatPolicy
+        repeated = RepeatedActions(args.envs, len(config['action_names']), args.learned_repeats)
+        config.update(repeat_source_sha256=sha256(Path(__file__).with_name('defense_repeat.py')),
+                      repeat_model_source_sha256=sha256(Path(__file__).with_name('defense_repeat_model.py')),
+                      training_policy='epsilon-greedy joint action-duration options; epsilon per option start',
+                      repeat_target='sum gamma**k times actual scaled score increments; gamma**actual_duration Double-Q bootstrap; zero on visible life loss',
+                      repeat_warmup='independent one-base-action uniform choices until replay warmup',
+                      repeat_boundary='cancel holds at visible life loss or episode end, in both training and evaluation',
+                      repeat_observation='original base-action screen cadence; no skipped-history subsampling',
+                      repeat_resume='restore Q/target/Adam/RNG; new boot games, empty option/replay state',
+                      policy=policy_description(config), evaluation_policy=policy_description(config))
+        if initialization is not None:
+            config['repeat_initialization'] = initialization
+        elif prior and 'repeat_initialization' in prior['config']:
+            config['repeat_initialization'] = prior['config']['repeat_initialization']
     if args.bootstrap_heads:
         config.update(bootstrap_source_sha256=sha256(Path(__file__).with_name("defense_bootstrap.py")),
                       bootstrap_replay_source_sha256=sha256(Path(__file__).with_name("defense_bootstrap_replay.py")),
@@ -429,7 +469,9 @@ def main():
     else:
         replay = Replay(args.capacity, compact=args.compact_replay)
     buffer_type = TraceNStep if args.greedy_trace_cut or args.spr_weight or args.inverse_weight else NStep
-    buffers = [buffer_type(replay, args.n_step, args.gamma) for _ in range(args.envs)]
+    buffers = ([OptionReturns(replay, args.gamma, len(config['action_names']), args.learned_repeats)
+                for _ in range(args.envs)] if repeated is not None else
+               [buffer_type(replay, args.n_step, args.gamma) for _ in range(args.envs)])
     recent = deque(maxlen=100)
     recent_restored = deque(maxlen=100)
     started, start_steps = time.monotonic(), steps
@@ -448,6 +490,10 @@ def main():
         if persistent is not None:
             saved["persistent_exploration_rng"] = exploration_rng.bit_generator.state
             saved["persistent_exploration"] = persistent.stats()
+        if repeated is not None:
+            saved['learned_repeat_stats'] = repeated.stats()
+            saved['learned_repeat_completed'] = sum(b.completed for b in buffers)
+            saved['learned_repeat_interrupted'] = sum(b.interrupted for b in buffers)
         if args.greedy_trace_cut:
             saved["greedy_trace"] = agent.trace_stats()
         if args.spr_weight:
@@ -491,11 +537,20 @@ def main():
             else:
                 actions = (agent.actions(observations, episode_heads) if args.bootstrap_heads
                            else agent.actions(observations))
-                if persistent is None:
+                if repeated is not None:
+                    idle = np.flatnonzero(repeated.remaining == 0)
+                    rates = np.asarray(epsilons)
+                    exploring = idle[rng.random(len(idle)) < (rates if rates.ndim == 0 else rates[idle])]
+                    actions[exploring] = rng.integers(len(config['action_names']) * len(args.learned_repeats), size=len(exploring))
+                elif persistent is None:
                     explore = rng.random(args.envs) < epsilons
                     actions[explore] = rng.integers(len(config["action_names"]), size=int(explore.sum()))
                 else:
                     actions = persistent.select(actions, epsilons)
+            if repeated is not None:
+                for worker in np.flatnonzero(repeated.remaining == 0):
+                    buffers[worker].begin(observations[worker], int(actions[worker]))
+                actions = repeated.select(actions)
             results = workers.step(actions)
             if persistent is not None:
                 persistent.reset(np.asarray([terminal or truncated or info["life_lost"]
@@ -503,8 +558,11 @@ def main():
             following = []
             for worker, (obs, reward, terminal, truncated, info, reset) in enumerate(results):
                 learning_terminal = terminal or (args.life_terminal and info["life_lost"])
-                buffers[worker].append(observations[worker], int(actions[worker]),
-                                       reward*args.reward_scale, obs, learning_terminal, truncated)
+                if repeated is not None:
+                    buffers[worker].append(reward*args.reward_scale, obs, learning_terminal, truncated)
+                else:
+                    buffers[worker].append(observations[worker], int(actions[worker]),
+                                           reward*args.reward_scale, obs, learning_terminal, truncated)
                 following.append(reset if reset is not None else obs)
                 if "curriculum_archive_add" in info:
                     log(dict(event="curriculum_archive", worker=worker, action_counter=steps+worker+1,
@@ -523,6 +581,9 @@ def main():
                     if args.bootstrap_heads:
                         # No change at ship loss: the selected head lasts the whole game.
                         episode_heads[worker] = rng.integers(args.bootstrap_heads)
+            if repeated is not None:
+                repeated.reset(np.asarray([t or u or info['life_lost']
+                    for _, _, t, u, info, _ in results], dtype=bool))
             observations = np.stack(following)
             steps += args.envs
             while steps >= next_update:
@@ -559,6 +620,7 @@ def main():
                          **({"replay_frame_storage": replay.frame_storage.stats()}
                             if args.compact_replay else {}),
                          **({"persistent_exploration": persistent.stats()} if persistent is not None else {}),
+                         **({'learned_repeat_stats': repeated.stats()} if repeated is not None else {}),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
                          **last_metrics))
                 last_log = time.monotonic()
@@ -569,7 +631,9 @@ def main():
                 checkpoint(agent, directory, state())
                 checkpoint(agent, args.run/"latest", state())
                 log(dict(event="validation_start", steps=steps, checkpoint=str(directory)))
-                policy = greedy_policy(lambda obs: np.array(agent.online(mx.array(obs))))
+                policy = (LearnedRepeatPolicy(lambda obs: np.array(agent.online(mx.array(obs))),
+                    len(config['action_names']), args.learned_repeats) if repeated is not None else
+                    greedy_policy(lambda obs: np.array(agent.online(mx.array(obs)))))
                 result = evaluate(policy, range(args.eval_seed, args.eval_seed+args.eval_games),
                                   tstates=args.tstates, max_steps=args.eval_max_steps,
                                   envs=args.eval_envs, log=log, should_stop=lambda: stop,

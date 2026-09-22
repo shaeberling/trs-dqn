@@ -69,6 +69,11 @@ Evaluation still uses greedy mean values. An own scalar DQN can initialize
 this model with `--init-from-dqn`; this starts fresh Adam, not optimizer resume.
 Separate `rl.defense_evaluate --quantile-power 1.5` probes can play and verify
 the alternative learned criterion without changing training or the shared best.
+Optional `--learned-repeats 1,4,16,64 --n-step 1` lets a Defense DQN learn both
+the key combination and hold length, with actual-duration discounted score
+returns and fully verified replays. It is a separate experimental algorithm;
+the one-step/variable-duration comparison is described in
+[the training notes](DEFENSE.md#learning-how-long-to-hold-an-action).
 `--compact-replay` optionally shares byte-identical visible frames in DQN's
 training buffer, preserving exact observations and sampling while reducing
 screen-storage duplication. It works with ordinary and bootstrap DQN.

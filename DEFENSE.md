@@ -6,9 +6,13 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **355-test** suite now passes, including
+(23 GiB available at restart). The full **362-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-The lower-exploration focused continuation (52) is now live. Its calibration
+Matched learned-duration / one-step full continuations (54/53) are now live.
+Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
+a large relative difference against a regressed control, not a new best.
+The lower-exploration
+focused continuation (52) retired after six stage-1-only evaluations. Its calibration
 averaged 10,297 versus high exploration's 10,214, but only one of ten paired
 scores improved and all games remained in stage 1. The matched restored-life
 continuations (49/50) retired cleanly after six stage-1-only evaluations each,
@@ -17,7 +21,7 @@ after six stage-1-only evaluations; all six means were below its uniform-action
 comparison. Final state and complete logs remain preserved.
 The separate 128-action own-loss-lookback calibration finished below its
 64-action counterpart, and an optional command-balanced exploration sampler
-has completed a near-tied calibration and begun a longer continuation. The 64-action
+completed a near-tied calibration and a negative longer continuation. The 64-action
 score-triggered / own-loss-triggered pair (47/48) retired after six stage-1-only
 rounds with full state preserved. The focused calibration improved mean by 251
 over its control, but the first full round scored 78 lower; all games still
@@ -5567,6 +5571,155 @@ exported action sequences or training data. The
 [full 355-test suite](results/defense/diagnostics/survival-probe-regression-tests.txt)
 passed. No learner implementation, policy input, reward or original-game byte
 changed in this experiment.
+
+Full run 52 subsequently completed six ten-game rounds, all stage-1 losses.
+At **7,293,216 / 7,493,216 / 7,693,216 / 7,893,216 / 8,093,216 / 8,293,216**,
+its means were **9,780 / 10,220 / 9,986 / 9,944 / 10,170 / 10,134**. Relative
+to high-exploration run 50 at the same action counts, the differences were
+**+440 / +579 / +126 / −122 / −10 / +179**. These score changes did not produce
+a later stage. All full states, log prefixes and paired records are preserved,
+including the [first](results/defense/training/dqn-52-low-exploration-focused/comparison-at-000007293216.json)
+and [sixth](results/defense/training/dqn-52-low-exploration-focused/comparison-at-000008293216.json)
+comparisons. Its run-best [10,260-point replay](results/defense/training/dqn-52-low-exploration-focused/replay-10260/replay.html)
+verified **2,530** base actions; the earlier 9,780 replay verified **2,497**.
+
+The run [retired gracefully](results/defense/training/dqn-52-low-exploration-focused/retirement.json)
+at **8,369,808**, after **1,276,592** additional actions, **141** complete boot
+games and **17,343** completed restored segments. Training also logged no
+stage 2 or mission. Final Q/target/Adam state and the complete compressed log
+are preserved; the collector retains the historical source. This retirement
+reflects a depth plateau, not a wall-clock limit.
+
+### Learning how long to hold an action
+
+The next experiment changes what the policy can learn, rather than merely
+changing random exploration frequency. Inspired by
+[Dynamic Frame-skip DQN](https://arxiv.org/abs/1605.05365), optional
+`--learned-repeats 1,4,16,64 --n-step 1` gives the screen network one joint
+Q-value per ordinary action and permitted duration. With 20 keys and four
+durations this is 80 learned options; no direction, obstacle or route is
+preferred by an execution rule. This is an adaptation, not a reproduction of
+the paper's architecture, emulator or experimental protocol.
+
+The original emulator and base action length stay unchanged. At a decision,
+the network chooses a key combination and hold length; its executor counts
+down that learned choice. Screen history continues updating at every base
+action, so the next input is the same four recent raw video frames, not four
+widely spaced macro frames. Greedy evaluation uses the same learned options.
+Only visible life/episode boundaries cancel holds, consistently in training,
+parallel evaluation and serial replay verification. No hidden game state,
+oracle rollout, demonstration, extra observation or steering controller is used.
+
+Each completed or boundary-interrupted option enters prioritized replay once,
+with its actual observed discounted score sum and bootstrap multiplier
+`gamma ** executed_base_actions`. The bootstrap is zero at a learning terminal;
+time-limit truncation retains the actual-duration bootstrap. Double-Q chooses
+the next joint option. No unexecuted outcomes or intermediate counterfactual
+options are fabricated. Native games remain uncapped in performance evaluation.
+The experiment requires one-option targets, life-terminal learning, and no
+other auxiliary, distributional or persistent-random-action variant.
+
+Exploration epsilon now applies **per option start**, not per base action.
+The random choice is uniform over joint options. Actual time spent exploring
+can differ substantially across duration sets; it must not be interpreted as
+a matched exploratory-step fraction. Warmup still uses independent uniform
+one-base-action choices. All logged training/evaluation budgets count base
+actions, not the smaller number of option decisions.
+
+`--init-from-dqn` transfers only the learner's own scalar encoder/value and
+tiles its advantage head across durations. Target initially equals transferred
+online; Adam, RNG, counters, replay and reset archives are **fresh**. Initial
+duration-value equality is an initialization, not a claim that holding every
+action longer really earns the same return. Exact ties initially choose the
+shortest duration. Resuming a duration model restores its full Q/target/Adam/RNG
+with the same duration set, while new boot games clear pending holds/replay.
+
+Seven focused tests cover option execution, game-identity isolation, visible
+boundaries, actual-duration discounts, one-step equivalence, parameter transfer,
+learning/resume, CLI rejection and native parallel/serial/reloaded replay parity.
+The [full 362-test suite](results/defense/diagnostics/learned-repeat-regression-tests.txt)
+passes. A [4,096-action disabled-feature check](results/defense/diagnostics/learned-repeat-default-parity.json)
+reproduced online/target bytes, all 26 optimizer arrays, nonconfiguration state
+and **67** game/archive events exactly. The existing live learner was not
+changed by this optional implementation.
+
+The [initialization audit](results/defense/diagnostics/learned-repeat-initialization.json)
+checks every copied/tiled parameter and fresh optimizer state. Both `(1,)` and
+`(1,4,16,64)` reproduced the parent's complete **2,523-action, 10,430-point**
+game exactly before any learning. That is initial compatibility on one seed,
+not successful learned use of longer actions. Those diagnostic trajectories
+never enter training. The separate
+[16,384-action production smoke](results/defense/diagnostics/learned-repeat-production-smoke.json)
+made **400** updates, completed **8** boot games and **33** restored segments,
+and produced **58** exact-64 archive events with protected workers intact.
+It executed **11,051** options across 16,384 base actions, completing 11,044
+and interrupting 37; pending options are discarded at the normal stop. This
+check had no performance evaluation and is not a calibration parent.
+
+Two new calibrations start from the same original own scalar checkpoint at
+6,962,144, with the fresh-state transfer described above. Their configurations
+are identical except paths and the duration set:
+[one-step control](results/defense/training/repeat-control-calibration-01/config.json)
+versus [learned variable duration](results/defense/training/repeat-variable-calibration-01/config.json).
+Both get **131,072 new base actions** and ten complete reused-seed boot games,
+with eight workers, two protected boot workers, .25/.05 option-start epsilon,
+gamma .997, batch 64, Adam 1e-4, compact capacity 200,000, warmup 10,000,
+updates every 16 base actions, own-loss lookback 64 and first-restored-life-only
+practice. Epsilon reaches its fixed value immediately after warmup. This matched
+pair isolates learned duration availability; older five-step optimizer-resume
+runs are not exact controls. Neither calibration is in the collector.
+
+Both calibrations completed normally. The
+[paired comparison](results/defense/training/repeat-variable-calibration-01/comparison.json)
+gives mean/median/best **344 / 340 / 440** for the one-step control and
+**3,631 / 3,680 / 7,550** for variable durations. All ten variable-duration
+scores are higher, for a mean difference of **+3,287**, but both remain well
+below the strong original parent and every game loses in stage 1. This supports
+longer adaptation of the new option formulation, not a claim of improvement
+over the preserved best or a demonstrated solution to the barrier.
+
+Both full Q/target/Adam checkpoints and complete logs are preserved, with
+independently reloaded/native-verified replays of
+[1,770 control base actions](results/defense/training/repeat-control-calibration-01/replay/replay.html)
+and [2,394 variable-duration base actions](results/defense/training/repeat-variable-calibration-01/replay/replay.html).
+Verification includes the learned option choices, held outputs and visible
+boundary resets; it does not pretend every held base action is a fresh neural
+inference. The stronger shared model/replay is unchanged.
+
+Each calibration made **7,568** updates and completed **24** boot games.
+The [control audit](results/defense/training/repeat-control-calibration-01/audit.json)
+records **1,748** restored segments and **88,985** initial-life base actions;
+the [variable audit](results/defense/training/repeat-variable-calibration-01/audit.json)
+records **1,351** and **88,993**, respectively. Their **546 / 582** archive
+events have correct offsets and reserved workers stayed boot-only. Variable
+duration executed **24,293 / 22,437 / 40,684 / 43,658** base actions under
+1/4/16/64-step options, respectively, including interrupted holds. It started
+33,738 options, completed 33,732 and interrupted 1,219 at boundaries. These
+counts confirm the mechanism is used, not that a particular maneuver was learned.
+
+Full trials [53 (control)](results/defense/training/dqn-53-repeat-control/resume-config.json)
+and [54 (variable)](results/defense/training/dqn-54-learned-repeat/resume-config.json)
+now continue their own calibrated optimizer states with unlimited learning and
+200,000-base-action evaluations. Fresh boots refill their own replay and reset
+archives, with no diagnostic/evaluation examples loaded. The sole collector was
+restarted with tested duration-policy support and all **50** full-trial sources;
+historical sources remain, and short calibrations stay excluded.
+
+```sh
+# Use --learned-repeats 1 and separate paths for the matched control.
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-learned-repeat-reproduction \
+  --artifacts runs/defense-learned-repeat-reproduction/artifacts \
+  --init-from-dqn results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --learned-repeats 1,4,16,64 --n-step 1 --steps 131072 --eval-every 131072 \
+  --envs 8 --capacity 200000 --compact-replay --epsilon-final .25 --epsilon-steps 1 \
+  --curriculum-boot-epsilon .05 --curriculum-probability 1 --curriculum-share \
+  --curriculum-boot-envs 2 --curriculum-lookback 64 --curriculum-trigger life-loss \
+  --curriculum-restored-life-only
+```
+
+To reproduce the earlier scalar lower-exploration calibration (not the
+learned-duration experiment):
 
 ```sh
 venv/bin/python -u -m rl.defense_dqn \
