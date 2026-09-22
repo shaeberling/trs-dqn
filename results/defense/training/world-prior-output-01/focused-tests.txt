@@ -1,0 +1,23 @@
+test_actions_targets_and_burn_alignment (tests.test_defense_world_prior_output.PriorOutputTests.test_actions_targets_and_burn_alignment) ... ok
+test_extra_gradient_reaches_prior_and_outputs_not_filtered_targets (tests.test_defense_world_prior_output.PriorOutputTests.test_extra_gradient_reaches_prior_and_outputs_not_filtered_targets) ... ok
+test_original_terms_and_exact_full_resume (tests.test_defense_world_prior_output.PriorOutputTests.test_original_terms_and_exact_full_resume) ... ok
+test_prior_predictions_ignore_their_arrival_screen (tests.test_defense_world_prior_output.PriorOutputTests.test_prior_predictions_ignore_their_arrival_screen) ... ok
+test_gaussian_kl_and_screen_encoding (tests.test_defense_world_model.WorldModelTests.test_gaussian_kl_and_screen_encoding) ... ok
+test_open_loop_audit_does_not_observe_future_targets (tests.test_defense_world_model.WorldModelTests.test_open_loop_audit_does_not_observe_future_targets) ... ok
+test_posterior_is_causal_and_prior_uses_actions (tests.test_defense_world_model.WorldModelTests.test_posterior_is_causal_and_prior_uses_actions) ... ok
+test_real_update_exact_resume_and_checksum (tests.test_defense_world_model.WorldModelTests.test_real_update_exact_resume_and_checksum) ... ok
+test_reward_alignment_and_burn_in_mask (tests.test_defense_world_model.WorldModelTests.test_reward_alignment_and_burn_in_mask) ... ok
+test_sequence_splits_alignment_boundaries_and_hashes (tests.test_defense_world_model.WorldModelTests.test_sequence_splits_alignment_boundaries_and_hashes) ... ok
+test_action_target_alignment_and_complete_windows (tests.test_defense_world_overshoot.OvershootingTests.test_action_target_alignment_and_complete_windows) ... ok
+test_full_resume_and_explicit_objective_change (tests.test_defense_world_overshoot.OvershootingTests.test_full_resume_and_explicit_objective_change) ... ok
+test_only_prior_rollout_gets_extra_gradient (tests.test_defense_world_overshoot.OvershootingTests.test_only_prior_rollout_gets_extra_gradient) ... ok
+test_auxiliary_gradient_reaches_encoder_not_reward_head (tests.test_defense_world_bytes.ByteWorldTests.test_auxiliary_gradient_reaches_encoder_not_reward_head) ... ok
+test_byte_forecasts_ignore_future_screens (tests.test_defense_world_bytes.ByteWorldTests.test_byte_forecasts_ignore_future_screens) ... ok
+test_decoder_shape_alignment_and_original_terms (tests.test_defense_world_bytes.ByteWorldTests.test_decoder_shape_alignment_and_original_terms) ... ok
+test_exact_extended_resume_and_explicit_full_parent_extension (tests.test_defense_world_bytes.ByteWorldTests.test_exact_extended_resume_and_explicit_full_parent_extension) ... ok
+test_partial_update_preserves_other_moments_and_exact_resume (tests.test_defense_world_head_fit.HeadFitTests.test_partial_update_preserves_other_moments_and_exact_resume) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 5.095s
+
+OK

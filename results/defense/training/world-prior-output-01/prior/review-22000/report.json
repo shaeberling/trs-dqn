@@ -1,0 +1,718 @@
+{
+  "windows": 48,
+  "context": 8,
+  "horizons": [
+    {
+      "horizon": 1,
+      "pixel_mse": 0.07025008648633957,
+      "graphics_mse": 0.14047342538833618,
+      "rotated_graphics_mse": 0.14080576598644257,
+      "persistence_graphics_mse": 0.2522650957107544,
+      "changed_graphics_mse": 0.5356937050819397,
+      "changed_graphics_count": 74396.0,
+      "prediction_action_sensitivity": 3.717412255355157e-05,
+      "reward_mse": 0.002031635493040085,
+      "zero_reward_mse": 0.0008333332370966673,
+      "positive_reward_mse": 0.023788433521986008,
+      "positive_rewards": 1.0,
+      "continuation_brier": 0.00019606068963184953,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 2,
+      "pixel_mse": 0.019386345520615578,
+      "graphics_mse": 0.038748305290937424,
+      "rotated_graphics_mse": 0.038639891892671585,
+      "persistence_graphics_mse": 0.1263665109872818,
+      "changed_graphics_mse": 0.23022551834583282,
+      "changed_graphics_count": 37267.0,
+      "prediction_action_sensitivity": 0.0001341005408903584,
+      "reward_mse": 0.0010592791950330138,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 1.2654956663027406e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 3,
+      "pixel_mse": 0.008047077804803848,
+      "graphics_mse": 0.0160707775503397,
+      "rotated_graphics_mse": 0.015912728384137154,
+      "persistence_graphics_mse": 0.040496826171875,
+      "changed_graphics_mse": 0.09837644547224045,
+      "changed_graphics_count": 11943.0,
+      "prediction_action_sensitivity": 0.0001723920868244022,
+      "reward_mse": 0.0008278185850940645,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 9.206661343341693e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 4,
+      "pixel_mse": 0.10962952673435211,
+      "graphics_mse": 0.21923084557056427,
+      "rotated_graphics_mse": 0.21964013576507568,
+      "persistence_graphics_mse": 0.340813547372818,
+      "changed_graphics_mse": 0.6073951125144958,
+      "changed_graphics_count": 100510.0,
+      "prediction_action_sensitivity": 0.00043258690857328475,
+      "reward_mse": 0.0013827214716002345,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.0002461702679283917,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 5,
+      "pixel_mse": 0.06381480395793915,
+      "graphics_mse": 0.1275981217622757,
+      "rotated_graphics_mse": 0.1271226853132248,
+      "persistence_graphics_mse": 0.2113071084022522,
+      "changed_graphics_mse": 0.520460844039917,
+      "changed_graphics_count": 62317.0,
+      "prediction_action_sensitivity": 0.00023575183877255768,
+      "reward_mse": 0.0034617818892002106,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 1.0850792023120448e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 6,
+      "pixel_mse": 0.013554621487855911,
+      "graphics_mse": 0.027072327211499214,
+      "rotated_graphics_mse": 0.026396650820970535,
+      "persistence_graphics_mse": 0.0416361503303051,
+      "changed_graphics_mse": 0.2068205326795578,
+      "changed_graphics_count": 12279.0,
+      "prediction_action_sensitivity": 0.0005233823321759701,
+      "reward_mse": 0.014392546378076077,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 8.33994708955288e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 7,
+      "pixel_mse": 0.16772346198558807,
+      "graphics_mse": 0.3354046642780304,
+      "rotated_graphics_mse": 0.3339601457118988,
+      "persistence_graphics_mse": 0.4443732500076294,
+      "changed_graphics_mse": 0.7115765810012817,
+      "changed_graphics_count": 131051.0,
+      "prediction_action_sensitivity": 0.000656688935123384,
+      "reward_mse": 0.09446142613887787,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00022050758707337081,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 8,
+      "pixel_mse": 0.12312555313110352,
+      "graphics_mse": 0.24621134996414185,
+      "rotated_graphics_mse": 0.24695365130901337,
+      "persistence_graphics_mse": 0.3282233476638794,
+      "changed_graphics_mse": 0.6855048537254333,
+      "changed_graphics_count": 96797.0,
+      "prediction_action_sensitivity": 0.0006939846789464355,
+      "reward_mse": 0.20077376067638397,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 1.971612982742954e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 9,
+      "pixel_mse": 0.018847180530428886,
+      "graphics_mse": 0.03766069561243057,
+      "rotated_graphics_mse": 0.03632749989628792,
+      "persistence_graphics_mse": 0.041900634765625,
+      "changed_graphics_mse": 0.31850582361221313,
+      "changed_graphics_count": 12357.0,
+      "prediction_action_sensitivity": 0.001171335345134139,
+      "reward_mse": 0.5793238878250122,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 9.487402712693438e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 10,
+      "pixel_mse": 0.18124128878116608,
+      "graphics_mse": 0.3624350130558014,
+      "rotated_graphics_mse": 0.36186322569847107,
+      "persistence_graphics_mse": 0.460662841796875,
+      "changed_graphics_mse": 0.7332178354263306,
+      "changed_graphics_count": 135855.0,
+      "prediction_action_sensitivity": 0.0007164122653193772,
+      "reward_mse": 1.2818504571914673,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.0004655499360524118,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 11,
+      "pixel_mse": 0.16996747255325317,
+      "graphics_mse": 0.3398799002170563,
+      "rotated_graphics_mse": 0.34281042218208313,
+      "persistence_graphics_mse": 0.4216817319393158,
+      "changed_graphics_mse": 0.7469295263290405,
+      "changed_graphics_count": 124359.0,
+      "prediction_action_sensitivity": 0.002131740329787135,
+      "reward_mse": 0.291800856590271,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 3.073247353313491e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 12,
+      "pixel_mse": 0.02216741070151329,
+      "graphics_mse": 0.04427456855773926,
+      "rotated_graphics_mse": 0.041903380304574966,
+      "persistence_graphics_mse": 0.0414530448615551,
+      "changed_graphics_mse": 0.4029613137245178,
+      "changed_graphics_count": 12225.0,
+      "prediction_action_sensitivity": 0.001720394124276936,
+      "reward_mse": 0.030291158705949783,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 9.439573477720842e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 13,
+      "pixel_mse": 0.18712949752807617,
+      "graphics_mse": 0.3741872012615204,
+      "rotated_graphics_mse": 0.3747105598449707,
+      "persistence_graphics_mse": 0.4589606523513794,
+      "changed_graphics_mse": 0.7521399855613708,
+      "changed_graphics_count": 135353.0,
+      "prediction_action_sensitivity": 0.0022217498626559973,
+      "reward_mse": 0.012865912169218063,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.0004950053407810628,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 14,
+      "pixel_mse": 0.20600402355194092,
+      "graphics_mse": 0.4119333028793335,
+      "rotated_graphics_mse": 0.43560734391212463,
+      "persistence_graphics_mse": 0.51251220703125,
+      "changed_graphics_mse": 0.7521811723709106,
+      "changed_graphics_count": 151146.0,
+      "prediction_action_sensitivity": 0.013711108826100826,
+      "reward_mse": 0.0025031317491084337,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 3.210056820535101e-05,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 15,
+      "pixel_mse": 0.022850602865219116,
+      "graphics_mse": 0.0456344410777092,
+      "rotated_graphics_mse": 0.04426681250333786,
+      "persistence_graphics_mse": 0.0411241315305233,
+      "changed_graphics_mse": 0.437423437833786,
+      "changed_graphics_count": 12128.0,
+      "prediction_action_sensitivity": 0.0027633325662463903,
+      "reward_mse": 0.0019720662385225296,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00010752960224635899,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 16,
+      "pixel_mse": 0.17490917444229126,
+      "graphics_mse": 0.34978947043418884,
+      "rotated_graphics_mse": 0.3501143455505371,
+      "persistence_graphics_mse": 0.4241841733455658,
+      "changed_graphics_mse": 0.7482835054397583,
+      "changed_graphics_count": 125097.0,
+      "prediction_action_sensitivity": 0.0013391132233664393,
+      "reward_mse": 0.00790282804518938,
+      "zero_reward_mse": 0.00416666641831398,
+      "positive_reward_mse": 0.04855378344655037,
+      "positive_rewards": 5.0,
+      "continuation_brier": 0.9846780300140381,
+      "always_continue_brier": 1.0,
+      "visible_boundaries": 48.0
+    },
+    {
+      "horizon": 17,
+      "pixel_mse": 0.2207438051700592,
+      "graphics_mse": 0.4414544999599457,
+      "rotated_graphics_mse": 0.4719972610473633,
+      "persistence_graphics_mse": 0.5498453974723816,
+      "changed_graphics_mse": 0.7560253739356995,
+      "changed_graphics_count": 162156.0,
+      "prediction_action_sensitivity": 0.018546054139733315,
+      "reward_mse": 0.003002312034368515,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00015412166249006987,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 18,
+      "pixel_mse": 0.02294187806546688,
+      "graphics_mse": 0.04584580287337303,
+      "rotated_graphics_mse": 0.04299014434218407,
+      "persistence_graphics_mse": 0.0414496548473835,
+      "changed_graphics_mse": 0.4395330846309662,
+      "changed_graphics_count": 12224.0,
+      "prediction_action_sensitivity": 0.003200174542143941,
+      "reward_mse": 0.002669593319296837,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.0001334245316684246,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 19,
+      "pixel_mse": 0.15696628391742706,
+      "graphics_mse": 0.31388577818870544,
+      "rotated_graphics_mse": 0.3140932321548462,
+      "persistence_graphics_mse": 0.3746405839920044,
+      "changed_graphics_mse": 0.7371097207069397,
+      "changed_graphics_count": 110486.0,
+      "prediction_action_sensitivity": 0.002047238638624549,
+      "reward_mse": 0.0023255168925970793,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.0004834343562833965,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 20,
+      "pixel_mse": 0.241349995136261,
+      "graphics_mse": 0.4826505482196808,
+      "rotated_graphics_mse": 0.5132266283035278,
+      "persistence_graphics_mse": 0.5968729853630066,
+      "changed_graphics_mse": 0.7692041397094727,
+      "changed_graphics_count": 176025.0,
+      "prediction_action_sensitivity": 0.018418893218040466,
+      "reward_mse": 0.0020114071667194366,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00011468524462543428,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 21,
+      "pixel_mse": 0.02468511462211609,
+      "graphics_mse": 0.049324166029691696,
+      "rotated_graphics_mse": 0.04558459669351578,
+      "persistence_graphics_mse": 0.0416904017329216,
+      "changed_graphics_mse": 0.4523610770702362,
+      "changed_graphics_count": 12295.0,
+      "prediction_action_sensitivity": 0.00456257164478302,
+      "reward_mse": 0.0022100911010056734,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00013270380441099405,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 22,
+      "pixel_mse": 0.1410299390554428,
+      "graphics_mse": 0.282015860080719,
+      "rotated_graphics_mse": 0.28110894560813904,
+      "persistence_graphics_mse": 0.328881174325943,
+      "changed_graphics_mse": 0.7221296429634094,
+      "changed_graphics_count": 96991.0,
+      "prediction_action_sensitivity": 0.0026458005886524916,
+      "reward_mse": 0.001795093878172338,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.0005441062385216355,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 23,
+      "pixel_mse": 0.26079756021499634,
+      "graphics_mse": 0.5215561389923096,
+      "rotated_graphics_mse": 0.5533454418182373,
+      "persistence_graphics_mse": 0.6397976279258728,
+      "changed_graphics_mse": 0.7792222499847412,
+      "changed_graphics_count": 188684.0,
+      "prediction_action_sensitivity": 0.019209912046790123,
+      "reward_mse": 0.0046386802569031715,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00018301070667803288,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    },
+    {
+      "horizon": 24,
+      "pixel_mse": 0.027499599382281303,
+      "graphics_mse": 0.05496811866760254,
+      "rotated_graphics_mse": 0.04806504026055336,
+      "persistence_graphics_mse": 0.0438707135617733,
+      "changed_graphics_mse": 0.47348442673683167,
+      "changed_graphics_count": 12938.0,
+      "prediction_action_sensitivity": 0.00714994128793478,
+      "reward_mse": 0.018291277810931206,
+      "zero_reward_mse": 0.0,
+      "positive_reward_mse": 0.0,
+      "positive_rewards": 0.0,
+      "continuation_brier": 0.00014079842367209494,
+      "always_continue_brier": 0.0,
+      "visible_boundaries": 0.0
+    }
+  ],
+  "limitations": [
+    "Whole held-out own-collection games, never gradient-update data.",
+    "Deterministic mean-latent forecasts, not distribution-calibrated samples.",
+    "Pixel accuracy and action sensitivity do not establish useful control.",
+    "Rotated labels are a sensitivity check, not true counterfactual observations.",
+    "Continuation labels use visible life boundaries, not exact collision times.",
+    "No actor, imagination-based behavior learning or mission claim yet."
+  ],
+  "checkpoint_sha256": "a6b5d274fa0a1f54da363cf98d74db66ba0dd5d769c005bb4dbe2820c5d32ed8",
+  "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+  "review_source_sha256": "e1ac5ac460791d0d2a8c782de6842b9da4d15b7a59019ff69c826fa229161ad9",
+  "origins": [
+    {
+      "file": "source-00-source-00-source-00-episode-0020.npz",
+      "start": 182,
+      "visible_loss_action": 205,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0020.npz",
+      "start": 696,
+      "visible_loss_action": 719,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0020.npz",
+      "start": 1211,
+      "visible_loss_action": 1234,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0021.npz",
+      "start": 98,
+      "visible_loss_action": 121,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0021.npz",
+      "start": 581,
+      "visible_loss_action": 604,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0021.npz",
+      "start": 1151,
+      "visible_loss_action": 1174,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0022.npz",
+      "start": 371,
+      "visible_loss_action": 394,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0022.npz",
+      "start": 885,
+      "visible_loss_action": 908,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0022.npz",
+      "start": 1571,
+      "visible_loss_action": 1594,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0023.npz",
+      "start": 170,
+      "visible_loss_action": 193,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0023.npz",
+      "start": 675,
+      "visible_loss_action": 698,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-00-episode-0023.npz",
+      "start": 1413,
+      "visible_loss_action": 1436,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0020.npz",
+      "start": 385,
+      "visible_loss_action": 408,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0020.npz",
+      "start": 965,
+      "visible_loss_action": 988,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0020.npz",
+      "start": 1664,
+      "visible_loss_action": 1687,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0021.npz",
+      "start": 380,
+      "visible_loss_action": 403,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0021.npz",
+      "start": 1081,
+      "visible_loss_action": 1104,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0021.npz",
+      "start": 1810,
+      "visible_loss_action": 1833,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0022.npz",
+      "start": 384,
+      "visible_loss_action": 407,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0022.npz",
+      "start": 1105,
+      "visible_loss_action": 1128,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0022.npz",
+      "start": 1635,
+      "visible_loss_action": 1658,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0023.npz",
+      "start": 381,
+      "visible_loss_action": 404,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0023.npz",
+      "start": 1106,
+      "visible_loss_action": 1129,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-00-source-01-episode-0023.npz",
+      "start": 1598,
+      "visible_loss_action": 1621,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0020.npz",
+      "start": 126,
+      "visible_loss_action": 149,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0020.npz",
+      "start": 606,
+      "visible_loss_action": 629,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0020.npz",
+      "start": 1057,
+      "visible_loss_action": 1080,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0021.npz",
+      "start": 140,
+      "visible_loss_action": 163,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0021.npz",
+      "start": 599,
+      "visible_loss_action": 622,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0021.npz",
+      "start": 1068,
+      "visible_loss_action": 1091,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0022.npz",
+      "start": 113,
+      "visible_loss_action": 136,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0022.npz",
+      "start": 584,
+      "visible_loss_action": 607,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0022.npz",
+      "start": 1036,
+      "visible_loss_action": 1059,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0023.npz",
+      "start": 140,
+      "visible_loss_action": 163,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0023.npz",
+      "start": 596,
+      "visible_loss_action": 619,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-00-source-01-episode-0023.npz",
+      "start": 1063,
+      "visible_loss_action": 1086,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0020.npz",
+      "start": 126,
+      "visible_loss_action": 149,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0020.npz",
+      "start": 594,
+      "visible_loss_action": 617,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0020.npz",
+      "start": 1075,
+      "visible_loss_action": 1098,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0021.npz",
+      "start": 126,
+      "visible_loss_action": 149,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0021.npz",
+      "start": 563,
+      "visible_loss_action": 586,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0021.npz",
+      "start": 1023,
+      "visible_loss_action": 1046,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0022.npz",
+      "start": 113,
+      "visible_loss_action": 136,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0022.npz",
+      "start": 565,
+      "visible_loss_action": 588,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0022.npz",
+      "start": 1018,
+      "visible_loss_action": 1041,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0023.npz",
+      "start": 125,
+      "visible_loss_action": 148,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0023.npz",
+      "start": 559,
+      "visible_loss_action": 582,
+      "visible_loss_horizon": 16
+    },
+    {
+      "file": "source-01-episode-0023.npz",
+      "start": 1026,
+      "visible_loss_action": 1049,
+      "visible_loss_horizon": 16
+    }
+  ],
+  "selection": "held-out windows with visible loss at forecast action 16; excludes incomplete windows",
+  "training_updates": 0,
+  "promotion_eligible": false
+}

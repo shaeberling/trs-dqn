@@ -1,0 +1,54 @@
+{
+  "data": "/Users/sascha/source/trs-dqn/runs/defense-world-data-feedback-02",
+  "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+  "architecture": "small-gaussian-rssm-v1",
+  "reward_scale": 0.01,
+  "batch": 8,
+  "length": 32,
+  "burn": 8,
+  "train_games": 80,
+  "heldout_games": 16,
+  "boundary_fraction": 0.0,
+  "overshooting": {
+    "distance": 1,
+    "weight": 0.0
+  },
+  "prior_outputs": {
+    "weight": 0.1
+  },
+  "prior_output_source_sha256": "71dfc992302f93e79568df334ae0e051a3abe86a28b2efcb7be01e8eb8139ffe",
+  "byte_reconstruction": null,
+  "byte_source_sha256": null,
+  "byte_audit_source_sha256": null,
+  "train_windows": 144145,
+  "heldout_windows": 28871,
+  "fit_source_sha256": "d5bcbae0e0a3fc6fbc41787b1288cec154cdd861302342181fc76a0a5bba150b",
+  "model_source_sha256": "85aa9e1c6873cd59f86a442769b0e62ab4f0ea6a6a5eaf6776cabe8af489a3bb",
+  "dynamics_only": true,
+  "promotion_eligible": false,
+  "source_paper": "https://arxiv.org/abs/1912.01603",
+  "args": {
+    "data": "runs/defense-world-data-feedback-02",
+    "output": "runs/defense-world-fit-15-prior-output",
+    "updates": 22000,
+    "batch": 8,
+    "length": 32,
+    "burn": 8,
+    "audit_windows": 64,
+    "every": 1000,
+    "seed": 0,
+    "resume": "runs/defense-world-fit-10-byte-control/update-020000",
+    "extend_data": false,
+    "boundary_fraction": 0.0,
+    "change_sampling": false,
+    "overshoot_distance": 1,
+    "overshoot_weight": 0.0,
+    "change_objective": true,
+    "byte_weight": 0.0,
+    "prior_output_weight": 0.1
+  },
+  "previous_prior_outputs": {
+    "weight": 0.0
+  },
+  "objective_changed": true
+}
