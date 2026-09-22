@@ -1,7 +1,9 @@
-"""Optional own-encoder transfer for a fresh Defense learner, not a resume.
+"""Optional own-policy or own-encoder transfer for a fresh Defense learner.
 
-Only learned screen-encoder parameters are copied. Heads, optimizer, counters,
-RNGs and emulator episodes remain fresh. No trajectories or native states load.
+Encoder-only transfer retains fresh heads; full-policy transfer copies the
+entire learned feedforward base into a zero-output recurrent residual network.
+Optimizer, counters, RNGs and episodes remain fresh. No trajectories or native
+states load.
 """
 
 import hashlib
@@ -42,7 +44,8 @@ def initialize_policy(model, checkpoint, *, allow_enter=False, tstates=100000, o
     return dict(method='own full feedforward PPO; zero-output residual memory; fresh optimizer and counters',
                 source_checkpoint=str(checkpoint), source_model_sha256=hashlib.sha256(weights_bytes).hexdigest(),
                 source_state_sha256=hashlib.sha256(state_bytes).hexdigest(),
-                source_training_steps=state.get('steps'), frozen_parameters=False,
+                source_training_steps=state.get('steps'),
+                frozen_parameters=not bool(tree_flatten(model.base.trainable_parameters())),
                 trajectories_loaded=False, native_states_loaded=False)
 
 

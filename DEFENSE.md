@@ -2400,6 +2400,56 @@ venv/bin/python -m rl.defense_train --run runs/defense-recurrent-control-reprodu
   --memory-scale 0 --steps 32768
 ```
 
+#### Frozen own-policy residual experiment
+
+`--freeze-recurrent-base` freezes the own initialized CNN, feature layer and
+original actor/value heads **before Adam is constructed**. Only the GRU and
+its actor/value residual heads receive gradients and optimizer slots. Complete
+checkpoints still save every frozen weight, so evaluation/replay needs no
+external base model. The default remains fully trainable; fresh frozen mode
+requires compatible `--initialize-policy` and enabled memory. Changing the
+frozen set during optimizer resume is rejected rather than silently mixing
+incompatible optimizer states.
+
+This tests whether a fixed base can retain a useful starting representation
+while a learned residual adapts it. A related decomposition appears in
+[Residual Reinforcement Learning for Robot Control](https://arxiv.org/abs/1812.03201).
+That work combines conventional continuous control with a learned correction;
+ours is **not a reproduction**: it adds categorical-logit/value residuals over
+our own RL-trained neural policy. No conventional controller, action oracle,
+demonstration or hidden game information enters this experiment. Freezing
+guarantees unchanged base parameters, **not unchanged overall behavior or a
+performance improvement**; the learned residual can still make play worse.
+
+The [frozen initializer](results/defense/training/recurrent-frozen-initial-01/checkpoint/state.json)
+has **byte-identical model weights and identical policy RNG** to the original
+recurrent initializer. All **18** retained optimizer arrays exactly equal
+their original zero-step values; the original **42-array** optimizer's base
+slots are absent. The [parity record](results/defense/training/recurrent-frozen-initial-01/parity.json)
+checks the saved inference settings too. This reuses the prior verified
+initializer's identity; it is not a newly measured ten-game evaluation.
+Provenance retains the own feedforward parent's **10,447,616** training actions.
+
+All [**262 regression tests passed**](results/defense/diagnostics/frozen-recurrent-regression-tests.txt).
+New checks establish exact base immutability while memory weights learn,
+absence of base gradients/optimizer slots, complete checkpoint serialization,
+native saved-policy replay reproduction, inherited freezing on real training
+resume, incompatible-mode rejection and unchanged default initialization.
+
+`defense-recurrent-frozen-calibration-01` tests **131,072** new actions with
+32 workers, eight boot-only workers and the same learning settings as the
+previous memory-enabled calibration. It starts from the exact-weight frozen
+initializer, not the already-trained short result. It is a bounded comparison,
+excluded from the collector; freezing is a hypothesis, not an established fix.
+
+```bash
+venv/bin/python -u -m rl.defense_train \
+  --run runs/defense-recurrent-frozen-calibration-reproduction \
+  --artifacts runs/defense-recurrent-frozen-calibration-reproduction/artifacts \
+  --resume results/defense/training/recurrent-frozen-initial-01/checkpoint \
+  --steps 131072
+```
+
 ### Independent Double-DQN training path
 
 `python -m rl.defense_dqn` provides a separate value-learning alternative to
@@ -3003,6 +3053,13 @@ and [losslessly compressed complete log](results/defense/training/dqn-24-bootstr
 are preserved. Resuming restores weights, target, priors, optimizer and RNG,
 but refills replay from new own experience; it is not an exact continuation
 of the in-memory training buffer. No historical files were removed.
+
+The first post-storage-resume DQN evaluation at
+[**7,583,056**](results/defense/training/dqn-24-bootstrap/step-000007583056/evaluation.json)
+averaged **10,090**, median **10,100**, best **10,200**, all ten stage-1 losses.
+Its full online/target/prior/optimizer checkpoint is preserved. This is slightly
+below the final pre-pause mean 10,170 and does not improve the saved 10,410-point
+bootstrap best. The replay buffer refilled from new own experience after resume.
 
 A [frozen-head diagnostic](results/defense/diagnostics/bootstrap-800000-heads.json)
 then compared this exact checkpoint's greedy ensemble with each individual
