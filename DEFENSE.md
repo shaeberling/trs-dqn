@@ -14,7 +14,8 @@ frozen-base screen-history memory after
 a verified bounded comparison. Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
 Full DQN trials 31/32 now compare persistent random exploration with the
-unchanged control after a positive but weak short-run comparison.
+unchanged control. The positive but weak short-run comparison reversed in
+their first full-run validation; all games still lost in stage 1.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -2614,7 +2615,7 @@ segments. This is continued retention, slightly above calibration's mean
 tied best score does not replace the global replay. Unlimited learning continues.
 
 The [next four validation rounds](results/defense/training/ppo-30-frozen-memory/validation-through-000001138688.json)
-had means **10,464**, **10,382**, **10,476** and **10,464**. The peak at
+had means **10,464**, **10,382**, **10,476** and **10,464**. The then-peak at
 **933,888** is preserved as a
 [full optimizer checkpoint](results/defense/training/ppo-30-frozen-memory/step-000000933888/evaluation.json).
 Independent frozen re-evaluation exactly reproduced **all ten game records**,
@@ -2625,6 +2626,22 @@ were introduced. Mean 10,476 is only **two points** above that parent's 10,474,
 and below run 21's earlier 10,478. All games still end in stage 1, with no
 mission. This separately preserved evaluation-only replay does not replace
 the tied global best or supply training data.
+
+Reviewing the [first eighteen complete validation rounds](results/defense/training/ppo-30-frozen-memory/validation-through-000003735552.json)
+identified a later mean-score peak at **1,335,296**: **all ten games scored
+10,480**, all ending in stage 1 without a mission. That previously unarchived
+[full optimizer checkpoint](results/defense/training/ppo-30-frozen-memory/step-000001335296/evaluation.json)
+is now preserved. Independent frozen re-evaluation reproduced **every one of
+the ten complete game records exactly**, and the separate
+[2,577-action replay](results/defense/training/ppo-30-frozen-memory/replay-peak-1335296/replay.html)
+reproduced every neural action, screen and reward from boot. All twelve base
+arrays still exactly match the original own feedforward parent, with no base
+optimizer slots. The mean is six points above that parent's 10,474, not a
+new single-game ceiling or stage clear. These are repeatedly used validation
+seeds, not a fresh success-rate test. Later means varied again (10,328 at
+3,735,552); all eighteen rounds stayed in stage 1. The stable shared replay
+remains unchanged on a tied best; this selected peak is separately available
+and excluded from training data and automatic evaluation-probe promotion.
 
 ```bash
 venv/bin/python -u -m rl.defense_train \
@@ -2895,6 +2912,19 @@ Full online/target/optimizer/RNG checkpoints, configurations, logs and verified
 replays are preserved for both arms. Training games and exploratory actions
 are not substituted for greedy validation results.
 
+A [screen-only check of these two selected calibration replays](results/defense/diagnostics/shared-loss-persistent-01/report.json)
+also does **not** establish passage through the diagnosed obstacle sequence.
+The [control's life totals](results/defense/diagnostics/shared-loss-persistent-01/policy-1-losses.png)
+are **2,600 / 2,580 / 2,600 / 2,570**; the
+[persistent model's totals](results/defense/diagnostics/shared-loss-persistent-01/policy-2-losses.png)
+are **2,600 / 2,600 / 2,600 / 2,640**. Some windows show explosion graphics near
+the preceding center-gap barrier while the broad barrier is still well above
+the ship; they are not all identical to the older best's later approach.
+The same flash-alignment limitations apply, and no exact collision cause or
+course index was measured. In particular, one 2,640-point life is not proof
+of crossing the barrier. These are read-only views of already verified games,
+not additional evaluations, learning inputs or a change to the running trial.
+
 To test durability with a matched baseline, unlimited full trials now continue
 each arm's own **6,231,072** checkpoint:
 [DQN 31 persistent configuration](results/defense/training/dqn-31-persistent/resume-config.json)
@@ -2908,6 +2938,26 @@ PPO 30 continue independently. The sole collector was stopped cleanly,
 confirmed gone, then restarted with both full-run sources and all 26 historical
 sources. Short calibration sources remain excluded. Any new global best still
 requires independent frozen-policy replay verification.
+
+The [first full-run comparison at **6,431,072**](results/defense/training/dqn-31-persistent/comparison-at-000006431072.json)
+adds **200,000** actions per arm after calibration (**331,072** after the common
+original parent). It reverses the short-run mean advantage:
+
+| Full trial | Ten-game mean | Median | Best | Verified greedy replay |
+| --- | ---: | ---: | ---: | --- |
+| [DQN 31 persistent](results/defense/training/dqn-31-persistent/step-000006431072/evaluation.json) | 9,373 | 10,280 | 10,310 | [2,483 actions](results/defense/training/dqn-31-persistent/first-replay/replay.html) |
+| [DQN 32 control](results/defense/training/dqn-32-persistent-control/step-000006431072/evaluation.json) | 10,278 | 10,280 | 10,280 | [2,545 actions](results/defense/training/dqn-32-persistent-control/first-replay/replay.html) |
+
+All twenty complete games lost in stage 1. Persistence is **905 points lower
+on average**, with two higher, four lower and four tied seeds. Its exploratory
+step fraction during this continuation was **5.212%** (9,902 / 189,968 after
+warmup), not a sudden increase in random-action volume. The learners completed
+**89** and **88** new boot games respectively, with no restored segments.
+Both full online/target/optimizer/RNG checkpoints and independently verified
+replays are preserved. The earlier, higher-scoring calibration replays are
+unchanged. This does not establish that persistence helps; both trials continue
+unchanged for further matched rounds, without treating a single batch as a
+success or a definitive rejection. Neither replaced the shared 10,480 best.
 
 ```bash
 # Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
