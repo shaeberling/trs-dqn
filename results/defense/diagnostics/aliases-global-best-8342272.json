@@ -1,0 +1,264 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+  "checkpoint_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+  "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+  "state_sha256": "18e57e6d83f8619fef850a40b5d8de43ebe9a7f3a287917e1daf0771590c7aa0",
+  "probe_source_sha256": "392aa0c2409a9be50a88ac66cefdad5ba1d2f4b6b12156cd771e98d16a012e1f",
+  "result": {
+    "seed": 10004,
+    "score": 10480,
+    "lives": 0,
+    "stage": 1,
+    "game_over": true,
+    "mission_complete": false,
+    "highest_stage": 1,
+    "missions_completed": 0,
+    "mission_completed": false,
+    "life_lost": true,
+    "steps": 2580,
+    "terminated": true,
+    "truncated": false,
+    "episode_reward": 10480.0,
+    "hud_settle_tstates": 0,
+    "terminal_settle_tstates": 1202000,
+    "start_tstates": 80324
+  },
+  "diagnostic_only": true,
+  "promotion_eligible": false,
+  "parameter_updates": 0,
+  "training_data_written": false,
+  "replay_actions_reproduced": 2580,
+  "max_original_float32_probability_sum_error": 3.83982773466407e-06,
+  "native_reexecution": false,
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 2580,
+    "temperature": 1.0,
+    "checkpoint_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "command_groups": [
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      2
+    ],
+    [
+      3
+    ],
+    [
+      4
+    ],
+    [
+      5
+    ],
+    [
+      6
+    ],
+    [
+      7
+    ],
+    [
+      8
+    ],
+    [
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ],
+    [
+      18
+    ],
+    [
+      19
+    ]
+  ],
+  "whole_replay": {
+    "observations": 2580,
+    "mean_raw_entropy_nats": 0.37958174122147287,
+    "mean_group_entropy_nats": 0.25837930359674577,
+    "mean_alias_entropy_nats": 0.1212024376247271,
+    "alias_fraction_of_entropy": 0.319305236428666,
+    "mean_movement_probability": 0.55542483812771,
+    "mean_forward_fire_alias_probability": 0.35913771816093976,
+    "mean_probabilities": {
+      "NOOP": 0.0277640217518974,
+      "UP": 0.011794282511548645,
+      "DOWN": 0.03571170500925973,
+      "LEFT": 0.07199343268954159,
+      "RIGHT": 0.04874692957226066,
+      "UP+LEFT": 0.019364825348297744,
+      "UP+RIGHT": 0.028473291286717828,
+      "DOWN+LEFT": 0.2764779633189514,
+      "DOWN+RIGHT": 0.06286240839113177,
+      "SPACE": 0.03279797338347904,
+      "UP+SPACE": 0.14404473808426627,
+      "DOWN+SPACE": 0.05514523539350807,
+      "LEFT+SPACE": 0.04946600328184325,
+      "RIGHT+SPACE": 0.0034596035394359615,
+      "UP+LEFT+SPACE": 0.043901846743757154,
+      "UP+RIGHT+SPACE": 0.010305765179180599,
+      "DOWN+LEFT+SPACE": 0.009721582513834062,
+      "DOWN+RIGHT+SPACE": 0.010294970041637815,
+      "LEFT+RIGHT": 0.04649453366007054,
+      "LEFT+RIGHT+SPACE": 0.011178888299381498
+    }
+  },
+  "pre_visible_loss_windows": [
+    {
+      "first_decision": 282,
+      "stop_decision_exclusive": 410,
+      "visible_lives_after": 3,
+      "observations": 128,
+      "mean_raw_entropy_nats": 0.43085867324337795,
+      "mean_group_entropy_nats": 0.3191664929471236,
+      "mean_alias_entropy_nats": 0.11169218029625433,
+      "alias_fraction_of_entropy": 0.2592315931706058,
+      "mean_movement_probability": 0.5663387374524704,
+      "mean_forward_fire_alias_probability": 0.23906875230655295,
+      "mean_probabilities": {
+        "NOOP": 0.0256871070017151,
+        "UP": 0.03127784526807438,
+        "DOWN": 0.0578623269580072,
+        "LEFT": 0.0934503242842347,
+        "RIGHT": 0.016030984042753844,
+        "UP+LEFT": 0.0005392473883896313,
+        "UP+RIGHT": 0.11204542865038607,
+        "DOWN+LEFT": 0.16726021580975847,
+        "DOWN+RIGHT": 0.0878723650508662,
+        "SPACE": 0.024249493962421115,
+        "UP+SPACE": 0.054590570640986866,
+        "DOWN+SPACE": 0.08414631976122136,
+        "LEFT+SPACE": 0.02282559934335177,
+        "RIGHT+SPACE": 7.621593247902185e-06,
+        "UP+LEFT+SPACE": 0.021022221015697107,
+        "UP+RIGHT+SPACE": 0.011359041199368803,
+        "DOWN+LEFT+SPACE": 0.020738892539089306,
+        "DOWN+RIGHT+SPACE": 0.00012899225116871988,
+        "LEFT+RIGHT": 0.1591878205835673,
+        "LEFT+RIGHT+SPACE": 0.009717582655694208
+      }
+    },
+    {
+      "first_decision": 1005,
+      "stop_decision_exclusive": 1133,
+      "visible_lives_after": 2,
+      "observations": 128,
+      "mean_raw_entropy_nats": 0.33532245358440343,
+      "mean_group_entropy_nats": 0.28395471314361986,
+      "mean_alias_entropy_nats": 0.05136774044078357,
+      "alias_fraction_of_entropy": 0.153189086778091,
+      "mean_movement_probability": 0.6469377363710032,
+      "mean_forward_fire_alias_probability": 0.19939020094520948,
+      "mean_probabilities": {
+        "NOOP": 0.03887161505438799,
+        "UP": 0.026068231056574825,
+        "DOWN": 0.07884279563130399,
+        "LEFT": 0.11636180469265038,
+        "RIGHT": 0.06024910786596489,
+        "UP+LEFT": 0.0005563418244621066,
+        "UP+RIGHT": 0.10486302583891836,
+        "DOWN+LEFT": 0.15830998330954882,
+        "DOWN+RIGHT": 0.10168644615157964,
+        "SPACE": 0.01090496331972876,
+        "UP+SPACE": 0.05470772692983924,
+        "DOWN+SPACE": 0.08485806582578127,
+        "LEFT+SPACE": 0.01164389851931017,
+        "RIGHT+SPACE": 3.799049274332783e-05,
+        "UP+LEFT+SPACE": 0.031580174174380596,
+        "UP+RIGHT+SPACE": 0.001248411329488913,
+        "DOWN+LEFT+SPACE": 0.003191837637212653,
+        "DOWN+RIGHT+SPACE": 0.0012171327167244974,
+        "LEFT+RIGHT": 0.10704742671686494,
+        "LEFT+RIGHT+SPACE": 0.007753020912534502
+      }
+    },
+    {
+      "first_decision": 1735,
+      "stop_decision_exclusive": 1863,
+      "visible_lives_after": 1,
+      "observations": 128,
+      "mean_raw_entropy_nats": 0.40776796043578095,
+      "mean_group_entropy_nats": 0.32907530806215524,
+      "mean_alias_entropy_nats": 0.07869265237362572,
+      "alias_fraction_of_entropy": 0.1929839026330735,
+      "mean_movement_probability": 0.6179909251103602,
+      "mean_forward_fire_alias_probability": 0.24158280358134773,
+      "mean_probabilities": {
+        "NOOP": 0.034293155618457694,
+        "UP": 0.03052849664389616,
+        "DOWN": 0.09393261882144452,
+        "LEFT": 0.09477781009472211,
+        "RIGHT": 0.04293788989644084,
+        "UP+LEFT": 0.00037490926532565233,
+        "UP+RIGHT": 0.07704213693738074,
+        "DOWN+LEFT": 0.15515353950148167,
+        "DOWN+RIGHT": 0.12324352394966855,
+        "SPACE": 0.010242704494522208,
+        "UP+SPACE": 0.07858394951871663,
+        "DOWN+SPACE": 0.08102817981847354,
+        "LEFT+SPACE": 0.020261039888210108,
+        "RIGHT+SPACE": 3.6816182460428434e-05,
+        "UP+LEFT+SPACE": 0.036604395106900195,
+        "UP+RIGHT+SPACE": 0.00550756035725357,
+        "DOWN+LEFT+SPACE": 0.008638709756567792,
+        "DOWN+RIGHT+SPACE": 0.0006794484582432987,
+        "LEFT+RIGHT": 0.0938424731501833,
+        "LEFT+RIGHT+SPACE": 0.012290642539651014
+      }
+    },
+    {
+      "first_decision": 2452,
+      "stop_decision_exclusive": 2580,
+      "visible_lives_after": 0,
+      "observations": 128,
+      "mean_raw_entropy_nats": 0.27667323155891804,
+      "mean_group_entropy_nats": 0.22029414971095018,
+      "mean_alias_entropy_nats": 0.05637908184796786,
+      "alias_fraction_of_entropy": 0.20377497862839627,
+      "mean_movement_probability": 0.5846015263175999,
+      "mean_forward_fire_alias_probability": 0.2698301524373583,
+      "mean_probabilities": {
+        "NOOP": 0.02960139923397097,
+        "UP": 0.02403500082220833,
+        "DOWN": 0.07217295024061166,
+        "LEFT": 0.11794196136727823,
+        "RIGHT": 0.030252878358702103,
+        "UP+LEFT": 1.3287901683470773e-05,
+        "UP+RIGHT": 0.06776392295365397,
+        "DOWN+LEFT": 0.12757726003443387,
+        "DOWN+RIGHT": 0.14484426463902828,
+        "SPACE": 0.0013180041453069126,
+        "UP+SPACE": 0.04393993435587999,
+        "DOWN+SPACE": 0.10502040414153714,
+        "LEFT+SPACE": 0.013652479109952835,
+        "RIGHT+SPACE": 8.215626014132515e-07,
+        "UP+LEFT+SPACE": 0.05696564931645757,
+        "UP+RIGHT+SPACE": 0.03429518243687776,
+        "DOWN+LEFT+SPACE": 0.014620074983268177,
+        "DOWN+RIGHT+SPACE": 1.7602385476402292e-05,
+        "LEFT+RIGHT": 0.11141903674289054,
+        "LEFT+RIGHT+SPACE": 0.004547885268180212
+      }
+    }
+  ],
+  "limitations": [
+    "One selected own-policy replay, not a fresh complete-game evaluation.",
+    "Grouping describes stage-one input commands, not unique physical outcomes.",
+    "Full trajectory includes animations; visible loss can lag physical collision.",
+    "Action reproduction uses original float32 probabilities; entropy uses renormalized float64 rows.",
+    "No policy, action-space or training behavior is changed by this diagnostic."
+  ]
+}
