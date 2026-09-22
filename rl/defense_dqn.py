@@ -32,6 +32,8 @@ def main():
                         help="fresh quantile/action-duration learner initialized from own scalar DQN online weights")
     parser.add_argument("--learned-repeats", type=str,
                         help="optional joint learned action durations, e.g. 1,4,16,64; requires n-step 1")
+    parser.add_argument("--repeat-n-step", type=int, default=1,
+                        help="completed options per return, 1..32; >1 requires learned repeats; discount remains per base action")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
     parser.add_argument("--seed", type=int, default=97)
     parser.add_argument("--envs", type=int, default=8)
@@ -124,6 +126,8 @@ def main():
         if not all((args.resume/name).is_file() for name in
                    ("model.safetensors", "target.safetensors", "optimizer.npz")):
             parser.error("DQN resume requires online, target and optimizer checkpoints")
+    if not 1 <= args.repeat_n_step <= 32 or (args.repeat_n_step != 1 and args.learned_repeats is None):
+        parser.error('repeat-n-step must be 1..32 and requires learned repeats when greater than one')
     if args.learned_repeats is not None:
         from .defense_repeat import validate_spec
         try:
@@ -135,7 +139,7 @@ def main():
         if (args.n_step != 1 or not args.life_terminal or args.exploration_max_repeat != 1
                 or args.bootstrap_heads or args.quantiles or args.greedy_trace_cut
                 or args.spr_weight or args.inverse_weight or args.exploration_actions != 'uniform'):
-            parser.error('learned repeats require scalar one-option targets, life boundaries and no other exploration/auxiliary variant')
+            parser.error('learned repeats require scalar option targets, n-step 1, life boundaries and no other exploration/auxiliary variant')
         if prior and tuple(prior['config'].get('learned_repeats', ())) != args.learned_repeats:
             parser.error('learned duration set must match the resumed model')
     if min(args.envs, args.batch_size, args.capacity, args.n_step, args.train_every,
@@ -345,6 +349,11 @@ def main():
                       repeat_observation='original base-action screen cadence; no skipped-history subsampling',
                       repeat_resume='restore Q/target/Adam/RNG; new boot games, empty option/replay state',
                       policy=policy_description(config), evaluation_policy=policy_description(config))
+        if args.repeat_n_step > 1:
+            config.update(option_returns_source_sha256=sha256(Path(__file__).with_name('defense_option_returns.py')),
+                          repeat_target='up to repeat_n_step actual completed options; discounted own score; product of gamma**actual_duration; zero on visible life loss',
+                          repeat_return_boundary='flush all queued starts on visible life loss or episode end; truncation bootstraps; never crosses a boundary',
+                          repeat_return_resume='discard unfinished option and queued starts; refill from new own experience')
         if initialization is not None:
             config['repeat_initialization'] = initialization
         elif prior and 'repeat_initialization' in prior['config']:
@@ -469,9 +478,14 @@ def main():
     else:
         replay = Replay(args.capacity, compact=args.compact_replay)
     buffer_type = TraceNStep if args.greedy_trace_cut or args.spr_weight or args.inverse_weight else NStep
-    buffers = ([OptionReturns(replay, args.gamma, len(config['action_names']), args.learned_repeats)
-                for _ in range(args.envs)] if repeated is not None else
-               [buffer_type(replay, args.n_step, args.gamma) for _ in range(args.envs)])
+    if repeated is not None and args.repeat_n_step > 1:
+        from .defense_option_returns import MultiOptionReturns
+        buffers = [MultiOptionReturns(replay, args.repeat_n_step, args.gamma,
+                   len(config['action_names']), args.learned_repeats) for _ in range(args.envs)]
+    else:
+        buffers = ([OptionReturns(replay, args.gamma, len(config['action_names']), args.learned_repeats)
+                    for _ in range(args.envs)] if repeated is not None else
+                   [buffer_type(replay, args.n_step, args.gamma) for _ in range(args.envs)])
     recent = deque(maxlen=100)
     recent_restored = deque(maxlen=100)
     started, start_steps = time.monotonic(), steps
@@ -494,6 +508,9 @@ def main():
             saved['learned_repeat_stats'] = repeated.stats()
             saved['learned_repeat_completed'] = sum(b.completed for b in buffers)
             saved['learned_repeat_interrupted'] = sum(b.interrupted for b in buffers)
+            if args.repeat_n_step > 1:
+                saved['learned_repeat_returns_emitted'] = sum(b.emitted for b in buffers)
+                saved['learned_repeat_returns_queued'] = sum(len(b.queue) for b in buffers)
         if args.greedy_trace_cut:
             saved["greedy_trace"] = agent.trace_stats()
         if args.spr_weight:
