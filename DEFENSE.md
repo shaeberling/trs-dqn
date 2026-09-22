@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **399-test** suite passes, including
+(23 GiB available at restart). The full **403-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
@@ -62,12 +62,21 @@ regressed to mean 110. A subsequent [matched four-step latent regularizer](resul
 also failed to improve loss forecasts or play; final control/regularized actor
 means are 120 / 112, all stage 1. Both complete states, all intermediate
 checkpoints and verified local bests are retained. The global collector now
-watches 61 sources and still preserves the stronger 10,480-point replay.
+watches 63 sources and still preserves the stronger 10,480-point replay.
 A [frozen text-reconstruction diagnostic](results/defense/diagnostics/world-text-reconstruction-01/README.md)
 finds weak reconstruction of changed visible text even when observing the
 arrival screen. It includes tolerance and star/space checks to avoid equating
 small numeric errors with total information loss. This motivates inspecting
 the reconstruction objective; it is not proof of the collision cause or a fix.
+A completed [categorical visible-byte comparison](results/defense/training/world-model-bytes-01/README.md)
+qualifies that diagnosis: a new decoder on the **frozen** parent recovers 90.91%
+of nonblank ASCII, versus 91.22% with joint retraining. Poor rounded output did
+not establish missing latent information. Life-loss forecasts remain poor,
+and matched continued actor means fall to 104 / 102; all 60 complete validation
+games lose in stage 1. These weak actors fail earlier than the strong shared
+best. Full world/actor/decoder optimizer states, logs and verified local bests
+are preserved. Five new byte/readout tests pass together after the full
+403-test suite (the final frozen-readout test was added afterward).
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
