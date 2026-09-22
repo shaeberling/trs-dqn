@@ -1,0 +1,11 @@
+test_discounted_returns_stop_at_visible_life_boundary (test_defense_q_probe.QProbeTests.test_discounted_returns_stop_at_visible_life_boundary) ... ok
+test_flash_on_terminal_screen_has_no_post_flash_action (test_defense_q_probe.QProbeTests.test_flash_on_terminal_screen_has_no_post_flash_action) ... ok
+test_frozen_quantile_actions_distribution_and_source_immutability (test_defense_q_probe.QProbeTests.test_frozen_quantile_actions_distribution_and_source_immutability) ... ok
+test_invalid_or_incomplete_return_inputs (test_defense_q_probe.QProbeTests.test_invalid_or_incomplete_return_inputs) ... ok
+test_preserved_dqn_actions_and_sources_remain_exact (test_defense_q_probe.QProbeTests.test_preserved_dqn_actions_and_sources_remain_exact) ... ok
+test_quantile_summary_keeps_indices_and_reports_counterfactual_choices (test_defense_q_probe.QProbeTests.test_quantile_summary_keeps_indices_and_reports_counterfactual_choices) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 33.639s
+
+OK

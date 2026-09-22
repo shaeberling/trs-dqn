@@ -162,8 +162,11 @@ def probe(bundle):
                             visible_loss_frame=stop, flash_alignment_frame=flash,
                             pre_marker_window=[first, marker],
                             pre_marker=comparison(selected_q[first:marker], returns[first:marker], scale),
+                            # A flash first sampled on the terminal screen has
+                            # no following action/value in this life to compare.
+                            after_flash_actions=stop-flash if flash is not None else 0,
                             after_flash=(comparison(selected_q[flash:stop], returns[flash:stop], scale)
-                                         if flash is not None else None), anchors=anchors))
+                                         if flash is not None and flash < stop else None), anchors=anchors))
         if distributional:
             reports[-1]['pre_marker_distribution'] = distribution_summary(
                 selected_quantiles[first:marker], actions[first:marker], alternative_actions[first:marker],

@@ -10,6 +10,20 @@ from rl.defense_q_probe import comparison, discounted_returns, distribution_summ
 
 
 class QProbeTests(unittest.TestCase):
+    def test_flash_on_terminal_screen_has_no_post_flash_action(self):
+        source = Path('results/defense/training/trace-cut-split-calibration-01/replay')
+        before = {p.name: sha256(p) for p in source.iterdir()}
+        report = probe(source)
+        self.assertEqual(report['replay_actions_reproduced'], 2449)
+        final = report['lives'][-1]
+        self.assertEqual(final['flash_alignment_frame'], final['visible_loss_frame'])
+        self.assertEqual(final['after_flash_actions'], 0)
+        self.assertIsNone(final['after_flash'])
+        self.assertEqual(final['pre_marker']['observations'], 64)
+        self.assertTrue(all(life['after_flash_actions'] > 0 for life in report['lives'][:-1]))
+        self.assertFalse(report['training_data_written'])
+        self.assertEqual(before, {p.name: sha256(p) for p in source.iterdir()})
+
     def test_quantile_summary_keeps_indices_and_reports_counterfactual_choices(self):
         z = np.array([[0., 1., 2., 3.], [3., 2., 1., 0.]])
         actions, other = np.array([0, 1]), np.array([1, 1])

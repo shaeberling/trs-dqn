@@ -1,0 +1,16 @@
+{
+  "baseline": "results/defense/training/worker-epsilon-split-calibration-01/metrics.jsonl.gz",
+  "trial_log": "runs/defense-trace-cut-split-calibration-01/metrics.jsonl",
+  "inclusive_action_cutoff": 6972144,
+  "boot_warmup_actions": 10000,
+  "event_count": 56,
+  "archive_events": 56,
+  "episode_events": 0,
+  "normalized_events_sha256": "87251563fcf2ce721ee9b2a3e4d6bf45b3add5b4eb1628d2772238406a5440b1",
+  "events_equal": true,
+  "limitations": [
+    "Compares all logged episode/archive events before the first learner update, not every screen/action.",
+    "Wall-time fields intentionally excluded.",
+    "Uses only diagnostic comparisons, never loads baseline trajectories into training."
+  ]
+}

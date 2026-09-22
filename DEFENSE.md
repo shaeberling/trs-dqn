@@ -9,13 +9,14 @@ Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **309-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Current experiments are worker-split exploration (40), higher discount (42),
-and an isolated current-policy trace-cut calibration. Uniform control 41 has
+and full current-policy trace cutting (43). Uniform control 41 has
 retired after seven evaluation rounds without a later stage.
 Runs 33–39 have retired with full final state and logs preserved; the historical
 updates below record their earlier trajectories. None has reached stage 2.
 The trace-cut check changes training targets only, using the same own learned
-parent and settings as the preserved five-step comparison. It is not a claimed
-solution to the recurring barrier, and its results are pending.
+parent and settings as the preserved five-step comparison. Its completed
+calibration regressed to mean **8,324** versus **9,466**, all stage 1; run 43
+tests longer adaptation, not a claimed solution to the recurring barrier.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
 Training remains independent of Breakdown, with complete-game
@@ -4051,6 +4052,71 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
   --steps 7093216 --eval-every 131072 --epsilon-final .9 \
   --curriculum-boot-epsilon .05 --curriculum-lookback 128 --greedy-trace-cut
+```
+
+#### Trace-cut calibration result and full continuation
+
+The [completed ten-game comparison](results/defense/training/trace-cut-split-calibration-01/comparison.json)
+at **7,093,216** gives trace cutting mean **8,324**, median **8,320**, best
+**10,160**, versus baseline mean **9,466**, median **10,310**, best **10,410**.
+Seven paired scores are lower and three higher; mean difference is **−1,142**.
+Every game remains a stage-1 loss. This is a short score regression, not a
+verified benefit. The full online/target/Adam/RNG checkpoint, complete compressed
+log and [2,449-action verified replay](results/defense/training/trace-cut-split-calibration-01/replay/replay.html)
+are preserved. The check exited normally and remains excluded from the collector.
+
+Its [audit](results/defense/training/trace-cut-split-calibration-01/audit.json)
+records **59** new boot games, **37** completed restored segments, **1,203**
+archive events and **103** retained save events, all with exact 128-action
+offsets and protected boot-only workers. Retained source within-life score
+reaches **170**, trigger score **2,620**; these do not measure obstacle position.
+All logged training episodes are stage 1. Both calibration arms perform
+**7,566** new updates. The trace mechanism processes **484,224** sampled
+backups, with lengths 1–5 counted **[395728, 30358, 13975, 8612, 35551]**.
+Mean length is **1.4674** and **91.787%** end at a nongreedy later action.
+Thus most targets shorten, while some retain longer credit propagation; these
+mechanism counts are not performance or passage evidence.
+
+The [warmup parity check](results/defense/training/trace-cut-split-calibration-01/warmup-parity.json)
+also finds all **56** logged archive events identical to the historical
+baseline before the first learning update, excluding wall-time fields. It
+does not compare every unlogged screen/action and supplies no training data.
+The [loss panels](results/defense/diagnostics/shared-loss-trace-cut-calibration-01/report.json)
+show life scores **[2500, 2580, 2480, 2600]**, with some center-opening failures
+earlier than the familiar right-opening barrier. They do not establish exact
+collision timing or an identical cause across lives.
+
+The [frozen prediction/return check](results/defense/diagnostics/trace-cut-split-q-calibration-7093216.json)
+reconstructs all **2,449** actions exactly, with mean prediction **1,005.73**
+versus realized discounted score **1,103.88**, mean error **−98.15**, absolute
+error **188.39**. The earlier baseline's selected replay had mean error
+**−100.66**, absolute error **186.90**. These are different selected trajectories,
+not matched-state estimates or causal evidence of improvement. The diagnostic
+now explicitly reports zero post-flash actions when the first flash is on the
+terminal screen; no fictitious sample is inserted, and learning is unchanged.
+All [six focused diagnostic tests](results/defense/diagnostics/trace-cut-q-probe-tests.txt)
+pass, including that exact replay edge case and preserved scalar/quantile
+action reconstruction and source immutability.
+
+Full [DQN 43](results/defense/training/dqn-43-greedy-trace-cut/resume-config.json)
+continues the calibrated optimizer unchanged, with unlimited training and
+evaluation every **200,000** actions, first at **7,293,216**. Its median retains
+more play competence than the earlier one-step check's **540**, which warrants
+testing longer adaptation but does not establish a trace-cut advantage. Replay
+and native archives refill from new own experience; no calibration evaluation
+trajectory is reused. Runs 40/42 continue unchanged. The old collector exited
+before the sole replacement started with
+[all 39 full-run sources](results/defense/training/dqn-43-greedy-trace-cut/collector-config.json),
+including retired sources and excluding short calibrations. Independent
+frozen-policy verification still gates shared best promotion. The verified
+10,480-point stage-1 best remains unchanged; no mission has been observed.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-greedy-trace-cut-full-reproduction \
+  --artifacts runs/defense-greedy-trace-cut-full-reproduction/artifacts \
+  --resume results/defense/training/trace-cut-split-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
 ```
 
 ### Quantile score-return experiment
