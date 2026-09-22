@@ -17,6 +17,11 @@ adaptation, not an established fix.
 The inverse-action calibration scored below the baseline, and its frozen
 classifier did not outperform an action-frequency prior. Its full continuation
 tests longer adaptation, not a demonstrated capability.
+A separate scalar-DQN calibration completed a 64-action own-state rewind against
+the historical 128-action worker-split baseline, with both auxiliary losses off.
+Its mean was **10,398 versus 9,466**, but all ten games still lost in stage 1;
+the verified replay repeats the familiar barrier sequence. Its full state is
+preserved, without replacing the shared best.
 Worker-split exploration
 (40) and its uniform control (41) retired after nine and seven evaluation
 rounds, respectively, without a later stage.
@@ -4549,6 +4554,14 @@ gives the same ordering: recorded **.05180**, rotated **.05203**, persistence
 **.06260**, constant **.10372**; this is a noise repeat, not another game.
 Trial 45 continues unchanged.
 
+At **7,493,216**, run 45's [second full comparison](results/defense/training/dqn-45-visual-prediction/comparison-through-000007493216.json)
+has mean **8,151**, median **7,450**, best **9,800**; all ten games still lose in
+stage 1. Its mean is **700** below the historical same-count baseline's **8,851**,
+following the first-round **+11** difference. The full second checkpoint and
+[2,541-action verified replay](results/defense/training/dqn-45-visual-prediction/replay-9800/replay.html)
+are preserved. Auxiliary loss fell to **.00719**, but this is not gameplay
+progress: no later stage has been observed and the shared best is unchanged.
+
 ### Inverse-action representation experiment
 
 The separate optional `--inverse-weight .01` tests whether learning to predict
@@ -4687,6 +4700,94 @@ venv/bin/python -u -m rl.defense_dqn \
   --artifacts runs/defense-inverse-full-reproduction/artifacts \
   --resume results/defense/training/inverse-split-calibration-01/checkpoint \
   --steps 0 --eval-every 200000
+```
+
+Run 46's [first full comparison at **7,293,216**](results/defense/training/dqn-46-inverse-action/comparison-at-000007293216.json)
+has mean **9,870**, median **9,940**, best **10,000**, all stage-1 losses. The mean
+is **115** above the historical baseline; two paired scores improved and eight
+fell. This reversal of the short comparison is not a demonstrated navigation
+advantage. The complete checkpoint and
+[2,455-action verified replay](results/defense/training/dqn-46-inverse-action/first-replay/replay.html)
+are preserved. Its [audit](results/defense/training/dqn-46-inverse-action/audit-at-000007293216.json)
+records **200,000** new actions, **11,874** updates, **95** boot games, **70**
+restored segments and **1,903** correctly offset archive events, with protected
+boot workers and no logged later stage.
+
+The [frozen classifier controls](results/defense/diagnostics/inverse-full-classifier-7293216.json)
+on **1,228** second-half decisions give paired-screen cross entropy **2.5881** /
+accuracy **20.28%**, versus repeated-current **2.5967 / 20.20%**, permuted-next
+**2.7376 / 16.04%**, and frequency prior **2.6152 / 31.51%**. Paired cross entropy
+now slightly beats the prior, but top-class accuracy remains lower and the
+paired-versus-repeated distinction remains tiny. These are different selected
+states from the calibration, not a matched-state causal learning curve. Run 46
+continues unchanged; the global best remains intact.
+
+### Intermediate own-state rewind calibration
+
+The [selected-reset audit](results/defense/diagnostics/selected-reset-origins-45-46.json)
+joins each completed restored segment in fixed log prefixes to its original
+same-run archive event by source worker/action. It verifies chronological order,
+matching starting score/stage, and the 128-action archive offset. Every one of
+the **134** SPR and **50** inverse-action completed restored segments matched.
+Their selected states have per-life scores **0–190** and **0–140**, respectively;
+**110/134** and **39/50** originate from the two low-epsilon boot-only workers.
+
+This confirms actual reuse of low-scoring own approach states, not just archive
+creation. It does not establish exact obstacle positions or collision lead time:
+score-based archive logs contain neither captured screens nor exact life-age.
+The saved state is 128 actual decisions before a score-bin trigger, not before
+a detected collision. The audit reads no opaque native payloads and creates
+no snapshots, labels, demonstrations or training data.
+
+The [new scalar-DQN calibration](results/defense/training/mid-lookback-split-calibration-01/resume-config.json)
+tests an intermediate **64-action** rewind. This may reduce repeated lead-in
+while retaining preparation time, but that is a hypothesis to test. PPO has
+previously used 64; this is specifically a controlled scalar-DQN worker-split
+comparison, not the first use of this duration anywhere in the project.
+It starts from the original DQN-33 parent at **6,962,144** and collects **131,072**
+new own actions, followed by ten complete uncapped boot games on reused seeds
+10000–10009. The [configuration comparison](results/defense/training/mid-lookback-split-calibration-01/design.json)
+changes only rewind length relative to the historical 128-action baseline,
+apart from disabled optional flags, trainer provenance and output paths.
+
+It retains gamma .997, five-step returns, random-hold cap 64, epsilon .05 on two
+reserved boot workers and .9 on six others, reset probability .5 and the same
+score-based archive capacity. SPR, inverse classification and trace cutting are
+all **off**. The existing setting needs no trainer change; disabled-path parity
+and the full regression checks already cover the unchanged code. Runs 45/46
+remain untouched. All states are opaque saves of this trial's actual experience,
+not evaluation replay states or hand-selected routes. The short calibration is
+excluded from the shared collector.
+
+The calibration completed normally at **7,093,216**. Its
+[ten complete games](results/defense/training/mid-lookback-split-calibration-01/checkpoint/evaluation.json)
+averaged **10,398**, median **10,410**, best **10,440**, with no later stage or
+mission. The [paired comparison](results/defense/training/mid-lookback-split-calibration-01/comparison.json)
+is **+932** over the historical 128-action baseline: seven higher, one lower,
+two tied. Recoveries of **5,740** and **2,430** points on two weak baseline games
+account for most of the aggregate gain. These reused seeds do not establish a
+fresh success rate or passage through the navigation bottleneck.
+
+The [audit](results/defense/training/mid-lookback-split-calibration-01/audit.json)
+records **7,566** updates, **55** complete boot games, **34** completed restored
+segments and **1,409** exact 64-action archive offsets, with reserved boot
+workers protected. Archive source progress reached 330 versus trigger progress
+2,620; neither value is an exact course position. Full online/target/optimizer
+state and the complete compressed log are preserved with checked hashes.
+The [2,502-action verified replay](results/defense/training/mid-lookback-split-calibration-01/replay/replay.html)
+earns **2,620 / 2,620 / 2,580 / 2,620** across four lives. Its
+[unaltered-screen loss panels](results/defense/diagnostics/shared-loss-mid-lookback-01/policy-1-losses.png)
+again show the right-opening barrier sequence, with one earlier loss near the
+centre-opening barrier. The rewind change has not resolved this failure.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-mid-lookback-split-reproduction \
+  --artifacts runs/defense-mid-lookback-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 64 \
+  --spr-weight 0 --inverse-weight 0
 ```
 
 ### Quantile score-return experiment
