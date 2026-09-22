@@ -31,6 +31,14 @@ collects new own experience and trains a small recurrent world model through
 `rl.defense_world_data` and `rl.defense_world_fit`. This is not yet a playing
 policy: its first held-out checks show weak action and life-loss prediction.
 It adds no oracle, demonstrations, reward bonuses or evaluation data to training.
+The subsequent [imagined-return actor calibration](results/defense/training/imagination-calibration-01/README.md)
+can play and produce fully verified replays via `rl.defense_imagine_fit`, but
+its initial scores are poor (best 320, all stage 1). It is not yet an online
+Dreamer loop or an improvement over the preserved best. Broader-data dynamics
+and [loss-window sampling](results/defense/training/world-model-boundary-01/README.md)
+also have preserved negative gameplay results. `rl.defense_world_actor_data`
+collects fresh complete games from the learned actor with no action overrides;
+this prepares online feedback but does not yet constitute a complete online loop.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,

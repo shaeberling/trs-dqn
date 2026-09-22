@@ -9,7 +9,7 @@ from .defense_learning import sha256, write_json
 from .defense_world_data import Sequences, disk_guard
 
 
-def merge(sources, output):
+def merge(sources, output, allow_policy_mixture=False):
     sources = [Path(p).resolve(strict=True) for p in sources]
     output = Path(output)
     if len(sources) < 2 or len(set(sources)) != len(sources) or output.exists():
@@ -19,7 +19,10 @@ def merge(sources, output):
     if len(set(hashes)) != len(hashes):
         raise ValueError('duplicate source collection')
     common = ('schema', 'purpose', 'game_sha256', 'environment_version', 'tstates',
-              'observation_stride', 'parent_hashes', 'existing_evaluation_data')
+              'observation_stride', 'existing_evaluation_data')
+    same_parent = all(m['parent_hashes'] == manifests[0]['parent_hashes'] for m in manifests)
+    if not allow_policy_mixture and (not same_parent or not manifests[0]['parent_hashes']):
+        raise ValueError('different policy parents require explicit allow_policy_mixture')
     seen_seeds = set()
     for source, manifest in zip(sources, manifests, strict=True):
         if any(manifest[k] != manifests[0][k] for k in common):
@@ -46,11 +49,15 @@ def merge(sources, output):
         if sha256(source/'manifest.json') != hashes[number]:
             raise RuntimeError('source manifest changed')
     combined = dict(manifests[0], episodes=episodes, games=len(episodes),
+        parent_hashes=manifests[0]['parent_hashes'] if same_parent else None,
+        policy_mixture=bool(allow_policy_mixture),
         heldout_games=sum(e['split']=='heldout' for e in episodes), epsilon=None, first_seed=None,
         assignment='unchanged original per-source whole-game assignments',
         dataset_operation='immutable byte-identical union; no new trajectories or split changes',
         merge_source_sha256=sha256(Path(__file__)),
-        source_manifests=[dict(path=str(p), sha256=digest, epsilon=m['epsilon'])
+        source_manifests=[dict(path=str(p), sha256=digest, epsilon=m['epsilon'],
+                              parent_hashes=m['parent_hashes'], algorithm=m.get('algorithm'),
+                              behavior=m.get('behavior'))
                           for p,digest,m in zip(sources, hashes, manifests, strict=True)])
     write_json(output/'manifest.json', combined)
     return combined
@@ -60,8 +67,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('sources', type=Path, nargs='+')
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--allow-policy-mixture', action='store_true',
+                        help='explicitly combine own collections from distinct learned policies')
     args = parser.parse_args()
-    result = merge(args.sources, args.output)
+    result = merge(args.sources, args.output, args.allow_policy_mixture)
     print(json.dumps(dict(games=result['games'], heldout_games=result['heldout_games'],
         train_actions=sum(e['steps'] for e in result['episodes'] if e['split']=='train'),
         heldout_actions=sum(e['steps'] for e in result['episodes'] if e['split']=='heldout'))))

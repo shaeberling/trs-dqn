@@ -64,6 +64,27 @@ class WorldMergeTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'overlapping'):merge([a,b],root/'bad')
             self.assertFalse((root/'bad').exists())
 
+    def test_policy_mixture_requires_opt_in_and_preserves_parent_provenance(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            a, b = self.source(root, 'a', 10), self.source(root, 'b', 20)
+            actor = json.loads((b/'manifest.json').read_text())
+            actor['parent_hashes'] = {'model.safetensors': 'another-own-policy'}
+            actor['algorithm'] = 'gaussian-rssm-imagined-reinforce'
+            (b/'manifest.json').write_text(json.dumps(actor))
+            with self.assertRaisesRegex(ValueError, 'policy parents'):
+                merge([a, b], root/'bad')
+            self.assertFalse((root/'bad').exists())
+            merged = merge([a, b], root/'union', allow_policy_mixture=True)
+            self.assertIsNone(merged['parent_hashes'])
+            self.assertTrue(merged['policy_mixture'])
+            self.assertEqual(merged['source_manifests'][1]['parent_hashes'], actor['parent_hashes'])
+            self.assertEqual(merged['source_manifests'][1]['algorithm'], actor['algorithm'])
+            for row in merged['episodes']:
+                original = (a, b)[row['source_index']]/row['source_file']
+                self.assertEqual(sha256(original), row['sha256'])
+            self.assertEqual([r['split'] for r in merged['episodes']], ['train', 'heldout']*2)
+
 
 if __name__=='__main__':
     unittest.main()

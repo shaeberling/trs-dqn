@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **382-test** suite now passes, including
+(23 GiB available at restart). The full **393-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
@@ -16,7 +16,8 @@ while the control recovers score without clearing stage 1.
 The second means are 1,136 / 9,502, again without a later stage.
 The third means are 1,701 / 9,484 and the fourth 1,271 / 4,280. A separate matched calibration
 at discount .999 averaged 10,266 with temporal consistency versus 9,710 without,
-all stage-1 losses. Full consistency/control continuations (58/57) are live;
+all stage-1 losses. Full consistency/control continuations (58/57) have retired
+after six complete evaluation rounds each, preserving final state and logs;
 their first full means are **10,262 / 9,890**, with all 20 games still losing
 in stage 1. The [current screen review](results/defense/diagnostics/consistency-full-losses-7293216/README.md)
 confirms the recurring barrier approach, not new navigation progress.
@@ -26,11 +27,33 @@ The second full consistency/control means are **10,023 / 10,418** and the
 third **10,328 / 10,214**, again all stage 1. The control's second replay
 matches 10,480 (2,577 verified commands); consistency's third reaches 10,400
 (2,523 verified commands). Neither promotes over the shared best.
-A new [world-model preflight](results/defense/training/world-model-preflight-01/README.md)
-has collected 46,962 fresh own actions and fitted a recurrent predictor for
-1,000 updates. Held-out average graphics prediction improves, but action
-dependence is weak and impending visible losses remain poorly predicted.
-Further dynamics fitting is active; no imagined-behavior policy exists yet.
+The fourth through sixth consistency/control means are **10,337 / 10,174**,
+**10,228 / 10,285**, and **10,337 / 10,207**. All 120 full-run validation games
+lost in stage 1. The final consistency replay scores 10,420 with 2,499 verified
+commands; the global best is unchanged.
+A [world-model preflight](results/defense/training/world-model-preflight-01/README.md)
+finished 5,000 dynamics updates on its first own collection. A separate
+[imagined-return actor](results/defense/training/imagination-calibration-01/README.md)
+is now playable and natively replay-verified, but performs poorly: mean
+294, best 320 at 500 actor updates; mean 282 at 1,000. This is a frozen-world
+calibration, not an online Dreamer loop or a navigation improvement.
+The [broader-data continuation](results/defense/training/world-model-mixed-01/README.md)
+finished at 10,000 world updates using 85,779 own training actions and eight
+whole held-out games. It still misses visible life losses even when observing
+the arrival screen, not just during long-range prediction. A completed
+[matched sampling test](results/defense/training/world-model-boundary-01/README.md)
+finds that 50% own-training loss-window sampling improves selected-loss
+recognition but worsens overall held-out continuation error. The subsequent
+[playing comparison](results/defense/training/imagination-boundary-comparison-01/README.md)
+is negative: uniform/focused actors average 280 / 270 at 1,000 imagined
+updates, with all 60 baseline and trained games losing in stage 1. Rewards,
+inputs, game and held-out assignments remain unchanged. These offline results
+motivate [new actor experience](results/defense/training/world-model-actor-collection-03/README.md)
+for model feedback, not claiming that the recurring barrier has been solved.
+That collection has finished 24 fresh games, and the first feedback world fit
+now uses 60 training games / 116,495 actions with twelve whole games held out.
+Refreshing the actor afterward remains work in progress. Two further focused
+tests passed after the full 393-test suite.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.

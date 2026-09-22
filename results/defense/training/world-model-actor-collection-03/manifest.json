@@ -1,0 +1,725 @@
+{
+  "schema": "defense-own-dynamics-v1",
+  "purpose": "new-own-experience-for-world-model",
+  "checkpoint": "/Users/sascha/source/trs-dqn/runs/defense-imagination-uniform-02/update-000500/model.safetensors",
+  "parent_hashes": {
+    "model.safetensors": "7d659858bb3e149be0881e2eebe1920439508e8330dc2fd8b58312c0a94809fd",
+    "state.json": "6853a7371008f087029a3ba664bbe79846cf2ce1b2579df24418240d62793008"
+  },
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "collection_source_sha256": "a340c436d29e3e653e8f58f15aa8766e0fba1cda2729e4be48169bd796e38f99",
+  "tstates": 100000,
+  "observation_stride": 1,
+  "games": 24,
+  "heldout_games": 4,
+  "first_seed": 67000,
+  "epsilon": 0.0,
+  "exploration_max_repeat": 1,
+  "exploration_exponent": 1.5,
+  "behavior": "learned categorical actor at temperature 1; no action overrides",
+  "algorithm": "gaussian-rssm-imagined-reinforce",
+  "architecture": "screen-rssm-imagined-actor-v1",
+  "assignment": "final heldout_games sequential seeds fixed before collection",
+  "policy_imitation": false,
+  "hidden_state": false,
+  "existing_evaluation_data": false,
+  "episodes": [
+    {
+      "file": "episode-0000.npz",
+      "sha256": "73b895544b4ae59020cece72d2a5782f9fbc9f066bcd56a0cf4ca4cc3df55a59",
+      "seed": 67000,
+      "split": "train",
+      "steps": 1551,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1551,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 102075
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0001.npz",
+      "sha256": "810b88162c963a7540cbe23b7dd35316cd1aaf5c84581da6abfb243984b2067f",
+      "seed": 67001,
+      "split": "train",
+      "steps": 1533,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1533,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 70828
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0002.npz",
+      "sha256": "38c9a064aafb1a89c0472d7e995578aa7c0f9f7f76411485d7cd8e539a9d06c1",
+      "seed": 67002,
+      "split": "train",
+      "steps": 1512,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1512,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 58603
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0003.npz",
+      "sha256": "53bb4c2f7d6b9c13e78b24527cad44c44310ac1e919427750a6fea51fefe97d0",
+      "seed": 67003,
+      "split": "train",
+      "steps": 1532,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1532,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 63056
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0004.npz",
+      "sha256": "826f3267dfa390034a0f765c22a138955444e46ae512993112f255defeec7e77",
+      "seed": 67004,
+      "split": "train",
+      "steps": 1497,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1497,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 154664
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0005.npz",
+      "sha256": "3995efab02673e4d60305a1dcc004730fd9bcbd5008315c5e65f88c4160ea606",
+      "seed": 67005,
+      "split": "train",
+      "steps": 1508,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1508,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 133797
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0006.npz",
+      "sha256": "679e56bae43f3069ba81bf0b635ea885c8ee7c9a027658f0edcc78275359a83d",
+      "seed": 67006,
+      "split": "train",
+      "steps": 1540,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1540,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 85506
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0007.npz",
+      "sha256": "9a1d499d51694a975e63f9f33d7a07d61883959a363be90228073b5e99c19c1c",
+      "seed": 67007,
+      "split": "train",
+      "steps": 1511,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1511,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 47514
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0008.npz",
+      "sha256": "c7dfb30a220f6e754e6f7318dcb800a456b9f6c80e7c6bcad42aa871d35fa4a9",
+      "seed": 67008,
+      "split": "train",
+      "steps": 1595,
+      "result": {
+        "score": 300,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1595,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 300.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 652000,
+        "start_tstates": 147670
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0009.npz",
+      "sha256": "18fd0e0e4cf7429fade44f1d87060e78aa46a3cfb33f13e5ebaf353996a8ea55",
+      "seed": 67009,
+      "split": "train",
+      "steps": 1553,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1553,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 167889
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0010.npz",
+      "sha256": "0b9678e753a8b99c019410804addbdea850c9ab6d68119e655b896179b822658",
+      "seed": 67010,
+      "split": "train",
+      "steps": 1510,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1510,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 50480
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0011.npz",
+      "sha256": "6fb96617b6d8165c593f440f0c4bdd3fa72e60853fdf4f600c5998d0332633ee",
+      "seed": 67011,
+      "split": "train",
+      "steps": 1548,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1548,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 652000,
+        "start_tstates": 116199
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0012.npz",
+      "sha256": "7c2620de4d5aa07629c25655c0acc1edb3a1eec2df6430d96d607356fd813f58",
+      "seed": 67012,
+      "split": "train",
+      "steps": 1533,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1533,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 53606
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0013.npz",
+      "sha256": "33f6001c721a5f22f97e8512130a31f2042a76acf9aad09923b8bd1d4ecf9b64",
+      "seed": 67013,
+      "split": "train",
+      "steps": 1556,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1556,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 82602
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0014.npz",
+      "sha256": "7156e3da12e43489bf9da8f14dc06338d3dc52ba585dd7963d8974b0c5b4ba43",
+      "seed": 67014,
+      "split": "train",
+      "steps": 1544,
+      "result": {
+        "score": 300,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1544,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 300.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 70851
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0015.npz",
+      "sha256": "e699736a8bb518bd26f3572fcf2b701da74148b081bed7dfcb6222b31de02fc6",
+      "seed": 67015,
+      "split": "train",
+      "steps": 1542,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1542,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 20295
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0016.npz",
+      "sha256": "0dc73c70cbb55afd002e9fcc871850eaf9d06f6a27885c865f4d41151affb1ec",
+      "seed": 67016,
+      "split": "train",
+      "steps": 1577,
+      "result": {
+        "score": 300,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1577,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 300.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 1605
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0017.npz",
+      "sha256": "15fab0ad93b21a0c1ebb2dba095522448c209af8d0b8e463afb9c99cd49d267f",
+      "seed": 67017,
+      "split": "train",
+      "steps": 1577,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1577,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 652000,
+        "start_tstates": 95959
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0018.npz",
+      "sha256": "f44dc6eadb1d853a3fa193c1cc332ca247162574610d85a9956f28fb9007272c",
+      "seed": 67018,
+      "split": "train",
+      "steps": 1498,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1498,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 652000,
+        "start_tstates": 236
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0019.npz",
+      "sha256": "7393126074970ec914426684a2b912f2e7b79e9531e8473123208a891ed8d59c",
+      "seed": 67019,
+      "split": "train",
+      "steps": 1499,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1499,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 55417
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0020.npz",
+      "sha256": "367788d8f41293edc88fde8f0ca2e4f3664fd7b1adc70d4779218b1f2a549058",
+      "seed": 67020,
+      "split": "heldout",
+      "steps": 1541,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1541,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 27905
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0021.npz",
+      "sha256": "abd6bec9b3b758294562b7feeb9cc8e9e960771d8aed827e25814b2f0e0d4ced",
+      "seed": 67021,
+      "split": "heldout",
+      "steps": 1527,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1527,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 160312
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0022.npz",
+      "sha256": "4893815bd6e77e90e019187e6182d9003de0bfeab6355bc7605b8013d73c1652",
+      "seed": 67022,
+      "split": "heldout",
+      "steps": 1501,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1501,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 70625
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    },
+    {
+      "file": "episode-0023.npz",
+      "sha256": "1dc40802c469ac2df2642d7fcdb0f00e0b2cb4cdb22e2285d255de0412fb474e",
+      "seed": 67023,
+      "split": "heldout",
+      "steps": 1523,
+      "result": {
+        "score": 280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 1523,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 13429
+      },
+      "exploration": {
+        "action_overrides": 0,
+        "temperature": 1.0
+      }
+    }
+  ]
+}
