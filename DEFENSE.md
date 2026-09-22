@@ -25,13 +25,15 @@ does not solve the shared failure pattern.
 Full trials 33/34 now continue the verified shorter-lookback reset arm and
 its matched high-exploration no-reset comparator, retaining complete-game
 evaluation and automatic verified replay collection.
-Their first full-run round favors resets by 62 mean points, down from the
-bounded check's 224; the second favors no resets by 305. All games remain
-stage-1 losses. A read-only prediction/return diagnostic does not support
+Their first three full-run mean differences (resets minus control) are
+**+62 / −305 / +240**. All games remain stage-1 losses.
+A read-only prediction/return diagnostic does not support
 gross near-loss Q-value inflation as the explanation.
 A bounded archive-diversity pair favored screen fingerprints over score bins
 by 384 mean points, with equal maximum archive capacity and identical parent
 state. Both still fell below the parent and lost every evaluation in stage 1.
+Full trials 35/36 continue those capacity-matched archive-selection arms;
+their first full-run evaluations are pending.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -229,8 +231,10 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live unlimited progress: `runs/defense-dqn-33-persistent-resets/status.json` and
-  `runs/defense-dqn-34-persistent-rate-control/status.json`, each with an adjacent
+- Live unlimited progress: `runs/defense-dqn-33-persistent-resets/status.json`,
+  `runs/defense-dqn-34-persistent-rate-control/status.json`,
+  `runs/defense-dqn-35-screen-archive/status.json` and
+  `runs/defense-dqn-36-score-archive-control/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
   PID is still alive before treating it as evidence of a running learner.
@@ -3485,6 +3489,24 @@ obstacle passage, and having more screen cells does not prove they represent
 useful new situations. Both reserved workers in each arm remained boot-only;
 all archive events retained the exact 32-action lookback.
 
+To test durability, full trials now continue each arm's own **7,093,216**
+checkpoint: [DQN 35 screen archive](results/defense/training/dqn-35-screen-archive/resume-config.json)
+and [DQN 36 score control](results/defense/training/dqn-36-score-archive-control/resume-config.json).
+They retain all learning/archive settings and change only the output paths,
+the training limit to unlimited, and the validation interval to **200,000**.
+First full evaluations are due at **7,293,216**. Each restores its own
+online/target/optimizer/RNG but rebuilds replay and its own archive from new
+booted experience. This is one paired lineage, not independent seed replication
+or exact trajectory continuation. No evaluation trace or saved foreign native
+state is supplied to learning. Trials 33/34 continue unchanged.
+
+The old collector stopped cleanly and was confirmed gone before the sole new
+collector started with [all 32 full-run sources](results/defense/training/dqn-35-screen-archive/collector-config.json).
+Historical sources remain included; short checks remain excluded. Any shared
+best replacement still requires independent frozen-policy action/screen/reward
+verification. The new capacity-matched pair is an experiment, not a claim that
+screen cells have resolved the failure point.
+
 ```bash
 # Use distinct paths and curriculum-cells score for the capacity-matched control.
 venv/bin/python -u -m rl.defense_dqn \
@@ -3493,6 +3515,15 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
   --steps 7093216 --eval-every 131072 --curriculum-cells screen \
   --curriculum-bins 128 --curriculum-per-bin 1 --curriculum-screen-interval 32
+
+# Unlimited continuation of the verified screen-cell arm:
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-dqn-screen-archive-full-reproduction \
+  --artifacts runs/defense-dqn-screen-archive-full-reproduction/artifacts \
+  --resume results/defense/training/dqn-screen-cells-calibration-01/checkpoint \
+  --steps 0 --eval-every 200000
+# For the capacity-matched control, use separate paths and resume
+# results/defense/training/dqn-score-cells-control-01/checkpoint instead.
 ```
 
 ### Lossless compact training replay
