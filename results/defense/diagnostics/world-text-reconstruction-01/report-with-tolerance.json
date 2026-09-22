@@ -1,0 +1,69 @@
+{
+  "checkpoint_sha256": "d88ef23e31a20bc08d402a5e4d9c497abcd6de672f06bd995a63c1bfddcf94d6",
+  "dataset_sha256": "8aceac355ca1cc56ce59e7844505485c6359cdae064f66d962d4ea6e5ea17f5f",
+  "source_sha256": "c31f1285e54ae794457032497ad2e20f89c498a68af62a9bd30f779eeca7fd41",
+  "groups": {
+    "nonblank_ascii": {
+      "cells": 60173,
+      "correct": 13096,
+      "within_2": 46502,
+      "within_5": 53119,
+      "squared_error": 124.05018849842315,
+      "persistence_correct": 52892,
+      "exact_accuracy": 0.2176391404782876,
+      "text_channel_mse": 0.0020615589799149645
+    },
+    "changed_ascii": {
+      "cells": 7281,
+      "correct": 235,
+      "within_2": 1155,
+      "within_5": 2476,
+      "squared_error": 91.46910524186954,
+      "persistence_correct": 0,
+      "exact_accuracy": 0.03227578629309161,
+      "text_channel_mse": 0.012562711885986752
+    },
+    "digits": {
+      "cells": 8378,
+      "correct": 1706,
+      "within_2": 5523,
+      "within_5": 6822,
+      "squared_error": 20.259902946889678,
+      "persistence_correct": 7430,
+      "exact_accuracy": 0.20362855096681787,
+      "text_channel_mse": 0.0024182266587359368
+    },
+    "stars": {
+      "cells": 4881,
+      "correct": 787,
+      "within_2": 2183,
+      "within_5": 4108,
+      "squared_error": 9.350426779397207,
+      "persistence_correct": 4539,
+      "exact_accuracy": 0.16123745134193812,
+      "text_channel_mse": 0.0019156785042813373
+    },
+    "changed_hud_cells": {
+      "cells": 645,
+      "correct": 15,
+      "within_2": 67,
+      "within_5": 195,
+      "squared_error": 3.5490026506964014,
+      "persistence_correct": 0,
+      "exact_accuracy": 0.023255813953488372,
+      "text_channel_mse": 0.005502329691002172
+    }
+  },
+  "star_space_midpoint": {
+    "stars": 2421,
+    "stars_above_midpoint": 1844,
+    "spaces": 10806,
+    "spaces_below_midpoint": 9263
+  },
+  "encoding_inverse_checked": true,
+  "windows": 64,
+  "post_burn_arrival_frames": 1536,
+  "training_updates": 0,
+  "description": "Observed-posterior reconstruction, NOT future prediction. Nearest-code decoding is diagnostic only; no parser or decoded cells enter a policy.",
+  "limitations": "Reused uniformly sampled held-out windows. Repeated cells are not independent. HUD selection is read-only. Not collision ground truth or a gameplay result."
+}

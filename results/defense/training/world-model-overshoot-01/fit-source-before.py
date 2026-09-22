@@ -80,9 +80,6 @@ def main():
                         help='training-window mixture fraction containing a visible life loss after burn-in')
     parser.add_argument('--change-sampling', action='store_true',
                         help='explicitly change window sampling on a full optimizer/RNG continuation')
-    parser.add_argument('--overshoot-distance', type=int, default=1)
-    parser.add_argument('--overshoot-weight', type=float, default=0.)
-    parser.add_argument('--change-objective', action='store_true')
     args = parser.parse_args()
     if (args.output.exists() or min(args.updates, args.batch, args.every, args.audit_windows) < 1
             or not 0 < args.burn < args.length or not np.isfinite(args.boundary_fraction)
@@ -92,36 +89,24 @@ def main():
         parser.error('data extension requires a full optimizer/RNG resume')
     if args.change_sampling and not args.resume:
         parser.error('sampling change requires a full optimizer/RNG resume')
-    from .defense_world_overshoot import validate
-    validate(args.overshoot_distance, args.overshoot_weight)
-    if args.overshoot_weight and args.overshoot_distance > args.length-args.burn:
-        parser.error('overshooting distance exceeds post-burn sequence')
-    if args.change_objective and not args.resume:
-        parser.error('objective change requires a full optimizer/RNG resume')
     mx.set_cache_limit(128*1024*1024)
     train, held = Sequences(args.data, 'train', args.length), Sequences(args.data, 'heldout', args.length)
     if set(train.files) & set(held.files):
         raise ValueError('train/held-out overlap')
     rng = np.random.default_rng(args.seed)
     frozen = held.sample(args.audit_windows, np.random.default_rng(82731))
-    learner = WorldLearner(seed=args.seed, burn=args.burn,
-        overshoot_distance=args.overshoot_distance, overshoot_weight=args.overshoot_weight)
+    learner = WorldLearner(seed=args.seed, burn=args.burn)
     metadata = dict(data=str(args.data.resolve()), dataset_sha256=sha256(args.data/'manifest.json'),
         architecture='small-gaussian-rssm-v1', reward_scale=.01, batch=args.batch,
         length=args.length, burn=args.burn, train_games=len(train.episodes), heldout_games=len(held.episodes),
         boundary_fraction=args.boundary_fraction,
-        overshooting=learner.overshooting,
         train_windows=int(train.ends[-1]), heldout_windows=int(held.ends[-1]),
         fit_source_sha256=sha256(Path(__file__)),
         model_source_sha256=sha256(Path(__file__).with_name('defense_world_model.py')),
         dynamics_only=True, promotion_eligible=False,
         source_paper='https://arxiv.org/abs/1912.01603', args={k:str(v) if isinstance(v, Path) else v for k,v in vars(args).items()})
     if args.resume:
-        previous = learner.restore(args.resume, rng, allow_objective_change=args.change_objective)
-        old_objective = previous.get('overshooting', dict(distance=1, weight=0.))
-        if old_objective != learner.overshooting:
-            metadata['previous_overshooting'] = old_objective
-            metadata['objective_changed'] = True
+        previous = learner.restore(args.resume, rng)
         if args.extend_data:
             union = json.loads((args.data/'manifest.json').read_text())
             if (union.get('dataset_operation') != 'immutable byte-identical union; no new trajectories or split changes'

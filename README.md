@@ -39,6 +39,10 @@ and [loss-window sampling](results/defense/training/world-model-boundary-01/READ
 also have preserved negative gameplay results. `rl.defense_world_actor_data`
 collects fresh complete games from the learned actor with no action overrides;
 this prepares online feedback but does not yet constitute a complete online loop.
+Two manually orchestrated experience/world/actor feedback cycles now have
+preserved negative results. A separate [four-step latent-regularization test](results/defense/training/world-model-overshoot-01/README.md)
+also failed to improve play; it is opt-in and changes neither rewards nor
+acting inputs. An unattended repeating model-based driver is not yet present.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,

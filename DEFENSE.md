@@ -6,7 +6,7 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **393-test** suite passes, including
+(23 GiB available at restart). The full **399-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
@@ -57,6 +57,17 @@ retained its complete learned behavior/optimizer/RNG state but finished with
 mean 276 after 1,000 additional imagined updates, still all stage 1. Three
 further focused tests passed after the full 393-test suite; the original five
 actor tests were rerun successfully after adding explicit world refresh.
+The [second feedback cycle](results/defense/training/imagination-feedback-02/README.md)
+regressed to mean 110. A subsequent [matched four-step latent regularizer](results/defense/training/world-model-overshoot-01/README.md)
+also failed to improve loss forecasts or play; final control/regularized actor
+means are 120 / 112, all stage 1. Both complete states, all intermediate
+checkpoints and verified local bests are retained. The global collector now
+watches 61 sources and still preserves the stronger 10,480-point replay.
+A [frozen text-reconstruction diagnostic](results/defense/diagnostics/world-text-reconstruction-01/README.md)
+finds weak reconstruction of changed visible text even when observing the
+arrival screen. It includes tolerance and star/space checks to avoid equating
+small numeric errors with total information loss. This motivates inspecting
+the reconstruction objective; it is not proof of the collision cause or a fix.
 The earlier one-option continuations (54/53) retired after five rounds.
 Their calibrations averaged 3,631 / 344, with all games still stage-1 losses:
 a large relative difference against a regressed control, not a new best.
