@@ -3486,6 +3486,22 @@ contemporaneous replications. Later progression must still be observed in
 complete from-boot play, with a verified replay; earlier static/visual evidence
 does not establish success.
 
+Its [first full round at **6,962,144**](results/defense/training/dqn-39-long-lookback/comparison-at-000006962144.json)
+is now complete: mean **9,882**, median **9,870**, best **10,040**, all ten
+stage-1 losses. Its [2,542-action replay](results/defense/training/dqn-39-long-lookback/first-replay/replay.html)
+was independently verified, and the full online/target/Adam/RNG checkpoint is
+preserved. Relative to the historical same-count first rounds, its mean is
+**377 below** shorter-lookback run 33 and **315 below** no-reset run 34.
+This first batch does not show a benefit. The longer trial continues unchanged
+to address the previously much smaller exposure given to this lookback.
+
+It completed **78** new boot games and **54** restored segments since its own
+calibration, without a logged later-stage episode. All **2,448** archive events
+had exact 128-action offsets; reserved workers remained boot-only. **168**
+retained save events reached source within-life score **210**, while triggers
+reached **2,640**. These are event counts, not distinct retained-state counts,
+and the scores do not establish route or collision location.
+
 Run 35's retired slot supplies compute. Runs 36/37/38 continue unchanged.
 The prior collector exited cleanly before the new sole collector started
 with [all 35 full-run sources](results/defense/training/dqn-39-long-lookback/collector-config.json).
@@ -3631,6 +3647,17 @@ forty standard games across both rounds lost in stage 1. Complete game records
 and local immutable model hashes are preserved; first-round full states and
 stronger verified replays remain the archived references. Neither run's
 settings changed after these results.
+
+By [**731,072**, the third round](results/defense/training/dqn-37-quantile-neutral/comparison-through-000000731072.json),
+neutral recovered to mean **9,836**, median/best **10,400**, versus risk mean
+**10,083**, median **10,240**, best **10,280**. Its new best
+[2,538-action replay](results/defense/training/dqn-37-quantile-neutral/replay-10400/replay.html)
+and complete third-round optimizer checkpoint are preserved. All sixty standard
+games across three rounds lost in stage 1. The +247 risk mean margin comes
+from only two higher paired games and eight lower ones; it is not consistent
+per-seed dominance. The risk arm's stronger first-round replay remains its
+archived reference. Neither this recovery nor fluctuating score margins
+establish passage through the recurring obstacle or replace the shared best.
 
 The read-only Q probe now also supports mean-greedy quantile replay bundles.
 It reproduces every recorded action, checks checksums before/after, retains
