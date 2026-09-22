@@ -66,6 +66,13 @@ those independently verified probes do not replace standard mean-greedy play.
 The second standard round is **6,317 / 10,196**: neutral has regressed, while
 risk retains near-ceiling scoring, still with no stage clear.
 A successful mission has not yet been verified.
+The [latest failure review](results/defense/diagnostics/shared-loss-latest-01/README.md)
+compares the shared best with the preserved 10,180-point run-43 and 10,260-point
+run-44 replays. The best repeats exactly 2,620 points on each life; best/44
+panels show the recurring right-opening barrier sequence, whereas 43 fails
+earlier near a centre-opening barrier. This supports a navigation bottleneck,
+not identical collisions or a proven wall-versus-projectile cause. The review
+is diagnostic only and adds no evaluation trajectories to training.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
 Breakdown's frozen models, published site and results are unchanged. Shared
