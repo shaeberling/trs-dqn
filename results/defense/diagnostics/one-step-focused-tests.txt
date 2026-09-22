@@ -1,0 +1,14 @@
+test_cli_rejects_invalid_configuration_and_cross_algorithm_resume (tests.test_defense_dqn.DefenseDQNTests.test_cli_rejects_invalid_configuration_and_cross_algorithm_resume) ... ok
+test_double_q_selects_online_action_but_uses_target_value (tests.test_defense_dqn.DefenseDQNTests.test_double_q_selects_online_action_but_uses_target_value) ... ok
+test_greedy_policy_does_not_draw_randomness_and_rejects_invalid_values (tests.test_defense_dqn.DefenseDQNTests.test_greedy_policy_does_not_draw_randomness_and_rejects_invalid_values) ... ok
+test_native_one_step_persistent_worker_roles_and_exact_resume (tests.test_defense_dqn.DefenseDQNTests.test_native_one_step_persistent_worker_roles_and_exact_resume) ... ok
+test_nstep_life_boundary_never_crosses_into_next_life_and_truncation_bootstraps (tests.test_defense_dqn.DefenseDQNTests.test_nstep_life_boundary_never_crosses_into_next_life_and_truncation_bootstraps) ... ok
+test_one_step_avoids_intermediate_behavior_return_in_synthetic_fixture (tests.test_defense_dqn.DefenseDQNTests.test_one_step_avoids_intermediate_behavior_return_in_synthetic_fixture) ... ok
+test_one_step_immediate_rewards_boundaries_and_final_observation (tests.test_defense_dqn.DefenseDQNTests.test_one_step_immediate_rewards_boundaries_and_final_observation) ... ok
+test_real_emulator_fresh_training_and_optimizer_target_resume (tests.test_defense_dqn.DefenseDQNTests.test_real_emulator_fresh_training_and_optimizer_target_resume) ... ok
+test_twenty_action_update_target_sync_and_greedy_checkpoint (tests.test_defense_dqn.DefenseDQNTests.test_twenty_action_update_target_sync_and_greedy_checkpoint) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 8.119s
+
+OK

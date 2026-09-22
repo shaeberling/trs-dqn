@@ -132,6 +132,82 @@ class DefenseDQNTests(unittest.TestCase):
                 defense_dqn.main()
             self.assertEqual(error.exception.code, 2)
 
+    def test_one_step_immediate_rewards_boundaries_and_final_observation(self):
+        replay = Replay(8, compact=True)
+        nstep = NStep(replay, n=1, gamma=.9)
+        frames = [np.full((4, 16, 64), 128+i, np.uint8) for i in range(5)]
+        for i, (terminal, truncated) in enumerate([(False, False), (True, False),
+                                                  (False, True), (False, False)]):
+            nstep.append(frames[i], i, float(i+1), frames[i+1], terminal, truncated)
+            self.assertEqual(replay.size, i+1)
+            self.assertFalse(nstep.queue)
+        np.testing.assert_array_equal(replay.returns[:4], [1., 2., 3., 4.])
+        np.testing.assert_allclose(replay.discounts[:4], [.9, 0., .9, .9])
+        np.testing.assert_array_equal(replay.next_obs[:4], frames[1:])
+        np.testing.assert_array_equal(replay.obs[:4], frames[:4])
+
+    def test_one_step_avoids_intermediate_behavior_return_in_synthetic_fixture(self):
+        # A synthetic one-state MDP, NOT Defense training or demonstrations:
+        # action 0 gives reward 1, action 1 gives 0, both return to the state.
+        # At gamma .5 the exact optimal Q-values are [2, 1]. A trajectory
+        # beginning with 0 then four exploratory 1s exposes the distinction
+        # between one-step optimal bootstrap and uncorrected five-step return.
+        frame = np.full((4, 16, 64), 128, np.uint8)
+        replays = []
+        for horizon in (1, 5):
+            replay = Replay(8)
+            nstep = NStep(replay, n=horizon, gamma=.5)
+            for action, reward in [(0, 1.)]+[(1, 0.)]*4:
+                nstep.append(frame, action, reward, frame, False, False)
+            replays.append(replay)
+        class Values:
+            def __call__(self, states):
+                return mx.broadcast_to(mx.array([2., 1.]), (len(states), 2))
+        agent = Learner(seed=7, action_count=20)
+        agent.target = Values()
+        residuals = []
+        for replay in replays:
+            _, (errors, _) = agent._loss(Values(), mx.array(replay.obs[:1]),
+                mx.array(replay.actions[:1]), mx.array(replay.returns[:1]),
+                mx.array(replay.next_obs[:1]), mx.array(replay.discounts[:1]), mx.ones(1))
+            residuals.append(float(errors.item()))
+        np.testing.assert_allclose(residuals, [0., 2.-(1.+.5**5*2.)])
+
+    def test_native_one_step_persistent_worker_roles_and_exact_resume(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            def run(name, extra):
+                result = subprocess.run([sys.executable, '-m', 'rl.defense_dqn',
+                    '--run', str(root/name), '--artifacts', str(root/(name+'-artifacts'))]+extra,
+                    capture_output=True, text=True, timeout=90)
+                self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+                return json.loads((root/name/'latest/state.json').read_text())
+            first = run('first', ['--envs', '2', '--capacity', '32', '--compact-replay',
+                '--warmup', '4', '--batch-size', '4', '--n-step', '1', '--train-every', '4',
+                '--target-every', '2', '--steps', '64', '--eval-every', '1000',
+                '--max-episode-steps', '3', '--mlx-cache-mb', '64',
+                '--exploration-max-repeat', '64', '--epsilon-final', '.9',
+                '--curriculum-probability', '.5', '--curriculum-share',
+                '--curriculum-boot-envs', '1', '--curriculum-boot-epsilon', '.05',
+                '--curriculum-lookback', '4'])
+            self.assertGreater(first['updates'], 0)
+            self.assertEqual(first['persistent_exploration']['decisions'], 60)
+            clone = run('clone', ['--resume', str(root/'first/latest'), '--steps', '64'])
+            for key in ('steps', 'updates', 'episodes', 'rng', 'persistent_exploration_rng'):
+                self.assertEqual(first[key], clone[key])
+            for file in ('model.safetensors', 'target.safetensors', 'optimizer.npz'):
+                a = mx.load(str(root/'first/latest'/file)); b = mx.load(str(root/'clone/latest'/file))
+                self.assertEqual(set(a), set(b))
+                for key in a: np.testing.assert_array_equal(np.array(a[key]), np.array(b[key]))
+            resumed = run('resumed', ['--resume', str(root/'first/latest'), '--steps', '96'])
+            self.assertGreater(resumed['updates'], first['updates'])
+            self.assertEqual(resumed['config']['n_step'], 1)
+            self.assertEqual(resumed['config']['curriculum_boot_epsilon'], .05)
+            self.assertEqual(resumed['persistent_exploration']['decisions'], 28)
+            policy, config = load_policy(root/'resumed/latest/model.safetensors')
+            self.assertEqual(policy_description(config), 'learned Q-values, greedy')
+            self.assertFalse(hasattr(policy, 'remaining'))
+
     def test_real_emulator_fresh_training_and_optimizer_target_resume(self):
         with tempfile.TemporaryDirectory() as tmp:
             p = Path(tmp)

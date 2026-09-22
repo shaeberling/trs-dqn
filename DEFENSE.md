@@ -3641,6 +3641,85 @@ versus **2,450**. All offsets and reserved-worker boundaries remain correct;
 all completed training episodes also remain stage 1. These are archive-event
 statistics, not proof of course advancement. Both learners continue unchanged.
 
+The [second-round comparison through **7,493,216**](results/defense/training/dqn-40-worker-epsilon-split/comparison-through-000007493216.json)
+records split mean **8,851**, best **10,140**, versus control mean **9,165**,
+best **9,860**. Both means regress from the first round, and all forty games
+across the two paired rounds remain stage-1 losses. More exploratory practice
+has not yet established a passage benefit. Frozen checkpoint hashes and all
+per-game records are preserved with the comparison; the trials continue.
+
+### One-step target calibration under heavy exploration
+
+The worker-allocation trial changes which experience is generated, but still
+uses **uncorrected five-step returns**: `NStep` sums the next five actual
+score rewards, then `Learner._loss` bootstraps with the target network's value
+of the online network's greedy action. Intermediate exploratory actions remain
+inside that return. This is the existing multi-step DQN design, not a newly
+discovered implementation error. Under heavy exploration, however, a useful
+first action can be followed by unrelated random actions, while the desired
+evaluation policy follows learned greedy actions throughout.
+
+The [off-policy return literature](https://arxiv.org/abs/1606.02647) motivates
+checking that mismatch. It does **not** prove it caused this game's plateau.
+The existing `--n-step 1` option instead bootstraps after one transition,
+avoiding intermediate behavior actions in that particular target. It does not
+remove function-approximation error, all off-policy risks, partial observability
+or exploration difficulty. Multi-step targets can propagate newly observed
+rewards faster, as discussed in [Rainbow](https://arxiv.org/abs/1710.02298), so
+one-step is a tradeoff to test, not an assumed improvement. This experiment
+is ordinary one-step Double DQN, **not Retrace** or an importance-correction
+implementation.
+
+The [one-step calibration](results/defense/training/one-step-split-calibration-01/resume-config.json)
+resumes the same own DQN 33 checkpoint at **6,962,144** as the preserved
+[five-step split calibration](results/defense/training/worker-epsilon-split-calibration-01/resume-config.json).
+It collects **131,072** new actions and evaluates ten complete uncapped boot
+games on reused seeds 10000–10009. The [configuration check](results/defense/training/one-step-split-calibration-01/design.json)
+asserts that only **n-step 5 → 1** and output paths differ; production source
+hashes match. This is a historical same-parent/configuration comparator, not
+a new simultaneous or independent replication.
+
+Both retain eight workers, compact replay 200,000, batch 64, learning rate
+1e-4, gamma .997, reward scale .01, life terminals, 100,000 T-states/stride 1,
+durations 1–64/exponent 1.5, two boot-only workers at epsilon .05 and six at
+.9, own shared score archives 16×4, reset probability .5 and lookback 128.
+Full online/target/Adam/RNG are restored; replay and native archives refill
+from new own experience. No replay demonstration, oracle or extra reward is
+introduced. The shorter queue fills replay sooner, so equal action counts
+can include a slightly different number of optimizer updates; this will be
+reported rather than silently described as an exactly update-matched trial.
+
+Three additional regression tests cover immediate one-step insertion,
+terminal/truncation discounts and final observations; an analytical synthetic
+one-state MDP illustrating the return difference; and native persistent
+worker-role training with exact online/target/Adam/RNG resume. The synthetic
+fixture is test-only, not game data or a demonstration. The tiny native test
+deliberately truncates episodes and is not a performance result. No production
+code or existing live-run setting changes for this calibration.
+All [300 regression tests](results/defense/diagnostics/one-step-regression-tests.txt)
+and [nine focused Defense DQN tests](results/defense/diagnostics/one-step-focused-tests.txt)
+passed.
+
+```bash
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-one-step-split-reproduction \
+  --artifacts runs/defense-one-step-split-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --epsilon-final .9 \
+  --curriculum-boot-epsilon .05 --curriculum-lookback 128 --n-step 1
+```
+
+The slot comes from [retired DQN 37](results/defense/training/dqn-37-quantile-neutral/retirement.json),
+which stopped cleanly at **1,952,224** after **1,821,152** new actions,
+**759** boot games and **nine** ten-game rounds, all stage-1 losses. Its
+peak mean remains **10,408**, best **10,480**; the last evaluation mean is
+**9,979**, median **10,240**, best **10,290**. Full final online/target/Adam/RNG,
+last evaluated checkpoint, complete compressed log and all evaluation records
+are preserved. The final post-update weights were not separately evaluated.
+Its best replay remains available; no artifact was deleted. Retirement is
+for the depth plateau, not a wall-clock budget. Runs 39/40/41 continue, and
+the short one-step check is excluded from the shared collector.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)

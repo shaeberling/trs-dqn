@@ -1,0 +1,28 @@
+{
+  "parent": "results/defense/training/dqn-33-persistent-resets/step-000006962144",
+  "new_actions_each": 131072,
+  "one_step_run": "runs/defense-one-step-split-calibration-01",
+  "five_step_control": "results/defense/training/worker-epsilon-split-calibration-01",
+  "config_differences": {
+    "run": [
+      "runs/defense-worker-epsilon-split-calibration-01",
+      "runs/defense-one-step-split-calibration-01"
+    ],
+    "artifacts": [
+      "runs/defense-worker-epsilon-split-calibration-01/artifacts",
+      "runs/defense-one-step-split-calibration-01/artifacts"
+    ],
+    "n_step": [
+      5,
+      1
+    ]
+  },
+  "production_source_hashes_match": true,
+  "comparison": "One-step learned greedy bootstrap versus existing uncorrected five-step own-behavior return. Historical same-parent/config control, not a new independent or simultaneous replication.",
+  "limitations": [
+    "No measured causal proof that multi-step off-policy error explains Defense failure.",
+    "One-step can propagate newly discovered reward more slowly.",
+    "Shorter insertion lag changes warmup completion and can slightly change optimizer update count at equal action count.",
+    "Same reused complete boot validation seeds 10000..10009."
+  ]
+}
