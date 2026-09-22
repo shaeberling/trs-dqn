@@ -8,8 +8,10 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **311-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
-Current experiments are higher discount (42), full current-policy trace cutting
-(43), and longer persistence (44). Worker-split exploration
+Current experiments are full current-policy trace cutting (43) and longer
+persistence (44). Higher discount (42) retired after seven stage-1-only rounds;
+a visual-prediction auxiliary task is documented as a not-yet-implemented next
+candidate. Worker-split exploration
 (40) and its uniform control (41) retired after nine and seven evaluation
 rounds, respectively, without a later stage.
 Runs 33–39 have retired with full final state and logs preserved; the historical
@@ -3909,6 +3911,18 @@ remaining left of the gap. That supports recurrence of the familiar sequence,
 not proof of the exact collision object or timestamp. The final loss has no
 sampled white flash. No diagnostic trajectory becomes training data.
 
+The higher-discount run (42) subsequently stopped cleanly at **8,517,856**,
+after **1,424,640** new actions, **620** complete boot games, **468** restored
+segments and **seven** full ten-game validation rounds. Its last mean was
+**9,849**, median **9,845**, best **9,910**. Every logged training episode and
+all 70 validation games remained in stage 1. The
+[retirement record](results/defense/training/dqn-42-long-discount/retirement.json),
+complete compressed log, last evaluated checkpoint, peak-mean checkpoint
+(**10,262** at **7,693,216**) and final full optimizer state are preserved.
+Final post-update weights were not separately evaluated. Its earlier 10,460-point
+verified replay remains available. The stage-depth plateau, not a wall-clock
+limit, prompted freeing compute for the next representation-learning candidate.
+
 ### Longer preparation-context continuation
 
 Full [DQN 39](results/defense/training/dqn-39-long-lookback/resume-config.json)
@@ -4240,6 +4254,33 @@ venv/bin/python -u -m rl.defense_dqn \
   --resume results/defense/training/long-persistence-split-calibration-01/checkpoint \
   --steps 0 --eval-every 200000
 ```
+
+Run 44's [first full comparison at **7,293,216**](results/defense/training/dqn-44-long-persistence/comparison-at-000007293216.json)
+regressed to mean **6,404**, median **6,745**, best **7,810**. All ten paired
+scores are below the historical cap-64 arm (mean **9,755**); mean difference is
+**−3,351**. Every game remains a stage-1 loss. Its short-calibration advantage
+did not persist into this first continuation checkpoint. The full optimizer
+and [2,334-action verified replay](results/defense/training/dqn-44-long-persistence/first-replay/replay.html)
+are preserved separately, without replacing the stronger shared best.
+The [audit](results/defense/training/dqn-44-long-persistence/audit-at-000007293216.json)
+records **88** new boot games, **60** restored segments and **1,912** archive
+events with correct offsets and protected boot-only workers. All logged training
+episodes remain stage 1. It sampled **586** planned holds above 64 decisions,
+including **246** above 128; mechanism activity is not successful passage.
+The trial continues unchanged for further complete-game measurements.
+
+### Next candidate: auxiliary visual prediction (design only)
+
+The [design and pre-trial checks](results/defense/diagnostics/visual-prediction-design.md)
+consider an SPR-inspired auxiliary objective using only the learner's own
+visible trajectories. This is **not implemented or running**, and no benefit
+is claimed. It would test visual representation learning rather than another
+exploration/discount change, while keeping actual game-score rewards and ordinary
+learned greedy acting. There would be no simulator lookahead, reward bonus,
+route label, demonstration or future-screen input at play time. The document
+specifies separate auxiliary/EMA/optimizer/RNG preservation and required native,
+gradient-isolation, default-parity and replay checks before a calibration.
+The current active models and inference paths are unchanged.
 
 ### Quantile score-return experiment
 
