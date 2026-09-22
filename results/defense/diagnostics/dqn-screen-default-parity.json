@@ -1,0 +1,25 @@
+{
+  "before": "runs/defense-dqn-cells-default-before/latest",
+  "after": "runs/defense-dqn-cells-default-after/latest",
+  "before_trainer_sha256": "77076c19803f0f1c6afb61821519b7f83cf26522510e17a933b521971173d5b6",
+  "after_trainer_sha256": "a0d7b92b0b2612069bca294595d89aef4f164662c608f7204974cb0759179924",
+  "model_sha256": "3a8f10959bd1fd036ef1ff041f395580b29572b25e35903114f46bbda6ceb44d",
+  "target_sha256": "6611f6005d0e420028b818d5850a66b991c6edc9adb23906335a9be9d9b48ea0",
+  "online_and_target_files_byte_identical": true,
+  "optimizer_arrays_exactly_identical": 26,
+  "identical_state_fields": [
+    "steps",
+    "updates",
+    "episodes",
+    "boot_episodes",
+    "restored_segments",
+    "rng",
+    "persistent_exploration_rng",
+    "persistent_exploration"
+  ],
+  "steps": 4096,
+  "updates": 16,
+  "boot_episodes": 5,
+  "restored_segments": 3,
+  "limitation": "Bounded deterministic regression with truncated 512-action episodes; not evidence of game progression. Neither run is used as a training parent or collector source."
+}

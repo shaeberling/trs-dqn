@@ -6,15 +6,15 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Status: **Defense training has resumed after the user freed disk space**
-(23 GiB available at restart). The full **279-test** suite now passes, including
+(23 GiB available at restart). The full **280-test** suite now passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 Bootstrap DQN 24, PPO 29 and frozen-memory PPO 30 later retired after depth
 plateaus or sustained regression, with all results preserved.
 Training remains independent of Breakdown, with complete-game
 validation and automatic verified best-effort replays. No history was deleted.
-Full DQN trials 31/32 now compare persistent random exploration with the
-unchanged control. Their first six full-run rounds disagree on mean-score
-ranking; all games still lost in stage 1.
+Full DQN trials 31/32 finished eight matched rounds without a new stage and
+retired with full state preserved. Mean-score ranking varied; all games lost
+in stage 1.
 A bounded matched check of 5% versus 25% nominal persistent exploration
 finished without a new stage; the higher rate scored worse. Neither full
 run's settings changed.
@@ -29,6 +29,8 @@ Their first full-run round favors resets by 62 mean points, down from the
 bounded check's 224; the second favors no resets by 305. All games remain
 stage-1 losses. A read-only prediction/return diagnostic does not support
 gross near-loss Q-value inflation as the explanation.
+A bounded archive-diversity pair now compares screen fingerprints with score
+bins, using equal maximum archive capacity and identical parent state.
 A successful mission has not yet been verified.
 The current standard-policy best is **10,480 points**, with **2,580** neural
 actions exactly reverified; its ten-game mean is **9,981**, median **10,380**, all stage 1.
@@ -226,9 +228,7 @@ are restored, while emulator episodes restart from boot (not exact trajectory
 continuation). Evaluation uses fixed validation seeds 10000–10009; do not use
 fresh-test seeds to tune the model.
 
-- Live unlimited progress: `runs/defense-dqn-31-persistent/status.json`,
-  `runs/defense-dqn-32-persistent-control/status.json`,
-  `runs/defense-dqn-33-persistent-resets/status.json` and
+- Live unlimited progress: `runs/defense-dqn-33-persistent-resets/status.json` and
   `runs/defense-dqn-34-persistent-rate-control/status.json`, each with an adjacent
   `metrics.jsonl`. Earlier trials have stopped cleanly; their outcomes and
   archived resumable checkpoints are recorded below. Confirm a status file's
@@ -247,6 +247,10 @@ fresh-test seeds to tune the model.
   finished) and `runs/defense-persistent-reset-short-calibration-01/status.json`
   (lookback 32, finished), with adjacent logs. Both sources are excluded from
   the global collector.
+- Bounded archive-diversity comparison:
+  `runs/defense-dqn-screen-cells-calibration-01/status.json` and
+  `runs/defense-dqn-score-cells-control-01/status.json`, with adjacent logs.
+  These sources and the numerical-parity smoke runs are excluded from the collector.
 - Historical checkpoints: `runs/defense-ppo-*/step-*/` and `runs/defense-dqn-*/step-*/`, including optimizer,
   configuration, policy weights and each completed validation suite.
 - Stable best effort, once a validation candidate is verified:
@@ -3107,6 +3111,24 @@ replay remains unchanged. Since calibration, the runs completed **508** and
 six reused-seed rounds per arm lost in stage 1. The evidence remains mixed on
 mean score and entirely negative on a new stage; it is not a fresh success rate.
 
+Both older trials subsequently retired cleanly after **eight** paired rounds,
+all **160** reused-seed evaluation games still stage-1 losses. DQN 31 stopped
+at **8,010,944** actions, **498,806** updates and **3,951** cumulative boot games;
+DQN 32 stopped at **8,004,192**, **498,384** updates and **3,963** boot games.
+Neither used restored segments. At their last evaluation, **7,831,072**, means
+were **10,190** persistent and **8,859** control; bests **10,200** and **10,420**.
+They had not exceeded their earlier score/depth ceilings. Retirement releases
+compute for the archive-diversity comparison, not because of elapsed time.
+
+The [DQN 31 final checkpoint and eight-round record](results/defense/training/dqn-31-persistent/retirement-000008010944.json)
+and [DQN 32 equivalent](results/defense/training/dqn-32-persistent-control/retirement-000008004192.json)
+are preserved, with full online/target/optimizer/RNG states, last complete
+evaluation checkpoints and complete compressed logs alongside those records.
+Final post-update checkpoints are not claimed as separately evaluated.
+Their earlier verified best replays remain intact, and both historical sources
+remain in the collector. DQN 31's trained lineage continues in trials 33/34;
+the independent control's resumable state remains available too.
+
 ```bash
 # Use distinct run/artifact paths for each arm. Set repeat to 1 for the control.
 venv/bin/python -u -m rl.defense_dqn \
@@ -3373,6 +3395,71 @@ venv/bin/python -u -m rl.defense_dqn \
 # results/defense/training/persistent-rate-high-01/checkpoint instead.
 ```
 
+### DQN archive-diversity comparison
+
+A [read-only inventory audit at action 7,242,407](results/defense/diagnostics/score-archive-inventory-7242407.json)
+found all eight run-33 workers' latest logged terminal inventories had the same
+**16 score cells / 53 snapshots**. Their lowest score-bin bound was **1,020**
+within a life; ten of sixteen cells began at **2,420** or more. Since resets
+choose a cell uniformly, those ten cells represent 62.5% of that inventory's
+cell-selection probability. Nine of 117 completed restored segments lasted at
+most 32 actions. These are logged inventories at different nearby episode ends,
+not direct inspection of current native states. Score is not position, and
+short segments do not prove a saved state was already doomed.
+
+The existing score archive intentionally keeps the highest bins. It can
+therefore omit lower-scoring approaches even if their screens differ. To test
+that restriction, DQN now exposes the environment's already implemented
+`--curriculum-cells score|screen`, `--curriculum-bins`, `--curriculum-per-bin`,
+`--curriculum-score-interval` and `--curriculum-screen-interval`. Defaults remain
+score cells, 16 bins, four entries, 20-point spacing and 32-action screen
+sampling. The screen method uses the existing HUD-excluded 9×16 eight-level
+graphics fingerprint, bounded bottom-k hash admission and uniform cell reset.
+It is not object detection, a route, a novelty reward or a policy input.
+
+An [exact pre-change/post-change regression](results/defense/diagnostics/dqn-screen-default-parity.json)
+ran 4,096 actions with persistent exploration, own-state sharing and updates.
+Online/target files are byte-identical, all **26** optimizer arrays are exactly
+equal, and both RNG streams, exploration counters and episode counts match.
+It completed five boot segments and three restored segments with deliberate
+512-action truncation; this is plumbing evidence, not game success. Neither
+smoke run supplies training data or weights to production. All **11** focused
+[tests pass](results/defense/diagnostics/dqn-screen-focused-tests.txt), including real screen-archive capacity, reserved boot workers,
+optimizer resume/option inheritance and unchanged from-boot evaluation.
+The full **280-test** [regression suite passes](results/defense/diagnostics/dqn-screen-regression-tests.txt).
+
+The bounded [screen arm](results/defense/training/dqn-screen-cells-calibration-01/resume-config.json)
+and [score control](results/defense/training/dqn-score-cells-control-01/resume-config.json)
+both start from run 33's **6,962,144** complete checkpoint (mean 10,259,
+best 10,480), restoring the **same** online/target/optimizer and RNG states.
+Each adds **131,072** actions, ending at **7,093,216**, with eight workers,
+nominal 25% persistent exploration, durations 1–64/exponent 1.5, 0.5 reset
+probability, two boot-only workers and lookback 32. Both have **128 cells ×
+one snapshot per stage** as their maximum archive capacity. Actual occupied
+counts may differ and must be reported, not assumed equal. Other learning,
+compact-replay capacity, action timing and observation settings match.
+
+Only paths, cell mode and its provenance metadata differ. Treatment includes
+the mode's event selection: score changes at 20-point bins versus changed
+screen cells sampled every 32 actions. This is not a key-only comparison or
+an isolated comparison against run 33's smaller 16×4 archive. Both archives
+start empty and receive only newly reached same-run snapshots; neither uses
+the diagnostic replays or the other arm's experience. Ten complete greedy
+evaluation games start from boot on the same reused seeds. Both short sources
+are excluded from the global collector. The previous PPO screen-cell trial
+did not clear stage 1; this tests the combination with persistent DQN, without
+assuming screen diversity is sufficient. Trials 33/34 continue unchanged.
+
+```bash
+# Use distinct paths and curriculum-cells score for the capacity-matched control.
+venv/bin/python -u -m rl.defense_dqn \
+  --run runs/defense-dqn-screen-cells-reproduction \
+  --artifacts runs/defense-dqn-screen-cells-reproduction/artifacts \
+  --resume results/defense/training/dqn-33-persistent-resets/step-000006962144 \
+  --steps 7093216 --eval-every 131072 --curriculum-cells screen \
+  --curriculum-bins 128 --curriculum-per-bin 1 --curriculum-screen-interval 32
+```
+
 ### Lossless compact training replay
 
 `rl.defense_dqn --compact-replay` optionally replaces dense duplicated screen
@@ -3517,7 +3604,7 @@ venv/bin/python -u -m rl.defense_dqn --run runs/defense-dqn-large-replay-reprodu
 Ordinary DQN can now enable the same opaque, own-experience reset mechanism
 used by PPO via `--curriculum-probability`, `--curriculum-share`,
 `--curriculum-boot-envs` and `--curriculum-lookback`. This initial integration
-uses score cells only: visible score gains within the current life, 20-point
+defaults to score cells: visible score gains within the current life, 20-point
 bins, 16 bins per stage and four retained states per bin. Boot-only workers
 share newly reached states but never restore one. The archive is initially
 empty, stays bounded, and is rebuilt on optimizer resume; native payloads are

@@ -1,0 +1,16 @@
+test_invalid_reset_configuration_is_rejected_before_starting (tests.test_defense_dqn_curriculum.DefenseDQNCurriculumTests.test_invalid_reset_configuration_is_rejected_before_starting) ... ok
+test_persistent_screen_archive_controls_and_resume (tests.test_defense_dqn_curriculum.DefenseDQNCurriculumTests.test_persistent_screen_archive_controls_and_resume) ... ok
+test_real_own_archives_reserved_boot_worker_and_resume_refill (tests.test_defense_dqn_curriculum.DefenseDQNCurriculumTests.test_real_own_archives_reserved_boot_worker_and_resume_refill) ... ok
+test_replay_uses_new_rewards_terminal_screens_and_separate_segment_counts (tests.test_defense_dqn_curriculum.DefenseDQNCurriculumTests.test_replay_uses_new_rewards_terminal_screens_and_separate_segment_counts) ... ok
+test_distribution_and_occupancy_calibration (tests.test_persistent_exploration.PersistentExplorationTests.test_distribution_and_occupancy_calibration) ... ok
+test_exact_holds_boundary_cancellation_and_zero_epsilon (tests.test_persistent_exploration.PersistentExplorationTests.test_exact_holds_boundary_cancellation_and_zero_epsilon) ... ok
+test_invalid_parameters_and_cli (tests.test_persistent_exploration.PersistentExplorationTests.test_invalid_parameters_and_cli) ... ok
+test_native_disabled_identity_enabled_training_and_resume (tests.test_persistent_exploration.PersistentExplorationTests.test_native_disabled_identity_enabled_training_and_resume) ... ok
+test_native_persistence_with_own_archives (tests.test_persistent_exploration.PersistentExplorationTests.test_native_persistence_with_own_archives) ... ok
+test_persistence_cancels_at_life_and_own_reset_boundaries (tests.test_persistent_exploration.PersistentExplorationTests.test_persistence_cancels_at_life_and_own_reset_boundaries) ... ok
+test_rng_reproducibility_and_resume_starts_without_active_holds (tests.test_persistent_exploration.PersistentExplorationTests.test_rng_reproducibility_and_resume_starts_without_active_holds) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 38.869s
+
+OK

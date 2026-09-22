@@ -20,6 +20,9 @@ class DefenseDQNCurriculumTests(unittest.TestCase):
         base=['dqn','--run','/nonexistent/dqn-curriculum','--artifacts','/nonexistent/artifacts']
         for extra in [['--curriculum-probability','nan'],['--curriculum-probability','1.1'],
                       ['--curriculum-lookback','-1'],['--curriculum-share'],
+                      ['--curriculum-bins','0'],['--curriculum-per-bin','0'],
+                      ['--curriculum-score-interval','-1'],['--curriculum-screen-interval','0'],
+                      ['--curriculum-cells','invalid'],
                       ['--curriculum-boot-envs','1'],
                       ['--curriculum-probability','.5','--curriculum-share','--curriculum-boot-envs','8'],
                       ['--bootstrap-heads','5','--curriculum-probability','.5']]:
@@ -74,6 +77,9 @@ class DefenseDQNCurriculumTests(unittest.TestCase):
             np.testing.assert_array_equal(replay.next_obs[:4],9) # Not reset frame 99.
             self.assertTrue(worker_configs[0]['curriculum'])
             self.assertEqual(worker_configs[0]['curriculum_boot_envs'],1)
+            self.assertEqual(worker_configs[0]['curriculum_cells'],'score')
+            self.assertEqual(worker_configs[0]['curriculum_bins'],16)
+            self.assertEqual(worker_configs[0]['curriculum_per_bin'],4)
             self.assertFalse(any('curriculum' in key for key in evaluate.call_args.kwargs))
             state=json.loads((p/'run/latest/state.json').read_text())
             self.assertEqual((state['episodes'],state['boot_episodes'],state['restored_segments']),(2,1,1))
@@ -119,6 +125,50 @@ class DefenseDQNCurriculumTests(unittest.TestCase):
             self.assertEqual(after['restored_segments'],state['restored_segments'])
             self.assertEqual({f.name for f in (p/'resume/latest').iterdir()},
                              {'model.safetensors','target.safetensors','optimizer.npz','state.json'})
+
+    def test_persistent_screen_archive_controls_and_resume(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp)
+            args=[sys.executable,'-m','rl.defense_dqn','--run',str(p/'run'),
+                  '--artifacts',str(p/'artifacts'),'--envs','2','--capacity','4096',
+                  '--compact-replay','--warmup','32','--batch-size','4','--train-every','256',
+                  '--steps','4096','--eval-every','10000','--max-episode-steps','512',
+                  '--mlx-cache-mb','64','--exploration-max-repeat','64','--epsilon-final','1',
+                  '--curriculum-probability','1','--curriculum-share','--curriculum-boot-envs','1',
+                  '--curriculum-lookback','4','--curriculum-cells','screen',
+                  '--curriculum-bins','8','--curriculum-per-bin','1',
+                  '--curriculum-screen-interval','8']
+            result=subprocess.run(args,capture_output=True,text=True,timeout=90)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            rows=[json.loads(x) for x in (p/'run/metrics.jsonl').read_text().splitlines()]
+            archives=[r for r in rows if r['event']=='curriculum_archive']
+            self.assertTrue(archives)
+            self.assertTrue(all(r['entry_kind']=='screen_cell' for r in archives))
+            self.assertTrue(all(len(r['screen_cell'])==32 for r in archives))
+            self.assertTrue(all(r['trigger_action']-r['source_action']==4 for r in archives))
+            episodes=[r for r in rows if r['event']=='episode']
+            self.assertTrue(all(r['full_game'] for r in episodes if r['worker']==0))
+            self.assertTrue(any(not r['full_game'] for r in episodes if r['worker']==1))
+            for episode in episodes:
+                counts=episode['curriculum_archive_counts']
+                self.assertLessEqual(len(counts),8)
+                self.assertTrue(all(v==1 for v in counts.values()))
+            state=json.loads((p/'run/latest/state.json').read_text())
+            self.assertGreater(state['updates'],0)
+            self.assertGreater(state['persistent_exploration']['exploratory_steps'],0)
+            self.assertEqual(state['config']['curriculum_cell_encoding'],'graphics-9x16x8-v1')
+            self.assertFalse(state['config']['curriculum_archive_saved'])
+            resumed=subprocess.run([sys.executable,'-m','rl.defense_dqn','--run',str(p/'resume'),
+                                    '--artifacts',str(p/'resume-artifacts'),'--resume',str(p/'run/latest'),
+                                    '--steps','4112','--warmup','4','--train-every','4','--batch-size','4'],
+                                   capture_output=True,text=True,timeout=90)
+            self.assertEqual(resumed.returncode,0,resumed.stdout+resumed.stderr)
+            after=json.loads((p/'resume/latest/state.json').read_text())
+            self.assertGreater(after['updates'],state['updates'])
+            for key in ['curriculum_cells','curriculum_bins','curriculum_per_bin',
+                        'curriculum_score_interval','curriculum_screen_interval']:
+                self.assertEqual(after['config'][key],state['config'][key])
+            self.assertEqual(after['restored_segments'],state['restored_segments'])
 
 
 if __name__=='__main__':unittest.main()
