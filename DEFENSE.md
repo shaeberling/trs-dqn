@@ -7194,3 +7194,20 @@ learned policy reaches them; do not patch memory or supply scripted expert play
 to manufacture a success. The screen parser is single-player only. If a new
 binary changes its HUD or awards extra ships, its assumptions must be audited
 again. Keep models and diagnostics tied to the recorded executable hash.
+
+## Real-game head search and the recurring barrier
+
+The [six-generation ARS-style search](results/defense/training/ars-59-head-search/README.md)
+held the strong PPO screen encoder fixed and searched its 20-action head from
+complete, self-play game scores. It used 384 training games and 969,966 new
+actions. The highest validation mean was 10,412; the final ten-game mean was
+10,090, median 10,420, best 10,460. All remained in stage 1. The archived
+full states and population returns make this negative trial reproducible.
+
+The [verified final replay](results/defense/diagnostics/ars-59-final-replay/replay.html)
+scored 2,620 / 2,620 / 2,620 / 2,600 on its four lives. Its
+[unaltered screen panels](results/defense/diagnostics/shared-loss-ars-59/report.json)
+show the ship left of the right-opening barrier again. The older global best
+scored 2,620 on all four lives. The panel alignment uses visible white
+flashes and later HUD changes, so it does not prove the exact collision time
+or whether the wall or a projectile caused each loss.

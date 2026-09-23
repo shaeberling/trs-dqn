@@ -55,6 +55,10 @@ A [direct-prior-output comparison](results/defense/training/world-prior-output-0
 trains next-screen/score/continuation predictions without arrival-screen input.
 It improves some visual errors but not gameplay; both actors still lose in
 stage 1. This auxiliary objective is opt-in and keeps the original rewards.
+A [real-game categorical-head search](results/defense/training/ars-59-head-search/README.md)
+tests paired parameter perturbations of the strong PPO policy using complete
+games and displayed score. Six generations did not pass stage 1; its model
+states, returns, and verified final replay are preserved.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
