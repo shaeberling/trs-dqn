@@ -60,6 +60,15 @@ games remained in stage one. The checkpoint still contains the
 generation-two internally accepted head, which the separate 64-seed check
 above did not confirm. The global verified 10,480-point replay is unchanged.
 
+At generation nine, after **4,208 complete training games and 10,604,410
+actions**, another internal update passed the 16-/32-game score gates
+(+155.00 / +195.94 points). Its [full checkpoint](milestone-000009/state.json)
+is preserved. A separate [64-seed paired check](paired-generation-9.json)
+against the last independently confirmed parent gave **10,034.53** versus
+**10,212.19**, or **-177.66 points**. Neither policy reached stage two.
+This internally accepted head is also not a confirmed improvement and has
+not replaced the global best.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \

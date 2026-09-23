@@ -7680,3 +7680,11 @@ actions**. A candidate's +256.25-point 16-game comparison reversed to
 mean is now **10,032** versus 10,388 at the start, all stage one. The
 internally accepted generation-two head remains in the live run, but its
 independent 64-seed check is negative; it is not a confirmed improvement.
+
+At the [generation-nine milestone](results/defense/training/ars-action-row-99/milestone-000009/state.json),
+**4,208 complete games and 10,604,410 actions** had produced a second
+internally accepted update, still all stage one. A [new 64-seed check](results/defense/training/ars-action-row-99/paired-generation-9.json)
+against the last independently confirmed parent reversed its short-run
+gain: candidate **10,034.53**, parent **10,212.19**, a **-177.66-point**
+difference. It is preserved but not treated as a confirmed parent or new
+best replay. The planned run continues to its final checkpoint.
