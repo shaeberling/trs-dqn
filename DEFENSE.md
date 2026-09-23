@@ -7610,3 +7610,13 @@ candidate 10,238.28 versus unchanged parent 10,094.38, a **+143.91-point**
 gain. This again misses the 150-point gate, so no weights are promoted.
 Both policies stayed in stage one. The exact plan, score records and
 probe source are preserved while the main run continues.
+
+The [effective-key long run](results/defense/training/ars-effective-96/README.md)
+then finished cleanly after **2,896 complete training games** and
+**7,236,566 actions**, with zero accepted updates or stage-two games.
+Fixed ten-game mean remained 10,388 at generations zero, five, ten and
+eleven. The entire run, final model/RNG state, source and verified local
+replays are preserved. The 10,480-point global replay is unchanged.
+Repeating this coupled key-factor search longer is not supported by its
+results; the next distinct test proposes score-gated changes to one
+command row at a time using only the same verified own-screen features.
