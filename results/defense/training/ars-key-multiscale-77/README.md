@@ -26,6 +26,15 @@ graceful checkpoint-boundary intervention stops the loop. A 5 GiB free-
 space guard protects the existing archives. Live data are in
 `runs/defense-ars-key-multiscale-77/`.
 
+The independently restorable [generation-5 checkpoint](milestone-000005/state.json)
+is preserved after 1,264 complete training games and 2,997,896 new actions.
+Only one candidate passed the independent 32-game confirmation by then.
+The fixed ten-game boot mean was 9,925, slightly below the original
+9,981; every game remained in stage 1. Its model SHA-256 is
+`64323a15bd14e88ca4f875ac54d5cee2f21c10ec9806b7693a2cfc244022eb99`.
+This is a negative validation milestone, not barrier passage or a new
+global best replay.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-59-head-search/run/generation-000000 \

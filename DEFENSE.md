@@ -7373,3 +7373,9 @@ Both pilots are fully archived. The ongoing
 uses four screening, 16 comparison and 32 independent confirmation games
 per candidate decision, with a 150-point final margin and no stage or
 route-specific action rule.
+
+At the [multi-radius generation-5 milestone](results/defense/training/ars-key-multiscale-77/milestone-000005/state.json),
+1,264 complete training games and 2,997,896 new actions had produced one
+score-gated update. Its fixed ten-game boot mean was 9,925 versus 9,981
+at the original parent, and every game was still stage 1. The checkpoint
+is preserved with full model/RNG state; no new best replay was promoted.
