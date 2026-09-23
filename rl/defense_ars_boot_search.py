@@ -33,6 +33,17 @@ def key_incidence(names):
     return incidence
 
 
+def effective_key_incidence(names):
+    """Stage-one key effects: firing combinations do not translate the ship.
+
+    This maps known command semantics, not obstacle locations, preferred
+    steering, target actions or hidden emulator state. All axes stay symmetric.
+    """
+    incidence = key_incidence(names)
+    incidence[incidence[:, KEY_FACTORS.index('SPACE')] != 0, :4] = 0
+    return incidence
+
+
 def key_factor_directions(rng, count, head_shape, names):
     """Coherently perturb every command containing a physical key.
 
@@ -64,14 +75,15 @@ def context_key_directions(rng, count, head_shape, names, basis):
     return directions.astype(np.float32)
 
 
-def subspace_key_directions(rng, count, head_shape, names, basis):
+def subspace_key_directions(rng, count, head_shape, names, basis,
+                            effective_movement=False):
     """Symmetric physical-key proposals across own visual-approach axes."""
     basis = np.asarray(basis, np.float32)
     if (count < 1 or basis.ndim != 2 or not 2 <= len(basis) <= 16
             or len(head_shape) != 2 or head_shape[0] != len(names)
             or head_shape[1] != basis.shape[1] or not np.isfinite(basis).all()):
         raise ValueError('invalid visible subspace/head')
-    incidence = key_incidence(names)
+    incidence = effective_key_incidence(names) if effective_movement else key_incidence(names)
     coefficients = rng.normal(size=(count, len(KEY_FACTORS), len(basis))).astype(np.float32)
     coefficients /= np.sqrt(len(basis))
     factors = np.einsum('dkb,bf->dkf', coefficients, basis, optimize=True)
@@ -123,6 +135,28 @@ def shortlist(means, count):
     return np.argsort(-means, kind='stable')[:count].tolist()
 
 
+def reconcile_early_context(old, current, legacy_source):
+    """Allow only a provenance-only extension of an identical frozen basis."""
+    from .defense_learning import sha256
+    if legacy_source is None or not isinstance(old, dict):
+        raise ValueError('changed visible context requires its exact archived source')
+    previous = dict(old)
+    refreshed = dict(current)
+    old_digest = previous.get('proposal_source_sha256')
+    new_digest = refreshed.pop('proposal_source_sha256', None)
+    if (not old_digest or not new_digest or sha256(legacy_source) != old_digest
+            or refreshed.pop('minimum_visible_life_score', None) != 0
+            or refreshed.pop('omitted_own_lives', None) != []):
+        raise ValueError('early visible context changed beyond audited provenance')
+    previous.pop('proposal_source_sha256')
+    if previous != refreshed:
+        raise ValueError('early visible basis, source or diagnostics changed')
+    return dict(legacy_source=str(Path(legacy_source).resolve()),
+                legacy_source_sha256=old_digest, refreshed_source_sha256=new_digest,
+                basis_sha256=current['basis_sha256'],
+                reason='same rendered-screen basis and source hashes; new score filter defaults to zero')
+
+
 def main():
     import mlx.core as mx
     from mlx.utils import tree_flatten
@@ -144,10 +178,12 @@ def main():
     parser.add_argument('--direction-mode',
                         choices=('action-row', 'key-factor', 'failure-context-key',
                                  'failure-subspace-key', 'early-subspace-key',
-                                 'bottleneck-subspace-key'),
+                                 'bottleneck-subspace-key', 'bottleneck-effective-key'),
                         default='action-row')
     parser.add_argument('--context-archive', type=Path,
                         help='own visible pre-loss training screens for context/subspace modes')
+    parser.add_argument('--legacy-context-source', type=Path,
+                        help='exact archived context source for an audited provenance-only resume')
     parser.add_argument('--subspace-components', type=int, default=4,
                         help='independent own-screen variation axes for failure-subspace-key')
     parser.add_argument('--sigma', type=float, default=.05)
@@ -169,7 +205,8 @@ def main():
             or args.shortlist > 2*args.directions
             or not 1 <= args.subspace_components <= 15
             or (args.direction_mode not in ('failure-subspace-key', 'early-subspace-key',
-                                            'bottleneck-subspace-key')
+                                            'bottleneck-subspace-key',
+                                            'bottleneck-effective-key')
                 and args.subspace_components != 4)
             or args.first_training_seed < 70000 or args.seed < 0
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
@@ -178,8 +215,9 @@ def main():
             or (args.context_archive is None) !=
                 (args.direction_mode not in
                  ('failure-context-key', 'failure-subspace-key', 'early-subspace-key',
-                  'bottleneck-subspace-key'))
-            or min(args.sigma, args.minimum_boot_gain) <= 0):
+                  'bottleneck-subspace-key', 'bottleneck-effective-key'))
+            or min(args.sigma, args.minimum_boot_gain) <= 0
+            or (args.legacy_context_source is not None and args.resume is None)):
         parser.error('new output, all 20 action rows and positive score-search settings required')
     mx.set_cache_limit(128*1024*1024)
     mx.random.seed(args.seed)
@@ -205,7 +243,8 @@ def main():
             training_method=('all-action coordinate-row population' if args.direction_mode == 'action-row'
                              else 'own verified screen-window physical-key subspace population'
                              if args.direction_mode in ('early-subspace-key',
-                                                        'bottleneck-subspace-key')
+                                                        'bottleneck-subspace-key',
+                                                        'bottleneck-effective-key')
                              else 'own visible-approach-subspace physical-key population'
                              if args.direction_mode == 'failure-subspace-key'
                              else 'own visible-failure-context physical-key population'
@@ -246,15 +285,16 @@ def main():
     context_basis = None
     if args.context_archive is not None:
         from .defense_ars_context import visible_context, visible_subspace
-        if args.direction_mode in ('early-subspace-key', 'bottleneck-subspace-key'):
+        if args.direction_mode in ('early-subspace-key', 'bottleneck-subspace-key',
+                                   'bottleneck-effective-key'):
             from .defense_ars_early_context import visible_early_subspace
             from .defense_ars_early_source import OFFSETS
-            expected_offsets = (128, 96, 64, 32) if args.direction_mode == \
-                'bottleneck-subspace-key' else OFFSETS
+            expected_offsets = (128, 96, 64, 32) if args.direction_mode in \
+                ('bottleneck-subspace-key', 'bottleneck-effective-key') else OFFSETS
             context_basis, context = visible_early_subspace(model, args.context_archive,
                 components=args.subspace_components, expected_offsets=expected_offsets,
-                minimum_life_score=2400 if args.direction_mode ==
-                'bottleneck-subspace-key' else 0)
+                minimum_life_score=2400 if args.direction_mode in
+                ('bottleneck-subspace-key', 'bottleneck-effective-key') else 0)
         elif args.direction_mode == 'failure-subspace-key':
             proposal = visible_subspace
             context_basis, context = proposal(model, args.context_archive,
@@ -266,7 +306,11 @@ def main():
         if args.initialize:
             config['context'] = context
         elif config.get('context') != context:
-            raise ValueError('resumed visible context differs from checkpoint')
+            if args.direction_mode != 'early-subspace-key':
+                raise ValueError('resumed visible context differs from checkpoint')
+            config['context_provenance_migration'] = reconcile_early_context(
+                config.get('context'), context, args.legacy_context_source)
+            config['context'] = context
     disk_guard(args.output.parent)
     args.output.mkdir(parents=True, exist_ok=False)
     shutil.copy2(parent/'optimizer.npz', args.output/'ppo-parent-optimizer.npz')
@@ -334,9 +378,11 @@ def main():
             directions = (perturbation_directions(rng, args.directions,
                 center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
                 else subspace_key_directions(rng, args.directions, center.shape,
-                    action_names(), context_basis) if args.direction_mode in
+                    action_names(), context_basis,
+                    effective_movement=args.direction_mode == 'bottleneck-effective-key')
+                    if args.direction_mode in
                     ('failure-subspace-key', 'early-subspace-key',
-                     'bottleneck-subspace-key')
+                     'bottleneck-subspace-key', 'bottleneck-effective-key')
                 else context_key_directions(rng, args.directions, center.shape,
                     action_names(), context_basis) if args.direction_mode == 'failure-context-key'
                 else key_factor_directions(rng, args.directions, center.shape, action_names()))

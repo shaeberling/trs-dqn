@@ -7557,3 +7557,40 @@ using only displayed per-life score. The first
 played 50 complete games but did not accept an update: its best candidate
 was 50 points below the parent in the two-game comparison, and all games
 remained stage 1. The longer early-window run continues independently.
+
+A [symmetric effective-key pilot](results/defense/training/ars-effective-pilot-94/README.md)
+then separated stage-one movement from Space-containing commands, which
+do not translate the ship. This is an audited control-semantic prior, not
+a hard-coded rightward route. Its best two-game candidate gained only
+40 points, so no update was accepted; ten-game mean stayed 10,388 and
+all games remained stage 1. The full source and results are preserved.
+
+The original early-window run was interrupted during generation nine by
+a code-edit/worker-spawn race, after generation eight had completed
+2,176 training games and 5,405,520 actions. No state or replay was lost.
+The [audited continuation](results/defense/training/ars-early-91-resume-95/README.md)
+restores the exact generation-eight model/RNG checkpoint. The source
+archive and feature-basis hashes match, and the re-run generation-nine
+proposal plan and 160 screening games are byte-identical to the interrupted
+prefix. The sole best-replay collector now watches all 96 artifact sources.
+
+The [audited continuation](results/defense/training/ars-early-91-resume-95/README.md)
+has finished the planned eleven generations: **3,024 logical complete
+training games** and **7,527,929 actions**. A second in-run update passed
+the 16-/32-game score gates at generation nine, but an independent
+64-seed-per-policy comparison found only a +124.22-point gain over the
+previous confirmed checkpoint, below the 150-point threshold for choosing
+a new parent. Fixed ten-game mean ended at **10,397**, just 9 points above
+the generation-five 10,388. All games remained stage 1, and the verified
+global best replay stayed at 10,480. Full original/interrupted and resumed
+records, checkpoints, exact source and replays are archived. The next
+longer search will use the confirmed generation-five parent and the
+more faithful movement-versus-Space proposal structure.
+
+That [effective-key long run](results/defense/training/ars-effective-96/README.md)
+is now active from the independently confirmed generation-five parent.
+Its search treats firing combinations as non-translating in stage one,
+samples all physical directions symmetrically, and retains the same
+complete-boot score-only update gates. All **442 repository tests** passed
+before launch. The sole collector now watches 97 sources and protects the
+unchanged global best replay.

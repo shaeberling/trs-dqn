@@ -48,6 +48,16 @@ it is not evidence of stage passage. `pair-source.py` preserves the
 exact score-only comparison and verifies byte-identical frozen encoder
 and value weights.
 
+The original process later stopped during generation-nine confirmation
+because a worker imported a temporarily invalid code edit. The complete
+generation-eight checkpoint and the partial generation-nine plan and
+game records are preserved in `run/`, including the error log; none was
+deleted or promoted. The [audited continuation](../ars-early-91-resume-95/README.md)
+verified exact basis/source hashes, then reproduced the generation-nine
+plan, 160 screening games and 80 comparison games byte-for-byte before
+finishing the planned eleven generations. The original milestone remains
+the independently score-confirmed parent.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-subspace-pilot-80/generation-000001 \
