@@ -23,6 +23,15 @@ The run has no generation or wall-clock limit, subject to a 5 GiB free-space
 guard; a verified mission or graceful checkpoint-boundary intervention ends
 it. Its live data are in `runs/defense-ars-key-74/`.
 
+The independently restorable [generation-5 checkpoint](milestone-000005/state.json)
+is preserved after 1,328 complete training games and 3,243,653 new actions.
+Only one change passed the stronger 32-game confirmation by that point;
+its paired mean score gain was 465. The fixed ten-game boot validation mean
+was 10,043, up slightly from the original 9,981 but still entirely stage 1.
+The checkpoint model SHA-256 is
+`69a8ad1ad65ac8525b65f03f07bed96a562d345f3d3bdcb00f87322b97e6efde`.
+This is not a verified passage, mission, or new global best replay.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-59-head-search/run/generation-000000 \
