@@ -17,6 +17,32 @@ import numpy as np
 from .defense_ars_focus import perturbation_directions
 
 
+KEY_FACTORS = ('UP', 'DOWN', 'LEFT', 'RIGHT', 'SPACE')
+
+
+def key_factor_directions(rng, count, head_shape, names):
+    """Coherently perturb every command containing a physical key.
+
+    Symmetric candidates cover every key without a preferred direction.
+    No stage, screen feature, obstacle location, or target action is supplied.
+    """
+    if (count < 1 or len(head_shape) != 2 or head_shape[0] != len(names)
+            or len(names) != 20 or min(head_shape) < 2):
+        raise ValueError('invalid key-factor head shape')
+    incidence = np.zeros((len(names), len(KEY_FACTORS)), np.float32)
+    for action, name in enumerate(names):
+        tokens = () if name == 'NOOP' else name.split('+')
+        if len(tokens) != len(set(tokens)) or any(token not in KEY_FACTORS for token in tokens):
+            raise ValueError('unexpected keyboard command')
+        for token in tokens:
+            incidence[action, KEY_FACTORS.index(token)] = 1.
+    factors = rng.normal(size=(count, len(KEY_FACTORS), head_shape[1])).astype(np.float32)
+    directions = np.einsum('ak,dkf->daf', incidence, factors, optimize=True)
+    if not np.isfinite(directions).all():
+        raise ValueError('nonfinite key-factor directions')
+    return directions
+
+
 def shared_seed_jobs(candidates, repetitions, first_seed):
     """All candidates see the same boot and action-sampling seeds."""
     if min(candidates, repetitions) < 1 or first_seed < 70000:
@@ -66,6 +92,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--generations', type=int, default=0, help='0 learns until stopped or mission verified')
     parser.add_argument('--directions', type=int, default=20)
+    parser.add_argument('--direction-mode', choices=('action-row', 'key-factor'), default='action-row')
     parser.add_argument('--sigma', type=float, default=.05)
     parser.add_argument('--shortlist', type=int, default=4)
     parser.add_argument('--screen-games', type=int, default=4)
@@ -90,7 +117,7 @@ def main():
     model = QNetwork(action_count=20)
     rng = np.random.default_rng(args.seed)
     settings = {name: getattr(args, name) for name in
-                ('directions', 'sigma', 'shortlist', 'screen_games',
+                ('directions', 'direction_mode', 'sigma', 'shortlist', 'screen_games',
                  'compare_games', 'confirm_games', 'minimum_boot_gain', 'envs')}
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, np.random.default_rng(0))
@@ -102,15 +129,20 @@ def main():
             initialization_generation=state['generations'],
             initialization_training_steps=state['training_steps'],
             boot_search=settings, search_optimizer='paired complete-boot neural score search; no gradients',
-            training_method='all-action coordinate-row population, score-gated on three fresh full-game training seed sets',
+            training_method=('all-action coordinate-row population' if args.direction_mode == 'action-row'
+                             else 'all-physical-key factorized population')
+                + ', score-gated on three fresh full-game training seed sets',
             fitness='displayed score in complete games from boot; no local score prerequisite')
         generation, training_steps, training_games = 0, 0, 0
         next_seed = args.first_training_seed
     else:
         state = restore_checkpoint(model, args.resume, rng)
         config = dict(state['config'])
-        if config.get('boot_search') != settings:
+        prior_settings = dict(config.get('boot_search', {}))
+        prior_settings.setdefault('direction_mode', 'action-row')
+        if prior_settings != settings:
             parser.error('resume settings differ from saved boot search')
+        config['boot_search'] = prior_settings
         generation, training_steps, training_games, next_seed = (state[name] for name in
             ('generations', 'training_steps', 'training_games', 'next_training_seed'))
     if (config.get('game_sha256') != GAME_SHA256
@@ -188,8 +220,9 @@ def main():
         validate(checkpoint)
         while not stop and (not args.generations or generation < args.generations):
             center = head_array(model)
-            directions = perturbation_directions(rng, args.directions,
-                center.shape, coordinate_row=True)
+            directions = (perturbation_directions(rng, args.directions,
+                center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
+                else key_factor_directions(rng, args.directions, center.shape, action_names()))
             heads = np.stack([center+args.sigma*directions,
                               center-args.sigma*directions], axis=1).reshape(-1, *center.shape)
             target = args.output/f'population-{generation+1:06d}'
