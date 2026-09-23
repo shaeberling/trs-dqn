@@ -18,9 +18,16 @@ import time
 import numpy as np
 
 
-def perturbation_directions(rng, count, head_shape, bias_only=False):
+def perturbation_directions(rng, count, head_shape, bias_only=False, coordinate_bias=False):
     if count < 1 or len(head_shape) != 2 or min(head_shape) < 2:
         raise ValueError('invalid categorical head search shape')
+    if coordinate_bias:
+        if bias_only or count != head_shape[0]:
+            raise ValueError('coordinate search needs one direction per action')
+        directions = np.zeros((count, *head_shape), np.float32)
+        for index, action in enumerate(rng.permutation(count)):
+            directions[index, action, -1] = 1.
+        return directions
     directions = rng.normal(size=(count, *head_shape)).astype(np.float32)
     if bias_only:
         directions[:, :, :-1] = 0
@@ -192,8 +199,11 @@ def main():
     parser.add_argument('--snapshots-per-direction', type=int, default=4)
     parser.add_argument('--sigma', type=float, default=.005)
     parser.add_argument('--step-size', type=float, default=.002)
-    parser.add_argument('--bias-only', action='store_true',
+    search_mode = parser.add_mutually_exclusive_group()
+    search_mode.add_argument('--bias-only', action='store_true',
         help='search global action preferences while freezing the learned feature weights')
+    search_mode.add_argument('--coordinate-bias', action='store_true',
+        help='symmetrically perturb each action preference separately, all actions included')
     parser.add_argument('--return-std-floor', type=float, default=0.,
         help='minimum score scale for an update; 0 retains the original ARS normalization')
     parser.add_argument('--seed', type=int, default=81)
@@ -205,12 +215,14 @@ def main():
             or not np.isfinite([args.sigma, args.step_size, args.return_std_floor]).all()
             or min(args.sigma, args.step_size) <= 0 or args.return_std_floor < 0):
         parser.error('new output and positive focus settings required')
+    if args.coordinate_bias and args.directions != 20:
+        parser.error('coordinate bias search requires 20 directions, one per action')
     mx.set_cache_limit(128*1024*1024)
     mx.random.seed(args.seed)
     model, rng = QNetwork(action_count=20), np.random.default_rng(args.seed)
     settings = {key: getattr(args, key) for key in
                 ('directions', 'snapshots_per_direction', 'sigma', 'step_size',
-                 'bias_only', 'return_std_floor')}
+                 'bias_only', 'coordinate_bias', 'return_std_floor')}
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, rng)
         if state['generations'] != 0 or state['training_steps'] != 0:
@@ -223,7 +235,8 @@ def main():
             selection='own training-game visible life losses, opaque rewind',
             fitness='displayed score gain until next visible life/stage boundary',
             evaluation='independent complete games from boot; no reset states'),
-            training_method='paired real-score ARS over own pre-loss state continuations')
+            training_method=('paired coordinate action-bias score search from own pre-loss states'
+                if args.coordinate_bias else 'paired real-score ARS over own pre-loss state continuations'))
         generation, training_steps, training_segments = 0, 0, 0
     else:
         state = restore_checkpoint(model, args.resume, rng)
@@ -321,7 +334,7 @@ def main():
                 chosen = rng.choice(len(sources), args.snapshots_per_direction, replace=False)
                 center = head_array(model)
                 directions = perturbation_directions(rng, args.directions, center.shape,
-                                                     bias_only=args.bias_only)
+                    bias_only=args.bias_only, coordinate_bias=args.coordinate_bias)
                 heads = np.stack([center+args.sigma*directions,
                                   center-args.sigma*directions], axis=1).reshape(-1, *center.shape)
                 target = args.output/f'population-{generation+1:06d}'
@@ -359,7 +372,7 @@ def main():
                         skipped_zero_variance=True, mean_candidate_score=float(returns.mean()),
                         best_candidate_mean=float(returns.mean(axis=2).max()))
                 stats['effective_step_size'] = effective_step
-                if args.bias_only:
+                if args.bias_only or args.coordinate_bias:
                     np.testing.assert_array_equal(following[:, :-1], center[:, :-1])
                 np.savez_compressed(target/'update.npz', returns=returns, following=following)
                 generation += 1
