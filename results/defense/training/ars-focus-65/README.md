@@ -1,6 +1,6 @@
 # Symmetric search of individual learned action preferences
 
-This in-progress trial searches all 20 action-head biases one at a time,
+This completed trial searched all 20 action-head biases one at a time,
 with both positive and negative changes of the same size. Every generation
 includes every command exactly once in a random order. It leaves the
 screen encoder, value head and learned feature-to-action weights fixed.
@@ -9,11 +9,19 @@ It begins from 48 verified states the frozen strong policy reached itself,
 score gained until the next visible life/stage boundary. No direction or
 action is preferred by the trainer.
 
-Complete boot games test every generation, and a successful mission from
-boot triggers independent replay verification and an automatic stop. All
-state captures are opaque, used only to reset training episodes, and never
-fed to the policy. Running states and metrics are under
-`runs/defense-ars-focus-65-coordinate/`; archive them here once finished.
+Complete boot games tested every generation; any mission would have triggered
+independent replay verification and an automatic stop. All state captures
+were opaque training resets and never policy inputs. `run/` preserves the
+48 verified own states, **1,280 focused continuations**, **346,725 new
+training actions**, complete model/RNG checkpoints, per-action plans and
+scores, boot validations, and the original PPO optimizer lineage.
+
+No candidate continuation or complete boot game reached stage 2. Median
+focused score gain was **2,540** from these 256-decision starts, close to
+the maximum **2,560**; the training signal mostly saturated at the familiar
+loss. The strongest 10-game mean was **10,388** at generation 2. The final
+mean was **10,122**, median **10,370**, best **10,430**, all stage 1.
+The globally best verified 10,480-point PPO replay remains unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_focus \

@@ -170,7 +170,8 @@ def save_checkpoint(model, destination, config, *, generation, training_steps, t
         steps=config['parent_steps']+training_steps, training_steps=training_steps,
         training_games=training_games, next_training_seed=next_seed, search_rng=rng.bit_generator.state,
         candidate=candidate,
-        search_optimizer='ARS V1 normalized finite differences; no momentum state',
+        search_optimizer=config.get('search_optimizer',
+            'ARS V1 normalized finite differences; no momentum state'),
         hashes={'model.safetensors': sha256(destination/'model.safetensors')}))
 
 

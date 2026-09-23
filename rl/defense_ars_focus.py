@@ -18,9 +18,30 @@ import time
 import numpy as np
 
 
-def perturbation_directions(rng, count, head_shape, bias_only=False, coordinate_bias=False):
+def score_gated_choice(returns, baseline, minimum_gain):
+    """Choose the best head only if its own-state score beats the incumbent."""
+    returns, baseline = np.asarray(returns), np.asarray(baseline)
+    if (returns.ndim != 3 or returns.shape[1] != 2 or baseline.shape != (returns.shape[2],)
+            or not np.isfinite(returns).all() or not np.isfinite(baseline).all()
+            or not np.isfinite(minimum_gain) or minimum_gain <= 0):
+        raise ValueError('invalid paired training-score comparison')
+    means = returns.mean(axis=2).reshape(-1)
+    best = int(np.argmax(means))
+    return (best if means[best] >= baseline.mean()+minimum_gain else None,
+            float(baseline.mean()), float(means[best]))
+
+
+def perturbation_directions(rng, count, head_shape, bias_only=False,
+                            coordinate_bias=False, coordinate_row=False):
     if count < 1 or len(head_shape) != 2 or min(head_shape) < 2:
         raise ValueError('invalid categorical head search shape')
+    if coordinate_row:
+        if bias_only or coordinate_bias or count != head_shape[0]:
+            raise ValueError('row search needs one direction per action')
+        directions = np.zeros((count, *head_shape), np.float32)
+        for index, action in enumerate(rng.permutation(count)):
+            directions[index, action] = rng.normal(size=head_shape[1]).astype(np.float32)
+        return directions
     if coordinate_bias:
         if bias_only or count != head_shape[0]:
             raise ValueError('coordinate search needs one direction per action')
@@ -204,25 +225,38 @@ def main():
         help='search global action preferences while freezing the learned feature weights')
     search_mode.add_argument('--coordinate-bias', action='store_true',
         help='symmetrically perturb each action preference separately, all actions included')
+    search_mode.add_argument('--coordinate-row', action='store_true',
+        help='symmetrically perturb each action feature row separately, all actions included')
     parser.add_argument('--return-std-floor', type=float, default=0.,
         help='minimum score scale for an update; 0 retains the original ARS normalization')
+    parser.add_argument('--update-mode', choices=('ars', 'score-gated'), default='ars',
+        help='score-gated keeps the incumbent unless a candidate gains actual training score')
+    parser.add_argument('--minimum-focus-gain', type=float, default=10.)
+    parser.add_argument('--minimum-boot-gain', type=float, default=0.)
+    parser.add_argument('--boot-gate-games', type=int, default=4)
+    parser.add_argument('--first-boot-training-seed', type=int, default=90000)
     parser.add_argument('--seed', type=int, default=81)
     parser.add_argument('--eval-every', type=int, default=1)
     args = parser.parse_args()
     if (args.output.exists() or args.generations < 0 or args.harvest_seed < 70000
             or min(args.harvest_games, args.lookback, args.directions,
                    args.snapshots_per_direction, args.eval_every) < 1
-            or not np.isfinite([args.sigma, args.step_size, args.return_std_floor]).all()
-            or min(args.sigma, args.step_size) <= 0 or args.return_std_floor < 0):
+            or not np.isfinite([args.sigma, args.step_size, args.return_std_floor,
+                                args.minimum_focus_gain, args.minimum_boot_gain]).all()
+            or min(args.sigma, args.step_size, args.minimum_focus_gain) <= 0
+            or args.return_std_floor < 0 or args.minimum_boot_gain < 0
+            or args.boot_gate_games < 1 or args.first_boot_training_seed < 90000):
         parser.error('new output and positive focus settings required')
-    if args.coordinate_bias and args.directions != 20:
-        parser.error('coordinate bias search requires 20 directions, one per action')
+    if (args.coordinate_bias or args.coordinate_row) and args.directions != 20:
+        parser.error('coordinate search requires 20 directions, one per action')
     mx.set_cache_limit(128*1024*1024)
     mx.random.seed(args.seed)
     model, rng = QNetwork(action_count=20), np.random.default_rng(args.seed)
     settings = {key: getattr(args, key) for key in
                 ('directions', 'snapshots_per_direction', 'sigma', 'step_size',
-                 'bias_only', 'coordinate_bias', 'return_std_floor')}
+                 'bias_only', 'coordinate_bias', 'coordinate_row', 'return_std_floor',
+                 'update_mode', 'minimum_focus_gain', 'minimum_boot_gain',
+                 'boot_gate_games', 'first_boot_training_seed')}
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, rng)
         if state['generations'] != 0 or state['training_steps'] != 0:
@@ -235,8 +269,13 @@ def main():
             selection='own training-game visible life losses, opaque rewind',
             fitness='displayed score gain until next visible life/stage boundary',
             evaluation='independent complete games from boot; no reset states'),
-            training_method=('paired coordinate action-bias score search from own pre-loss states'
+            training_method=('paired coordinate action-row score search from own pre-loss states'
+                if args.coordinate_row else 'paired coordinate action-bias score search from own pre-loss states'
                 if args.coordinate_bias else 'paired real-score ARS over own pre-loss state continuations'))
+        if args.update_mode == 'score-gated':
+            config['training_method'] += '; incumbent accepted by focused and complete-boot own-training scores'
+            config['search_optimizer'] = 'score-gated neural parameter search; no gradients or momentum'
+            config['focus']['boot_gate_games_played'] = 0
         generation, training_steps, training_segments = 0, 0, 0
     else:
         state = restore_checkpoint(model, args.resume, rng)
@@ -334,17 +373,29 @@ def main():
                 chosen = rng.choice(len(sources), args.snapshots_per_direction, replace=False)
                 center = head_array(model)
                 directions = perturbation_directions(rng, args.directions, center.shape,
-                    bias_only=args.bias_only, coordinate_bias=args.coordinate_bias)
+                    bias_only=args.bias_only, coordinate_bias=args.coordinate_bias,
+                    coordinate_row=args.coordinate_row)
                 heads = np.stack([center+args.sigma*directions,
                                   center-args.sigma*directions], axis=1).reshape(-1, *center.shape)
                 target = args.output/f'population-{generation+1:06d}'
                 target.mkdir(exist_ok=False)
                 np.savez_compressed(target/'plan.npz', center=center, directions=directions,
                                     heads=heads, chosen=chosen)
-                infer = make_population_infer(model, heads)
+                bank = np.concatenate([heads, center[None]], axis=0) if args.update_mode == 'score-gated' else heads
+                infer = make_population_infer(model, bank)
                 returns = np.empty((args.directions, 2, len(chosen)), np.float64)
                 rows, count_steps = [], 0
                 best_row = None
+                baseline_returns = np.empty(len(chosen), np.float64) if args.update_mode == 'score-gated' else None
+                if baseline_returns is not None:
+                    baseline_rows = []
+                    for repetition, index in enumerate(chosen):
+                        sample_seed = 80000+generation*len(chosen)+repetition
+                        result, _ = play_segment(env, sources[index], infer, len(heads), sample_seed)
+                        baseline_returns[repetition] = result['score_gain']
+                        baseline_rows.append(dict(repetition=repetition, snapshot=names[index], **result))
+                        count_steps += result['steps']
+                    write_json(target/'incumbent-segments.json', baseline_rows)
                 for direction in range(args.directions):
                     for sign in range(2):
                         candidate = 2*direction+sign
@@ -362,22 +413,79 @@ def main():
                     log(dict(event='focus_progress', generation=generation+1,
                              directions_done=direction+1, segments=len(rows), actions=count_steps))
                 write_json(target/'segments.json', rows)
-                observed_scale = float(returns.mean(axis=2).std())
-                effective_step = args.step_size * min(1., observed_scale/args.return_std_floor) \
-                    if args.return_std_floor else args.step_size
-                if effective_step > 0:
-                    following, stats = ars_update(center, directions, returns, effective_step)
+                gate_training = None
+                if args.update_mode == 'score-gated':
+                    selected, incumbent_mean, candidate_mean = score_gated_choice(
+                        returns, baseline_returns, args.minimum_focus_gain)
+                    following = center.copy()
+                    stats = dict(return_std=float(returns.mean(axis=2).std()),
+                        update_norm=0., skipped_zero_variance=False,
+                        mean_candidate_score=float(returns.mean()),
+                        best_candidate_mean=candidate_mean,
+                        incumbent_focused_mean=incumbent_mean, selected_candidate=selected,
+                        accepted=False, boot_gate_played=False, effective_step_size=0.)
+                    if selected is not None:
+                        seeds = range(args.first_boot_training_seed+generation*args.boot_gate_games,
+                            args.first_boot_training_seed+(generation+1)*args.boot_gate_games)
+                        incumbent_boot = evaluate(acting_policy(model), seeds, tstates=config['tstates'],
+                            max_steps=0, envs=args.boot_gate_games,
+                            observation_stride=config['observation_stride'], log=log)
+                        set_head(model, heads[selected])
+                        candidate_boot = evaluate(acting_policy(model), seeds, tstates=config['tstates'],
+                            max_steps=0, envs=args.boot_gate_games,
+                            observation_stride=config['observation_stride'], log=log)
+                        set_head(model, center)
+                        if (incumbent_boot['incomplete_games'] or candidate_boot['incomplete_games']
+                                or incumbent_boot['complete_games'] != args.boot_gate_games
+                                or candidate_boot['complete_games'] != args.boot_gate_games):
+                            raise ValueError('boot score gate requires complete own training games')
+                        count_steps += sum(game['steps'] for result in (incumbent_boot, candidate_boot)
+                                           for game in result['games'])
+                        config['focus']['boot_gate_games_played'] += 2*args.boot_gate_games
+                        accepted = candidate_boot['mean_score'] >= incumbent_boot['mean_score']+args.minimum_boot_gain
+                        if accepted:
+                            following = heads[selected].copy()
+                        gate_training = dict(candidate=selected,
+                            incumbent=incumbent_boot, candidate_result=candidate_boot,
+                            accepted=accepted, selection='same fresh own boot seeds; displayed score only')
+                        write_json(target/'boot-score-gate.json', gate_training)
+                        stats.update(accepted=accepted, boot_gate_played=True,
+                            incumbent_boot_mean=incumbent_boot['mean_score'],
+                            candidate_boot_mean=candidate_boot['mean_score'],
+                            update_norm=float(np.linalg.norm(following-center)))
                 else:
-                    following, stats = center.copy(), dict(return_std=0., update_norm=0.,
-                        skipped_zero_variance=True, mean_candidate_score=float(returns.mean()),
-                        best_candidate_mean=float(returns.mean(axis=2).max()))
-                stats['effective_step_size'] = effective_step
+                    observed_scale = float(returns.mean(axis=2).std())
+                    effective_step = args.step_size * min(1., observed_scale/args.return_std_floor) \
+                        if args.return_std_floor else args.step_size
+                    if effective_step > 0:
+                        following, stats = ars_update(center, directions, returns, effective_step)
+                    else:
+                        following, stats = center.copy(), dict(return_std=0., update_norm=0.,
+                            skipped_zero_variance=True, mean_candidate_score=float(returns.mean()),
+                            best_candidate_mean=float(returns.mean(axis=2).max()))
+                    stats['effective_step_size'] = effective_step
                 if args.bias_only or args.coordinate_bias:
                     np.testing.assert_array_equal(following[:, :-1], center[:, :-1])
                 np.savez_compressed(target/'update.npz', returns=returns, following=following)
                 generation += 1
                 training_steps += count_steps
-                training_segments += len(rows)
+                training_segments += len(rows)+(len(chosen) if baseline_returns is not None else 0)
+                if gate_training is not None and (gate_training['candidate_result']['highest_stage'] > 1
+                                                  or gate_training['candidate_result']['mission_games']):
+                    set_head(model, heads[gate_training['candidate']])
+                    boot_discovery = target/'boot-discovery'
+                    save_checkpoint(model, boot_discovery, config, generation=generation,
+                        training_steps=training_steps, training_games=training_segments,
+                        rng=rng, next_seed=80000+generation*len(chosen), candidate=True)
+                    training_result = gate_training['candidate_result']
+                    write_json(boot_discovery/'training-boot-evaluation.json', training_result)
+                    published = publish_best(boot_discovery/'model.safetensors', training_result,
+                        args.output/'artifacts', log=log)
+                    validate(boot_discovery)
+                    if training_result['mission_games'] and published is not None:
+                        stop = True
+                        log(dict(event='verified_mission_in_complete_training_boot_game',
+                            generation=generation, replay=str(published)))
                 if best_row['highest_stage'] > 1 or best_row['mission_completed']:
                     set_head(model, heads[best_row['candidate']])
                     discovery = target/'discovery'

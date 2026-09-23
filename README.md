@@ -59,6 +59,12 @@ A [real-game categorical-head search](results/defense/training/ars-59-head-searc
 tests paired parameter perturbations of the strong PPO policy using complete
 games and displayed score. Six generations did not pass stage 1; its model
 states, returns, and verified final replay are preserved.
+The [recurring-loss investigations](results/defense/training/ars-focus-61/README.md)
+then tested own-state practice at several distances and perturbation sizes.
+Those completed trials still end in stage 1. A continuing
+[score-gated search](results/defense/training/ars-score-gated-69/README.md)
+now tests screen-dependent changes against fresh complete training games
+before accepting them; the verified shared best is still preserved.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
