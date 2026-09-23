@@ -1,0 +1,19 @@
+{
+  "source": "own archived complete boot-game displayed scores",
+  "selected_candidates": [
+    4,
+    2
+  ],
+  "candidate": 2,
+  "nominated": true,
+  "accepted": false,
+  "comparison_incumbent": 9955.0,
+  "comparison_candidate": 10255.0,
+  "confirmation_incumbent": 10103.125,
+  "confirmation_candidate": 10082.03125,
+  "training_games": 288,
+  "training_steps": 716487,
+  "highest_stage": 1,
+  "missions": 0,
+  "independently_verified_discovery": false
+}
