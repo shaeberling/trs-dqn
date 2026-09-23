@@ -61,10 +61,12 @@ games and displayed score. Six generations did not pass stage 1; its model
 states, returns, and verified final replay are preserved.
 The [recurring-loss investigations](results/defense/training/ars-focus-61/README.md)
 then tested own-state practice at several distances and perturbation sizes.
-Those completed trials still end in stage 1. A continuing
-[score-gated search](results/defense/training/ars-score-gated-69/README.md)
-now tests screen-dependent changes against fresh complete training games
-before accepting them; the verified shared best is still preserved.
+Those completed trials still end in stage 1. The subsequent
+[score-gated searches](results/defense/training/ars-score-gated-69/README.md)
+showed that improving short pre-loss scores need not improve complete games.
+The current [complete-boot search](results/defense/training/ars-boot-72/README.md)
+therefore tests every screen-dependent action-row candidate in full games
+before score-gated acceptance. The verified shared best is still preserved.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,

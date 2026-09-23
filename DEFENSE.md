@@ -7274,4 +7274,37 @@ scores: a candidate's mean gain from own pre-loss states rose from 2,055 to
 2,440, yet its four complete boot games averaged 2,785 against the parent's
 9,960 on the same seeds. It was rejected, and the saved model hash remained
 exactly the strong parent's. The full native logs and model/RNG states are
-preserved. A longer, score-gated neural search is the next experiment.
+preserved. A longer, score-gated neural search followed.
+
+That [16-generation score-gated run](results/defense/training/ars-score-gated-69/README.md)
+accepted two candidates on fresh, paired complete boot **training** games.
+The first improved eight-game mean score by 460; the second improved it by
+only 48.75. Its later fixed ten-game validation mean was 9,204, all stage 1,
+and none of its 2,624 focused continuations crossed to stage 2. This is
+evidence that small boot-score margins can admit unstable updates at the
+recurring barrier. The full run was stopped gracefully and archived. The
+stronger training-selected generation-5 checkpoint is the parent for a
+stricter continuation; the global verified best replay is unchanged.
+
+That [stricter continuation](results/defense/training/ars-score-gated-70/README.md)
+also stopped gracefully without stage passage after 11 generations, 1,804
+focused continuations and 903,375 training actions. Its ten-game validation
+means were 9,467 initially, 8,583 at generation 10 and 9,560 at the end.
+The selected run-69 generation-5 parent averaged 8,823.3 on 12 new boot
+training seeds, versus 8,905.8 for the original parent on those same seeds:
+its prior eight-game gain was not a robust complete-game gain. The run-69
+parent lost 45 of 48 lives between 2,500 and 2,650 displayed points; the
+run-70 parent still lost 33 of 48 in that band. This quantifies the shared
+failure region without claiming a physical collision coordinate. Since a
+short pre-loss score gain can favor firing over a passage maneuver, a new
+search will screen full boot games directly before any local score filter.
+
+The [one-generation full-boot pilot](results/defense/training/ars-boot-pilot-71/README.md)
+proved that all 40 symmetric action-row candidates can be played from boot,
+shortlisted, compared on shared fresh training seeds, and independently
+confirmed. It recorded 50 complete training games and 125,915 new actions.
+The deliberately tiny two-game confirmation admitted a noisy update: the
+fixed ten-game mean fell from 9,981 to 9,538, with no stage 2. This is a
+functional test, not an improvement. The next run uses 4 / 16 / 16 fresh
+boot games for screening / comparison / confirmation and keeps the original
+strong policy as parent.
