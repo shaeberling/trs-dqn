@@ -7379,3 +7379,27 @@ At the [multi-radius generation-5 milestone](results/defense/training/ars-key-mu
 score-gated update. Its fixed ten-game boot mean was 9,925 versus 9,981
 at the original parent, and every game was still stage 1. The checkpoint
 is preserved with full model/RNG state; no new best replay was promoted.
+
+The multi-radius run ended cleanly at generation 11 after **2,832 complete
+training games** and **6,726,107 new actions**. Only one update passed its
+32-game confirmation; fixed ten-game mean stayed 9,925 at generations 5,
+10 and 11. No candidate reached stage 2. The complete run and exact source
+are archived, and the global verified best is unchanged. A read-only check
+of the frozen encoder on the original policy's own saved visible screens
+found that its approach features are separable from earlier same-life
+features. The next test uses that self-play screen contrast solely to
+propose context-sensitive key-weight changes; complete-game displayed score
+remains the only update fitness, with no prescribed direction or route.
+
+The [failure-context pilot](results/defense/training/ars-context-pilot-78/README.md)
+verified the native path: a contrast computed solely from the original
+policy's own rendered screens averaged approximately 0 at 128 decisions
+before visible loss and 1 across the 64-/32-decision approach screens.
+Symmetric key changes along this feature contrast produced candidate
+scores from 300 to 10,480, but a two-game apparent gain reversed on
+independent confirmation. All games were stage 1 and the original model
+remained unchanged. The ongoing [context search](results/defense/training/ars-context-79/README.md)
+uses 4 / 16 / 32 fresh complete boot-game sets and a 150-point final
+margin. The contrast proposes where weights may matter; no action,
+direction, hidden collision marker, demonstration or extra reward is
+supplied to the policy.
