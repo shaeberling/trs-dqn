@@ -69,6 +69,23 @@ against the last independently confirmed parent gave **10,034.53** versus
 This internally accepted head is also not a confirmed improvement and has
 not replaced the global best.
 
+The planned search then **finished cleanly** after **11 generations, 5,136
+complete training games and 12,945,774 actions**. Every training and
+validation game stayed in stage one. The final generation's apparent
++167.50-point comparison gain became **-318.44** on fresh confirmation
+games, so it was rejected. Fixed ten-game mean ended at **10,286**, below
+the initial 10,388. The [entire run](run/) now contains every population
+plan, score record, checkpoint, RNG state, exact config and verified local
+replay. The local 10,480-point replay reproduced all 2,565 neural actions
+after reloading its frozen weights; it ties, but does not replace, the
+older global 10,480-point replay. The run's two internally accepted heads
+both failed separate 64-seed checks against the last confirmed parent.
+More generations of the same single-command-row search have no evidence
+of resolving the shared obstacle; the next trial should change the
+exploration mechanism while retaining own-screen inputs and score reward.
+The full **445-test** repository suite passed after archiving the run
+and its read-only action-probability diagnostic.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \

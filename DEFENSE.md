@@ -7688,3 +7688,16 @@ against the last independently confirmed parent reversed its short-run
 gain: candidate **10,034.53**, parent **10,212.19**, a **-177.66-point**
 difference. It is preserved but not treated as a confirmed parent or new
 best replay. The planned run continues to its final checkpoint.
+
+The [per-command run](results/defense/training/ars-action-row-99/README.md)
+then finished cleanly at **11 generations, 5,136 complete training games
+and 12,945,774 actions**. Every training/validation game was stage one.
+The last candidate's +167.50-point comparison gain reversed to -318.44
+on fresh confirmation games. Fixed ten-game mean ended at **10,286**,
+below the initial 10,388. The entire model/RNG history and a separately
+verified local 10,480-point replay are archived. The original global
+best replay remains unchanged. Continuing the identical one-row search
+is not supported by these results; subsequent experiments should test a
+distinct way to explore the recurrent visible failure window while
+keeping screen-only acting and score-only reward.
+The full **445-test** repository suite passed after this archive.
