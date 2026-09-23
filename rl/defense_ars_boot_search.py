@@ -145,7 +145,9 @@ def main():
                         choices=('action-row', 'key-factor', 'failure-context-key',
                                  'failure-subspace-key'), default='action-row')
     parser.add_argument('--context-archive', type=Path,
-                        help='own visible pre-loss training screens, required for failure-context-key')
+                        help='own visible pre-loss training screens for context/subspace modes')
+    parser.add_argument('--subspace-components', type=int, default=4,
+                        help='independent own-screen variation axes for failure-subspace-key')
     parser.add_argument('--sigma', type=float, default=.05)
     parser.add_argument('--sigma-max', type=float,
                         help='stratified upper perturbation radius; omitted uses one radius')
@@ -163,6 +165,9 @@ def main():
             or min(args.shortlist, args.screen_games, args.compare_games,
                    args.confirm_games, args.envs, args.eval_every) < 1
             or args.shortlist > 2*args.directions
+            or not 1 <= args.subspace_components <= 15
+            or (args.direction_mode != 'failure-subspace-key'
+                and args.subspace_components != 4)
             or args.first_training_seed < 70000 or args.seed < 0
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
             or (args.sigma_max is not None and
@@ -177,7 +182,8 @@ def main():
     rng = np.random.default_rng(args.seed)
     settings = {name: getattr(args, name) for name in
                 ('directions', 'direction_mode', 'sigma', 'sigma_max', 'shortlist', 'screen_games',
-                 'compare_games', 'confirm_games', 'minimum_boot_gain', 'envs')}
+                 'compare_games', 'confirm_games', 'minimum_boot_gain', 'envs',
+                 'subspace_components')}
     settings['context_archive'] = str(args.context_archive.resolve()) if args.context_archive else None
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, np.random.default_rng(0))
@@ -210,6 +216,7 @@ def main():
         prior_settings.setdefault('direction_mode', 'action-row')
         prior_settings.setdefault('sigma_max', None)
         prior_settings.setdefault('context_archive', None)
+        prior_settings.setdefault('subspace_components', 4)
         if prior_settings != settings:
             parser.error('resume settings differ from saved boot search')
         config['boot_search'] = prior_settings
@@ -233,8 +240,12 @@ def main():
         from .defense_ars_context import visible_context, visible_subspace
         proposal = (visible_subspace if args.direction_mode == 'failure-subspace-key'
                     else visible_context)
-        context_basis, context = proposal(model, args.context_archive,
-            context_source_model_sha256)
+        if args.direction_mode == 'failure-subspace-key':
+            context_basis, context = proposal(model, args.context_archive,
+                context_source_model_sha256, components=args.subspace_components)
+        else:
+            context_basis, context = proposal(model, args.context_archive,
+                context_source_model_sha256)
         if args.initialize:
             config['context'] = context
         elif config.get('context') != context:

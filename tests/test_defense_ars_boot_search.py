@@ -1,4 +1,6 @@
 import unittest
+import tempfile
+from pathlib import Path
 
 import numpy as np
 
@@ -6,6 +8,7 @@ from rl.defense import action_names
 from rl.defense_ars_boot_search import (candidate_scales, context_key_directions,
                                         key_factor_directions, shared_seed_jobs,
                                         score_means, shortlist, subspace_key_directions)
+from rl.defense_ars_plan_probe import trial_head
 
 
 class CompleteBootSearchTests(unittest.TestCase):
@@ -77,6 +80,19 @@ class CompleteBootSearchTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             subspace_key_directions(np.random.default_rng(4), 7,
                                      (20, 257), action_names(), np.ones((5, 256)))
+
+    def test_saved_near_miss_head_requires_exact_incumbent(self):
+        center = np.zeros((20, 257), np.float32)
+        heads = np.zeros((40, 20, 257), np.float32)
+        heads[9, 4, 0] = 1.5
+        with tempfile.TemporaryDirectory() as directory:
+            plan = Path(directory)/'plan.npz'
+            np.savez_compressed(plan, center=center, heads=heads)
+            self.assertEqual(float(trial_head(plan, 9, center)[4, 0]), 1.5)
+            with self.assertRaises(ValueError):
+                trial_head(plan, 40, center)
+            with self.assertRaises(ValueError):
+                trial_head(plan, 9, center+1)
 
 
 if __name__ == '__main__':
