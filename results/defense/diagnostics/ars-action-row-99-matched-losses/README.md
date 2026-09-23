@@ -35,3 +35,18 @@ coordinates. The screen histories and earlier
 right-side opening, but they do not prove a wall hit rather than a
 projectile hit. No weights, rewards, policy inputs, or global replay were
 changed by this diagnostic.
+
+A second [read-only matched-screen probe](action-probabilities.json) loads
+both frozen checkpoints and scores their command probabilities on the
+**same 32 parent-owned rendered-screen histories**. It verifies that only
+the pure `RIGHT` head row differs. At 64 decisions before the visible loss,
+the candidate's mean pure-`RIGHT` probability rose from **1.48% to 3.22%**;
+at 32 decisions it *fell* from **7.60% to 5.66%**. The aggregate change
+across all four sampled offsets was effectively zero (-0.05 percentage
+points). A row-weight perturbation is not a fixed directional instruction:
+its effect depends on the visible features and can reverse over the
+approach. This is a counterfactual probability comparison on parent states,
+not a native replay of candidate actions or proof of a collision cause.
+The probe source and focused test are
+[`rl/defense_ars_action_row_probe.py`](../../../../rl/defense_ars_action_row_probe.py)
+and [`tests/test_defense_ars_action_row_probe.py`](../../../../tests/test_defense_ars_action_row_probe.py).
