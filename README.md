@@ -66,10 +66,12 @@ Those completed trials still end in stage 1. The subsequent
 showed that improving short pre-loss scores need not improve complete games.
 The completed [complete-boot action-row search](results/defense/training/ars-boot-72/README.md)
 tested every candidate in full games but still did not pass stage 1. The
-current [physical-key factor search](results/defense/training/ars-key-74/README.md)
-tests coherent, symmetric changes across commands sharing each keyboard
-key, with score-gated full-game acceptance. The verified shared best is
-still preserved.
+[physical-key factor search](results/defense/training/ars-key-74/README.md)
+also remained in stage 1. The current
+[multi-radius factor search](results/defense/training/ars-key-multiscale-77/README.md)
+tests both conservative and exploratory symmetric changes across commands
+sharing each keyboard key, with score-gated full-game acceptance. The
+verified shared best is still preserved.
 Optional `--curriculum-boot-epsilon` gives reserved boot-only training workers
 a separate fixed exploration rate; other workers retain the normal schedule.
 This tests exploration allocation while preserving screen-only inputs,
