@@ -1,6 +1,6 @@
 # Coherent physical-key score search
 
-This ongoing native run tests whether the repeated stage-one bottleneck
+This completed native run tested whether the repeated stage-one bottleneck
 responds to a more coherent learned change than one output row at a time.
 The original best policy's visual encoder is frozen. Each candidate adds
 screen-dependent feature weights for physical Up, Down, Left, Right and Space
@@ -19,9 +19,17 @@ game is independently verified by reloading frozen weights and reproducing
 every action, reward and screen, whether or not the update gate passes.
 The fixed validation seeds 10000–10009 never select a candidate. The shared
 best replay remains separate and is promoted only when verification succeeds.
-The run has no generation or wall-clock limit, subject to a 5 GiB free-space
-guard; a verified mission or graceful checkpoint-boundary intervention ends
-it. Its live data are in `runs/defense-ars-key-74/`.
+The run was stopped gracefully at generation 11 after **2,832 complete
+training games** and **6,833,703 new actions**. Exactly one update passed
+the separate 32-game confirmation. Fixed ten-game validation mean was
+9,981 initially and 10,043 at generations 5, 10 and 11; all candidate and
+validation games remained in stage 1. That stable small score gain did not
+solve the recurring barrier. Full states, populations, RNG, evaluation and
+optimizer provenance are preserved in [run](run/), with the exact executing
+[source](fit-source.py) matching the recorded hash. The 5 GiB free-space
+guard remained active. The verified global best replay is unchanged. A
+wider symmetric key-factor perturbation is the next test; this plateau,
+not wall-clock time, motivated reassigning the compute.
 
 The independently restorable [generation-5 checkpoint](milestone-000005/state.json)
 is preserved after 1,328 complete training games and 3,243,653 new actions.
