@@ -7299,6 +7299,13 @@ failure region without claiming a physical collision coordinate. Since a
 short pre-loss score gain can favor firing over a passage maneuver, a new
 search will screen full boot games directly before any local score filter.
 
+The [48-loss visible-screen atlas](results/defense/diagnostics/ars-69-barrier-atlas/README.md)
+shows those recorded screens and actions directly. In its last-64-action
+windows, the original policy chose 894 pure rightward versus 503 pure
+leftward commands, but also 1,277 firing/side-fire commands, which can
+interrupt stage-one movement. These windows can contain post-collision
+animation, so this is a plausible training hypothesis, not proof of cause.
+
 The [one-generation full-boot pilot](results/defense/training/ars-boot-pilot-71/README.md)
 proved that all 40 symmetric action-row candidates can be played from boot,
 shortlisted, compared on shared fresh training seeds, and independently
