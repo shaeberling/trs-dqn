@@ -7325,3 +7325,23 @@ later updates passed both gates, but the fixed ten-game boot mean at the
 was 9,975 versus 9,981 for the original parent. All complete games still
 ended in stage 1. This shows score stability under full-boot search, not
 barrier passage or a new global best.
+
+The complete-boot row search was then stopped gracefully at generation 11:
+**2,864 complete training games** and **7,208,154 new actions**, all stage 1.
+Five candidates passed both score gates, but fixed ten-game mean fell to
+9,659 at generations 10 and 11, versus 9,981 at the original parent. Full
+run files and the exact executing source are archived. Since a perturbation
+of one command row cannot directly coordinate all commands sharing Space,
+the next test factorizes candidate perturbations by physical keyboard key,
+still symmetrically and without a prescribed movement direction.
+
+The [one-generation key-factor pilot](results/defense/training/ars-key-pilot-73/README.md)
+completed 50 full training games and 123,401 new actions. Its tiny two-game
+confirmation admitted a candidate that lowered the fixed ten-game mean
+from 9,981 to 9,327, all stage 1. This functional test confirms the native
+factorized-policy path but not generalization. The ongoing
+[key-factor search](results/defense/training/ars-key-74/README.md) starts
+from the unchanged original policy and uses 4 / 16 / 32 distinct complete
+training boot games for screening / comparison / confirmation, with a
+150-point final margin. It changes learned physical-key preferences across
+commands but gives no target key or route.
