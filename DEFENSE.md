@@ -7727,3 +7727,11 @@ The full model/RNG state, proposal plan, source and verified local replay
 are preserved. A longer score-gated test will check this focused visual
 representation more thoroughly, with no prescribed steering direction.
 The full **452-test** repository suite passes with this new proposal mode.
+
+The [long late-phase visual search](results/defense/training/ars-phase-106/README.md)
+is now active from the independently confirmed parent. It tests two
+signed random directions per command, with fresh 4-/16-/64-game
+complete-boot score gates and a 150-point confirmation margin. The
+previous 100 collector sources plus the pilot and new run are monitored
+by the sole independent replay collector. Exact code/configuration and
+the source basis are preserved; the verified global best is unchanged.
