@@ -18,6 +18,15 @@ import time
 import numpy as np
 
 
+def perturbation_directions(rng, count, head_shape, bias_only=False):
+    if count < 1 or len(head_shape) != 2 or min(head_shape) < 2:
+        raise ValueError('invalid categorical head search shape')
+    directions = rng.normal(size=(count, *head_shape)).astype(np.float32)
+    if bias_only:
+        directions[:, :, :-1] = 0
+    return directions
+
+
 def save_source(path, saved, actions, rewards, screens, metadata):
     from .defense_learning import write_json, sha256
     path = Path(path)
@@ -183,19 +192,25 @@ def main():
     parser.add_argument('--snapshots-per-direction', type=int, default=4)
     parser.add_argument('--sigma', type=float, default=.005)
     parser.add_argument('--step-size', type=float, default=.002)
+    parser.add_argument('--bias-only', action='store_true',
+        help='search global action preferences while freezing the learned feature weights')
+    parser.add_argument('--return-std-floor', type=float, default=0.,
+        help='minimum score scale for an update; 0 retains the original ARS normalization')
     parser.add_argument('--seed', type=int, default=81)
     parser.add_argument('--eval-every', type=int, default=1)
     args = parser.parse_args()
     if (args.output.exists() or args.generations < 0 or args.harvest_seed < 70000
             or min(args.harvest_games, args.lookback, args.directions,
                    args.snapshots_per_direction, args.eval_every) < 1
-            or not np.isfinite([args.sigma, args.step_size]).all()
-            or min(args.sigma, args.step_size) <= 0):
+            or not np.isfinite([args.sigma, args.step_size, args.return_std_floor]).all()
+            or min(args.sigma, args.step_size) <= 0 or args.return_std_floor < 0):
         parser.error('new output and positive focus settings required')
     mx.set_cache_limit(128*1024*1024)
     mx.random.seed(args.seed)
     model, rng = QNetwork(action_count=20), np.random.default_rng(args.seed)
-    settings = {key: getattr(args, key) for key in ('directions', 'snapshots_per_direction', 'sigma', 'step_size')}
+    settings = {key: getattr(args, key) for key in
+                ('directions', 'snapshots_per_direction', 'sigma', 'step_size',
+                 'bias_only', 'return_std_floor')}
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, rng)
         if state['generations'] != 0 or state['training_steps'] != 0:
@@ -261,14 +276,16 @@ def main():
             index = json.loads((archive/'index.json').read_text())
             names = index['files']
             source_games = index['games']
-            for name in names:
-                if sha256(archive/name) != config['focus']['archive_hashes'][name]:
+            for name, digest in config['focus']['archive_hashes'].items():
+                if sha256(archive/name) != digest:
                     raise ValueError('resumed own-state archive differs from checkpoint')
+            for name in names:
                 load_source(archive/name)
         if len(names) < args.snapshots_per_direction:
             raise ValueError('not enough own rewind states for paired training')
         config['focus']['archive'] = str(archive.resolve())
-        config['focus']['archive_hashes'] = {name: sha256(archive/name) for name in names}
+        archive_files = ['index.json'] + names + [name.replace('.npz', '.json') for name in names]
+        config['focus']['archive_hashes'] = {name: sha256(archive/name) for name in archive_files}
         config.update(focus_source_sha256=sha256(Path(__file__)),
             search_source_sha256=sha256(Path(__file__).with_name('defense_ars.py')),
             args={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()})
@@ -282,12 +299,18 @@ def main():
                 rng=rng, next_seed=80000+generation*args.snapshots_per_direction)
             return location
         def validate(location):
+            nonlocal stop
             result = evaluate(acting_policy(model), range(10000, 10010), tstates=config['tstates'],
                 max_steps=0, envs=10, observation_stride=config['observation_stride'], log=log)
             write_json(location/'evaluation.json', result)
             log(dict(event='validation', generation=generation,
                      **{k: v for k, v in result.items() if k != 'games'}))
             publish_best(location/'model.safetensors', result, args.output/'artifacts', log=log)
+            if result['mission_games']:
+                stop = True
+                log(dict(event='verified_mission_in_complete_boot_game',
+                         generation=generation, mission_games=result['mission_games'],
+                         checkpoint=str(location)))
         location = preserve()
         validate(location)
         env = DefenseEnv(tstates=config['tstates'], max_steps=0,
@@ -297,7 +320,8 @@ def main():
                 disk_guard(args.output)
                 chosen = rng.choice(len(sources), args.snapshots_per_direction, replace=False)
                 center = head_array(model)
-                directions = rng.normal(size=(args.directions, *center.shape)).astype(np.float32)
+                directions = perturbation_directions(rng, args.directions, center.shape,
+                                                     bias_only=args.bias_only)
                 heads = np.stack([center+args.sigma*directions,
                                   center-args.sigma*directions], axis=1).reshape(-1, *center.shape)
                 target = args.output/f'population-{generation+1:06d}'
@@ -325,7 +349,18 @@ def main():
                     log(dict(event='focus_progress', generation=generation+1,
                              directions_done=direction+1, segments=len(rows), actions=count_steps))
                 write_json(target/'segments.json', rows)
-                following, stats = ars_update(center, directions, returns, args.step_size)
+                observed_scale = float(returns.mean(axis=2).std())
+                effective_step = args.step_size * min(1., observed_scale/args.return_std_floor) \
+                    if args.return_std_floor else args.step_size
+                if effective_step > 0:
+                    following, stats = ars_update(center, directions, returns, effective_step)
+                else:
+                    following, stats = center.copy(), dict(return_std=0., update_norm=0.,
+                        skipped_zero_variance=True, mean_candidate_score=float(returns.mean()),
+                        best_candidate_mean=float(returns.mean(axis=2).max()))
+                stats['effective_step_size'] = effective_step
+                if args.bias_only:
+                    np.testing.assert_array_equal(following[:, :-1], center[:, :-1])
                 np.savez_compressed(target/'update.npz', returns=returns, following=following)
                 generation += 1
                 training_steps += count_steps

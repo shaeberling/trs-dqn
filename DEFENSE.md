@@ -7220,3 +7220,19 @@ from those states. All 1,024 scored candidate continuations and all complete
 boot validations still ended in stage 1. The small perturbations produced a
 nearly flat score signal in later rounds. This motivates testing a wider
 unbiased perturbation on the same sort of own-state continuations.
+
+That [wider, matched trial](results/defense/training/ars-focus-62/README.md)
+increased head sigma tenfold to 0.05. It changed many actions, but its 1,024
+focused continuations still never reached stage 2, and median score gained
+from the saved states fell from 2,410 to 1,640. All complete boot games also
+remained in stage 1. The next test perturbs only the action-preference biases,
+which can sustain a movement preference across screens while leaving the
+learned visual feature weights fixed.
+
+The [action-bias trial](results/defense/training/ars-focus-63/README.md)
+also finished without passage in 1,024 focused continuations. Its median
+score gain fell to 890 from the same 128-decision source positions and its
+final ten-game boot mean was 9,510, all stage 1. The stronger global replay
+is untouched. An earlier own-state start provides a separate test of whether
+these perturbations need more approach time; it is not yet evidence of a
+solution.
