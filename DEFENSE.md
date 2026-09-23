@@ -7467,7 +7467,7 @@ two-game comparison, so no update was accepted. Fixed ten-game mean
 stayed 10,266, all stage 1. A more conservative radius with the same
 broader visual subspace is the next complete-boot test.
 
-The ongoing [conservative-radius twelve-axis search](results/defense/training/ars-subspace-84/README.md)
+The [conservative-radius twelve-axis search](results/defense/training/ars-subspace-84/README.md)
 uses radii 0.5–2.5. At its [generation-5 milestone](results/defense/training/ars-subspace-84/milestone-000005/state.json),
 1,328 complete training games and 3,280,299 actions had yielded no
 accepted update or stage-2 game. A generation-5 candidate gained 507.5
@@ -7475,3 +7475,12 @@ points in the short 16-game comparison but only 134.69 on a separate
 32-game confirmation, so the predeclared 150-point gate rejected it.
 Fixed ten-game mean remains 10,266, all stage 1. The complete model/RNG
 checkpoint is preserved and the global replay remains unchanged.
+
+That run stopped cleanly at generation 11 after **2,960 complete training
+games** and **7,325,563 actions**, with zero accepted updates or stage-2
+games. Fixed ten-game mean remained 10,266 at generations 0, 5, 10 and
+11. A generation-11 candidate's 741.88-point short-comparison gain fell
+to 61.88 on independent confirmation. The complete native run and final
+model/RNG checkpoint are archived. The repeated reversals motivate
+testing a score-derived combination of many saved symmetric trials,
+rather than selecting one apparent winner from a short comparison.

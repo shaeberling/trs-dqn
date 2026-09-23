@@ -1,6 +1,6 @@
 # Conservative-radius twelve-axis visual search
 
-This ongoing native run begins from the independently confirmed pilot
+This completed native run began from the independently confirmed pilot
 policy. Its initial fixed ten-game complete-boot validation mean is 10,266,
 all stage 1. The previous twelve-axis radius-1–8 pilot found that its
 largest perturbations mostly destroyed the earlier route, so this run
@@ -25,9 +25,10 @@ stage/score rank requires independent action-by-action replay verification
 before global promotion. The sole collector watches this run and all 90
 prior artifact roots.
 
-There is no generation or wall-clock limit; a 5 GiB free-space guard
-protects all archives. Live complete population records, full model/RNG
-checkpoints and artifacts are in `runs/defense-ars-subspace-84/`.
+There was no generation or wall-clock limit. A graceful checkpoint-boundary
+stop followed the unchanged generation-10 validation; a 5 GiB free-space
+guard protected all archives. The complete native population records,
+model/RNG checkpoints and artifacts are in `run/`.
 `fit-source.py`, `context-source.py`, `context-basis.npz`,
 `collector-source.py` and `collector-config.json` preserve the exact
 initial implementation, screen-only basis and monitoring scope.
@@ -40,6 +41,17 @@ predeclared 150-point margin. Fixed ten-game validation remains 10,266,
 all stage 1. `milestone-000005/` preserves the complete model/RNG state
 and per-game validation record; all copied files matched the live
 checkpoint by SHA-256. The verified global best replay is unchanged.
+
+The run finished at generation 11 after **2,960 complete training games**
+and **7,325,563 neural actions**, with zero accepted updates and zero
+stage-2 games. Ten-game validation mean was 10,266 at generations 0, 5,
+10 and 11. The generation-11 candidate looked +741.88 points better in
+the 16-game comparison but only +61.88 over 32 new confirmation games;
+it too was rejected. `run/generation-000011/` preserves the final full
+model/RNG state. A checksum-based tree comparison found no content
+differences between the live and archived run; exact source and final
+model hashes also matched. The global 10,480-point verified replay stays
+available and unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
