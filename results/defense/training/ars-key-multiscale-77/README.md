@@ -1,6 +1,6 @@
 # Multi-radius physical-key search
 
-This ongoing native run starts from the unchanged strongest learned
+This completed native run started from the unchanged strongest learned
 screen-only policy and tests coherent physical-key perturbations at 20
 stratified radii spanning 0.012–0.05 each generation. Both signs are
 evaluated for every direction, with no preferred key, route, or obstacle
@@ -21,10 +21,17 @@ and screen, regardless of score-gate acceptance. Fixed seeds 10000–10009
 are validation only; the shared best replay is promoted only when a new
 complete game is strictly better and fully verified.
 
-There is no generation or wall-clock limit. A verified mission or a
-graceful checkpoint-boundary intervention stops the loop. A 5 GiB free-
-space guard protects the existing archives. Live data are in
-`runs/defense-ars-key-multiscale-77/`.
+The run stopped gracefully at generation 11 after **2,832 complete boot
+training games** and **6,726,107 new actions**. Exactly one candidate
+passed the independent 32-game confirmation. Fixed ten-game means were
+9,981 initially and 9,925 at generations 5, 10 and 11; every candidate
+and validation game remained in stage 1. The range of radii did not solve
+the recurring barrier. The [full run](run/) preserves all populations,
+model/RNG states, evaluation and PPO optimizer provenance; its
+[exact executing source](fit-source.py) matches the saved hash. The
+5 GiB free-space guard stayed active. The global verified best replay is
+unchanged. This plateau, not wall-clock time, prompted a different
+screen-conditioned search proposal.
 
 The independently restorable [generation-5 checkpoint](milestone-000005/state.json)
 is preserved after 1,264 complete training games and 2,997,896 new actions.
