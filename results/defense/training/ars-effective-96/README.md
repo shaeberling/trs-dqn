@@ -50,6 +50,17 @@ near-miss remains rejected; `near-miss-source.py` matches the report's
 source hash and verifies that the saved population plan is centered on
 the exact parent weights.
 
+The full run finished cleanly at generation eleven: **2,896 complete
+training games** and **7,236,566 neural actions**, with zero accepted
+updates and no stage-two game. The fixed ten-game mean stayed 10,388 at
+generations zero, five, ten and eleven. All full model/RNG checkpoints,
+population plans, scores, logs and local replay artifacts are archived
+in `run/`; the final checkpoint hash matches its state record. The
+independently verified global best remains 10,480 in stage one. This
+negative result argues against repeating the same key-factor proposal
+with more generations; a command-specific visual proposal is the next
+distinct score-only test.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \
