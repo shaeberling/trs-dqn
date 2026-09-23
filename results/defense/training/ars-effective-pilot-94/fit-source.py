@@ -135,28 +135,6 @@ def shortlist(means, count):
     return np.argsort(-means, kind='stable')[:count].tolist()
 
 
-def reconcile_early_context(old, current, legacy_source):
-    """Allow only a provenance-only extension of an identical frozen basis."""
-    from .defense_learning import sha256
-    if legacy_source is None or not isinstance(old, dict):
-        raise ValueError('changed visible context requires its exact archived source')
-    previous = dict(old)
-    refreshed = dict(current)
-    old_digest = previous.get('proposal_source_sha256')
-    new_digest = refreshed.pop('proposal_source_sha256', None)
-    if (not old_digest or not new_digest or sha256(legacy_source) != old_digest
-            or refreshed.pop('minimum_visible_life_score', None) != 0
-            or refreshed.pop('omitted_own_lives', None) != []):
-        raise ValueError('early visible context changed beyond audited provenance')
-    previous.pop('proposal_source_sha256')
-    if previous != refreshed:
-        raise ValueError('early visible basis, source or diagnostics changed')
-    return dict(legacy_source=str(Path(legacy_source).resolve()),
-                legacy_source_sha256=old_digest, refreshed_source_sha256=new_digest,
-                basis_sha256=current['basis_sha256'],
-                reason='same rendered-screen basis and source hashes; new score filter defaults to zero')
-
-
 def main():
     import mlx.core as mx
     from mlx.utils import tree_flatten
@@ -182,8 +160,6 @@ def main():
                         default='action-row')
     parser.add_argument('--context-archive', type=Path,
                         help='own visible pre-loss training screens for context/subspace modes')
-    parser.add_argument('--legacy-context-source', type=Path,
-                        help='exact archived context source for an audited provenance-only resume')
     parser.add_argument('--subspace-components', type=int, default=4,
                         help='independent own-screen variation axes for failure-subspace-key')
     parser.add_argument('--sigma', type=float, default=.05)
@@ -216,8 +192,7 @@ def main():
                 (args.direction_mode not in
                  ('failure-context-key', 'failure-subspace-key', 'early-subspace-key',
                   'bottleneck-subspace-key', 'bottleneck-effective-key'))
-            or min(args.sigma, args.minimum_boot_gain) <= 0
-            or (args.legacy_context_source is not None and args.resume is None)):
+            or min(args.sigma, args.minimum_boot_gain) <= 0):
         parser.error('new output, all 20 action rows and positive score-search settings required')
     mx.set_cache_limit(128*1024*1024)
     mx.random.seed(args.seed)
@@ -306,11 +281,7 @@ def main():
         if args.initialize:
             config['context'] = context
         elif config.get('context') != context:
-            if args.direction_mode != 'early-subspace-key':
-                raise ValueError('resumed visible context differs from checkpoint')
-            config['context_provenance_migration'] = reconcile_early_context(
-                config.get('context'), context, args.legacy_context_source)
-            config['context'] = context
+            raise ValueError('resumed visible context differs from checkpoint')
     disk_guard(args.output.parent)
     args.output.mkdir(parents=True, exist_ok=False)
     shutil.copy2(parent/'optimizer.npz', args.output/'ppo-parent-optimizer.npz')
