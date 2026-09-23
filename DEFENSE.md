@@ -7665,6 +7665,14 @@ The recurring barrier is therefore a much more specific failure than
 low average score alone suggests. These screens are diagnostic only;
 visible loss timing is not an exact collision label or a route oracle.
 
+A [same-screen action-probability probe](results/defense/diagnostics/ars-action-row-99-matched-losses/action-probabilities.json)
+then confirmed the generation-two update changed only the pure `RIGHT`
+row, but did not create a uniform steering bias: its mean probability on
+parent-owned screens rose from 1.48% to 3.22% at 64 decisions before
+visible loss, then fell from 7.60% to 5.66% at 32 decisions. This is a
+read-only counterfactual, not evidence that a particular command caused
+or prevented a physical collision. The focused 12-test suite passes.
+
 The [generation-five search milestone](results/defense/training/ars-action-row-99/milestone-000005/state.json)
 is preserved after **2,288 complete training games** and **5,769,059
 actions**. A candidate's +256.25-point 16-game comparison reversed to
