@@ -7484,3 +7484,47 @@ to 61.88 on independent confirmation. The complete native run and final
 model/RNG checkpoint are archived. The repeated reversals motivate
 testing a score-derived combination of many saved symmetric trials,
 rather than selecting one apparent winner from a short comparison.
+
+The [score-derived aggregate trial](results/defense/training/ars-aggregate-85/README.md)
+combined all 220 saved symmetric direction pairs from those eleven
+unchanged-incumbent generations, then played **288 new complete training
+games** across screening, comparison and independent confirmation. Its
+best candidate's +300-point 32-game comparison became **-21.09 points**
+over 64 fresh confirmation games. All games were stage 1, so no update
+or replay was promoted. Source hashes, candidate plans, full-game scores
+and model/RNG states are archived. This eliminates one score-only way
+of averaging the noisy directions; it does not prove the barrier is
+unlearnable. A separate read-only action ablation can now test whether
+the current policy's firing combinations interrupt movement at the
+observed opening without altering the learned policy.
+
+The diagnostic [Space-command ablation](results/defense/diagnostics/space-ablation-86/README.md)
+then played 32 complete games per bias on shared fresh seeds. Almost
+eliminating Space cut mean score from 10,023.75 to 1,808.75, so globally
+disabling firing is not a viable shortcut. A modest -1 bias initially
+looked +293.13 points better, but a separate [64-seed check](results/defense/diagnostics/space-ablation-87/README.md)
+reduced that estimate to +154.53, and a predeclared final
+[128-seed check](results/defense/diagnostics/space-ablation-88/README.md)
+found only **+4.77 points**. Every game in all three checks stayed in
+stage 1. No diagnostic head was saved or promoted. The exact per-game
+records and source hashes are retained, supporting context-sensitive
+control work rather than a hand-coded global firing rule.
+
+The repeated losses may require an intervention well before the final
+128 decisions. A new [early own-screen source](results/defense/training/ars-early-source-89/README.md)
+replayed twelve complete training games from the independently confirmed
+pilot-80 policy and retained only rendered screen histories 370 / 350 /
+300 / 256 decisions before each of 48 visible life losses. Whole-trace
+verification and file hashes are preserved. A frozen encoder found a
+nontrivial early visual contrast, but this is proposal data only: the
+acting policy receives no death clock, snapshot, route or extra signal.
+
+The [early-screen pilot](results/defense/training/ars-early-pilot-90/README.md)
+played 54 complete training games. Its best two-game comparison gained
+770 points, but fresh two-game confirmation gained only 140, short of
+the predeclared 150-point gate. No update was accepted, the fixed
+ten-game mean remained 10,266, and all games were still stage 1.
+The [longer early-screen search](results/defense/training/ars-early-91/README.md)
+now tests the same proposal basis with independent 4 / 16 / 32-game
+score gates. The sole verified-best collector watches this run as its
+93rd source while preserving the existing 10,480-point global replay.

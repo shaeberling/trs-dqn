@@ -143,7 +143,8 @@ def main():
     parser.add_argument('--directions', type=int, default=20)
     parser.add_argument('--direction-mode',
                         choices=('action-row', 'key-factor', 'failure-context-key',
-                                 'failure-subspace-key'), default='action-row')
+                                 'failure-subspace-key', 'early-subspace-key'),
+                        default='action-row')
     parser.add_argument('--context-archive', type=Path,
                         help='own visible pre-loss training screens for context/subspace modes')
     parser.add_argument('--subspace-components', type=int, default=4,
@@ -166,14 +167,15 @@ def main():
                    args.confirm_games, args.envs, args.eval_every) < 1
             or args.shortlist > 2*args.directions
             or not 1 <= args.subspace_components <= 15
-            or (args.direction_mode != 'failure-subspace-key'
+            or (args.direction_mode not in ('failure-subspace-key', 'early-subspace-key')
                 and args.subspace_components != 4)
             or args.first_training_seed < 70000 or args.seed < 0
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
             or (args.sigma_max is not None and
                 (not np.isfinite(args.sigma_max) or args.sigma_max <= args.sigma))
             or (args.context_archive is None) !=
-                (args.direction_mode not in ('failure-context-key', 'failure-subspace-key'))
+                (args.direction_mode not in
+                 ('failure-context-key', 'failure-subspace-key', 'early-subspace-key'))
             or min(args.sigma, args.minimum_boot_gain) <= 0):
         parser.error('new output, all 20 action rows and positive score-search settings required')
     mx.set_cache_limit(128*1024*1024)
@@ -198,6 +200,8 @@ def main():
             initialization_training_steps=state['training_steps'],
             boot_search=settings, search_optimizer='paired complete-boot neural score search; no gradients',
             training_method=('all-action coordinate-row population' if args.direction_mode == 'action-row'
+                             else 'own verified early-screen physical-key subspace population'
+                             if args.direction_mode == 'early-subspace-key'
                              else 'own visible-approach-subspace physical-key population'
                              if args.direction_mode == 'failure-subspace-key'
                              else 'own visible-failure-context physical-key population'
@@ -238,12 +242,16 @@ def main():
     context_basis = None
     if args.context_archive is not None:
         from .defense_ars_context import visible_context, visible_subspace
-        proposal = (visible_subspace if args.direction_mode == 'failure-subspace-key'
-                    else visible_context)
-        if args.direction_mode == 'failure-subspace-key':
+        if args.direction_mode == 'early-subspace-key':
+            from .defense_ars_early_context import visible_early_subspace
+            context_basis, context = visible_early_subspace(model, args.context_archive,
+                components=args.subspace_components)
+        elif args.direction_mode == 'failure-subspace-key':
+            proposal = visible_subspace
             context_basis, context = proposal(model, args.context_archive,
                 context_source_model_sha256, components=args.subspace_components)
         else:
+            proposal = visible_context
             context_basis, context = proposal(model, args.context_archive,
                 context_source_model_sha256)
         if args.initialize:
@@ -317,7 +325,8 @@ def main():
             directions = (perturbation_directions(rng, args.directions,
                 center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
                 else subspace_key_directions(rng, args.directions, center.shape,
-                    action_names(), context_basis) if args.direction_mode == 'failure-subspace-key'
+                    action_names(), context_basis) if args.direction_mode in
+                    ('failure-subspace-key', 'early-subspace-key')
                 else context_key_directions(rng, args.directions, center.shape,
                     action_names(), context_basis) if args.direction_mode == 'failure-context-key'
                 else key_factor_directions(rng, args.directions, center.shape, action_names()))
