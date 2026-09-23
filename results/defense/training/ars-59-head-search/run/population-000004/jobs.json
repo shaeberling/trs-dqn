@@ -1,0 +1,530 @@
+{
+  "jobs": [
+    {
+      "candidate": 0,
+      "direction": 0,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70096
+    },
+    {
+      "candidate": 0,
+      "direction": 0,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70097
+    },
+    {
+      "candidate": 1,
+      "direction": 0,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70096
+    },
+    {
+      "candidate": 1,
+      "direction": 0,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70097
+    },
+    {
+      "candidate": 2,
+      "direction": 1,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70098
+    },
+    {
+      "candidate": 2,
+      "direction": 1,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70099
+    },
+    {
+      "candidate": 3,
+      "direction": 1,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70098
+    },
+    {
+      "candidate": 3,
+      "direction": 1,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70099
+    },
+    {
+      "candidate": 4,
+      "direction": 2,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70100
+    },
+    {
+      "candidate": 4,
+      "direction": 2,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70101
+    },
+    {
+      "candidate": 5,
+      "direction": 2,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70100
+    },
+    {
+      "candidate": 5,
+      "direction": 2,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70101
+    },
+    {
+      "candidate": 6,
+      "direction": 3,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70102
+    },
+    {
+      "candidate": 6,
+      "direction": 3,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70103
+    },
+    {
+      "candidate": 7,
+      "direction": 3,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70102
+    },
+    {
+      "candidate": 7,
+      "direction": 3,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70103
+    },
+    {
+      "candidate": 8,
+      "direction": 4,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70104
+    },
+    {
+      "candidate": 8,
+      "direction": 4,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70105
+    },
+    {
+      "candidate": 9,
+      "direction": 4,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70104
+    },
+    {
+      "candidate": 9,
+      "direction": 4,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70105
+    },
+    {
+      "candidate": 10,
+      "direction": 5,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70106
+    },
+    {
+      "candidate": 10,
+      "direction": 5,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70107
+    },
+    {
+      "candidate": 11,
+      "direction": 5,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70106
+    },
+    {
+      "candidate": 11,
+      "direction": 5,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70107
+    },
+    {
+      "candidate": 12,
+      "direction": 6,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70108
+    },
+    {
+      "candidate": 12,
+      "direction": 6,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70109
+    },
+    {
+      "candidate": 13,
+      "direction": 6,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70108
+    },
+    {
+      "candidate": 13,
+      "direction": 6,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70109
+    },
+    {
+      "candidate": 14,
+      "direction": 7,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70110
+    },
+    {
+      "candidate": 14,
+      "direction": 7,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70111
+    },
+    {
+      "candidate": 15,
+      "direction": 7,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70110
+    },
+    {
+      "candidate": 15,
+      "direction": 7,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70111
+    },
+    {
+      "candidate": 16,
+      "direction": 8,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70112
+    },
+    {
+      "candidate": 16,
+      "direction": 8,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70113
+    },
+    {
+      "candidate": 17,
+      "direction": 8,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70112
+    },
+    {
+      "candidate": 17,
+      "direction": 8,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70113
+    },
+    {
+      "candidate": 18,
+      "direction": 9,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70114
+    },
+    {
+      "candidate": 18,
+      "direction": 9,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70115
+    },
+    {
+      "candidate": 19,
+      "direction": 9,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70114
+    },
+    {
+      "candidate": 19,
+      "direction": 9,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70115
+    },
+    {
+      "candidate": 20,
+      "direction": 10,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70116
+    },
+    {
+      "candidate": 20,
+      "direction": 10,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70117
+    },
+    {
+      "candidate": 21,
+      "direction": 10,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70116
+    },
+    {
+      "candidate": 21,
+      "direction": 10,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70117
+    },
+    {
+      "candidate": 22,
+      "direction": 11,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70118
+    },
+    {
+      "candidate": 22,
+      "direction": 11,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70119
+    },
+    {
+      "candidate": 23,
+      "direction": 11,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70118
+    },
+    {
+      "candidate": 23,
+      "direction": 11,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70119
+    },
+    {
+      "candidate": 24,
+      "direction": 12,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70120
+    },
+    {
+      "candidate": 24,
+      "direction": 12,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70121
+    },
+    {
+      "candidate": 25,
+      "direction": 12,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70120
+    },
+    {
+      "candidate": 25,
+      "direction": 12,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70121
+    },
+    {
+      "candidate": 26,
+      "direction": 13,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70122
+    },
+    {
+      "candidate": 26,
+      "direction": 13,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70123
+    },
+    {
+      "candidate": 27,
+      "direction": 13,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70122
+    },
+    {
+      "candidate": 27,
+      "direction": 13,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70123
+    },
+    {
+      "candidate": 28,
+      "direction": 14,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70124
+    },
+    {
+      "candidate": 28,
+      "direction": 14,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70125
+    },
+    {
+      "candidate": 29,
+      "direction": 14,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70124
+    },
+    {
+      "candidate": 29,
+      "direction": 14,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70125
+    },
+    {
+      "candidate": 30,
+      "direction": 15,
+      "sign": 0,
+      "repetition": 0,
+      "seed": 70126
+    },
+    {
+      "candidate": 30,
+      "direction": 15,
+      "sign": 0,
+      "repetition": 1,
+      "seed": 70127
+    },
+    {
+      "candidate": 31,
+      "direction": 15,
+      "sign": 1,
+      "repetition": 0,
+      "seed": 70126
+    },
+    {
+      "candidate": 31,
+      "direction": 15,
+      "sign": 1,
+      "repetition": 1,
+      "seed": 70127
+    }
+  ],
+  "config": {
+    "game": "defense",
+    "algorithm": "screen-feature-ars-v1",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "native_sha256": "95fc88af3da4bf52780219b489c3ca7c6f494e993bda4feeb70035b7f5cc2828",
+    "environment_version": "obstacle-run-screen-v1",
+    "action_names": [
+      "NOOP",
+      "UP",
+      "DOWN",
+      "LEFT",
+      "RIGHT",
+      "UP+LEFT",
+      "UP+RIGHT",
+      "DOWN+LEFT",
+      "DOWN+RIGHT",
+      "SPACE",
+      "UP+SPACE",
+      "DOWN+SPACE",
+      "LEFT+SPACE",
+      "RIGHT+SPACE",
+      "UP+LEFT+SPACE",
+      "UP+RIGHT+SPACE",
+      "DOWN+LEFT+SPACE",
+      "DOWN+RIGHT+SPACE",
+      "LEFT+RIGHT",
+      "LEFT+RIGHT+SPACE"
+    ],
+    "allow_enter": false,
+    "tstates": 100000,
+    "observation_stride": 1,
+    "eval_max_steps": 0,
+    "parent_checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-09-curriculum-life/step-000008342272",
+    "parent_steps": 8342272,
+    "parent_model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+    "parent_optimizer_sha256": "8e7f3bc9de1048b6e0d32237280d255c8109c0de8ce5a9958bef9eb43e5f43f0",
+    "parent_state_sha256": "18e57e6d83f8619fef850a40b5d8de43ebe9a7f3a287917e1daf0771590c7aa0",
+    "training_method": "ARS V1 adapted to own pretrained screen encoder and sampled categorical head",
+    "search": {
+      "directions": 16,
+      "repetitions": 2,
+      "sigma": 0.005,
+      "step_size": 0.002
+    },
+    "score_reward_only": true,
+    "frozen_encoder": true,
+    "frozen_value": true,
+    "source_paper": "https://arxiv.org/html/1803.07055v1",
+    "initialization": "all own PPO weights retained; old PPO Adam preserved but not used by new ARS optimizer",
+    "source_sha256": "fdf40c77eb22a55bc9100619815b036100d4e61d0452b0f5619c0670a4e96bb1",
+    "search_source_sha256": "6f18d7f18915753f01ce91d85044391084d1aaa4d126f7c55b4e437c4dfe2699",
+    "loader_source_sha256": "6ceca53558ff956bfc3d8cc595cdc22f75cb5be2066b287f3e690417cd32eb89",
+    "args": {
+      "initialize": "results/defense/training/ppo-09-curriculum-life/step-000008342272",
+      "resume": null,
+      "output": "runs/defense-ars-59-head-search",
+      "generations": 6,
+      "directions": 16,
+      "repetitions": 2,
+      "sigma": 0.005,
+      "step_size": 0.002,
+      "envs": 16,
+      "seed": 71,
+      "first_training_seed": 70000,
+      "eval_every": 1
+    }
+  },
+  "generation": 4,
+  "rng_after_plan": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 118992889968938370573298241108522565954,
+      "inc": 297182161798612854921759259036036644981
+    },
+    "has_uint32": 0,
+    "uinteger": 0
+  },
+  "plan_sha256": "49d4f7b9ea2602433c0e85124911efba5ca6146ae0cdd1f9077654148c4b64f0"
+}

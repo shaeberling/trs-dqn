@@ -34,6 +34,7 @@ BOOTSTRAP_ALGORITHM = "bootstrapped-dueling-double-dqn-prior-per-nstep"
 QUANTILE_ALGORITHM = "quantile-dueling-double-dqn-per-nstep"
 REPEAT_ALGORITHM = "joint-action-duration-dueling-double-dqn-per"
 IMAGINATION_ALGORITHM = "gaussian-rssm-imagined-reinforce"
+ARS_ALGORITHM = "screen-feature-ars-v1"
 
 
 def policy_description(config, temperature=1.0, *, quantile_power=None):
@@ -72,6 +73,9 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
         if quantile_power:
             return f"learned score-return quantiles, greedy power-distorted expectation (power={quantile_power:g})"
         return "learned score-return quantiles, greedy mean Q-values"
+    if algorithm == ARS_ALGORITHM:
+        return ("learned categorical head, score-based parameter search over frozen screen features" if temperature == 1 else
+                "learned parameter-search categorical head, temperature-scaled sampling")
     if algorithm != "ppo":
         raise ValueError("Unsupported Defense policy algorithm")
     return ("learned categorical, sampled" if temperature == 1 else
@@ -161,6 +165,9 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         model = QNetwork(action_count=len(names))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
+    if config.get('algorithm') == ARS_ALGORITHM:
+        from .defense_ars import acting_policy
+        return acting_policy(model, temperature), config
     if config.get("algorithm") == REPEAT_ALGORITHM:
         if temperature != 1:
             raise ValueError('temperature overrides do not apply to learned greedy durations')
