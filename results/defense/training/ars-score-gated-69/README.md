@@ -1,13 +1,13 @@
 # Continuing score-gated visual action search
 
-This currently running trial began from the unchanged strongest learned
+This completed trial began from the unchanged strongest learned
 Defense policy. Twelve new complete training games, seeds 75000–75011,
-provide 48 native-verified states 128 decisions before the policy's own
+provided 48 native-verified states 128 decisions before the policy's own
 visible ship losses. Each search round changes one of 20 action rows at a
 time, with symmetric positive and negative screen-dependent perturbations.
 All actions are covered without a hand-selected direction or route.
 
-Displayed score gained from the same four sampled own states nominates a
+Displayed score gained from the same four sampled own states nominated a
 candidate only if it beats the incumbent by at least 10 points. Eight
 complete games from fresh training boot seeds then compare the two frozen
 policies on the same seeds; the candidate is accepted only when its mean
@@ -17,12 +17,17 @@ model remains unchanged when either score check fails. A candidate that
 reaches a new stage in any complete boot training game is preserved and
 replayed from saved weights for verification before best-replay promotion.
 
-Training has no generation or wall-clock limit. Checkpoints, population
-plans, native source states, scores, RNG and replay artifacts accumulate in
-`runs/defense-ars-focus-69-score-gated/` with a 5 GiB disk safety guard.
-An observed successful mission in a verified complete boot game stops the
-loop. The shared collector checks this source alongside all earlier runs.
-No improvement or stage passage is claimed until recorded and verified.
+The run was stopped cleanly at a checkpoint boundary after 16 generations,
+2,624 focused continuations and 597,443 new training actions. Generations 5
+and 6 passed both score gates. The fifth-generation candidate improved its
+eight-game paired training mean from 9,656.25 to 10,116.25; the sixth gained
+only 48.75 points on the same kind of comparison. The ten fixed complete-game
+validation games averaged 9,204 at generations 10 and 16. No focused
+continuation or complete boot game reached stage 2, and the shared verified
+best replay remains unchanged. The small second gate margin and lower later
+validation mean motivate a stricter gate from the preserved fifth-generation
+checkpoint. Full checkpoints, population plans, native source states, scores,
+RNG and logs are in [run](run/). There is no wall-clock limit on the goal.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_focus \

@@ -1,0 +1,23 @@
+{
+  "purpose": "Read-only complete-boot training-seed check of generation-5 parent selection",
+  "seeds": [76000, 76001, 76002, 76003, 76004, 76005, 76006, 76007, 76008, 76009, 76010, 76011],
+  "original_parent": {
+    "checkpoint": "results/defense/training/ars-59-head-search/run/generation-000000",
+    "model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+    "complete_game_scores": [10360, 7220, 7390, 6500, 8860, 10260, 10430, 7390, 8760, 10480, 8810, 10410],
+    "mean_score": 8905.833333333334
+  },
+  "generation_5_parent": {
+    "checkpoint": "results/defense/training/ars-score-gated-69/run/generation-000005",
+    "model_sha256": "eb9b2db93806b068a2200c20ec8c10c522bd26aaa9fc73fc8d49e539a0018cb8",
+    "complete_game_scores": [10280, 8780, 10130, 7900, 10380, 10380, 4830, 8860, 10230, 8810, 6470, 8830],
+    "mean_score": 8823.333333333334,
+    "source_game_index_sha256": "fabdb8fd737c8f9b152cd6242a3523b5000c63d7edbf4c0a89c002ae82184ddd"
+  },
+  "paired_generation_5_minus_original_mean": -82.5,
+  "highest_stage": 1,
+  "training_only": true,
+  "used_for_gradient_or_candidate_update": false,
+  "method": "Same 12 boot and action-sampling seeds; frozen policies, original timing, complete games",
+  "limitations": "Twelve seeds do not estimate a precise generalization difference; displayed score is not an obstacle coordinate."
+}
