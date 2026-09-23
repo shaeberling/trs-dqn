@@ -7664,3 +7664,11 @@ accounts for 94% of the candidate's apparent eight-game score advantage.
 The recurring barrier is therefore a much more specific failure than
 low average score alone suggests. These screens are diagnostic only;
 visible loss timing is not an exact collision label or a route oracle.
+
+The [generation-five search milestone](results/defense/training/ars-action-row-99/milestone-000005/state.json)
+is preserved after **2,288 complete training games** and **5,769,059
+actions**. A candidate's +256.25-point 16-game comparison reversed to
+-82.50 in the fresh 32-game gate, so it was rejected. The fixed ten-game
+mean is now **10,032** versus 10,388 at the start, all stage one. The
+internally accepted generation-two head remains in the live run, but its
+independent 64-seed check is negative; it is not a confirmed improvement.
