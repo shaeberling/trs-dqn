@@ -30,6 +30,14 @@ hashes in [run-config.json](run-config.json).
 The initial full [model/RNG checkpoint](milestone-000000/state.json)
 and exact [phase basis](context-basis.npz) are already preserved here.
 
+At [generation five](milestone-000005/state.json), the run has completed
+**2,544 full training games and 6,414,937 actions**. None reached stage two.
+No proposal has passed the independent 64-game confirmation margin, so
+the parent weights remain in force. The fixed ten-game mean is **10,388**,
+unchanged from the start; its best score is 10,480. The generation-five
+model/RNG state and evaluation are archived without replacing the older
+independently verified global replay.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \
