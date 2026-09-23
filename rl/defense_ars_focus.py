@@ -209,7 +209,7 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
     origin = parser.add_mutually_exclusive_group(required=True)
-    origin.add_argument('--initialize', type=Path, help='full ARS checkpoint with strong own policy')
+    origin.add_argument('--initialize', type=Path, help='full own ARS centroid checkpoint; starts a new search')
     origin.add_argument('--resume', type=Path, help='saved focused generation checkpoint')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--generations', type=int, default=8, help='absolute target; 0 keeps learning')
@@ -259,9 +259,13 @@ def main():
                  'boot_gate_games', 'first_boot_training_seed')}
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, rng)
-        if state['generations'] != 0 or state['training_steps'] != 0:
-            parser.error('focus starts from a full generation-zero ARS checkpoint')
         config = dict(state['config'])
+        config['parent_steps'] = state['steps']
+        config['initialization_checkpoint'] = str(args.initialize.resolve())
+        config['initialization_model_sha256'] = sha256(args.initialize/'model.safetensors')
+        config['initialization_state_sha256'] = sha256(args.initialize/'state.json')
+        config['initialization_generation'] = state['generations']
+        config['initialization_training_steps'] = state['training_steps']
         config.update(focus=dict(settings=settings, harvest_games=args.harvest_games,
             harvest_seed=args.harvest_seed, lookback=args.lookback,
             source_checkpoint=str(args.initialize.resolve()),
