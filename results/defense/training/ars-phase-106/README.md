@@ -38,6 +38,16 @@ unchanged from the start; its best score is 10,480. The generation-five
 model/RNG state and evaluation are archived without replacing the older
 independently verified global replay.
 
+At [generation ten](milestone-000010/state.json), an internal proposal
+passed the separate 64-game gate by **203.91** points and raised the fixed
+ten-game mean to **10,450**, still entirely stage one. We froze its full
+model/RNG state and ran a further [fresh 64-seed paired check](paired-generation-10.json)
+on seeds 610000–610063 against the last independently confirmed parent.
+That result **reversed** the apparent gain: candidate **10,210.16** versus
+parent **10,305.78**, a **-95.63-point** difference, with no stage-two game.
+This candidate remains in the live search history but is not a confirmed
+successor or promoted replay. The planned last generation continues.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \

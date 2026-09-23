@@ -7783,3 +7783,19 @@ The complete checkpoint/log/replay archive is preserved, but this is not
 a confirmed successor to the first run-107 checkpoint. The sole replay
 collector now watches **104** sources, including both new PPO runs, and
 has not displaced the independently verified global best.
+
+A [read-only fixed-ten-command probe](results/defense/diagnostics/action-profile-109/README.md)
+then tested whether stage-one fire-key aliases were masking the repeated
+failure. Simply removing their logits from the **frozen** strong PPO policy
+collapsed 64-game mean score from **10,157.97 to 996.88**; every masked
+game scored below 3,000, with no stage-two reach. This mask also discarded
+most learned firing probability, so it is not a fair test of a newly trained
+compact-action model. We will first check a probability-preserving alias
+collapse. No trained model or verified best replay was changed.
+
+In parallel, generation ten of the [late-phase ARS search](results/defense/training/ars-phase-106/README.md)
+internally accepted a +203.91-point proposal on 64 confirmation games,
+but an additional **64 fresh matched games** reversed it to **-95.63**
+against the last independently confirmed parent. Both stayed in stage one.
+Its full model/RNG milestone is preserved, but this short-sample head is
+not a confirmed improvement or a replacement for the verified replay.
