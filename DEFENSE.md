@@ -7345,3 +7345,10 @@ from the unchanged original policy and uses 4 / 16 / 32 distinct complete
 training boot games for screening / comparison / confirmation, with a
 150-point final margin. It changes learned physical-key preferences across
 commands but gives no target key or route.
+
+At the [generation-5 key-factor milestone](results/defense/training/ars-key-74/milestone-000005/state.json),
+1,328 complete training games and 3,243,653 new actions had yielded one
+update accepted on a separate 32-game confirmation set. Fixed ten-game boot
+mean rose slightly from 9,981 to 10,043, but **all games still ended in
+stage 1**. The model/RNG checkpoint is independently restorable; the
+shared 10,480-point verified replay remains unchanged.
