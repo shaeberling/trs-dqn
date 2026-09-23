@@ -32,6 +32,15 @@ population records are in `runs/defense-ars-subspace-81/`.
 `collector-source.py` and `collector-config.json` preserve the exact
 initial implementation, visual proposal basis and monitoring scope.
 
+At generation 5, the run has played **1,264 complete training games** and
+used **3,098,088 neural actions**. No candidate passed both score gates;
+one generation-4 confirmation gain was 149.375 points, just below the
+predeclared 150-point cutoff, and was rejected. Fixed ten-game validation
+mean remains 10,266, all stage 1. `milestone-000005/` preserves the exact
+restorable model, RNG state and per-game validation record. Every archived
+checkpoint file matched the live checkpoint by SHA-256. The global best
+replay remains unchanged.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-subspace-pilot-80/generation-000001 \
