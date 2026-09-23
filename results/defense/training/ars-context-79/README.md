@@ -29,6 +29,17 @@ graceful checkpoint-boundary intervention stops it. A 5 GiB free-space
 guard protects all prior archives. Live data are in
 `runs/defense-ars-context-79/`.
 
+At generation 5, the frozen-encoder policy has played 1,392 complete
+training games (3,407,318 neural actions). Two changes passed both fresh
+training-seed comparison sets. Its untouched ten-game validation mean rose
+from 9,981 to 10,155 displayed points, but all ten games still ended in
+stage 1. `milestone-000005/` preserves the full generation-5 checkpoint,
+RNG state, and per-game validation record. `fit-source.py`,
+`context-source.py`, and `context-basis.npz` preserve the exact proposal
+implementation and computed screen-only basis. All archived checkpoint
+files and source hashes were verified against the live run; this is not a
+new best replay or a stage advance.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-59-head-search/run/generation-000000 \
