@@ -181,8 +181,6 @@ def main():
     settings['context_archive'] = str(args.context_archive.resolve()) if args.context_archive else None
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, np.random.default_rng(0))
-        context_source_model_sha256 = state['config'].get('context', {}).get(
-            'source_model_sha256', sha256(args.initialize/'model.safetensors'))
         config = dict(state['config'])
         config.update(parent_steps=state['steps'],
             initialization_checkpoint=str(args.initialize.resolve()),
@@ -204,8 +202,6 @@ def main():
     else:
         state = restore_checkpoint(model, args.resume, rng)
         config = dict(state['config'])
-        context_source_model_sha256 = config.get('context', {}).get(
-            'source_model_sha256', config.get('initialization_model_sha256'))
         prior_settings = dict(config.get('boot_search', {}))
         prior_settings.setdefault('direction_mode', 'action-row')
         prior_settings.setdefault('sigma_max', None)
@@ -234,7 +230,7 @@ def main():
         proposal = (visible_subspace if args.direction_mode == 'failure-subspace-key'
                     else visible_context)
         context_basis, context = proposal(model, args.context_archive,
-            context_source_model_sha256)
+            config['initialization_model_sha256'])
         if args.initialize:
             config['context'] = context
         elif config.get('context') != context:

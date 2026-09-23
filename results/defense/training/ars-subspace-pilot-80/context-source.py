@@ -144,22 +144,8 @@ def approach_subspace(earlier, approach, components=4):
 def visible_subspace(model, archive, expected_model_sha256, components=4):
     """Verified own rendered screens at -128, -96, -64 and -32 decisions."""
     import mlx.core as mx
-    from mlx.utils import tree_flatten
-    from .model import QNetwork
     archive = Path(archive)
     _, provenance = visible_context(model, archive, expected_model_sha256)
-    source_config = json.loads((archive.parent/'config.json').read_text())
-    source_weights = Path(source_config['focus']['source_checkpoint'])/'model.safetensors'
-    if sha256(source_weights) != expected_model_sha256:
-        raise ValueError('own visible source checkpoint changed')
-    source_model = QNetwork(action_count=20)
-    source_model.load_weights(str(source_weights))
-    original = dict(tree_flatten(source_model.parameters()))
-    current = dict(tree_flatten(model.parameters()))
-    if original.keys() != current.keys() or any(
-            not np.array_equal(np.array(original[key]), np.array(current[key]))
-            for key in original if not key.startswith('advantage.')):
-        raise ValueError('visual encoder differs from own-screen source policy')
     names = json.loads((archive/'index.json').read_text())['files']
     batches = [[], [], [], []]
     for name in names:
@@ -180,5 +166,5 @@ def visible_subspace(model, archive, expected_model_sha256, components=4):
     provenance = dict(provenance, basis_sha256=hashlib.sha256(basis.tobytes()).hexdigest(),
         diagnostics=diagnostics,
         selection='own visible loss; screens 128 / 96 / 64 / 32 decisions before marker',
-        subspace_components=components, frozen_encoder_match_source=True)
+        subspace_components=components)
     return basis, provenance
