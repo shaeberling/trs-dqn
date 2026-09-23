@@ -7429,7 +7429,7 @@ gain, with the exact frozen visual encoder verified. Both policies still
 ended in stage 1. This supports using the candidate as the next
 training-selected starting point but does not establish passage.
 
-The ongoing [long subspace search](results/defense/training/ars-subspace-81/README.md)
+The [long subspace search](results/defense/training/ars-subspace-81/README.md)
 started from that independently confirmed pilot policy. At its
 [generation-5 milestone](results/defense/training/ars-subspace-81/milestone-000005/state.json),
 1,264 complete training games and 3,098,088 actions had produced no
@@ -7438,3 +7438,12 @@ games remained in stage 1. A generation-4 candidate's independent
 32-game gain was 149.375 points, just under the predeclared 150-point
 gate, so it was rejected. The full model/RNG checkpoint is preserved,
 and the verified global best replay is unchanged.
+
+That run then stopped cleanly at generation 11 after **2,832 complete
+training games** and **6,940,989 actions**, with zero accepted updates.
+The fixed ten-game mean was still 10,266 at generations 10 and 11;
+every training and validation game remained in stage 1. The complete
+native archive and final model/RNG checkpoint are preserved. Two
+predeclared-gate near-misses remain available in the saved population
+plans for a larger fresh-training-seed score check; neither was quietly
+promoted from this run.
