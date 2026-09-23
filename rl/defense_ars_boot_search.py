@@ -229,7 +229,7 @@ def main():
                         choices=('action-row', 'key-factor', 'failure-context-key',
                                  'failure-subspace-key', 'early-subspace-key',
                                  'bottleneck-subspace-key', 'bottleneck-effective-key',
-                                 'bottleneck-action-row'),
+                                 'bottleneck-action-row', 'bottleneck-phase-action-row'),
                         default='action-row')
     parser.add_argument('--context-archive', type=Path,
                         help='own visible pre-loss training screens for context/subspace modes')
@@ -251,9 +251,10 @@ def main():
     parser.add_argument('--eval-every', type=int, default=5)
     args = parser.parse_args()
     if (args.output.exists() or args.generations < 0
-            or (args.direction_mode == 'bottleneck-action-row' and
+            or (args.direction_mode in ('bottleneck-action-row', 'bottleneck-phase-action-row') and
                 (args.directions < 20 or args.directions % 20))
-            or (args.direction_mode != 'bottleneck-action-row' and args.directions != 20)
+            or (args.direction_mode not in ('bottleneck-action-row', 'bottleneck-phase-action-row')
+                and args.directions != 20)
             or min(args.shortlist, args.screen_games, args.compare_games,
                    args.confirm_games, args.envs, args.eval_every) < 1
             or args.shortlist > 2*args.directions
@@ -261,8 +262,10 @@ def main():
             or (args.direction_mode not in ('failure-subspace-key', 'early-subspace-key',
                                             'bottleneck-subspace-key',
                                             'bottleneck-effective-key',
-                                            'bottleneck-action-row')
+                                            'bottleneck-action-row', 'bottleneck-phase-action-row')
                 and args.subspace_components != 4)
+            or (args.direction_mode == 'bottleneck-phase-action-row'
+                and args.subspace_components != 2)
             or args.first_training_seed < 70000 or args.seed < 0
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
             or (args.sigma_max is not None and
@@ -271,7 +274,7 @@ def main():
                 (args.direction_mode not in
                  ('failure-context-key', 'failure-subspace-key', 'early-subspace-key',
                   'bottleneck-subspace-key', 'bottleneck-effective-key',
-                  'bottleneck-action-row'))
+                  'bottleneck-action-row', 'bottleneck-phase-action-row'))
             or min(args.sigma, args.minimum_boot_gain) <= 0
             or (args.legacy_context_source is not None and args.resume is None)):
         parser.error('new output, all 20 action rows and positive score-search settings required')
@@ -297,7 +300,8 @@ def main():
             initialization_training_steps=state['training_steps'],
             boot_search=settings, search_optimizer='paired complete-boot neural score search; no gradients',
             training_method=('own verified screen-window per-command population'
-                             if args.direction_mode == 'bottleneck-action-row'
+                             if args.direction_mode in
+                             ('bottleneck-action-row', 'bottleneck-phase-action-row')
                              else 'all-action coordinate-row population' if args.direction_mode == 'action-row'
                              else 'own verified screen-window physical-key subspace population'
                              if args.direction_mode in ('early-subspace-key',
@@ -343,7 +347,10 @@ def main():
     context_basis = None
     if args.context_archive is not None:
         from .defense_ars_context import visible_context, visible_subspace
-        if args.direction_mode in ('early-subspace-key', 'bottleneck-subspace-key',
+        if args.direction_mode == 'bottleneck-phase-action-row':
+            from .defense_ars_phase_context import visible_phase_subspace
+            context_basis, context = visible_phase_subspace(model, args.context_archive)
+        elif args.direction_mode in ('early-subspace-key', 'bottleneck-subspace-key',
                                    'bottleneck-effective-key', 'bottleneck-action-row'):
             from .defense_ars_early_context import visible_early_subspace
             from .defense_ars_early_source import OFFSETS
@@ -365,7 +372,7 @@ def main():
                 context_source_model_sha256)
         if args.initialize:
             config['context'] = context
-            if args.direction_mode == 'bottleneck-action-row':
+            if args.direction_mode in ('bottleneck-action-row', 'bottleneck-phase-action-row'):
                 config['selection_tie_break'] = 'randomized unique-command coverage only within exact displayed-score ties'
         elif config.get('context') != context:
             if args.direction_mode != 'early-subspace-key':
@@ -440,7 +447,8 @@ def main():
             directions = (perturbation_directions(rng, args.directions,
                 center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
                 else subspace_action_row_directions(rng, args.directions,
-                    center.shape, context_basis) if args.direction_mode == 'bottleneck-action-row'
+                    center.shape, context_basis) if args.direction_mode in
+                    ('bottleneck-action-row', 'bottleneck-phase-action-row')
                 else subspace_key_directions(rng, args.directions, center.shape,
                     action_names(), context_basis,
                     effective_movement=args.direction_mode == 'bottleneck-effective-key')
@@ -463,7 +471,7 @@ def main():
                 args.screen_games, first_seed)
             selected = (score_tie_diverse_shortlist(screen_mean, args.shortlist,
                 np.argmax(np.linalg.norm(directions, axis=2), axis=1), rng)
-                if args.direction_mode == 'bottleneck-action-row'
+                if args.direction_mode in ('bottleneck-action-row', 'bottleneck-phase-action-row')
                 else shortlist(screen_mean, args.shortlist))
             compare_heads = np.concatenate([center[None], heads[selected]], axis=0)
             compare, compare_mean = phase(target, 'compare', compare_heads,
