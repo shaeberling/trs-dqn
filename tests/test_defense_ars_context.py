@@ -6,6 +6,7 @@ import numpy as np
 
 from rl.defense_ars_context import (approach_subspace, contrast_basis,
                                     visible_context, visible_subspace)
+from rl.defense_ars_early_context import visible_early_subspace
 from rl.model import QNetwork
 
 
@@ -13,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT = ROOT/'results/defense/training/ars-59-head-search/run/generation-000000/model.safetensors'
 ARCHIVE = ROOT/'results/defense/training/ars-score-gated-69/run/own-loss-states'
 PILOT_CHECKPOINT = ROOT/'results/defense/training/ars-subspace-pilot-80/generation-000001/model.safetensors'
+EARLY_ARCHIVE = ROOT/'results/defense/training/ars-early-source-89'
 
 
 class VisibleContextTests(unittest.TestCase):
@@ -86,6 +88,20 @@ class VisibleContextTests(unittest.TestCase):
         self.assertFalse(wide_record['native_snapshot_read'])
         with self.assertRaises(ValueError):
             visible_subspace(model, ARCHIVE, 'wrong-model')
+
+    def test_verified_early_own_screens_supply_earlier_proposals(self):
+        model = QNetwork(action_count=20)
+        model.load_weights(str(PILOT_CHECKPOINT))
+        mx.eval(model.state)
+        basis, record = visible_early_subspace(model, EARLY_ARCHIVE, components=12)
+        self.assertEqual(basis.shape, (13, 257))
+        self.assertEqual(record['diagnostics']['examples'], 48)
+        self.assertFalse(record['native_snapshot_read'])
+        self.assertFalse(record['action_target_read'])
+        self.assertTrue(record['frozen_encoder_match_source'])
+        self.assertAlmostEqual((record['diagnostics']['mean_contrast']['middle']['mean']+
+                                record['diagnostics']['mean_contrast']['later']['mean'])/2,
+                               1, places=5)
 
 
 if __name__ == '__main__':
