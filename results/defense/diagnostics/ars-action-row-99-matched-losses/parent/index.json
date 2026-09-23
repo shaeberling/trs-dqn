@@ -1,0 +1,368 @@
+{
+  "source_checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/ars-early-91/milestone-000005",
+  "source_model_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+  "source_state_sha256": "6ae5574ba76cb8195bfeeffdea55e3bbbec4a2ff7ae22f5b92468ab511ac2c14",
+  "source_sha256": "66ea7b0e41819a0cd1260a4952fdec46f5c73d22d5981ea2ddda875ee9fa1438",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "offsets": [
+    128,
+    96,
+    64,
+    32
+  ],
+  "selection": "verified own complete training-game visible life losses",
+  "proposal_data_only": true,
+  "native_snapshot_read": false,
+  "hidden_state_read": false,
+  "action_target_read": false,
+  "games": [
+    {
+      "seed": 490000,
+      "result": {
+        "seed": 490000,
+        "score": 8900,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2499,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 8900.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 189437
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2499,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "a038909e902dc12602f90a55e79ebff5d6427f422c77398869614e930e8045ea",
+      "visible_loss_frames": [
+        353,
+        1082,
+        1794,
+        2499
+      ]
+    },
+    {
+      "seed": 490001,
+      "result": {
+        "seed": 490001,
+        "score": 10360,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2545,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10360.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 70925
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2545,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "10bb288b6257537adbdc6603b8b90548b01a33cf77ef3cb8578b2a3edea9c427",
+      "visible_loss_frames": [
+        412,
+        1122,
+        1841,
+        2545
+      ]
+    },
+    {
+      "seed": 490002,
+      "result": {
+        "seed": 490002,
+        "score": 10440,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2543,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10440.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 34808
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2543,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "426ccceffe2a32c36e00e070b15ff3af730045eace78874699bfe804f591cc84",
+      "visible_loss_frames": [
+        409,
+        1122,
+        1824,
+        2543
+      ]
+    },
+    {
+      "seed": 490003,
+      "result": {
+        "seed": 490003,
+        "score": 10440,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2512,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10440.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 197503
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2512,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "e8b5dacddda340b33c2495b37c4f4ff806290bc0c37995df960babf2bef747e4",
+      "visible_loss_frames": [
+        409,
+        1122,
+        1801,
+        2512
+      ]
+    },
+    {
+      "seed": 490004,
+      "result": {
+        "seed": 490004,
+        "score": 10360,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2549,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10360.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 197716
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2549,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "fe193f942c0502b9c59a57b43a8093fa86b71df83ac01acc62d71d01906ae591",
+      "visible_loss_frames": [
+        387,
+        1118,
+        1853,
+        2549
+      ]
+    },
+    {
+      "seed": 490005,
+      "result": {
+        "seed": 490005,
+        "score": 10420,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2506,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10420.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 155730
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2506,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "db4e84ff234a98b605733f34644a7e34bbf39a5b2772cd9b731a08e9653f76b4",
+      "visible_loss_frames": [
+        391,
+        1093,
+        1781,
+        2506
+      ]
+    },
+    {
+      "seed": 490006,
+      "result": {
+        "seed": 490006,
+        "score": 10460,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2548,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10460.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 56845
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2548,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "ff5b086c6b379cd41b0d0e9ddbd6e1ef371c4e0a2db9568831a1cbd397827ea7",
+      "visible_loss_frames": [
+        408,
+        1118,
+        1827,
+        2548
+      ]
+    },
+    {
+      "seed": 490007,
+      "result": {
+        "seed": 490007,
+        "score": 10460,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2531,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10460.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 6904
+      },
+      "verification": {
+        "verified": true,
+        "verified_actions": 2531,
+        "temperature": 1.0,
+        "observation_stride": 1,
+        "checkpoint_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+        "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+        "environment_version": "obstacle-run-screen-v1",
+        "method": "reload weights; reproduce every policy action, reward and screen from boot"
+      },
+      "trace_arrays_sha256": "d527f6330d09bcbc7d6c56a8b8105c88b5e1eb214aa0c2d272802bd5ac3df236",
+      "visible_loss_frames": [
+        408,
+        1140,
+        1842,
+        2531
+      ]
+    }
+  ],
+  "skipped": [],
+  "files": [
+    "seed-490000-life-1.npz",
+    "seed-490000-life-2.npz",
+    "seed-490000-life-3.npz",
+    "seed-490000-life-4.npz",
+    "seed-490001-life-1.npz",
+    "seed-490001-life-2.npz",
+    "seed-490001-life-3.npz",
+    "seed-490001-life-4.npz",
+    "seed-490002-life-1.npz",
+    "seed-490002-life-2.npz",
+    "seed-490002-life-3.npz",
+    "seed-490002-life-4.npz",
+    "seed-490003-life-1.npz",
+    "seed-490003-life-2.npz",
+    "seed-490003-life-3.npz",
+    "seed-490003-life-4.npz",
+    "seed-490004-life-1.npz",
+    "seed-490004-life-2.npz",
+    "seed-490004-life-3.npz",
+    "seed-490004-life-4.npz",
+    "seed-490005-life-1.npz",
+    "seed-490005-life-2.npz",
+    "seed-490005-life-3.npz",
+    "seed-490005-life-4.npz",
+    "seed-490006-life-1.npz",
+    "seed-490006-life-2.npz",
+    "seed-490006-life-3.npz",
+    "seed-490006-life-4.npz",
+    "seed-490007-life-1.npz",
+    "seed-490007-life-2.npz",
+    "seed-490007-life-3.npz",
+    "seed-490007-life-4.npz"
+  ]
+}

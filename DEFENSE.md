@@ -7655,3 +7655,12 @@ parent, with both policies still in stage one. The model/RNG milestone,
 proposal plan and exact check source are preserved. The live search
 continues, but this short-sample update is not treated as a confirmed
 improvement or promoted replay.
+
+A fresh, [matched-seed own-screen diagnostic](results/defense/diagnostics/ars-action-row-99-matched-losses/README.md)
+then reproduced eight complete games for each policy. The confirmed
+parent lost 31 of 32 lives after gaining 2,500–2,650 points; the
+candidate lost all 32 there. One unusual 1,060-point early parent loss
+accounts for 94% of the candidate's apparent eight-game score advantage.
+The recurring barrier is therefore a much more specific failure than
+low average score alone suggests. These screens are diagnostic only;
+visible loss timing is not an exact collision label or a route oracle.
