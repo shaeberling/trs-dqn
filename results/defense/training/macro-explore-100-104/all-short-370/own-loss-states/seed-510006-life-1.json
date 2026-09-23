@@ -1,0 +1,37 @@
+{
+  "snapshot_fields": {
+    "score": 0,
+    "lives": 4,
+    "stage": 1,
+    "highest_stage": 1,
+    "steps": 16,
+    "missions": 0,
+    "mission_visible": false,
+    "start_tstates": 94618,
+    "tstates": 100000,
+    "max_steps": 0,
+    "action_count": 20,
+    "source_worker": null,
+    "source_action": 16,
+    "source_full_game": true,
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "progress_start_score": 0,
+    "life_steps": 0,
+    "observation_stride": 1
+  },
+  "source": {
+    "seed": 510006,
+    "life": 1,
+    "visible_loss_frame": 386,
+    "visible_loss_score": 2600,
+    "snapshot_action": 16,
+    "snapshot_score": 0,
+    "snapshot_lives": 4,
+    "source_policy": "own frozen strong neural policy",
+    "training_only": true,
+    "promotion_eligible": false
+  },
+  "npz_sha256": "1cd6c1291c5e1618c5663ea5e93c77f5d9ca3f3989963a70473dde3b3e3d34ee",
+  "selection": "370 actions before own visible life loss"
+}

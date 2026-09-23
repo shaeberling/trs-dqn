@@ -1,0 +1,84 @@
+{
+  "config": {
+    "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/ars-early-91/milestone-000005",
+    "checkpoint_model_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+    "checkpoint_state_sha256": "6ae5574ba76cb8195bfeeffdea55e3bbbec4a2ff7ae22f5b92468ab511ac2c14",
+    "source_sha256": "96dc54a82002d0f2aeb702dc8847c43c7346aa4ab30d5edb4a4711a229805efc",
+    "harvest_source_sha256": "2613c5c816c10970df7da58aafaced728395fa982041cf03f3c31395264fbb8b",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "command_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "branches": [
+      0,
+      32,
+      64,
+      96
+    ],
+    "holds": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "args": {
+      "checkpoint": "results/defense/training/ars-early-91/milestone-000005",
+      "output": "runs/defense-macro-explore-100-all",
+      "harvest_games": 12,
+      "harvest_seed": 500000,
+      "attempts": 256,
+      "seed": 401,
+      "command_mode": "all",
+      "max_actions": 2000
+    },
+    "training_only": true,
+    "model_updates": 0,
+    "native_snapshot_policy_input": false,
+    "exploration_not_learned_replay": true
+  },
+  "selected_sources": 44,
+  "harvest_games": 12,
+  "harvest_actions": 30013,
+  "attempts": 256,
+  "complete_boundaries": 256,
+  "stage_two_segments": 0,
+  "mission_segments": 0,
+  "best_score_gain": 2480,
+  "discoveries": [],
+  "rng_state": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 298052248874880955936714947098967701928,
+      "inc": 163256235461160917637015044149884854449
+    },
+    "has_uint32": 0,
+    "uinteger": 392337315
+  },
+  "model_updates": 0,
+  "published_replay": false,
+  "limitations": [
+    "Training-only opaque-state resets, never complete games from boot.",
+    "Random command holds are interventions, not neural policy actions.",
+    "No stage result from this probe is a learned-policy success."
+  ]
+}

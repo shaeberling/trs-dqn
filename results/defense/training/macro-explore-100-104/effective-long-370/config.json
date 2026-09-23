@@ -1,0 +1,48 @@
+{
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/ars-early-91/milestone-000005",
+  "checkpoint_model_sha256": "a8126baf81be019dcfe3aaebe0287b80ee0b1335ccf07b88624810b441ce3eb4",
+  "checkpoint_state_sha256": "6ae5574ba76cb8195bfeeffdea55e3bbbec4a2ff7ae22f5b92468ab511ac2c14",
+  "source_sha256": "bd2f2139eb0afce15f831810afc8efad35b68396a7de1d84536cdca00f249326",
+  "harvest_source_sha256": "2613c5c816c10970df7da58aafaced728395fa982041cf03f3c31395264fbb8b",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "command_ids": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "branches": [
+    0,
+    92,
+    185,
+    277
+  ],
+  "holds": [
+    64,
+    128,
+    256
+  ],
+  "args": {
+    "checkpoint": "results/defense/training/ars-early-91/milestone-000005",
+    "output": "runs/defense-macro-explore-104-early-long",
+    "harvest_games": 12,
+    "harvest_seed": 510000,
+    "lookback": 370,
+    "attempts": 512,
+    "seed": 406,
+    "command_mode": "effective-stage-one",
+    "hold_mode": "long",
+    "max_actions": 2000
+  },
+  "training_only": true,
+  "model_updates": 0,
+  "native_snapshot_policy_input": false,
+  "exploration_not_learned_replay": true
+}
