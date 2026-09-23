@@ -32,6 +32,15 @@ checkpoints and artifacts are in `runs/defense-ars-subspace-84/`.
 `collector-source.py` and `collector-config.json` preserve the exact
 initial implementation, screen-only basis and monitoring scope.
 
+At generation 5 the run has played **1,328 complete training games** and
+used **3,280,299 neural actions**. No update passed both fresh-score gates.
+The generation-5 candidate gained 507.5 points in the 16-game comparison,
+but only 134.69 in the separate 32-game confirmation, below the
+predeclared 150-point margin. Fixed ten-game validation remains 10,266,
+all stage 1. `milestone-000005/` preserves the complete model/RNG state
+and per-game validation record; all copied files matched the live
+checkpoint by SHA-256. The verified global best replay is unchanged.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-subspace-pilot-80/generation-000001 \

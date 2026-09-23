@@ -7466,3 +7466,12 @@ near radii 1–2.4. The best candidate lost 20 mean points in a separate
 two-game comparison, so no update was accepted. Fixed ten-game mean
 stayed 10,266, all stage 1. A more conservative radius with the same
 broader visual subspace is the next complete-boot test.
+
+The ongoing [conservative-radius twelve-axis search](results/defense/training/ars-subspace-84/README.md)
+uses radii 0.5–2.5. At its [generation-5 milestone](results/defense/training/ars-subspace-84/milestone-000005/state.json),
+1,328 complete training games and 3,280,299 actions had yielded no
+accepted update or stage-2 game. A generation-5 candidate gained 507.5
+points in the short 16-game comparison but only 134.69 on a separate
+32-game confirmation, so the predeclared 150-point gate rejected it.
+Fixed ten-game mean remains 10,266, all stage 1. The complete model/RNG
+checkpoint is preserved and the global replay remains unchanged.
