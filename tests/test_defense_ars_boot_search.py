@@ -5,7 +5,7 @@ import numpy as np
 from rl.defense import action_names
 from rl.defense_ars_boot_search import (candidate_scales, context_key_directions,
                                         key_factor_directions, shared_seed_jobs,
-                                        score_means, shortlist)
+                                        score_means, shortlist, subspace_key_directions)
 
 
 class CompleteBootSearchTests(unittest.TestCase):
@@ -63,6 +63,20 @@ class CompleteBootSearchTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             context_key_directions(np.random.default_rng(4), 7,
                                    (20, 257), action_names(), np.ones(256))
+
+    def test_visual_subspace_proposals_share_physical_keys_without_targets(self):
+        basis = np.random.default_rng(8).normal(size=(5, 257)).astype(np.float32)
+        directions = subspace_key_directions(np.random.default_rng(4), 7,
+                                              (20, 257), action_names(), basis)
+        self.assertEqual(directions.shape, (7, 20, 257))
+        np.testing.assert_array_equal(directions[:, 0], 0)
+        np.testing.assert_allclose(directions[:, 10], directions[:, 1]+directions[:, 9], atol=1e-6)
+        np.testing.assert_allclose(directions[:, 19],
+                                   directions[:, 3]+directions[:, 4]+directions[:, 9], atol=1e-6)
+        self.assertTrue(np.isfinite(directions).all())
+        with self.assertRaises(ValueError):
+            subspace_key_directions(np.random.default_rng(4), 7,
+                                     (20, 257), action_names(), np.ones((5, 256)))
 
 
 if __name__ == '__main__':

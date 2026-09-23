@@ -7416,3 +7416,15 @@ failure-context contrast may be too coarse to express the position- and
 timing-dependent behavior needed at the shared opening; the next test
 will use a broader subspace of the policy's own visible approach features,
 while keeping complete-game displayed score as the only update fitness.
+
+A [one-generation visual-subspace pilot](results/defense/training/ars-subspace-pilot-80/README.md)
+used the same own rendered approach screens but added four principal
+variation axes to an earlier-onset mean contrast. Its 54 complete boot
+training games accepted one candidate, and ten-game mean rose from 9,981
+to 10,266, still all stage 1. Because its pilot acceptance used only two
+games per gate, an independent [32-seed paired training check](results/defense/training/ars-subspace-pilot-80/paired-confirmation.json)
+compared that candidate with the original parent: 10,182.81 versus
+9,802.19 mean displayed points on the same fresh seeds, a 380.63-point
+gain, with the exact frozen visual encoder verified. Both policies still
+ended in stage 1. This supports using the candidate as the next
+training-selected starting point but does not establish passage.

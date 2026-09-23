@@ -4,13 +4,15 @@ import unittest
 import mlx.core as mx
 import numpy as np
 
-from rl.defense_ars_context import contrast_basis, visible_context
+from rl.defense_ars_context import (approach_subspace, contrast_basis,
+                                    visible_context, visible_subspace)
 from rl.model import QNetwork
 
 
 ROOT = Path(__file__).resolve().parents[1]
 CHECKPOINT = ROOT/'results/defense/training/ars-59-head-search/run/generation-000000/model.safetensors'
 ARCHIVE = ROOT/'results/defense/training/ars-score-gated-69/run/own-loss-states'
+PILOT_CHECKPOINT = ROOT/'results/defense/training/ars-subspace-pilot-80/generation-000001/model.safetensors'
 
 
 class VisibleContextTests(unittest.TestCase):
@@ -40,6 +42,44 @@ class VisibleContextTests(unittest.TestCase):
         self.assertFalse(record['native_snapshot_read'])
         with self.assertRaises(ValueError):
             visible_context(model, ARCHIVE, 'wrong-model')
+
+    def test_approach_subspace_is_centered_and_reproducible(self):
+        rng = np.random.default_rng(17)
+        early = rng.normal(size=(20, 12)).astype(np.float32)
+        drift = np.zeros((20, 12), np.float32)
+        drift[:, 0] = 2
+        drift[:, 1:6] = rng.normal(size=(20, 5))
+        approach = np.stack((early+drift, early+1.5*drift, early+2*drift))
+        basis, record = approach_subspace(early, approach, components=4)
+        self.assertEqual(basis.shape, (5, 13))
+        self.assertEqual(record['examples'], 20)
+        np.testing.assert_allclose(basis, approach_subspace(early, approach, 4)[0])
+        np.testing.assert_allclose((early@basis[:, :-1].T+basis[:, -1]).mean(axis=0),
+                                   np.zeros(5), atol=1e-5)
+        self.assertAlmostEqual(float(((approach[0]@basis[0, :-1]+basis[0, -1]).mean()+
+                                      (approach[1]@basis[0, :-1]+basis[0, -1]).mean())/2),
+                               1, places=5)
+        with self.assertRaises(ValueError):
+            approach_subspace(early, approach[:, :, :10], 4)
+
+    def test_verified_visible_subspace_never_reads_native_snapshot(self):
+        model = QNetwork(action_count=20)
+        model.load_weights(str(CHECKPOINT))
+        mx.eval(model.state)
+        basis, record = visible_subspace(model, ARCHIVE,
+            '125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171')
+        self.assertEqual(basis.shape, (5, 257))
+        self.assertEqual(record['diagnostics']['examples'], 48)
+        self.assertFalse(record['native_snapshot_read'])
+        self.assertTrue(record['frozen_encoder_match_source'])
+        model.load_weights(str(PILOT_CHECKPOINT))
+        mx.eval(model.state)
+        continued, lineage = visible_subspace(model, ARCHIVE,
+            '125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171')
+        np.testing.assert_array_equal(continued, basis)
+        self.assertTrue(lineage['frozen_encoder_match_source'])
+        with self.assertRaises(ValueError):
+            visible_subspace(model, ARCHIVE, 'wrong-model')
 
 
 if __name__ == '__main__':

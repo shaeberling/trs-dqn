@@ -64,6 +64,23 @@ def context_key_directions(rng, count, head_shape, names, basis):
     return directions.astype(np.float32)
 
 
+def subspace_key_directions(rng, count, head_shape, names, basis):
+    """Symmetric physical-key proposals across own visual-approach axes."""
+    basis = np.asarray(basis, np.float32)
+    if (count < 1 or basis.ndim != 2 or not 2 <= len(basis) <= 16
+            or len(head_shape) != 2 or head_shape[0] != len(names)
+            or head_shape[1] != basis.shape[1] or not np.isfinite(basis).all()):
+        raise ValueError('invalid visible subspace/head')
+    incidence = key_incidence(names)
+    coefficients = rng.normal(size=(count, len(KEY_FACTORS), len(basis))).astype(np.float32)
+    coefficients /= np.sqrt(len(basis))
+    factors = np.einsum('dkb,bf->dkf', coefficients, basis, optimize=True)
+    directions = np.einsum('ak,dkf->daf', incidence, factors, optimize=True)
+    if not np.isfinite(directions).all():
+        raise ValueError('nonfinite visible-subspace directions')
+    return directions.astype(np.float32)
+
+
 def candidate_scales(rng, count, sigma, sigma_max=None):
     """Use paired, stratified log-scale radii without favoring any key."""
     if (count < 1 or not np.isfinite(sigma) or sigma <= 0
@@ -125,7 +142,8 @@ def main():
     parser.add_argument('--generations', type=int, default=0, help='0 learns until stopped or mission verified')
     parser.add_argument('--directions', type=int, default=20)
     parser.add_argument('--direction-mode',
-                        choices=('action-row', 'key-factor', 'failure-context-key'), default='action-row')
+                        choices=('action-row', 'key-factor', 'failure-context-key',
+                                 'failure-subspace-key'), default='action-row')
     parser.add_argument('--context-archive', type=Path,
                         help='own visible pre-loss training screens, required for failure-context-key')
     parser.add_argument('--sigma', type=float, default=.05)
@@ -149,7 +167,8 @@ def main():
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
             or (args.sigma_max is not None and
                 (not np.isfinite(args.sigma_max) or args.sigma_max <= args.sigma))
-            or (args.context_archive is None) != (args.direction_mode != 'failure-context-key')
+            or (args.context_archive is None) !=
+                (args.direction_mode not in ('failure-context-key', 'failure-subspace-key'))
             or min(args.sigma, args.minimum_boot_gain) <= 0):
         parser.error('new output, all 20 action rows and positive score-search settings required')
     mx.set_cache_limit(128*1024*1024)
@@ -162,6 +181,8 @@ def main():
     settings['context_archive'] = str(args.context_archive.resolve()) if args.context_archive else None
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, np.random.default_rng(0))
+        context_source_model_sha256 = state['config'].get('context', {}).get(
+            'source_model_sha256', sha256(args.initialize/'model.safetensors'))
         config = dict(state['config'])
         config.update(parent_steps=state['steps'],
             initialization_checkpoint=str(args.initialize.resolve()),
@@ -171,6 +192,8 @@ def main():
             initialization_training_steps=state['training_steps'],
             boot_search=settings, search_optimizer='paired complete-boot neural score search; no gradients',
             training_method=('all-action coordinate-row population' if args.direction_mode == 'action-row'
+                             else 'own visible-approach-subspace physical-key population'
+                             if args.direction_mode == 'failure-subspace-key'
                              else 'own visible-failure-context physical-key population'
                              if args.direction_mode == 'failure-context-key'
                              else 'all-physical-key factorized population')
@@ -181,6 +204,8 @@ def main():
     else:
         state = restore_checkpoint(model, args.resume, rng)
         config = dict(state['config'])
+        context_source_model_sha256 = config.get('context', {}).get(
+            'source_model_sha256', config.get('initialization_model_sha256'))
         prior_settings = dict(config.get('boot_search', {}))
         prior_settings.setdefault('direction_mode', 'action-row')
         prior_settings.setdefault('sigma_max', None)
@@ -205,9 +230,11 @@ def main():
                  if not key.startswith('advantage.')}
     context_basis = None
     if args.context_archive is not None:
-        from .defense_ars_context import visible_context
-        context_basis, context = visible_context(model, args.context_archive,
-            config['initialization_model_sha256'])
+        from .defense_ars_context import visible_context, visible_subspace
+        proposal = (visible_subspace if args.direction_mode == 'failure-subspace-key'
+                    else visible_context)
+        context_basis, context = proposal(model, args.context_archive,
+            context_source_model_sha256)
         if args.initialize:
             config['context'] = context
         elif config.get('context') != context:
@@ -278,6 +305,8 @@ def main():
             center = head_array(model)
             directions = (perturbation_directions(rng, args.directions,
                 center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
+                else subspace_key_directions(rng, args.directions, center.shape,
+                    action_names(), context_basis) if args.direction_mode == 'failure-subspace-key'
                 else context_key_directions(rng, args.directions, center.shape,
                     action_names(), context_basis) if args.direction_mode == 'failure-context-key'
                 else key_factor_directions(rng, args.directions, center.shape, action_names()))
