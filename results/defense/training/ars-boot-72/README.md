@@ -1,6 +1,6 @@
 # Complete-boot score search at the repeated stage-one bottleneck
 
-This ongoing run starts from the original strongest screen-only policy,
+This completed run started from the original strongest screen-only policy,
 whose frozen ten-game boot mean is 9,981 and whose globally verified best
 replay scores 10,480. The policy's visual encoder and value branch are
 frozen; symmetric changes to each of the 20 action rows are tested from
@@ -18,11 +18,17 @@ stage or score than the global best is separately replayed by reloading the
 candidate weights and reproducing every action, reward and screen. The
 collector promotes only a verified higher-ranked complete game.
 
-There is no generation or wall-clock limit; training stops only for a
-verified mission or a graceful checkpoint-boundary intervention. A 5 GiB
-free-space guard prevents archive exhaustion. Full population outcomes,
-weights, source hashes, RNG state and original PPO optimizer are kept in
-`runs/defense-ars-boot-72/` while active.
+The search stopped gracefully at generation 11 after **2,864 complete boot
+training games** and **7,208,154 new actions**. Five changes passed both
+paired score gates, yet no candidate game or fixed boot validation reached
+stage 2. The fixed ten-game means were 9,981 initially, 9,975 at generation
+5, and 9,659 at generations 10 and 11. This is a depth plateau and later
+score regression, not a new best or a wall-clock stop. Full population
+outcomes, checkpoints, source hashes, RNG state and original PPO optimizer
+are preserved in [the archived run](run/). Its exact executing source is
+[preserved separately](fit-source.py), matching the recorded source hash.
+The 5 GiB free-space guard remained active throughout. The shared global
+10,480-point replay is unchanged.
 
 At generation 5, the run had evaluated 1,328 complete training games and
 3,335,069 new training actions. Three updates had passed the separate
@@ -34,6 +40,12 @@ the unchanged parent's 9,981; all were stage 1. Its independently restorable
 preserved here (model SHA-256
 `1b9da6f52aa6f7b4eb5e45ff418f6e6162280d48bc9a81a2e50de984ca87e9c0`).
 This is a score-stability milestone, not passage or a new global best.
+
+The next search changes preferences for physical keyboard keys jointly
+across the 20 output commands, while still sampling symmetric learned
+screen-dependent candidates and using only complete-game displayed scores.
+This tests a different, more coherent control parameterization without
+supplying a direction, route, or demonstrated action.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
