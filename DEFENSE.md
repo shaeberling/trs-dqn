@@ -7457,3 +7457,12 @@ stayed in stage 1. This directly refutes using either near-miss as a new
 parent; it also confirms that short comparison margins near this barrier
 can be misleading. The exact plans, paired results and probe source are
 archived, with no weights or verified replay promoted.
+
+A [wider 12-axis pilot](results/defense/training/ars-subspace-wide-pilot-83/README.md)
+tested a larger own-screen proposal subspace and symmetric radii 1–8.
+Its 40 one-game candidate scores ranged from 360 to 10,460; large radii
+often destroyed the earlier route, while the top screen scores clustered
+near radii 1–2.4. The best candidate lost 20 mean points in a separate
+two-game comparison, so no update was accepted. Fixed ten-game mean
+stayed 10,266, all stage 1. A more conservative radius with the same
+broader visual subspace is the next complete-boot test.
