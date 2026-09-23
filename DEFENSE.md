@@ -7701,3 +7701,17 @@ is not supported by these results; subsequent experiments should test a
 distinct way to explore the recurrent visible failure window while
 keeping screen-only acting and score-only reward.
 The full **445-test** repository suite passed after this archive.
+
+The [own-loss-state random-control study](results/defense/training/macro-explore-100-104/README.md)
+then tested **11,280 training-only continuations** from the confirmed
+neural policy's own replay-verified stage-one loss approaches. Two
+direction-neutral command holds per continuation were tried at 128- and
+370-decision lookbacks, with both all-command and distinct-stage-one
+sampling, plus longer holds. No continuation reached stage two. The
+10,000-attempt short-hold run extended a visible life by at most 46
+decisions past its original loss marker; long holds generally worsened
+survival. These are randomized exploration actions, not learned-policy
+play, and no weights or replay were promoted. This negative result
+argues for screen-conditioned learning rather than more of the same
+open-loop random holds; it does not prove the barrier is unavoidable.
+The full **449-test** suite passes with this training-only probe.
