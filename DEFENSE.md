@@ -7715,3 +7715,15 @@ play, and no weights or replay were promoted. This negative result
 argues for screen-conditioned learning rather than more of the same
 open-loop random holds; it does not prove the barrier is unavoidable.
 The full **449-test** suite passes with this training-only probe.
+
+The first [late own-screen phase-action pilot](results/defense/training/ars-phase-pilot-105/README.md)
+then built two independent feature axes from the model's own verified
+96-/64-/32-decision rendered-screen approaches. Symmetric proposals
+covered all twenty command rows, and only whole-game displayed score
+could accept an update. In **54 complete training games** its best
+two-game comparison gain was 50 points, below the 150-point gate;
+fixed ten-game mean remained 10,388 and every game stayed in stage one.
+The full model/RNG state, proposal plan, source and verified local replay
+are preserved. A longer score-gated test will check this focused visual
+representation more thoroughly, with no prescribed steering direction.
+The full **452-test** repository suite passes with this new proposal mode.
