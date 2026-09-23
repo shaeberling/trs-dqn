@@ -43,17 +43,6 @@ def key_factor_directions(rng, count, head_shape, names):
     return directions
 
 
-def candidate_scales(rng, count, sigma, sigma_max=None):
-    """Use paired, stratified log-scale radii without favoring any key."""
-    if (count < 1 or not np.isfinite(sigma) or sigma <= 0
-            or (sigma_max is not None and
-                (not np.isfinite(sigma_max) or sigma_max <= sigma))):
-        raise ValueError('invalid symmetric search radii')
-    if sigma_max is None:
-        return np.full(count, sigma, np.float32)
-    return rng.permutation(np.geomspace(sigma, sigma_max, count).astype(np.float32))
-
-
 def shared_seed_jobs(candidates, repetitions, first_seed):
     """All candidates see the same boot and action-sampling seeds."""
     if min(candidates, repetitions) < 1 or first_seed < 70000:
@@ -105,8 +94,6 @@ def main():
     parser.add_argument('--directions', type=int, default=20)
     parser.add_argument('--direction-mode', choices=('action-row', 'key-factor'), default='action-row')
     parser.add_argument('--sigma', type=float, default=.05)
-    parser.add_argument('--sigma-max', type=float,
-                        help='stratified upper perturbation radius; omitted uses one radius')
     parser.add_argument('--shortlist', type=int, default=4)
     parser.add_argument('--screen-games', type=int, default=4)
     parser.add_argument('--compare-games', type=int, default=16)
@@ -123,8 +110,6 @@ def main():
             or args.shortlist > 2*args.directions
             or args.first_training_seed < 70000 or args.seed < 0
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
-            or (args.sigma_max is not None and
-                (not np.isfinite(args.sigma_max) or args.sigma_max <= args.sigma))
             or min(args.sigma, args.minimum_boot_gain) <= 0):
         parser.error('new output, all 20 action rows and positive score-search settings required')
     mx.set_cache_limit(128*1024*1024)
@@ -132,7 +117,7 @@ def main():
     model = QNetwork(action_count=20)
     rng = np.random.default_rng(args.seed)
     settings = {name: getattr(args, name) for name in
-                ('directions', 'direction_mode', 'sigma', 'sigma_max', 'shortlist', 'screen_games',
+                ('directions', 'direction_mode', 'sigma', 'shortlist', 'screen_games',
                  'compare_games', 'confirm_games', 'minimum_boot_gain', 'envs')}
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, np.random.default_rng(0))
@@ -155,7 +140,6 @@ def main():
         config = dict(state['config'])
         prior_settings = dict(config.get('boot_search', {}))
         prior_settings.setdefault('direction_mode', 'action-row')
-        prior_settings.setdefault('sigma_max', None)
         if prior_settings != settings:
             parser.error('resume settings differ from saved boot search')
         config['boot_search'] = prior_settings
@@ -239,14 +223,12 @@ def main():
             directions = (perturbation_directions(rng, args.directions,
                 center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
                 else key_factor_directions(rng, args.directions, center.shape, action_names()))
-            scales = candidate_scales(rng, args.directions, args.sigma, args.sigma_max)
-            perturbations = scales[:, None, None]*directions
-            heads = np.stack([center+perturbations,
-                              center-perturbations], axis=1).reshape(-1, *center.shape)
+            heads = np.stack([center+args.sigma*directions,
+                              center-args.sigma*directions], axis=1).reshape(-1, *center.shape)
             target = args.output/f'population-{generation+1:06d}'
             target.mkdir(exist_ok=False)
             np.savez_compressed(target/'plan.npz', center=center,
-                                directions=directions, scales=scales, heads=heads)
+                                directions=directions, heads=heads)
             first_seed = next_seed
             screen, screen_mean = phase(target, 'screen', heads,
                 args.screen_games, first_seed)

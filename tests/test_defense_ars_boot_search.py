@@ -3,8 +3,8 @@ import unittest
 import numpy as np
 
 from rl.defense import action_names
-from rl.defense_ars_boot_search import (key_factor_directions, shared_seed_jobs,
-                                        score_means, shortlist)
+from rl.defense_ars_boot_search import (candidate_scales, key_factor_directions,
+                                        shared_seed_jobs, score_means, shortlist)
 
 
 class CompleteBootSearchTests(unittest.TestCase):
@@ -38,6 +38,17 @@ class CompleteBootSearchTests(unittest.TestCase):
         self.assertTrue(np.any(directions[:, 9] != 0))
         with self.assertRaises(ValueError):
             key_factor_directions(np.random.default_rng(4), 7, (20, 257), ('NOOP',))
+
+    def test_stratified_search_scales_preserve_both_radii(self):
+        rng = np.random.default_rng(8)
+        scales = candidate_scales(rng, 20, .012, .05)
+        self.assertEqual(len(scales), 20)
+        self.assertAlmostEqual(float(scales.min()), .012, places=6)
+        self.assertAlmostEqual(float(scales.max()), .05, places=6)
+        self.assertEqual(len(np.unique(scales)), 20)
+        np.testing.assert_allclose(candidate_scales(rng, 4, .02), [.02]*4)
+        with self.assertRaises(ValueError):
+            candidate_scales(rng, 20, .02, .02)
 
 
 if __name__ == '__main__':
