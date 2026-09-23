@@ -1,0 +1,160 @@
+{"event": "harvest_game", "seed": 71000, "score": 10480, "steps": 2536, "states": 4, "elapsed_seconds": 1.5619272090261802}
+{"event": "harvest_game", "seed": 71001, "score": 8760, "steps": 2519, "states": 8, "elapsed_seconds": 3.016758874990046}
+{"event": "harvest_game", "seed": 71002, "score": 10430, "steps": 2541, "states": 12, "elapsed_seconds": 4.48913945897948}
+{"event": "harvest_game", "seed": 71003, "score": 10230, "steps": 2556, "states": 16, "elapsed_seconds": 5.9823551250156015}
+{"event": "harvest_game", "seed": 71004, "score": 10380, "steps": 2583, "states": 20, "elapsed_seconds": 7.480719374958426}
+{"event": "harvest_game", "seed": 71005, "score": 10430, "steps": 2588, "states": 24, "elapsed_seconds": 8.97625445900485}
+{"event": "harvest_game", "seed": 71006, "score": 10380, "steps": 2550, "states": 28, "elapsed_seconds": 10.474125333945267}
+{"event": "harvest_game", "seed": 71007, "score": 10230, "steps": 2556, "states": 32, "elapsed_seconds": 11.969650499988347}
+{"event": "harvest_game", "seed": 71008, "score": 10380, "steps": 2553, "states": 36, "elapsed_seconds": 13.439179459004663}
+{"event": "harvest_game", "seed": 71009, "score": 10480, "steps": 2545, "states": 40, "elapsed_seconds": 14.906472250004299}
+{"event": "harvest_game", "seed": 71010, "score": 10380, "steps": 2535, "states": 44, "elapsed_seconds": 16.376871041953564}
+{"event": "harvest_game", "seed": 71011, "score": 10330, "steps": 2560, "states": 48, "elapsed_seconds": 17.849808792001568}
+{"event": "harvest_finished", "games": 12, "snapshots": 48, "training_steps": 30622, "elapsed_seconds": 18.674017583951354}
+{"event": "validation", "generation": 0, "complete_games": 10, "incomplete_games": 0, "mean_score": 9981.0, "median_score": 10380.0, "best_score": 10480, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 24.54138462501578}
+{"event": "best_replay_published", "version": "step-000008372894-125346536cb1-seed-10004", "result": {"seed": 10004, "score": 10480, "lives": 0, "stage": 1, "game_over": true, "mission_complete": false, "highest_stage": 1, "missions_completed": 0, "mission_completed": false, "life_lost": true, "steps": 2580, "terminated": true, "truncated": false, "episode_reward": 10480.0, "hud_settle_tstates": 0, "terminal_settle_tstates": 1202000, "start_tstates": 80324}, "verified_actions": 2580, "elapsed_seconds": 27.56582229200285}
+{"event": "focus_progress", "generation": 1, "directions_done": 1, "segments": 8, "actions": 673, "elapsed_seconds": 27.959422125015408}
+{"event": "focus_progress", "generation": 1, "directions_done": 2, "segments": 16, "actions": 1369, "elapsed_seconds": 28.330219583935104}
+{"event": "focus_progress", "generation": 1, "directions_done": 3, "segments": 24, "actions": 2072, "elapsed_seconds": 28.71104770898819}
+{"event": "focus_progress", "generation": 1, "directions_done": 4, "segments": 32, "actions": 2970, "elapsed_seconds": 29.192272208980285}
+{"event": "focus_progress", "generation": 1, "directions_done": 5, "segments": 40, "actions": 3632, "elapsed_seconds": 29.542816999950446}
+{"event": "focus_progress", "generation": 1, "directions_done": 6, "segments": 48, "actions": 4294, "elapsed_seconds": 29.89701595902443}
+{"event": "focus_progress", "generation": 1, "directions_done": 7, "segments": 56, "actions": 4841, "elapsed_seconds": 30.19036716700066}
+{"event": "focus_progress", "generation": 1, "directions_done": 8, "segments": 64, "actions": 5460, "elapsed_seconds": 30.522215958917513}
+{"event": "focus_progress", "generation": 1, "directions_done": 9, "segments": 72, "actions": 5976, "elapsed_seconds": 30.800401624990627}
+{"event": "focus_progress", "generation": 1, "directions_done": 10, "segments": 80, "actions": 6595, "elapsed_seconds": 31.137872833991423}
+{"event": "focus_progress", "generation": 1, "directions_done": 11, "segments": 88, "actions": 7419, "elapsed_seconds": 31.578300041961484}
+{"event": "focus_progress", "generation": 1, "directions_done": 12, "segments": 96, "actions": 8070, "elapsed_seconds": 31.929184249951504}
+{"event": "focus_progress", "generation": 1, "directions_done": 13, "segments": 104, "actions": 8944, "elapsed_seconds": 32.401455124956556}
+{"event": "focus_progress", "generation": 1, "directions_done": 14, "segments": 112, "actions": 9585, "elapsed_seconds": 32.74560287501663}
+{"event": "focus_progress", "generation": 1, "directions_done": 15, "segments": 120, "actions": 10343, "elapsed_seconds": 33.166139416978694}
+{"event": "focus_progress", "generation": 1, "directions_done": 16, "segments": 128, "actions": 11277, "elapsed_seconds": 33.666175417019986}
+{"event": "generation", "generation": 1, "training_steps": 41899, "training_segments": 128, "best_focused_segment": {"direction": 0, "sign": 0, "candidate": 0, "repetition": 3, "snapshot": "seed-71005-life-3.npz", "score_gain": 2410, "start_score": 5400, "final_score": 7810, "steps": 128, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": false, "truncated": false, "source_action": 1742, "seed": 80003}, "return_std": 793.5749337883029, "update_norm": 0.047811123334314476, "skipped_zero_variance": false, "mean_candidate_score": 1104.140625, "best_candidate_mean": 2405.0, "elapsed_seconds": 33.68100374995265}
+{"event": "validation", "generation": 1, "complete_games": 10, "incomplete_games": 0, "mean_score": 10073.0, "median_score": 10380.0, "best_score": 10430, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 39.26199845899828}
+{"event": "focus_progress", "generation": 2, "directions_done": 1, "segments": 8, "actions": 663, "elapsed_seconds": 39.643589542014524}
+{"event": "focus_progress", "generation": 2, "directions_done": 2, "segments": 16, "actions": 1560, "elapsed_seconds": 40.125564874964766}
+{"event": "focus_progress", "generation": 2, "directions_done": 3, "segments": 24, "actions": 2482, "elapsed_seconds": 40.63335095893126}
+{"event": "focus_progress", "generation": 2, "directions_done": 4, "segments": 32, "actions": 3138, "elapsed_seconds": 40.989655916928314}
+{"event": "focus_progress", "generation": 2, "directions_done": 5, "segments": 40, "actions": 3859, "elapsed_seconds": 41.38013549998868}
+{"event": "focus_progress", "generation": 2, "directions_done": 6, "segments": 48, "actions": 4625, "elapsed_seconds": 41.798294999985956}
+{"event": "focus_progress", "generation": 2, "directions_done": 7, "segments": 56, "actions": 5332, "elapsed_seconds": 42.181576624978334}
+{"event": "focus_progress", "generation": 2, "directions_done": 8, "segments": 64, "actions": 5883, "elapsed_seconds": 42.48834562499542}
+{"event": "focus_progress", "generation": 2, "directions_done": 9, "segments": 72, "actions": 6494, "elapsed_seconds": 42.82571712497156}
+{"event": "focus_progress", "generation": 2, "directions_done": 10, "segments": 80, "actions": 7338, "elapsed_seconds": 43.28378683398478}
+{"event": "focus_progress", "generation": 2, "directions_done": 11, "segments": 88, "actions": 8174, "elapsed_seconds": 43.727174459025264}
+{"event": "focus_progress", "generation": 2, "directions_done": 12, "segments": 96, "actions": 9028, "elapsed_seconds": 44.18607266701292}
+{"event": "focus_progress", "generation": 2, "directions_done": 13, "segments": 104, "actions": 9811, "elapsed_seconds": 44.60503312491346}
+{"event": "focus_progress", "generation": 2, "directions_done": 14, "segments": 112, "actions": 10438, "elapsed_seconds": 44.94388104195241}
+{"event": "focus_progress", "generation": 2, "directions_done": 15, "segments": 120, "actions": 11194, "elapsed_seconds": 45.352464416995645}
+{"event": "focus_progress", "generation": 2, "directions_done": 16, "segments": 128, "actions": 11988, "elapsed_seconds": 45.78257987496909}
+{"event": "generation", "generation": 2, "training_steps": 53887, "training_segments": 256, "best_focused_segment": {"direction": 2, "sign": 0, "candidate": 4, "repetition": 1, "snapshot": "seed-71007-life-3.npz", "score_gain": 2410, "start_score": 5350, "final_score": 7760, "steps": 128, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": false, "truncated": false, "source_action": 1736, "seed": 80005}, "return_std": 796.4292258065057, "update_norm": 0.06267793981520126, "skipped_zero_variance": false, "mean_candidate_score": 1427.8125, "best_candidate_mean": 2367.5, "elapsed_seconds": 45.79733220895287}
+{"event": "validation", "generation": 2, "complete_games": 10, "incomplete_games": 0, "mean_score": 9743.0, "median_score": 10320.0, "best_score": 10430, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 51.795315749943256}
+{"event": "focus_progress", "generation": 3, "directions_done": 1, "segments": 8, "actions": 906, "elapsed_seconds": 52.33010825002566}
+{"event": "focus_progress", "generation": 3, "directions_done": 2, "segments": 16, "actions": 1758, "elapsed_seconds": 52.78921020892449}
+{"event": "focus_progress", "generation": 3, "directions_done": 3, "segments": 24, "actions": 2613, "elapsed_seconds": 53.260942333959974}
+{"event": "focus_progress", "generation": 3, "directions_done": 4, "segments": 32, "actions": 3434, "elapsed_seconds": 53.71026920899749}
+{"event": "focus_progress", "generation": 3, "directions_done": 5, "segments": 40, "actions": 4220, "elapsed_seconds": 54.13427604199387}
+{"event": "focus_progress", "generation": 3, "directions_done": 6, "segments": 48, "actions": 5128, "elapsed_seconds": 54.63338079198729}
+{"event": "focus_progress", "generation": 3, "directions_done": 7, "segments": 56, "actions": 5811, "elapsed_seconds": 55.00710937497206}
+{"event": "focus_progress", "generation": 3, "directions_done": 8, "segments": 64, "actions": 6484, "elapsed_seconds": 55.37368116702419}
+{"event": "focus_progress", "generation": 3, "directions_done": 9, "segments": 72, "actions": 7351, "elapsed_seconds": 55.84759395895526}
+{"event": "focus_progress", "generation": 3, "directions_done": 10, "segments": 80, "actions": 8253, "elapsed_seconds": 56.33927787502762}
+{"event": "focus_progress", "generation": 3, "directions_done": 11, "segments": 88, "actions": 9070, "elapsed_seconds": 56.784557958948426}
+{"event": "focus_progress", "generation": 3, "directions_done": 12, "segments": 96, "actions": 9994, "elapsed_seconds": 57.29003604198806}
+{"event": "focus_progress", "generation": 3, "directions_done": 13, "segments": 104, "actions": 10779, "elapsed_seconds": 57.71613125002477}
+{"event": "focus_progress", "generation": 3, "directions_done": 14, "segments": 112, "actions": 11546, "elapsed_seconds": 58.148578500025906}
+{"event": "focus_progress", "generation": 3, "directions_done": 15, "segments": 120, "actions": 12366, "elapsed_seconds": 58.59069737500977}
+{"event": "focus_progress", "generation": 3, "directions_done": 16, "segments": 128, "actions": 13174, "elapsed_seconds": 59.027870249934494}
+{"event": "generation", "generation": 3, "training_steps": 67061, "training_segments": 384, "best_focused_segment": {"direction": 0, "sign": 0, "candidate": 0, "repetition": 1, "snapshot": "seed-71003-life-4.npz", "score_gain": 2460, "start_score": 7770, "final_score": 10230, "steps": 130, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": true, "truncated": false, "source_action": 2428, "seed": 80009}, "return_std": 632.9930876584968, "update_norm": 0.045225375426879405, "skipped_zero_variance": false, "mean_candidate_score": 1674.21875, "best_candidate_mean": 2422.5, "elapsed_seconds": 59.064652999979444}
+{"event": "validation", "generation": 3, "complete_games": 10, "incomplete_games": 0, "mean_score": 10197.0, "median_score": 10345.0, "best_score": 10480, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 64.81807095895056}
+{"event": "focus_progress", "generation": 4, "directions_done": 1, "segments": 8, "actions": 685, "elapsed_seconds": 65.2140732499538}
+{"event": "focus_progress", "generation": 4, "directions_done": 2, "segments": 16, "actions": 1388, "elapsed_seconds": 65.58361508394592}
+{"event": "focus_progress", "generation": 4, "directions_done": 3, "segments": 24, "actions": 2268, "elapsed_seconds": 66.04484462493565}
+{"event": "focus_progress", "generation": 4, "directions_done": 4, "segments": 32, "actions": 3091, "elapsed_seconds": 66.49662495893426}
+{"event": "focus_progress", "generation": 4, "directions_done": 5, "segments": 40, "actions": 3932, "elapsed_seconds": 66.94082279200666}
+{"event": "focus_progress", "generation": 4, "directions_done": 6, "segments": 48, "actions": 4637, "elapsed_seconds": 67.31327037501615}
+{"event": "focus_progress", "generation": 4, "directions_done": 7, "segments": 56, "actions": 5419, "elapsed_seconds": 67.72816504200455}
+{"event": "focus_progress", "generation": 4, "directions_done": 8, "segments": 64, "actions": 6285, "elapsed_seconds": 68.18876904202625}
+{"event": "focus_progress", "generation": 4, "directions_done": 9, "segments": 72, "actions": 7076, "elapsed_seconds": 68.61261995893437}
+{"event": "focus_progress", "generation": 4, "directions_done": 10, "segments": 80, "actions": 7894, "elapsed_seconds": 69.04699245898519}
+{"event": "focus_progress", "generation": 4, "directions_done": 11, "segments": 88, "actions": 8781, "elapsed_seconds": 69.51812141691335}
+{"event": "focus_progress", "generation": 4, "directions_done": 12, "segments": 96, "actions": 9372, "elapsed_seconds": 69.83270387491211}
+{"event": "focus_progress", "generation": 4, "directions_done": 13, "segments": 104, "actions": 10295, "elapsed_seconds": 70.32564279192593}
+{"event": "focus_progress", "generation": 4, "directions_done": 14, "segments": 112, "actions": 11244, "elapsed_seconds": 70.82611475000158}
+{"event": "focus_progress", "generation": 4, "directions_done": 15, "segments": 120, "actions": 12157, "elapsed_seconds": 71.31174570892472}
+{"event": "focus_progress", "generation": 4, "directions_done": 16, "segments": 128, "actions": 12719, "elapsed_seconds": 71.60892224998679}
+{"event": "generation", "generation": 4, "training_steps": 79780, "training_segments": 512, "best_focused_segment": {"direction": 2, "sign": 1, "candidate": 5, "repetition": 0, "snapshot": "seed-71002-life-1.npz", "score_gain": 2430, "start_score": 140, "final_score": 2570, "steps": 151, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": false, "truncated": false, "source_action": 257, "seed": 80012}, "return_std": 804.3754704495516, "update_norm": 0.05370337284550059, "skipped_zero_variance": false, "mean_candidate_score": 1373.90625, "best_candidate_mean": 2405.0, "elapsed_seconds": 71.63116925000213}
+{"event": "validation", "generation": 4, "complete_games": 10, "incomplete_games": 0, "mean_score": 10386.0, "median_score": 10380.0, "best_score": 10480, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 77.49477829202078}
+{"event": "focus_progress", "generation": 5, "directions_done": 1, "segments": 8, "actions": 695, "elapsed_seconds": 77.89486183400732}
+{"event": "focus_progress", "generation": 5, "directions_done": 2, "segments": 16, "actions": 1412, "elapsed_seconds": 78.29874429199845}
+{"event": "focus_progress", "generation": 5, "directions_done": 3, "segments": 24, "actions": 2066, "elapsed_seconds": 78.6557455000002}
+{"event": "focus_progress", "generation": 5, "directions_done": 4, "segments": 32, "actions": 2537, "elapsed_seconds": 78.91443991695996}
+{"event": "focus_progress", "generation": 5, "directions_done": 5, "segments": 40, "actions": 3229, "elapsed_seconds": 79.29461600002833}
+{"event": "focus_progress", "generation": 5, "directions_done": 6, "segments": 48, "actions": 4011, "elapsed_seconds": 79.7167100419756}
+{"event": "focus_progress", "generation": 5, "directions_done": 7, "segments": 56, "actions": 4677, "elapsed_seconds": 80.07836733397562}
+{"event": "focus_progress", "generation": 5, "directions_done": 8, "segments": 64, "actions": 5407, "elapsed_seconds": 80.47278112499043}
+{"event": "focus_progress", "generation": 5, "directions_done": 9, "segments": 72, "actions": 6128, "elapsed_seconds": 80.86170595895965}
+{"event": "focus_progress", "generation": 5, "directions_done": 10, "segments": 80, "actions": 6939, "elapsed_seconds": 81.3002429169137}
+{"event": "focus_progress", "generation": 5, "directions_done": 11, "segments": 88, "actions": 7638, "elapsed_seconds": 81.67847058398183}
+{"event": "focus_progress", "generation": 5, "directions_done": 12, "segments": 96, "actions": 8235, "elapsed_seconds": 82.00355966691859}
+{"event": "focus_progress", "generation": 5, "directions_done": 13, "segments": 104, "actions": 8889, "elapsed_seconds": 82.35554525000043}
+{"event": "focus_progress", "generation": 5, "directions_done": 14, "segments": 112, "actions": 9658, "elapsed_seconds": 82.77296145900618}
+{"event": "focus_progress", "generation": 5, "directions_done": 15, "segments": 120, "actions": 10466, "elapsed_seconds": 83.2119771669386}
+{"event": "focus_progress", "generation": 5, "directions_done": 16, "segments": 128, "actions": 11261, "elapsed_seconds": 83.63922879192978}
+{"event": "generation", "generation": 5, "training_steps": 91041, "training_segments": 640, "best_focused_segment": {"direction": 0, "sign": 0, "candidate": 0, "repetition": 2, "snapshot": "seed-71003-life-4.npz", "score_gain": 2460, "start_score": 7770, "final_score": 10230, "steps": 128, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": true, "truncated": false, "source_action": 2428, "seed": 80018}, "return_std": 845.3246843796082, "update_norm": 0.06468758336680555, "skipped_zero_variance": false, "mean_candidate_score": 1213.828125, "best_candidate_mean": 2410.0, "elapsed_seconds": 83.65395025000907}
+{"event": "validation", "generation": 5, "complete_games": 10, "incomplete_games": 0, "mean_score": 10208.0, "median_score": 10355.0, "best_score": 10480, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 89.4966627919348}
+{"event": "focus_progress", "generation": 6, "directions_done": 1, "segments": 8, "actions": 784, "elapsed_seconds": 89.91703574999701}
+{"event": "focus_progress", "generation": 6, "directions_done": 2, "segments": 16, "actions": 1561, "elapsed_seconds": 90.33052687498275}
+{"event": "focus_progress", "generation": 6, "directions_done": 3, "segments": 24, "actions": 2377, "elapsed_seconds": 90.76425279199611}
+{"event": "focus_progress", "generation": 6, "directions_done": 4, "segments": 32, "actions": 3355, "elapsed_seconds": 91.28656170901377}
+{"event": "focus_progress", "generation": 6, "directions_done": 5, "segments": 40, "actions": 4047, "elapsed_seconds": 91.65477970894426}
+{"event": "focus_progress", "generation": 6, "directions_done": 6, "segments": 48, "actions": 4909, "elapsed_seconds": 92.11408616695553}
+{"event": "focus_progress", "generation": 6, "directions_done": 7, "segments": 56, "actions": 5829, "elapsed_seconds": 92.60521970898844}
+{"event": "focus_progress", "generation": 6, "directions_done": 8, "segments": 64, "actions": 6627, "elapsed_seconds": 93.03180045902263}
+{"event": "focus_progress", "generation": 6, "directions_done": 9, "segments": 72, "actions": 7437, "elapsed_seconds": 93.46583833394106}
+{"event": "focus_progress", "generation": 6, "directions_done": 10, "segments": 80, "actions": 8314, "elapsed_seconds": 93.9338723749388}
+{"event": "focus_progress", "generation": 6, "directions_done": 11, "segments": 88, "actions": 9003, "elapsed_seconds": 94.30114766699262}
+{"event": "focus_progress", "generation": 6, "directions_done": 12, "segments": 96, "actions": 9996, "elapsed_seconds": 94.82881695893593}
+{"event": "focus_progress", "generation": 6, "directions_done": 13, "segments": 104, "actions": 10757, "elapsed_seconds": 95.2380708749406}
+{"event": "focus_progress", "generation": 6, "directions_done": 14, "segments": 112, "actions": 11632, "elapsed_seconds": 95.70435725001153}
+{"event": "focus_progress", "generation": 6, "directions_done": 15, "segments": 120, "actions": 12411, "elapsed_seconds": 96.12087154202163}
+{"event": "focus_progress", "generation": 6, "directions_done": 16, "segments": 128, "actions": 13238, "elapsed_seconds": 96.56181724998169}
+{"event": "generation", "generation": 6, "training_steps": 104279, "training_segments": 768, "best_focused_segment": {"direction": 2, "sign": 0, "candidate": 4, "repetition": 3, "snapshot": "seed-71000-life-3.npz", "score_gain": 2460, "start_score": 5400, "final_score": 7860, "steps": 128, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": false, "truncated": false, "source_action": 1691, "seed": 80023}, "return_std": 645.2785251346894, "update_norm": 0.05155148771570203, "skipped_zero_variance": false, "mean_candidate_score": 1473.125, "best_candidate_mean": 2397.5, "elapsed_seconds": 96.57642375002615}
+{"event": "validation", "generation": 6, "complete_games": 10, "incomplete_games": 0, "mean_score": 10034.0, "median_score": 10295.0, "best_score": 10430, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 102.36565016699024}
+{"event": "focus_progress", "generation": 7, "directions_done": 1, "segments": 8, "actions": 891, "elapsed_seconds": 102.86175575002562}
+{"event": "focus_progress", "generation": 7, "directions_done": 2, "segments": 16, "actions": 1753, "elapsed_seconds": 103.3213480419945}
+{"event": "focus_progress", "generation": 7, "directions_done": 3, "segments": 24, "actions": 2441, "elapsed_seconds": 103.6886306250235}
+{"event": "focus_progress", "generation": 7, "directions_done": 4, "segments": 32, "actions": 3316, "elapsed_seconds": 104.15518474997953}
+{"event": "focus_progress", "generation": 7, "directions_done": 5, "segments": 40, "actions": 4229, "elapsed_seconds": 104.64383729198016}
+{"event": "focus_progress", "generation": 7, "directions_done": 6, "segments": 48, "actions": 4939, "elapsed_seconds": 105.02206358395051}
+{"event": "focus_progress", "generation": 7, "directions_done": 7, "segments": 56, "actions": 5612, "elapsed_seconds": 105.38213529193308}
+{"event": "focus_progress", "generation": 7, "directions_done": 8, "segments": 64, "actions": 6582, "elapsed_seconds": 105.90028866694774}
+{"event": "focus_progress", "generation": 7, "directions_done": 9, "segments": 72, "actions": 7364, "elapsed_seconds": 106.31782087497413}
+{"event": "focus_progress", "generation": 7, "directions_done": 10, "segments": 80, "actions": 8087, "elapsed_seconds": 106.70541008398868}
+{"event": "focus_progress", "generation": 7, "directions_done": 11, "segments": 88, "actions": 8715, "elapsed_seconds": 107.04221120895818}
+{"event": "focus_progress", "generation": 7, "directions_done": 12, "segments": 96, "actions": 9542, "elapsed_seconds": 107.48670124995988}
+{"event": "focus_progress", "generation": 7, "directions_done": 13, "segments": 104, "actions": 10193, "elapsed_seconds": 107.83630658395123}
+{"event": "focus_progress", "generation": 7, "directions_done": 14, "segments": 112, "actions": 10775, "elapsed_seconds": 108.14992499991786}
+{"event": "focus_progress", "generation": 7, "directions_done": 15, "segments": 120, "actions": 11500, "elapsed_seconds": 108.53565870900638}
+{"event": "focus_progress", "generation": 7, "directions_done": 16, "segments": 128, "actions": 12235, "elapsed_seconds": 108.92823670897633}
+{"event": "generation", "generation": 7, "training_steps": 116514, "training_segments": 896, "best_focused_segment": {"direction": 0, "sign": 0, "candidate": 0, "repetition": 0, "snapshot": "seed-71008-life-4.npz", "score_gain": 2460, "start_score": 7920, "final_score": 10380, "steps": 106, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": true, "truncated": false, "source_action": 2425, "seed": 80024}, "return_std": 753.7046160090565, "update_norm": 0.05129432952256455, "skipped_zero_variance": false, "mean_candidate_score": 1553.984375, "best_candidate_mean": 2422.5, "elapsed_seconds": 108.94501804199535}
+{"event": "validation", "generation": 7, "complete_games": 10, "incomplete_games": 0, "mean_score": 10337.0, "median_score": 10370.0, "best_score": 10430, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 114.6518363750074}
+{"event": "focus_progress", "generation": 8, "directions_done": 1, "segments": 8, "actions": 683, "elapsed_seconds": 115.03755524998996}
+{"event": "focus_progress", "generation": 8, "directions_done": 2, "segments": 16, "actions": 1493, "elapsed_seconds": 115.46595662494656}
+{"event": "focus_progress", "generation": 8, "directions_done": 3, "segments": 24, "actions": 2307, "elapsed_seconds": 115.89813991694245}
+{"event": "focus_progress", "generation": 8, "directions_done": 4, "segments": 32, "actions": 3213, "elapsed_seconds": 116.37835949996952}
+{"event": "focus_progress", "generation": 8, "directions_done": 5, "segments": 40, "actions": 4129, "elapsed_seconds": 116.86448270897381}
+{"event": "focus_progress", "generation": 8, "directions_done": 6, "segments": 48, "actions": 4877, "elapsed_seconds": 117.26171649992466}
+{"event": "focus_progress", "generation": 8, "directions_done": 7, "segments": 56, "actions": 5858, "elapsed_seconds": 117.78393945901189}
+{"event": "focus_progress", "generation": 8, "directions_done": 8, "segments": 64, "actions": 6704, "elapsed_seconds": 118.23475141695235}
+{"event": "focus_progress", "generation": 8, "directions_done": 9, "segments": 72, "actions": 7626, "elapsed_seconds": 118.7229227089556}
+{"event": "focus_progress", "generation": 8, "directions_done": 10, "segments": 80, "actions": 8521, "elapsed_seconds": 119.19923483394086}
+{"event": "focus_progress", "generation": 8, "directions_done": 11, "segments": 88, "actions": 9122, "elapsed_seconds": 119.51902466698084}
+{"event": "focus_progress", "generation": 8, "directions_done": 12, "segments": 96, "actions": 9936, "elapsed_seconds": 119.95184537500609}
+{"event": "focus_progress", "generation": 8, "directions_done": 13, "segments": 104, "actions": 10584, "elapsed_seconds": 120.30056137498468}
+{"event": "focus_progress", "generation": 8, "directions_done": 14, "segments": 112, "actions": 11205, "elapsed_seconds": 120.63143491698429}
+{"event": "focus_progress", "generation": 8, "directions_done": 15, "segments": 120, "actions": 11767, "elapsed_seconds": 120.93070554197766}
+{"event": "focus_progress", "generation": 8, "directions_done": 16, "segments": 128, "actions": 12540, "elapsed_seconds": 121.34371004195418}
+{"event": "generation", "generation": 8, "training_steps": 129054, "training_segments": 1024, "best_focused_segment": {"direction": 0, "sign": 1, "candidate": 1, "repetition": 1, "snapshot": "seed-71004-life-1.npz", "score_gain": 2410, "start_score": 210, "final_score": 2620, "steps": 127, "stage": 1, "highest_stage": 1, "life_lost": true, "mission_completed": false, "terminated": false, "truncated": false, "source_action": 279, "seed": 80029}, "return_std": 800.7446447426198, "update_norm": 0.056973196268786754, "skipped_zero_variance": false, "mean_candidate_score": 1529.921875, "best_candidate_mean": 2410.0, "elapsed_seconds": 121.36251349991653}
+{"event": "validation", "generation": 8, "complete_games": 10, "incomplete_games": 0, "mean_score": 10356.0, "median_score": 10355.0, "best_score": 10480, "highest_stage": 1, "mission_games": 0, "stage_2_games": 0, "stage_3_games": 0, "elapsed_seconds": 127.17956974997651}
+{"event": "finished", "generation": 8, "training_steps": 129054, "training_segments": 1024, "stopped": false, "frozen_encoder_and_value_verified": true, "elapsed_seconds": 127.18452858400997}

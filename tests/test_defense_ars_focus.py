@@ -7,11 +7,19 @@ import numpy as np
 
 from rl.defense import DefenseEnv
 from rl.defense_ars import head_array, make_population_infer
-from rl.defense_ars_focus import harvest, load_source, play_segment, verify_source
+from rl.defense_ars_focus import (harvest, load_source, perturbation_directions,
+                                  play_segment, verify_source)
 from rl.model import QNetwork
 
 
 class FocusedARSTests(unittest.TestCase):
+    def test_bias_only_directions_preserve_feature_weights(self):
+        rng = np.random.default_rng(10)
+        directions = perturbation_directions(rng, 7, (20, 257), bias_only=True)
+        self.assertEqual(directions.shape, (7, 20, 257))
+        self.assertTrue(np.all(directions[:, :, :-1] == 0))
+        self.assertTrue(np.any(directions[:, :, -1] != 0))
+
     def test_native_own_loss_state_restore_and_paired_segment_identity(self):
         mx.random.seed(41)
         model = QNetwork(action_count=20)
