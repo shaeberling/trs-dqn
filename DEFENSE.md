@@ -7594,3 +7594,12 @@ samples all physical directions symmetrically, and retains the same
 complete-boot score-only update gates. All **442 repository tests** passed
 before launch. The sole collector now watches 97 sources and protects the
 unchanged global best replay.
+
+At the [generation-five effective-key milestone](results/defense/training/ars-effective-96/milestone-000005/state.json),
+1,392 complete training games and 3,478,331 actions have yielded no
+accepted update or stage-two game. A generation-four comparison gain
+collapsed to +16.56 points on independent confirmation; a generation-five
+candidate reached +148.44 on 32 confirmation games, narrowly below the
+predeclared 150-point gate. It was not quietly promoted. Fixed ten-game
+mean stays 10,388, and the 10,480-point global replay remains unchanged.
+The full model/RNG checkpoint is preserved while the run continues.

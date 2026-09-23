@@ -31,6 +31,17 @@ The full repository suite passed **442 tests** immediately before this
 run; `fit-source.py`, `context-source.py`, `archive-source.py` and
 `search-source.py` match the run's recorded source hashes.
 
+At the [generation-five milestone](milestone-000005/state.json), the run
+has played **1,392 complete training games** and **3,478,331 neural
+actions**. No update or stage-two game has passed. A generation-four
+candidate gained 304.38 mean points in the 16-game comparison but only
+16.56 in fresh 32-game confirmation. Generation five's 192.5-point
+comparison gain became **148.44 points** on 32 confirmation games,
+1.56 points short of the predeclared 150-point gate; it too was rejected.
+The fixed ten-game mean remains 10,388 and all games still end in stage
+one. The full model/RNG milestone, evaluation and log prefix are
+preserved. The collector has not replaced the 10,480-point global best.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \
