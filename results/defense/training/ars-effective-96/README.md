@@ -42,6 +42,14 @@ The fixed ten-game mean remains 10,388 and all games still end in stage
 one. The full model/RNG milestone, evaluation and log prefix are
 preserved. The collector has not replaced the 10,480-point global best.
 
+A separate [64-seed paired check](near-miss-5.json) of that generation-five
+candidate on fresh training seeds 440000–440063 averaged 10,238.28 versus
+10,094.38 for the unchanged parent: **+143.91 points**, again below the
+predeclared 150-point acceptance margin. Both stayed in stage one. The
+near-miss remains rejected; `near-miss-source.py` matches the report's
+source hash and verifies that the saved population plan is centered on
+the exact parent weights.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \
