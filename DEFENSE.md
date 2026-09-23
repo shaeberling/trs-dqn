@@ -7352,3 +7352,24 @@ update accepted on a separate 32-game confirmation set. Fixed ten-game boot
 mean rose slightly from 9,981 to 10,043, but **all games still ended in
 stage 1**. The model/RNG checkpoint is independently restorable; the
 shared 10,480-point verified replay remains unchanged.
+
+The factorized run then ended cleanly at generation 11 after **2,832 full
+training games** and **6,833,703 new actions**, all stage 1. Its fixed
+ten-game mean stayed 10,043 at generations 5, 10 and 11, with only one
+accepted update. The complete run and exact executing source are archived;
+the stronger global best replay remains untouched. A wider symmetric
+physical-key perturbation is the next score-only test of the same bottleneck.
+
+The [wider 0.05 pilot](results/defense/training/ars-key-wide-pilot-75/README.md)
+made broad behavioral changes but degraded all one-game candidate scores
+into the 280–7,750 range, with no stage 2 and no accepted update. A
+[stratified-radius pilot](results/defense/training/ars-key-multiscale-pilot-76/README.md)
+then covered 0.012–0.05 in one symmetric population: its strongest
+one-game candidates came mostly from the conservative end, but it retained
+broader candidates for exploration. Its apparent two-game comparison gain
+reversed on independent confirmation, leaving the original model unchanged.
+Both pilots are fully archived. The ongoing
+[multi-radius complete-boot search](results/defense/training/ars-key-multiscale-77/README.md)
+uses four screening, 16 comparison and 32 independent confirmation games
+per candidate decision, with a 150-point final margin and no stage or
+route-specific action rule.
