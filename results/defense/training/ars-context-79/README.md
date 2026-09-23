@@ -1,6 +1,6 @@
 # Self-play failure-context keyboard search
 
-This ongoing run starts from the original strongest learned screen-only
+This completed run started from the original strongest learned screen-only
 policy and uses its own 12 complete training games to propose localized
 neural-head changes. Only rendered screen arrays are read from 48 verified
 source traces: frozen visual features at 128 decisions before a visible
@@ -24,10 +24,11 @@ reproducing every neural action, reward and screen before replay promotion.
 No demonstration, scripted steering, intrinsic bonus, hidden RAM read or
 native snapshot restore is used in this run.
 
-There is no generation or wall-clock limit. A verified mission or a
-graceful checkpoint-boundary intervention stops it. A 5 GiB free-space
-guard protects all prior archives. Live data are in
-`runs/defense-ars-context-79/`.
+There was no generation or wall-clock limit. A graceful checkpoint-boundary
+intervention stopped the run after the generation-10 validation confirmed
+a stage-one plateau. A 5 GiB free-space guard protected all prior archives.
+The full native run, including every population, candidate comparison,
+checkpoint, evaluation, RNG state and replay artifact, is in `run/`.
 
 At generation 5, the frozen-encoder policy has played 1,392 complete
 training games (3,407,318 neural actions). Two changes passed both fresh
@@ -39,6 +40,17 @@ RNG state, and per-game validation record. `fit-source.py`,
 implementation and computed screen-only basis. All archived checkpoint
 files and source hashes were verified against the live run; this is not a
 new best replay or a stage advance.
+
+The run finished at generation 11 with **3,024 complete training games**
+and **7,410,176 neural actions**. Two generation-1/2 updates passed the
+16-game comparison and separate 32-game confirmation gates; none of the
+next nine generations did. Held-out ten-game mean was 10,155 at
+generations 5, 10 and 11, versus 9,981 initially, and every observed game
+remained in stage 1. The short comparisons often overestimated gains that
+vanished on confirmation. `run/generation-000011/` preserves the final
+restorable model/RNG state; the archived tree was checked against the live
+tree using content checksums, with source and checkpoint hashes also
+verified. The verified 10,480-point global best replay remains unchanged.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \

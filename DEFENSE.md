@@ -7403,3 +7403,16 @@ uses 4 / 16 / 32 fresh complete boot-game sets and a 150-point final
 margin. The contrast proposes where weights may matter; no action,
 direction, hidden collision marker, demonstration or extra reward is
 supplied to the policy.
+
+The [context search](results/defense/training/ars-context-79/README.md)
+then finished cleanly after **3,024 complete training games** and
+**7,410,176 actions**. Two early score-gated updates raised the ten-game
+mean from 9,981 to 10,155, but generations 5, 10 and 11 all evaluated at
+10,155 and **no game reached stage 2**. Later short comparison gains
+repeatedly shrank or reversed on 32 independent confirmation games. The
+full native run, source and final model/RNG checkpoint are archived, and
+the 10,480-point verified global replay is unchanged. A single learned
+failure-context contrast may be too coarse to express the position- and
+timing-dependent behavior needed at the shared opening; the next test
+will use a broader subspace of the policy's own visible approach features,
+while keeping complete-game displayed score as the only update fitness.
