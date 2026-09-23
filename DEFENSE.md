@@ -7770,3 +7770,16 @@ stage two. Its verified local 10,480 replay and both full optimizers are
 preserved. This suggests the targeted practice can reduce early failures
 without yet changing the recurring late barrier; the first checkpoint
 will be the parent of a longer, more exploratory continuation.
+
+That [longer PPO continuation](results/defense/training/ppo-own-loss-108/README.md)
+used the independently stronger first optimizer with higher training
+entropy. It completed **524,288 new actions**, 47 boot games and 1,859
+restored own-loss segments. Its four fixed ten-game means were **9,464 /
+8,903 / 10,178 / 10,457**, all stage one. The apparent final rebound
+failed a new paired **64-game** check: final mean **10,037.19** versus
+parent **10,183.28**, a **-146.09-point** change; below-9,000 games grew
+from seven to eleven. No training or fresh game reached stage two.
+The complete checkpoint/log/replay archive is preserved, but this is not
+a confirmed successor to the first run-107 checkpoint. The sole replay
+collector now watches **104** sources, including both new PPO runs, and
+has not displaced the independently verified global best.

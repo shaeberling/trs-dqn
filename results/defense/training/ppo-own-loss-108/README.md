@@ -16,10 +16,24 @@ ten-game evaluations every 131,072. The previous 64 fresh comparison
 seeds 600000–600063 are not used to select this run's improvement; any
 subsequent independent comparison needs new seeds.
 
-The live output is `runs/defense-ppo-own-loss-108/`. The parent and
-source/configuration are preserved here; model/optimizer/RNG milestones
-and the full log will be archived as the run progresses. The global
-10,480-point verified best replay is preserved independently.
+The run finished cleanly after all **524,288 new actions**, adding **47
+complete boot games and 1,859 restored practice segments**. Fixed ten-game
+means at the four successive checkpoints were **9,464 / 8,903 / 10,178 /
+10,457**. Every training and validation record stayed in stage one;
+the final attractive fixed-seed mean is not a stage clear. The full run,
+including each model/optimizer/RNG checkpoint, complete log and locally
+verified replay, is preserved in [run/](run/). The global verified
+10,480-point best replay remains unchanged.
+
+A new matched **64-game full-boot check** on seeds 600100–600163 found the
+confirmed run-107 parent at **10,183.28** mean and this run's final model
+at **10,037.19**, a **146.09-point regression** despite the fixed-seed
+rebound. The final policy improved 42 paired scores, worsened 18 and tied
+four; below-9,000-point games increased from seven to eleven. All **128
+fresh games** remained in stage one. Raising entropy and practicing the
+same own-loss region longer is therefore not a confirmed improvement, and
+this optimizer is not promoted as the next parent. A different action-
+representation/exploration test is warranted.
 
 ```bash
 venv/bin/python -u -m rl.defense_train \
