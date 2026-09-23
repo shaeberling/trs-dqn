@@ -21,6 +21,10 @@ class EarlyOwnScreenSourceTests(unittest.TestCase):
             visible_approaches(frames, events[:-1])
         with self.assertRaises(ValueError):
             visible_approaches(frames, [dict(frame=370, life_lost=True, score=2600)]+events[1:])
+        later = visible_approaches(frames, events, offsets=(128, 96, 64, 32))
+        self.assertEqual(int(later[0]['screens'][0, -1, 0, 0]), (380-128)%256)
+        with self.assertRaises(ValueError):
+            visible_approaches(frames, events, offsets=(128, 96, 96, 32))
 
 
 if __name__ == '__main__':

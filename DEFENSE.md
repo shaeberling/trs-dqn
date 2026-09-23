@@ -7528,3 +7528,32 @@ The [longer early-screen search](results/defense/training/ars-early-91/README.md
 now tests the same proposal basis with independent 4 / 16 / 32-game
 score gates. The sole verified-best collector watches this run as its
 93rd source while preserving the existing 10,480-point global replay.
+
+At the [generation-5 milestone](results/defense/training/ars-early-91/milestone-000005/state.json),
+the longer early-screen run has played **1,392 complete training games**
+and **3,451,610 actions**. One update passed both score gates at generation
+4 (+298.13 / +225.63), raising the fixed ten-game mean from 10,266 to
+10,388. A generation-5 short gain reversed below the confirmation margin.
+Every training and validation game is still stage 1, so the repeated
+barrier remains unresolved. The model/RNG milestone and exact source are
+preserved; the in-run gates alone do not establish generalization.
+
+That independent [64-seed-per-policy check](results/defense/training/ars-early-91/paired-confirmation.json)
+averaged **10,218.91** for the previous pilot-80 parent and **10,373.28**
+for the new early-window checkpoint: +154.38 points, just above the
+predeclared 150-point gate. Both remained in stage 1. The exact frozen
+encoder/value network was verified. This qualifies the checkpoint as a
+score-selected parent for a new experiment but does not establish a
+navigation breakthrough.
+
+A fresh **training-only** pilot-80 replay localizes the repeated bottleneck:
+the right-opening barrier is visible about 64 decisions before the first
+visible loss, while the ship is still far left of the opening. A separate
+[46-life screen-window source](results/defense/training/ars-bottleneck-source-92/README.md)
+uses verified own screens at 128 / 96 / 64 / 32 decisions before loss;
+two 140-point early-loss outliers are excluded from *proposal construction*
+using only displayed per-life score. The first
+[bottleneck-window pilot](results/defense/training/ars-bottleneck-pilot-93/README.md)
+played 50 complete games but did not accept an update: its best candidate
+was 50 points below the parent in the two-game comparison, and all games
+remained stage 1. The longer early-window run continues independently.

@@ -26,6 +26,28 @@ source, population plans, full-game scores and verified replays will be
 copied here at milestones and completion. Stage passage and native
 mission completion, not near-ceiling score alone, remain the goal.
 
+At [generation 5](milestone-000005/state.json), 1,392 complete training
+games and 3,451,610 neural actions have been played. Generation 4
+accepted one head change after gains of 298.13 points in the 16-game
+comparison and 225.63 in a separate 32-game confirmation. Generation
+5's apparent 260-point comparison gain shrank to 110.31 in its own
+32-game confirmation and was rejected. The fixed ten-game mean is now
+10,388 versus 10,266 at initialization, but **all games remain in stage
+one**. The full checkpoint, RNG state, evaluation, exact search source
+and log prefix are preserved; the global 10,480-point verified best is
+unchanged. The small in-run score gates alone do not establish a robust
+gain.
+
+That [64-seed-per-policy paired check](paired-confirmation.json) has now
+finished on seeds 390000–390063. The unchanged pilot-80 parent averaged
+10,218.91 displayed points and the milestone candidate averaged
+10,373.28, a **154.38-point gain**. Both remained in stage one. The gain
+barely exceeds the predeclared 150-point threshold, so the candidate is
+eligible as a score-selected parent for a different proposal experiment;
+it is not evidence of stage passage. `pair-source.py` preserves the
+exact score-only comparison and verifies byte-identical frozen encoder
+and value weights.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-subspace-pilot-80/generation-000001 \
