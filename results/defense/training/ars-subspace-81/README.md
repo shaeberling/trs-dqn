@@ -1,6 +1,6 @@
 # Long visible-approach subspace search
 
-This ongoing native run starts from the screen-only pilot candidate after a
+This completed native run started from the screen-only pilot candidate after a
 separate 32-game-per-policy paired check showed a 380.63-point mean gain on
 fresh training seeds. The pilot's visual encoder and value network were
 verified identical to the original policy, and the run rechecks that exact
@@ -25,9 +25,10 @@ improvement there and on 32 further fresh paired games. Validation seeds
 rank is independently replay-verified before promotion. The sole global
 collector monitors this run and all 88 prior artifact roots.
 
-There is no generation or wall-clock limit. A 5 GiB free-space guard
-protects existing archives; live checkpoints, RNG states and full
-population records are in `runs/defense-ars-subspace-81/`.
+There was no generation or wall-clock limit. A graceful checkpoint-boundary
+stop followed the unchanged generation-10 validation. A 5 GiB free-space
+guard protected existing archives; the complete native run, including
+all checkpoints, RNG states, population records and artifacts, is in `run/`.
 `fit-source.py`, `context-source.py`, `context-basis.npz`,
 `collector-source.py` and `collector-config.json` preserve the exact
 initial implementation, visual proposal basis and monitoring scope.
@@ -40,6 +41,17 @@ mean remains 10,266, all stage 1. `milestone-000005/` preserves the exact
 restorable model, RNG state and per-game validation record. Every archived
 checkpoint file matched the live checkpoint by SHA-256. The global best
 replay remains unchanged.
+
+The run finished at generation 11 with **2,832 complete training games**
+and **6,940,989 neural actions**. No update passed both gates, no game
+reached stage 2, and fixed ten-game validation mean stayed 10,266 at
+generations 0, 5, 10 and 11. The final full model/RNG checkpoint is at
+`run/generation-000011/`. A checksum-based tree comparison found no
+content differences between the live and archived run; the exact source
+and final model hashes also matched. The strongest rejected generation-4
+and generation-8 candidates are retained in their population plans for
+a separate, larger fresh-training-seed paired check. That check must not
+be confused with an accepted update or a new verified replay.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
