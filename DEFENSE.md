@@ -7758,3 +7758,15 @@ and checkpoint-resume smoke test passes; a longer continuation will be
 evaluated from the strong preserved PPO optimizer after the active search
 finishes. This is a test of practice allocation, not a collision oracle or
 proof that the saved states are recoverable.
+
+The [first own-loss PPO continuation](results/defense/training/ppo-own-loss-107/README.md)
+completed **131,072 new actions**, 508 restored practice segments and 24
+new boot games. Its first and final fixed ten-game means were 10,269 and
+10,137, both stage one. An independent matched **64-game fresh check**
+found parent / first / final means **9,673.59 / 10,194.84 / 9,977.66**.
+The first checkpoint reduced below-9,000-point games from 22 to seven,
+improving 42 of 64 paired seeds, but none of the 192 fresh games reached
+stage two. Its verified local 10,480 replay and both full optimizers are
+preserved. This suggests the targeted practice can reduce early failures
+without yet changing the recurring late barrier; the first checkpoint
+will be the parent of a longer, more exploratory continuation.
