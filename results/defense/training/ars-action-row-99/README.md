@@ -50,6 +50,16 @@ Both remained in stage one. This candidate is not a confirmed new parent
 or a new global best, although the live run continues from its internal
 score-gated state. The pair-check source is archived as `pair-source.py`.
 
+The [generation-five checkpoint](milestone-000005/state.json) is also
+preserved with its full model/RNG state after **2,288 complete training
+games and 5,769,059 actions**. The generation-five winner appeared to
+gain 256.25 points in its 16-game comparison, then lost 82.50 points in
+the independent 32-game confirmation and was rejected. The fixed ten-game
+validation mean was **10,032**, versus **10,388** at initialization; all
+games remained in stage one. The checkpoint still contains the
+generation-two internally accepted head, which the separate 64-seed check
+above did not confirm. The global verified 10,480-point replay is unchanged.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \
