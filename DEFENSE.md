@@ -7620,3 +7620,29 @@ replays are preserved. The 10,480-point global replay is unchanged.
 Repeating this coupled key-factor search longer is not supported by its
 results; the next distinct test proposes score-gated changes to one
 command row at a time using only the same verified own-screen features.
+
+The first [per-command visual pilot](results/defense/training/ars-action-row-pilot-97/README.md)
+played 50 complete boot training games from that unchanged parent. Its
+best candidate gained only 70 points in the separate two-game comparison,
+so no update was accepted. All games remained stage 1, fixed ten-game
+mean stayed 10,388, and the global replay was unchanged. The exact
+population plan and source are preserved. The next run broadens this
+distinct proposal to two symmetric directions per command while keeping
+complete-game score as its sole fitness.
+
+A second [per-command pilot](results/defense/training/ars-action-row-wide-pilot-98/README.md)
+covered each command twice with 40 symmetric directions. Its 94 full
+training games found only a +10-point two-game comparison gain and no
+stage-two game. Tied one-game screening scores clustered its shortlist
+among early direction indices. The longer test will break *only exact
+displayed-score ties* randomly while favoring distinct command rows;
+higher scores always remain ahead of lower scores. This preserves
+score-only selection while making exploration of the failure-window
+action space less dependent on index order.
+
+The [long per-command search](results/defense/training/ars-action-row-99/README.md)
+is now active from the independently confirmed early-window parent with
+two proposals for each of twenty commands, larger complete-boot score
+gates and exact-score-only tie diversification. The full **444-test**
+suite passed before launch. The best verified 10,480-point replay remains
+the promotion floor.

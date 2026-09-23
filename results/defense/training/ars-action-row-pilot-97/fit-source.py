@@ -96,13 +96,11 @@ def subspace_key_directions(rng, count, head_shape, names, basis,
 def subspace_action_row_directions(rng, count, head_shape, basis):
     """One symmetric own-screen proposal per command, without target keys."""
     basis = np.asarray(basis, np.float32)
-    if (len(head_shape) != 2 or count < head_shape[0]
-            or count % head_shape[0] or head_shape[0] != 20
+    if (len(head_shape) != 2 or count != head_shape[0] or head_shape[0] != 20
             or basis.ndim != 2 or not 2 <= len(basis) <= 16
             or basis.shape[1] != head_shape[1] or not np.isfinite(basis).all()):
         raise ValueError('requires each command and the verified visible subspace')
-    order = np.concatenate([rng.permutation(head_shape[0])
-                            for _ in range(count//head_shape[0])])
+    order = rng.permutation(count)
     coefficients = rng.normal(size=(count, len(basis))).astype(np.float32)
     coefficients /= np.sqrt(len(basis))
     directions = np.zeros((count, *head_shape), np.float32)
@@ -152,37 +150,6 @@ def shortlist(means, count):
             or not 1 <= count <= len(means)):
         raise ValueError('invalid complete-boot shortlist')
     return np.argsort(-means, kind='stable')[:count].tolist()
-
-
-def score_tie_diverse_shortlist(means, count, direction_rows, rng):
-    """Use score first; resolve exact ties across commands symmetrically."""
-    means = np.asarray(means, np.float64)
-    rows = np.asarray(direction_rows)
-    if (means.ndim != 1 or rows.ndim != 1 or len(means) != 2*len(rows)
-            or not 1 <= count <= len(means) or not np.isfinite(means).all()
-            or not np.issubdtype(rows.dtype, np.integer)
-            or np.any((rows < 0) | (rows >= 20))):
-        raise ValueError('invalid score-only per-command shortlist')
-    # The random key affects *only exact score ties*. The first pass through
-    # each tied group covers as many distinct commands as possible.
-    order = np.lexsort((rng.random(len(means)), -means))
-    selected, seen = [], set()
-    for score in np.unique(means)[::-1]:
-        group = [int(i) for i in order if means[i] == score]
-        fresh, repeated, group_seen = [], [], set()
-        for i in group:
-            row = int(rows[i//2])
-            if row not in seen and row not in group_seen:
-                fresh.append(i)
-                group_seen.add(row)
-            else:
-                repeated.append(i)
-        for i in fresh+repeated:
-            selected.append(i)
-            seen.add(int(rows[i//2]))
-            if len(selected) == count:
-                return selected
-    raise RuntimeError('incomplete score-only shortlist')
 
 
 def reconcile_early_context(old, current, legacy_source):
@@ -250,10 +217,7 @@ def main():
     parser.add_argument('--first-training-seed', type=int, default=100000)
     parser.add_argument('--eval-every', type=int, default=5)
     args = parser.parse_args()
-    if (args.output.exists() or args.generations < 0
-            or (args.direction_mode == 'bottleneck-action-row' and
-                (args.directions < 20 or args.directions % 20))
-            or (args.direction_mode != 'bottleneck-action-row' and args.directions != 20)
+    if (args.output.exists() or args.generations < 0 or args.directions != 20
             or min(args.shortlist, args.screen_games, args.compare_games,
                    args.confirm_games, args.envs, args.eval_every) < 1
             or args.shortlist > 2*args.directions
@@ -365,8 +329,6 @@ def main():
                 context_source_model_sha256)
         if args.initialize:
             config['context'] = context
-            if args.direction_mode == 'bottleneck-action-row':
-                config['selection_tie_break'] = 'randomized unique-command coverage only within exact displayed-score ties'
         elif config.get('context') != context:
             if args.direction_mode != 'early-subspace-key':
                 raise ValueError('resumed visible context differs from checkpoint')
@@ -461,10 +423,7 @@ def main():
             first_seed = next_seed
             screen, screen_mean = phase(target, 'screen', heads,
                 args.screen_games, first_seed)
-            selected = (score_tie_diverse_shortlist(screen_mean, args.shortlist,
-                np.argmax(np.linalg.norm(directions, axis=2), axis=1), rng)
-                if args.direction_mode == 'bottleneck-action-row'
-                else shortlist(screen_mean, args.shortlist))
+            selected = shortlist(screen_mean, args.shortlist)
             compare_heads = np.concatenate([center[None], heads[selected]], axis=0)
             compare, compare_mean = phase(target, 'compare', compare_heads,
                 args.compare_games, first_seed+args.screen_games)

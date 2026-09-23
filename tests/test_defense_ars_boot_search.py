@@ -8,7 +8,8 @@ from rl.defense import action_names
 from rl.defense_ars_boot_search import (candidate_scales, context_key_directions,
                                         effective_key_incidence, key_factor_directions, shared_seed_jobs,
                                         score_means, shortlist, subspace_key_directions,
-                                        reconcile_early_context)
+                                        subspace_action_row_directions,
+                                        score_tie_diverse_shortlist, reconcile_early_context)
 from rl.defense_ars_plan_probe import trial_head
 
 
@@ -94,6 +95,38 @@ class CompleteBootSearchTests(unittest.TestCase):
         np.testing.assert_array_equal(directions[:, 13], directions[:, 9])
         np.testing.assert_array_equal(directions[:, 15], directions[:, 9])
         self.assertTrue(np.any(directions[:, 4] != directions[:, 9]))
+
+    def test_visible_action_row_proposals_cover_every_command_without_preference(self):
+        basis = np.random.default_rng(8).normal(size=(13, 257)).astype(np.float32)
+        directions = subspace_action_row_directions(np.random.default_rng(9),
+            20, (20, 257), basis)
+        self.assertEqual(directions.shape, (20, 20, 257))
+        lengths = np.linalg.norm(directions, axis=2)
+        np.testing.assert_array_equal((lengths > 1e-8).sum(axis=1), np.ones(20))
+        selected = np.argmax(lengths, axis=1)
+        self.assertEqual(len(selected), 20)
+        np.testing.assert_array_equal(np.sort(selected), np.arange(20))
+        np.testing.assert_array_equal(directions,
+            subspace_action_row_directions(np.random.default_rng(9), 20, (20, 257), basis))
+        broader = subspace_action_row_directions(np.random.default_rng(9),
+            40, (20, 257), basis)
+        broad_rows = np.argmax(np.linalg.norm(broader, axis=2), axis=1)
+        np.testing.assert_array_equal(np.bincount(broad_rows, minlength=20),
+                                      np.full(20, 2))
+        with self.assertRaises(ValueError):
+            subspace_action_row_directions(np.random.default_rng(9),
+                19, (20, 257), basis)
+
+    def test_action_row_shortlist_diversifies_only_exact_score_ties(self):
+        rows = np.array([0, 0, 1, 2])
+        selected = score_tie_diverse_shortlist(np.full(8, 10480.), 3,
+                                                rows, np.random.default_rng(17))
+        self.assertEqual(len({int(rows[i//2]) for i in selected}), 3)
+        means = np.array([100., 95., 90., 85., 80., 75., 70., 65.])
+        self.assertEqual(score_tie_diverse_shortlist(means, 3, rows,
+                          np.random.default_rng(17)), [0, 1, 2])
+        with self.assertRaises(ValueError):
+            score_tie_diverse_shortlist(means, 3, rows[:-1], np.random.default_rng(17))
 
     def test_early_resume_requires_exact_old_source_and_identical_basis(self):
         import json
