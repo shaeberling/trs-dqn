@@ -7603,3 +7603,10 @@ candidate reached +148.44 on 32 confirmation games, narrowly below the
 predeclared 150-point gate. It was not quietly promoted. Fixed ten-game
 mean stays 10,388, and the 10,480-point global replay remains unchanged.
 The full model/RNG checkpoint is preserved while the run continues.
+
+The generation-five near-miss was also tested independently on
+[64 fresh paired seeds](results/defense/training/ars-effective-96/near-miss-5.json):
+candidate 10,238.28 versus unchanged parent 10,094.38, a **+143.91-point**
+gain. This again misses the 150-point gate, so no weights are promoted.
+Both policies stayed in stage one. The exact plan, score records and
+probe source are preserved while the main run continues.
