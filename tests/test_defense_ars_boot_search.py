@@ -3,8 +3,9 @@ import unittest
 import numpy as np
 
 from rl.defense import action_names
-from rl.defense_ars_boot_search import (candidate_scales, key_factor_directions,
-                                        shared_seed_jobs, score_means, shortlist)
+from rl.defense_ars_boot_search import (candidate_scales, context_key_directions,
+                                        key_factor_directions, shared_seed_jobs,
+                                        score_means, shortlist)
 
 
 class CompleteBootSearchTests(unittest.TestCase):
@@ -49,6 +50,19 @@ class CompleteBootSearchTests(unittest.TestCase):
         np.testing.assert_allclose(candidate_scales(rng, 4, .02), [.02]*4)
         with self.assertRaises(ValueError):
             candidate_scales(rng, 20, .02, .02)
+
+    def test_contextual_key_proposals_retain_symmetric_command_structure(self):
+        basis = np.linspace(-1, 1, 257, dtype=np.float32)
+        directions = context_key_directions(np.random.default_rng(4), 7,
+                                             (20, 257), action_names(), basis)
+        self.assertEqual(directions.shape, (7, 20, 257))
+        np.testing.assert_array_equal(directions[:, 0], 0)
+        np.testing.assert_allclose(directions[:, 10], directions[:, 1]+directions[:, 9], atol=1e-6)
+        np.testing.assert_allclose(directions[:, 19],
+                                   directions[:, 3]+directions[:, 4]+directions[:, 9], atol=1e-6)
+        with self.assertRaises(ValueError):
+            context_key_directions(np.random.default_rng(4), 7,
+                                   (20, 257), action_names(), np.ones(256))
 
 
 if __name__ == '__main__':

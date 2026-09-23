@@ -20,15 +20,9 @@ from .defense_ars_focus import perturbation_directions
 KEY_FACTORS = ('UP', 'DOWN', 'LEFT', 'RIGHT', 'SPACE')
 
 
-def key_factor_directions(rng, count, head_shape, names):
-    """Coherently perturb every command containing a physical key.
-
-    Symmetric candidates cover every key without a preferred direction.
-    No stage, screen feature, obstacle location, or target action is supplied.
-    """
-    if (count < 1 or len(head_shape) != 2 or head_shape[0] != len(names)
-            or len(names) != 20 or min(head_shape) < 2):
-        raise ValueError('invalid key-factor head shape')
+def key_incidence(names):
+    if len(names) != 20:
+        raise ValueError('requires the fixed 20-command keyboard profile')
     incidence = np.zeros((len(names), len(KEY_FACTORS)), np.float32)
     for action, name in enumerate(names):
         tokens = () if name == 'NOOP' else name.split('+')
@@ -36,11 +30,38 @@ def key_factor_directions(rng, count, head_shape, names):
             raise ValueError('unexpected keyboard command')
         for token in tokens:
             incidence[action, KEY_FACTORS.index(token)] = 1.
+    return incidence
+
+
+def key_factor_directions(rng, count, head_shape, names):
+    """Coherently perturb every command containing a physical key.
+
+    Symmetric candidates cover every key without a preferred direction.
+    No stage, screen feature, obstacle location, or target action is supplied.
+    """
+    if (count < 1 or len(head_shape) != 2 or head_shape[0] != len(names)
+            or min(head_shape) < 2):
+        raise ValueError('invalid key-factor head shape')
+    incidence = key_incidence(names)
     factors = rng.normal(size=(count, len(KEY_FACTORS), head_shape[1])).astype(np.float32)
     directions = np.einsum('ak,dkf->daf', incidence, factors, optimize=True)
     if not np.isfinite(directions).all():
         raise ValueError('nonfinite key-factor directions')
     return directions
+
+
+def context_key_directions(rng, count, head_shape, names, basis):
+    """Symmetric physical-key proposals along an own-screen feature contrast."""
+    basis = np.asarray(basis, np.float32)
+    if (count < 1 or len(head_shape) != 2 or head_shape[0] != len(names)
+            or head_shape[1] != len(basis) or not np.isfinite(basis).all()):
+        raise ValueError('invalid visible context basis/head')
+    incidence = key_incidence(names)
+    coefficients = rng.normal(size=(count, len(KEY_FACTORS))).astype(np.float32)
+    directions = np.einsum('ak,dk->da', incidence, coefficients, optimize=True)[:, :, None]*basis
+    if not np.isfinite(directions).all():
+        raise ValueError('nonfinite visible-context directions')
+    return directions.astype(np.float32)
 
 
 def candidate_scales(rng, count, sigma, sigma_max=None):
@@ -103,7 +124,10 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--generations', type=int, default=0, help='0 learns until stopped or mission verified')
     parser.add_argument('--directions', type=int, default=20)
-    parser.add_argument('--direction-mode', choices=('action-row', 'key-factor'), default='action-row')
+    parser.add_argument('--direction-mode',
+                        choices=('action-row', 'key-factor', 'failure-context-key'), default='action-row')
+    parser.add_argument('--context-archive', type=Path,
+                        help='own visible pre-loss training screens, required for failure-context-key')
     parser.add_argument('--sigma', type=float, default=.05)
     parser.add_argument('--sigma-max', type=float,
                         help='stratified upper perturbation radius; omitted uses one radius')
@@ -125,6 +149,7 @@ def main():
             or not np.isfinite([args.sigma, args.minimum_boot_gain]).all()
             or (args.sigma_max is not None and
                 (not np.isfinite(args.sigma_max) or args.sigma_max <= args.sigma))
+            or (args.context_archive is None) != (args.direction_mode != 'failure-context-key')
             or min(args.sigma, args.minimum_boot_gain) <= 0):
         parser.error('new output, all 20 action rows and positive score-search settings required')
     mx.set_cache_limit(128*1024*1024)
@@ -134,6 +159,7 @@ def main():
     settings = {name: getattr(args, name) for name in
                 ('directions', 'direction_mode', 'sigma', 'sigma_max', 'shortlist', 'screen_games',
                  'compare_games', 'confirm_games', 'minimum_boot_gain', 'envs')}
+    settings['context_archive'] = str(args.context_archive.resolve()) if args.context_archive else None
     if args.initialize:
         state = restore_checkpoint(model, args.initialize, np.random.default_rng(0))
         config = dict(state['config'])
@@ -145,6 +171,8 @@ def main():
             initialization_training_steps=state['training_steps'],
             boot_search=settings, search_optimizer='paired complete-boot neural score search; no gradients',
             training_method=('all-action coordinate-row population' if args.direction_mode == 'action-row'
+                             else 'own visible-failure-context physical-key population'
+                             if args.direction_mode == 'failure-context-key'
                              else 'all-physical-key factorized population')
                 + ', score-gated on three fresh full-game training seed sets',
             fitness='displayed score in complete games from boot; no local score prerequisite')
@@ -156,6 +184,7 @@ def main():
         prior_settings = dict(config.get('boot_search', {}))
         prior_settings.setdefault('direction_mode', 'action-row')
         prior_settings.setdefault('sigma_max', None)
+        prior_settings.setdefault('context_archive', None)
         if prior_settings != settings:
             parser.error('resume settings differ from saved boot search')
         config['boot_search'] = prior_settings
@@ -174,9 +203,20 @@ def main():
         raise ValueError('original PPO optimizer changed')
     immutable = {key: np.array(value).copy() for key, value in tree_flatten(model.parameters())
                  if not key.startswith('advantage.')}
+    context_basis = None
+    if args.context_archive is not None:
+        from .defense_ars_context import visible_context
+        context_basis, context = visible_context(model, args.context_archive,
+            config['initialization_model_sha256'])
+        if args.initialize:
+            config['context'] = context
+        elif config.get('context') != context:
+            raise ValueError('resumed visible context differs from checkpoint')
     disk_guard(args.output.parent)
     args.output.mkdir(parents=True, exist_ok=False)
     shutil.copy2(parent/'optimizer.npz', args.output/'ppo-parent-optimizer.npz')
+    if context_basis is not None:
+        np.savez_compressed(args.output/'context-basis.npz', basis=context_basis)
     config.update(boot_search_source_sha256=sha256(Path(__file__)),
         search_source_sha256=sha256(Path(__file__).with_name('defense_ars.py')),
         args={key: str(value) if isinstance(value, Path) else value
@@ -238,6 +278,8 @@ def main():
             center = head_array(model)
             directions = (perturbation_directions(rng, args.directions,
                 center.shape, coordinate_row=True) if args.direction_mode == 'action-row'
+                else context_key_directions(rng, args.directions, center.shape,
+                    action_names(), context_basis) if args.direction_mode == 'failure-context-key'
                 else key_factor_directions(rng, args.directions, center.shape, action_names()))
             scales = candidate_scales(rng, args.directions, args.sigma, args.sigma_max)
             perturbations = scales[:, None, None]*directions
