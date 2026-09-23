@@ -8,11 +8,21 @@ import numpy as np
 from rl.defense import DefenseEnv
 from rl.defense_ars import head_array, make_population_infer
 from rl.defense_ars_focus import (harvest, load_source, perturbation_directions,
-                                  play_segment, verify_source)
+                                  play_segment, score_gated_choice, verify_source)
 from rl.model import QNetwork
 
 
 class FocusedARSTests(unittest.TestCase):
+    def test_score_gate_uses_only_paired_training_score_and_rejects_ties(self):
+        returns = np.array([[[130., 130.], [90., 90.]],
+                            [[100., 100.], [110., 110.]]])
+        self.assertEqual(score_gated_choice(returns, np.array([100., 100.]), 10.),
+                         (0, 100., 130.))
+        self.assertEqual(score_gated_choice(returns, np.array([120., 120.]), 20.)[0], None)
+        self.assertEqual(score_gated_choice(returns+500, np.array([600., 600.]), 10.)[0], 0)
+        with self.assertRaises(ValueError):
+            score_gated_choice(returns, np.array([100.]), 10.)
+
     def test_bias_only_directions_preserve_feature_weights(self):
         rng = np.random.default_rng(10)
         directions = perturbation_directions(rng, 7, (20, 257), bias_only=True)
@@ -26,6 +36,13 @@ class FocusedARSTests(unittest.TestCase):
         np.testing.assert_array_equal(basis[:, :, -1].sum(axis=1), np.ones(20))
         with self.assertRaises(ValueError):
             perturbation_directions(rng, 16, (20, 257), coordinate_bias=True)
+        rows = perturbation_directions(rng, 20, (20, 257), coordinate_row=True)
+        nonzero_rows = np.any(rows != 0, axis=2)
+        np.testing.assert_array_equal(nonzero_rows.sum(axis=0), np.ones(20))
+        np.testing.assert_array_equal(nonzero_rows.sum(axis=1), np.ones(20))
+        self.assertTrue(np.all(np.count_nonzero(rows, axis=(1, 2)) > 100))
+        with self.assertRaises(ValueError):
+            perturbation_directions(rng, 20, (20, 257), bias_only=True, coordinate_row=True)
 
     def test_native_own_loss_state_restore_and_paired_segment_identity(self):
         mx.random.seed(41)

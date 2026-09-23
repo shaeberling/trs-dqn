@@ -7243,3 +7243,35 @@ score gained from the saved state was only 60. These globally perturbed
 action preferences often destroyed useful prior behavior. The next search
 changes just one action preference at a time across all 20 commands, keeping
 the remaining neural policy intact for each candidate.
+
+The [256-decision coordinate trial](results/defense/training/ars-focus-65/README.md)
+kept most candidate play strong: median score gained from those saved states
+was 2,540, but **none of 1,280** focused continuations reached stage 2.
+The best reused ten-game boot mean was 10,388; the final mean was 10,122,
+all stage 1. The high, nearly equal per-candidate returns explain why
+average score improvements alone are weak evidence at this obstacle.
+
+Moving the coordinate-search start to [64 decisions before visible loss](results/defense/training/ars-focus-66/README.md)
+did not help. All 1,280 continuations and all boot validation games remained
+in stage 1; the final boot mean was 9,827. The closer state often left very
+little score variation between actions. This does not identify the physical
+collision point, but it limits the usefulness of a simple persistent action
+preference at either 64 or 256 decisions before the visible loss.
+
+The [screen-dependent single-row search](results/defense/training/ars-focus-67/README.md)
+also failed its first calibration. It kept receiving high scores from the
+old captured states while complete boot performance collapsed to a final
+ten-game mean of 328, all stage 1. It stopped cleanly after five generations
+and 800 focused continuations. This exposes a concrete training mismatch:
+scores after the saved approach state alone do not protect the policy's
+earlier route to that state. Future updates need a score-only acceptance
+check that includes the earlier approach, while still avoiding training on
+evaluation games.
+
+The [two-generation score-gated pilot](results/defense/training/ars-score-gate-pilot-68/README.md)
+confirmed that this mismatch can be caught using only fresh **training**
+scores: a candidate's mean gain from own pre-loss states rose from 2,055 to
+2,440, yet its four complete boot games averaged 2,785 against the parent's
+9,960 on the same seeds. It was rejected, and the saved model hash remained
+exactly the strong parent's. The full native logs and model/RNG states are
+preserved. A longer, score-gated neural search is the next experiment.
