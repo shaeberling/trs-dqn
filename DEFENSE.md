@@ -7735,3 +7735,26 @@ complete-boot score gates and a 150-point confirmation margin. The
 previous 100 collector sources plus the pilot and new run are monitored
 by the sole independent replay collector. Exact code/configuration and
 the source basis are preserved; the verified global best is unchanged.
+
+At its [generation-five checkpoint](results/defense/training/ars-phase-106/milestone-000005/state.json),
+this phase-conditioned run has completed **2,544 full training games / 6.41
+million actions** with no stage-two reach or accepted proposal. Its fixed
+ten-game mean remains **10,388**, and the parent model/RNG state is preserved.
+The first three nominated comparisons improved on 16 games but failed to
+clear the separate 64-game 150-point gain requirement (or reversed),
+illustrating again why short-score gains cannot be taken as bottleneck
+progress. The run continues to its planned eleven generations.
+
+The next distinct training approach is now wired into PPO: optional
+`--curriculum-trigger life-loss --curriculum-lookback L` archives only its
+own actual same-life states L actions before visible loss, and optional
+`--curriculum-restored-life-only` focuses restored segments on the first
+visible loss. These existing native training-environment features are now
+available to the PPO learner, with `--life-terminal` required for the
+restored-life-only option. Reserved boot workers still play complete games;
+evaluation never restores states. The policy still sees four rendered
+screens and learns from displayed score only. A two-worker native training
+and checkpoint-resume smoke test passes; a longer continuation will be
+evaluated from the strong preserved PPO optimizer after the active search
+finishes. This is a test of practice allocation, not a collision oracle or
+proof that the saved states are recoverable.

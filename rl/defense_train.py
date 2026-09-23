@@ -85,6 +85,10 @@ def main():
     parser.add_argument("--curriculum-bins", type=int, default=16)
     parser.add_argument("--curriculum-lookback", type=int, default=0,
                         help="archive an own-play state this many actions before an archive event; 0 disables")
+    parser.add_argument("--curriculum-trigger", choices=("progress", "life-loss"), default="progress",
+                        help="archive on progress or rewind from this learner's own visible life losses")
+    parser.add_argument("--curriculum-restored-life-only", action=argparse.BooleanOptionalAction, default=False,
+                        help="end only restored training segments at their first visible life loss")
     parser.add_argument("--curriculum-cells", choices=("score", "screen", "age"), default="score",
                         help="archive higher score bins, diverse screens or later own-action life ages")
     parser.add_argument("--curriculum-screen-interval", type=int, default=32)
@@ -149,6 +153,11 @@ def main():
             or (args.curriculum_share and not args.curriculum_probability)
             or (args.curriculum_boot_envs and not args.curriculum_share)):
         parser.error("invalid own-experience curriculum settings")
+    if args.curriculum_trigger == "life-loss" and (
+            not args.curriculum_probability or not args.curriculum_lookback):
+        parser.error("life-loss archive requires positive curriculum probability and lookback")
+    if args.curriculum_restored_life_only and (not args.curriculum_probability or not args.life_terminal):
+        parser.error("restored-life-only requires positive curriculum probability and life-terminal targets")
     if (args.sil_updates < 0 or min(args.sil_capacity, args.sil_suffix_steps, args.sil_batch_size) < 1
             or not np.isfinite(args.sil_loss_weight) or args.sil_loss_weight <= 0
             or not np.isfinite(args.sil_value_weight) or args.sil_value_weight < 0):
@@ -326,6 +335,8 @@ def main():
                               curriculum_score_interval=args.curriculum_score_interval,
                               curriculum_per_bin=args.curriculum_per_bin, curriculum_bins=args.curriculum_bins,
                               curriculum_lookback=args.curriculum_lookback,
+                              curriculum_trigger=args.curriculum_trigger,
+                              curriculum_restored_life_only=args.curriculum_restored_life_only,
                               curriculum_cells=args.curriculum_cells,
                               curriculum_screen_interval=args.curriculum_screen_interval,
                               curriculum_age_interval=args.curriculum_age_interval,
