@@ -7646,3 +7646,12 @@ two proposals for each of twenty commands, larger complete-boot score
 gates and exact-score-only tie diversification. The full **444-test**
 suite passed before launch. The best verified 10,480-point replay remains
 the promotion floor.
+
+At generation two, its score-only gates accepted a proposal changing
+the pure `RIGHT` command row, but a separate 64-seed paired check
+[reversed the apparent gain](results/defense/training/ars-action-row-99/paired-generation-2.json):
+**-17.81** displayed points relative to the independently confirmed
+parent, with both policies still in stage one. The model/RNG milestone,
+proposal plan and exact check source are preserved. The live search
+continues, but this short-sample update is not treated as a confirmed
+improvement or promoted replay.

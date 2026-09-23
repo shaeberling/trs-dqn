@@ -37,6 +37,19 @@ The full repository suite passed **444 tests** immediately before this
 run; `fit-source.py`, `context-source.py` and `search-source.py` match
 their recorded hashes.
 
+At generation two, after **928 complete training games and 2,339,213
+actions**, one candidate passed the run's 16-game comparison and fresh
+32-game confirmation (+194.38 and +207.50 displayed points). Its saved
+proposal plan shows a change only to the pure `RIGHT` output row; the
+search had covered every command twice and did not prescribe that row.
+The exact model/RNG checkpoint and score records are saved as
+`milestone-000002`. However, a separate [64-seed paired check](paired-generation-2.json)
+on fresh training seeds 480000–480063 reversed the result: parent mean
+**10,260.78**, candidate mean **10,242.97**, a **-17.81-point** change.
+Both remained in stage one. This candidate is not a confirmed new parent
+or a new global best, although the live run continues from its internal
+score-gated state. The pair-check source is archived as `pair-source.py`.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-early-91/milestone-000005 \
