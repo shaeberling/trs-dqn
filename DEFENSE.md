@@ -7211,3 +7211,12 @@ show the ship left of the right-opening barrier again. The older global best
 scored 2,620 on all four lives. The panel alignment uses visible white
 flashes and later HUD changes, so it does not prove the exact collision time
 or whether the wall or a projectile caused each loss.
+
+The next [own-state focused calibration](results/defense/training/ars-focus-61/README.md)
+restored 48 exact states captured 128 decisions before visible life losses in
+12 new complete training games. It verified each state by replaying its
+original subsequent actions and screens, then sampled new candidate actions
+from those states. All 1,024 scored candidate continuations and all complete
+boot validations still ended in stage 1. The small perturbations produced a
+nearly flat score signal in later rounds. This motivates testing a wider
+unbiased perturbation on the same sort of own-state continuations.
