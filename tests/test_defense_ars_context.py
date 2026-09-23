@@ -78,6 +78,12 @@ class VisibleContextTests(unittest.TestCase):
             '125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171')
         np.testing.assert_array_equal(continued, basis)
         self.assertTrue(lineage['frozen_encoder_match_source'])
+        wide, wide_record = visible_subspace(model, ARCHIVE,
+            '125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171',
+            components=12)
+        self.assertEqual(wide.shape, (13, 257))
+        self.assertEqual(wide_record['subspace_components'], 12)
+        self.assertFalse(wide_record['native_snapshot_read'])
         with self.assertRaises(ValueError):
             visible_subspace(model, ARCHIVE, 'wrong-model')
 

@@ -7447,3 +7447,13 @@ native archive and final model/RNG checkpoint are preserved. Two
 predeclared-gate near-misses remain available in the saved population
 plans for a larger fresh-training-seed score check; neither was quietly
 promoted from this run.
+
+That [64-seed paired check](results/defense/training/ars-subspace-near-miss-82/README.md)
+has now finished. On 192 complete boot training games, the unchanged pilot
+parent averaged **10,280.31**, while the generation-4 and generation-8
+near-misses averaged **9,752.66** and **10,111.56**, respectively. Their
+independent gains were negative (-527.66 and -168.75), and all games
+stayed in stage 1. This directly refutes using either near-miss as a new
+parent; it also confirms that short comparison margins near this barrier
+can be misleading. The exact plans, paired results and probe source are
+archived, with no weights or verified replay promoted.
