@@ -7236,3 +7236,10 @@ final ten-game boot mean was 9,510, all stage 1. The stronger global replay
 is untouched. An earlier own-state start provides a separate test of whether
 these perturbations need more approach time; it is not yet evidence of a
 solution.
+
+The [earlier 256-decision start](results/defense/training/ars-focus-64/README.md)
+also failed: 1,024 focused continuations, none reached stage 2, and median
+score gained from the saved state was only 60. These globally perturbed
+action preferences often destroyed useful prior behavior. The next search
+changes just one action preference at a time across all 20 commands, keeping
+the remaining neural policy intact for each candidate.

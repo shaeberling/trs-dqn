@@ -19,6 +19,13 @@ class FocusedARSTests(unittest.TestCase):
         self.assertEqual(directions.shape, (7, 20, 257))
         self.assertTrue(np.all(directions[:, :, :-1] == 0))
         self.assertTrue(np.any(directions[:, :, -1] != 0))
+        basis = perturbation_directions(rng, 20, (20, 257), coordinate_bias=True)
+        self.assertEqual(int(np.count_nonzero(basis)), 20)
+        np.testing.assert_array_equal(basis[:, :, :-1], 0)
+        np.testing.assert_array_equal(basis[:, :, -1].sum(axis=0), np.ones(20))
+        np.testing.assert_array_equal(basis[:, :, -1].sum(axis=1), np.ones(20))
+        with self.assertRaises(ValueError):
+            perturbation_directions(rng, 16, (20, 257), coordinate_bias=True)
 
     def test_native_own_loss_state_restore_and_paired_segment_identity(self):
         mx.random.seed(41)
