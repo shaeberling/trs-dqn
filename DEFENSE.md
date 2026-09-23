@@ -7315,3 +7315,13 @@ fixed ten-game mean fell from 9,981 to 9,538, with no stage 2. This is a
 functional test, not an improvement. The next run uses 4 / 16 / 16 fresh
 boot games for screening / comparison / confirmation and keeps the original
 strong policy as parent.
+
+The ongoing [complete-boot search](results/defense/training/ars-boot-72/README.md)
+reached generation 5 after 1,328 full training games and 3,335,069 new
+actions. Its first candidate's 860.625-point comparison gain shrank to
+33.125 points on a separate 16-game confirmation and was rejected. Three
+later updates passed both gates, but the fixed ten-game boot mean at the
+[restorable generation-5 milestone](results/defense/training/ars-boot-72/milestone-000005/state.json)
+was 9,975 versus 9,981 for the original parent. All complete games still
+ended in stage 1. This shows score stability under full-boot search, not
+barrier passage or a new global best.

@@ -24,6 +24,17 @@ free-space guard prevents archive exhaustion. Full population outcomes,
 weights, source hashes, RNG state and original PPO optimizer are kept in
 `runs/defense-ars-boot-72/` while active.
 
+At generation 5, the run had evaluated 1,328 complete training games and
+3,335,069 new training actions. Three updates had passed the separate
+16-game confirmation; the first promising comparison gained 860.625 mean
+points but only 33.125 on confirmation and was correctly rejected. The
+fixed ten-game boot validation at generation 5 averaged 9,975, effectively
+the unchanged parent's 9,981; all were stage 1. Its independently restorable
+[model, RNG and evaluation checkpoint](milestone-000005/state.json) is
+preserved here (model SHA-256
+`1b9da6f52aa6f7b4eb5e45ff418f6e6162280d48bc9a81a2e50de984ca87e9c0`).
+This is a score-stability milestone, not passage or a new global best.
+
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
   --initialize results/defense/training/ars-59-head-search/run/generation-000000 \
