@@ -15,6 +15,7 @@ CHECKPOINT = ROOT/'results/defense/training/ars-59-head-search/run/generation-00
 ARCHIVE = ROOT/'results/defense/training/ars-score-gated-69/run/own-loss-states'
 PILOT_CHECKPOINT = ROOT/'results/defense/training/ars-subspace-pilot-80/generation-000001/model.safetensors'
 EARLY_ARCHIVE = ROOT/'results/defense/training/ars-early-source-89'
+BOTTLENECK_ARCHIVE = ROOT/'results/defense/training/ars-bottleneck-source-92'
 
 
 class VisibleContextTests(unittest.TestCase):
@@ -102,6 +103,20 @@ class VisibleContextTests(unittest.TestCase):
         self.assertAlmostEqual((record['diagnostics']['mean_contrast']['middle']['mean']+
                                 record['diagnostics']['mean_contrast']['later']['mean'])/2,
                                1, places=5)
+        with self.assertRaises(ValueError):
+            visible_early_subspace(model, EARLY_ARCHIVE, expected_offsets=(128, 96, 64, 32))
+
+    def test_repeated_failure_window_excludes_only_own_low_score_outliers(self):
+        model = QNetwork(action_count=20)
+        model.load_weights(str(PILOT_CHECKPOINT))
+        mx.eval(model.state)
+        basis, record = visible_early_subspace(model, BOTTLENECK_ARCHIVE,
+            components=12, expected_offsets=(128, 96, 64, 32), minimum_life_score=2400)
+        self.assertEqual(basis.shape, (13, 257))
+        self.assertEqual(record['diagnostics']['examples'], 46)
+        self.assertEqual(len(record['omitted_own_lives']), 2)
+        self.assertEqual(record['minimum_visible_life_score'], 2400)
+        self.assertFalse(record['native_snapshot_read'])
 
 
 if __name__ == '__main__':

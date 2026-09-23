@@ -19,7 +19,7 @@ def visible_approaches(frames, events, offsets=OFFSETS):
     frames = np.asarray(frames)
     if (frames.ndim != 3 or frames.shape[1:] != (16, 64)
             or frames.dtype != np.uint8 or len(offsets) != 4
-            or tuple(sorted(set(offsets), reverse=True)) != tuple(offsets)
+            or tuple(sorted(offsets, reverse=True)) != tuple(offsets)
             or min(offsets) < 4):
         raise ValueError('invalid own rendered-screen trace')
     losses = [event for event in events if event.get('life_lost')]
@@ -57,14 +57,9 @@ def main():
     parser.add_argument('--games', type=int, default=12)
     parser.add_argument('--first-training-seed', type=int, required=True)
     parser.add_argument('--max-attempts', type=int, default=48)
-    parser.add_argument('--offsets', type=int, nargs=4, default=OFFSETS,
-                        help='four descending offsets before each visible loss')
     args = parser.parse_args()
-    offsets = tuple(args.offsets)
     if (args.output.exists() or args.games < 1 or args.max_attempts < args.games
-            or args.first_training_seed < 70000
-            or tuple(sorted(set(offsets), reverse=True)) != offsets
-            or min(offsets) < 4):
+            or args.first_training_seed < 70000):
         parser.error('new archive, positive count and training-only seeds required')
     policy, config = load_policy(args.checkpoint/'model.safetensors')
     if (config.get('game_sha256') != GAME_SHA256
@@ -87,7 +82,7 @@ def main():
                                 result=result))
             continue
         try:
-            samples = visible_approaches(frames, events, offsets=offsets)
+            samples = visible_approaches(frames, events)
         except ValueError as error:
             skipped.append(dict(seed=seed, reason=str(error), result=result))
             continue
@@ -103,7 +98,7 @@ def main():
             name = f"seed-{seed}-life-{item['life']}.npz"
             np.savez_compressed(args.output/name, screens=item['screens'])
             meta = {key: value for key, value in item.items() if key != 'screens'}
-            meta.update(seed=seed, training_only=True, offsets=list(offsets),
+            meta.update(seed=seed, training_only=True, offsets=list(OFFSETS),
                         npz_sha256=sha256(args.output/name),
                         source_checkpoint_sha256=checkpoint_sha,
                         full_game_trace_arrays_sha256=trace_hash)
@@ -120,7 +115,7 @@ def main():
         source_state_sha256=sha256(args.checkpoint/'state.json'),
         source_sha256=sha256(Path(__file__)),
         game_sha256=GAME_SHA256, environment_version=ENVIRONMENT_VERSION,
-        offsets=list(offsets), selection='verified own complete training-game visible life losses',
+        offsets=list(OFFSETS), selection='verified own complete training-game visible life losses',
         proposal_data_only=True, native_snapshot_read=False,
         hidden_state_read=False, action_target_read=False,
         games=games, skipped=skipped, files=files)

@@ -1,0 +1,17 @@
+{
+  "life": 1,
+  "visible_loss_frame": 388,
+  "previous_visible_loss_frame": 0,
+  "visible_score_at_loss": 2500,
+  "seed": 360005,
+  "training_only": true,
+  "offsets": [
+    128,
+    96,
+    64,
+    32
+  ],
+  "npz_sha256": "fdeb9666c58071d45bf6e590a2db174a3d0fc40b064b2206cedc946b0a31819c",
+  "source_checkpoint_sha256": "80e6ffe4cd57c420f0df4ac0a34a923fde5059af40631f6c65a4aa3dbc060e37",
+  "full_game_trace_arrays_sha256": "f9d8d6eafda6a8aa5ce311522044a06fc1dd73436212da988a1dbe0cadd35543"
+}
