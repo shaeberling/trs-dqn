@@ -12,6 +12,35 @@ from rl.defense_noise import (PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise
 
 
 class DefenseNoiseTests(unittest.TestCase):
+    def test_joint_random_key_renewal_preserves_duration_factor_and_rollout_bank(self):
+        noise = PolicyKeyDurationNoise(2, 20, 4, 2, 4, np.random.default_rng(79),
+                                       interval_range=(3, 5))
+        first_period = int(noise.key.periods[0])
+        self.assertTrue(3 <= first_period <= 5)
+        duration_before = noise.duration.values.copy()
+        key_before = noise.key.values.copy()
+        rollout = NoiseRollout(noise)
+        snapshots = []
+        for index in range(first_period):
+            snapshots.append(rollout.record().copy())
+            rollout.redraw(np.array([False, False]))
+            if index < first_period-1:
+                np.testing.assert_array_equal(noise.key.values[0], key_before[0])
+        np.testing.assert_array_equal(noise.duration.values, duration_before)
+        self.assertFalse(np.array_equal(noise.key.values[0], key_before[0]))
+        snapshots.append(rollout.record().copy())
+        rollout.redraw(np.array([True, False]))
+        np.testing.assert_array_equal(noise.duration.values[1], duration_before[1])
+        self.assertFalse(np.array_equal(noise.duration.values[0], duration_before[0]))
+        snapshots.append(rollout.record().copy())
+        bank, ids = rollout.arrays()
+        np.testing.assert_array_equal(bank[ids], np.concatenate(snapshots))
+        for duration in range(4):
+            np.testing.assert_allclose(
+                noise.values[:, duration*20:(duration+1)*20]-noise.values[:, :20],
+                noise.duration.values[:, duration*20:(duration+1)*20]
+                -noise.duration.values[:, :20], atol=1e-6)
+
     def test_joint_key_duration_noise_factorizes_and_replays(self):
         noise = PolicyKeyDurationNoise(2, 20, 4, 2, 4, np.random.default_rng(37))
         self.assertEqual(noise.values.shape, (2, 80))
@@ -40,7 +69,9 @@ class DefenseNoiseTests(unittest.TestCase):
             for flags in (['--policy-key-noise=2', '--policy-duration-noise=4'],
                           ['--policy-key-noise=2', '--learned-durations', '1', '4'],
                           ['--policy-key-noise=2', '--policy-duration-noise=4',
-                           '--policy-key-noise-interval=64', '--learned-durations', '1', '4']):
+                           '--policy-key-noise-min-interval=64',
+                           '--policy-key-noise-max-interval=32',
+                           '--learned-durations', '1', '4']):
                 result = subprocess.run([sys.executable, '-m', 'rl.defense_train',
                                          '--run', str(output), *flags],
                                         capture_output=True, text=True, timeout=30)
