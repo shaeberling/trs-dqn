@@ -119,3 +119,35 @@ The complete model/optimizer/RNG state, both fixed evaluations and resolved
 replay bundle were copied byte-for-byte into this archive. This is the new
 provisional stage-then-mean selection, not a mission claim or replacement
 for the protected global-best replay. The final planned fixed check remains.
+
+## Target and fresh comparison complete
+
+The trainer stopped normally at its exact **16,777,216**-action target.
+The final fixed ten-game evaluation averaged **9,844**, median **10,275**,
+best **10,410**, all stage one. The predeclared selector therefore retained
+the seventh checkpoint as the best frozen model; all eight [fixed checks](fixed-evaluations/)
+are archived. The complete [terminal model/optimizer/RNG state](terminal-checkpoint/state.json),
+resolved config, terminal status and [full compressed metric log](metrics.jsonl.gz)
+were copied from the finished run, with byte comparisons and a
+decompression comparison against the source log. Terminal model SHA-256 is
+`b9f6a17e2501f793e0ba1f824d2ec16bedeb0a7415797883845a24876ef82b3d`.
+
+The unattended [fresh comparison](fresh-comparison/report.json) evaluated
+the selected seventh model and unchanged trial-160 terminal parent on **128
+matched complete original-boot games**, seeds 612000–612127. The selected
+continuation averaged **9,641.72** (median **10,315**, best **10,480**)
+versus parent **9,314.06** (median **9,890**, best **10,170**), winning
+**102** paired seeds to **26**, with no ties. Both fresh local replay bundles
+were independently native-verified against their respective frozen model
+hashes. The continuation's [10,480-point replay](fresh-comparison/continuation-612000-replay/replay.html)
+reproduced seed 612059 for **2,525** learned actions but remained in stage
+one. All **256** fresh games stayed in stage one with zero missions.
+
+This validates a score-training gain from continuing the balanced prior,
+but it does **not** complete the original game or exceed the protected
+global-best replay's stage or score. The selected seventh checkpoint is an
+eligible score-training parent for a *different* next experiment. Merely
+repeating this same continuation again is not justified by these outcomes.
+After this archive is committed, retain the selected and terminal full
+states, all evaluations, logs and verified replays, and prune unselected
+intermediate live optimizer snapshots under the documented retention rule.

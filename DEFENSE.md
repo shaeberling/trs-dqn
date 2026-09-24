@@ -23,12 +23,18 @@ stage-two play or successful mission has been verified; the protected
 [10,480-point best replay](results/defense/learned/best/replay.html) remains
 unchanged.
 
-Next, the balanced arm's late training mean was still rising. The
-[predeclared continuation](results/defense/training/ppo-balanced-fire-continuation-161/README.md)
-resumes its exact optimizer and policy RNG for 8,388,608 more original
-score-reward own actions, with fixed stage-gated checks, a 5.1 GiB disk
-guard and fresh comparison against its frozen parent. This is a test of
-continued learning, not evidence of a stage-two passage.
+The [predeclared balanced continuation](results/defense/training/ppo-balanced-fire-continuation-161/README.md)
+then resumed the exact optimizer and policy RNG for **8,388,608** more
+own actions and stopped normally at **16,777,216** total. Its seventh
+checkpoint won the stage-then-fixed-mean selector (ten-game mean **10,258**).
+On **128 fresh matched complete games**, it averaged **9,641.72** versus
+**9,314.06** for its frozen parent, winning **102** seeds to **26**.
+Both fresh replays independently verified, including a tied **10,480**
+stage-one best. All **256** fresh games still ended in stage one, with no
+successful mission. This confirms a score-training gain, not completion or
+a replacement for the protected global-best replay. Full selected and
+terminal states, all eight fixed checks, logs and fresh comparison are
+archived; a different next mechanism is needed to pursue passage.
 
 Storage retention is active, not just a warning threshold. After archiving
 the balanced comparison, **14** unselected live checkpoint directories
@@ -40,9 +46,9 @@ compressed full metrics and all **13** replay bundles. Only its duplicate
 local checkpoint/replay directories (about **681 MiB**) were removed;
 the tracked archive and lightweight local config/log/status remain. These
 deleted local duplicates are recoverable from the tracked archive and
-pushed branch. The current PPO run has a separate exact-PID 5.1 GiB disk
-guard, and intermediate optimizer snapshots will be pruned only after
-their own selection/comparison archive is complete.
+pushed branch. The continuation had a separate exact-PID 5.1 GiB disk
+guard, and its unselected intermediate optimizer snapshots are pruned only
+after the completed comparison archive is committed.
 
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
