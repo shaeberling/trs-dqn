@@ -50,3 +50,24 @@ actions after the anchor. Its best mutation lasted **120** actions at the
 same score; it did not enter stage two. The smoke only checks native
 reexecution and search bookkeeping, not gameplay success.
 The full **497-test** regression suite passed before production.
+
+## Completed bounded search
+
+The production search completed all **20,000 distinct mutated plans**
+plus the own-policy baseline. **4,792** plans attained exactly the
+baseline's **2,620** displayed first-life points, and **3,208** of those
+lasted at least one action beyond the baseline's 119-action suffix before
+visible loss. The best survived **121** actions after the frame-288
+anchor, just **two** beyond the source, still at 2,620 points. **None**
+scored above 2,620, survived the 144-action horizon, reached stage two,
+or completed a mission. Every plan, mutation, real outcome, source hash,
+RNG state and final report are in the [full run archive](run/).
+
+This is evidence against further local score-ranked mutation from frame
+288 with the same horizon and replacement profile. The anchor is only
+34 actions before the first visible middle opening in the older
+[two-gap timing report](../gate-timing-127/README.md); it may already be
+too late to change the ship's entry position for the far-right opening.
+That is a hypothesis, not a collision or feasibility proof. This
+diagnostic has not trained or promoted any neural policy, and the global
+verified best replay is unchanged.
