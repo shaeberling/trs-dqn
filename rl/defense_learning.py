@@ -46,6 +46,9 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
     from .recurrent_policy import RECURRENT_ARCHITECTURE
     architecture = config.get("architecture")
+    if config.get("canonical_fire") and (algorithm != "ppo" or architecture is not None
+                                         or config.get("allow_enter", False)):
+        raise ValueError("Canonical fire requires standard feedforward Defense PPO")
     if algorithm == IMAGINATION_ALGORITHM:
         if (architecture != 'screen-rssm-imagined-actor-v1' or config.get('allow_enter', False)
                 or config.get('world_hidden') != 128 or config.get('world_stochastic') != 32):
@@ -78,6 +81,9 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
                 "learned parameter-search categorical head, temperature-scaled sampling")
     if algorithm != "ppo":
         raise ValueError("Unsupported Defense policy algorithm")
+    if config.get("canonical_fire"):
+        return ("learned fixed twelve-group categorical, sampled" if temperature == 1 else
+                "learned fixed twelve-group categorical, temperature-scaled sampling")
     return ("learned categorical, sampled" if temperature == 1 else
             "learned categorical logits, temperature-scaled sampling")
 
@@ -187,6 +193,9 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         predict = mx.compile(model, inputs=model.state)
         return greedy_policy(lambda obs: np.array(predict(mx.array(obs)))), config
     predict = mx.compile(model.policy_value, inputs=model.state)
+    if config.get('canonical_fire'):
+        from .defense_canonical_fire import CanonicalFirePolicy
+        return CanonicalFirePolicy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
     return temperature_policy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
 
 

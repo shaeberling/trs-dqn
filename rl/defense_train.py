@@ -61,6 +61,8 @@ def main():
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False,
                         help="add Enter as a learned action; never automatically skip an intro")
+    parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
+                        help="train a fixed twelve-choice categorical policy combining nine fire-key aliases")
     parser.add_argument("--tstates", type=int, default=100_000)
     parser.add_argument("--observation-stride", type=int, default=1,
                         help="policy sees four visible frames spaced this many actions apart")
@@ -137,6 +139,9 @@ def main():
     if args.freeze_recurrent_base and (not args.recurrent_hidden or args.memory_scale == 0
                                       or not (args.initialize_policy or args.resume)):
         parser.error("frozen recurrent base requires own full-policy initialization and enabled memory")
+    if args.canonical_fire and (args.allow_enter or args.recurrent_hidden or args.sil_updates
+                                or args.policy_bias_noise or args.policy_weight_noise):
+        parser.error("canonical fire requires plain twenty-command feedforward PPO without SIL or policy noise")
     if min(args.steps, args.max_episode_steps, args.eval_max_steps, args.mlx_cache_mb) < 0:
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
@@ -179,7 +184,7 @@ def main():
     import mlx.core as mx
     from mlx.utils import tree_unflatten
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
-    agent_class, extra_agent = PPO, {}
+    agent_class, extra_agent = PPO, dict(canonical_fire=args.canonical_fire)
     if args.recurrent_hidden:
         from .defense_recurrent import RecurrentPPO
         from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
@@ -284,6 +289,12 @@ def main():
                       ppo_source_sha256=sha256(Path(__file__).with_name("ppo.py")),
                       model_source_sha256=sha256(Path(__file__).with_name("model.py")),
                       policy_noise_reset="visible life loss or episode boundary; fresh draw after resume")
+    if args.canonical_fire:
+        config.update(policy="learned categorical over fixed twelve command groups, sampled",
+                      evaluation_policy="same fixed grouped categorical policy, sampled",
+                      canonical_fire_source_sha256=sha256(Path(__file__).with_name("defense_canonical_fire.py")),
+                      canonical_fire_semantics="commands 9..17 grouped by log-sum-exp and emitted as Space; "
+                                               "commands 0..8 and 18..19 unchanged on every screen")
     if args.curriculum_probability:
         config.update(curriculum_archive_saved=False,
                       curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
