@@ -98,3 +98,77 @@ replay and frozen config were copied into this archive and compared
 byte-for-byte with the active run. Training continues toward the remaining
 predeclared checkpoints. This early score is not a barrier improvement or
 global-best promotion; the protected replay remains unchanged.
+
+## Why the repeated loss matters (post-launch audit)
+
+The user's observation is supported by the independently original-boot-
+verified [protected best replay](../../learned/best/replay.html), not yet by
+this fresh learner. Its four visible ship losses occur at replay decisions
+410 / 1133 / 1863 / 2580; each life earns exactly **2,620** displayed
+points. Its last positive displayed-score increments occur at decisions
+388 / 1114 / 1832 / 2550, leaving **22 / 19 / 31 / 30** consecutive
+zero-reward decisions before those *visible* losses. These are not known
+physical collision times. This audit uses only the replay's recorded score
+increments, actions and visible life events; the protected trace SHA-256 is
+`d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d`.
+
+The [verified-screen timing audit](../../diagnostics/gate-timing-127/README.md)
+shows two offset openings: one around columns 21–30, then another beginning
+at column 51. A learned ship stays near the middle as the latter approaches.
+The [frozen-value audit](../../diagnostics/score-value-barrier-01/README.md)
+also finds that the score critic expects almost no remaining within-life
+points near the loss. Together these support a *navigation and sparse-credit
+hypothesis*, not proof of a wall collision or an exact route. Earlier
+constant-key, multi-phase and screen-conditioned searches failed within
+their specified bounds; their actions are not demonstrations or learner
+inputs.
+
+The new treatment's first verified best-effort replay instead scores
+**60 / 120 / 80 / 80** on its four lives (340 total, 1,580 reproduced
+actions; trace SHA-256
+`79723d75dce004ee015fd318be023c46ff5b68c51cbe9cb49155a0bada324849`).
+It has **not** reached the 2,620-point bottleneck. Thus this experiment
+tests whether a less fire-biased fresh action prior can first learn the
+early route and eventually behave differently at the shared barrier;
+its current low scores cannot be interpreted as a new barrier outcome.
+No training reward, policy input, action, checkpoint selection rule or
+predeclared run length changed because of this read-only audit.
+
+## Second checkpoint, disk pause, and resume
+
+At **2,097,152** actions, the next [fixed ten-game evaluation](milestone-000002097152/evaluation.json)
+averaged **348**, median **350**, best **360**; all ten complete games
+remained in stage one. The [360-point replay](milestone-replay-000002097152/replay.html)
+was independently reexecuted for all **1,701** learned actions with
+`verified: true`. Its model SHA-256 is
+`a79d4b8d3096bd8e2c4c1a9c82c3cee93b153fa1283815a17869fd8d0d255cf1`.
+The full checkpoint and resolved replay version were copied to this
+archive and compared byte-for-byte with the active run. Neither result
+approaches the protected 10,480-point stage-one best.
+
+The disk watchdog then signalled a clean stop at **2,101,248** actions
+when free space fell to **5.087 GiB**, below its 5.1 GiB floor. The
+trainer saved its full `latest` model, optimizer and policy RNG. No
+validation or model promotion was inferred from this safety stop.
+After auditing stopped historical runs, we removed **399** superseded
+intermediate checkpoint directories from a completed Breakdown run and
+**299** from four retired Defense runs. Each run's selected/best and final
+checkpoint, metrics, replay bundles and the separately preserved winning
+or protected-best packages remain. Free space rose from about **5.07**
+to **13.69 GiB**. Deleted intermediate optimizer states are not
+recoverable unless separately archived; their validation history remains
+in the run logs. This cleanup did not modify the game or live learner.
+
+The same treatment resumed from its exact 2,101,248-action `latest`
+optimizer/RNG state, with original episodes freshly booted as documented
+by the trainer. The resumed process uses the same configuration and
+8,388,608-action target, guarded by the exact-run 5.1 GiB watchdog.
+Because the trainer schedules its next evaluation relative to the
+resume action counter, the later fixed checks shift by **4,096** actions
+from the original multiples; the first two checkpoint counts above are
+unchanged. Keep all active treatment/control milestones until their
+predeclared comparison is complete, then retain selected and terminal
+resumable states, metrics, verified replays and evaluation records while
+pruning unselected intermediate optimizer snapshots. This retention
+policy prevents retired runs from again accumulating hundreds of
+unneeded full checkpoints.
