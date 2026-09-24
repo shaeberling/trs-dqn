@@ -1,0 +1,25 @@
+{
+  "diagnostic_only": true,
+  "selection": "highest mean displayed score on four fixed ten-game complete evaluations per new arm, before fresh games",
+  "fresh_seeds": [600800, 600927],
+  "complete_games_per_policy": 128,
+  "selected_near_loss_checkpoint": "run/step-000008932096/model.safetensors",
+  "selected_long_credit_checkpoint": "../ppo-long-credit-117/run/step-000009063168/model.safetensors",
+  "ordinary_control_checkpoint": "../ppo-early-loss-control-115/milestone-000008669952/model.safetensors",
+  "common_parent_checkpoint": "../ppo-canonical-control-113/milestone-000008538880/model.safetensors",
+  "results": {
+    "near_loss_64": {"mean_score": 9764.296875, "median_score": 10360, "best_score": 10480, "stage_2_games": 0, "below_9000": 30, "at_10480": 17},
+    "long_credit_lambda_0995": {"mean_score": 10121.796875, "median_score": 10400, "best_score": 10460, "stage_2_games": 0, "below_9000": 14, "at_10480": 0},
+    "ordinary_control_128": {"mean_score": 10377.265625, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 5, "at_10480": 20},
+    "parent": {"mean_score": 10398.90625, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 4, "at_10480": 50}
+  },
+  "paired_vs_parent": {
+    "near_loss_64": {"improved": 24, "worsened": 92, "tied": 12, "mean_delta": -634.609375},
+    "long_credit_lambda_0995": {"improved": 15, "worsened": 111, "tied": 2, "mean_delta": -277.109375}
+  },
+  "paired_vs_ordinary_control": {
+    "near_loss_64": {"improved": 30, "worsened": 83, "tied": 15, "mean_delta": -612.96875},
+    "long_credit_lambda_0995": {"improved": 19, "worsened": 109, "tied": 0, "mean_delta": -255.46875}
+  },
+  "conclusion": "neither setting passed stage one or improved the common parent's fresh mean; no replacement of confirmed parent or verified global best"
+}
