@@ -78,3 +78,11 @@ at fresh initialization. Local best-effort replays independently reproduced
 `verification.json` files report `verified: true`. Full smoke model,
 optimizer, RNG, metrics and replay bundles were **moved**, not copied,
 into this archive. Neither smoke checkpoint enters production selection.
+
+The full treatment started from the unchanged seed-41 fresh initializer in
+`runs/defense-ppo-balanced-fire-160/treatment/`. A separate
+`rl.defense_disk_watch` process checks the exact trainer PID and signals a
+graceful stop if free space falls below **5.1 GiB**; it neither reads screens
+nor changes learning. The trainer's `status.json`, optimizer checkpoint and
+local verified replay are the authoritative progress records. A disk stop
+is a safety pause, not an evaluation result or goal completion.
