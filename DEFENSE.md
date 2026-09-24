@@ -140,7 +140,13 @@ exploration can escape the same failure point. It resumes the original
 option-credit full state and changes training-only noise strength, not
 screen input, displayed-score reward, or frozen evaluation. Its short
 native smoke completed with a verified stage-one replay; the planned
-524,288-action first gate will determine whether to extend or archive it.
+524,288-action first gate stopped early on its predeclared collapse rule:
+its first two noise-free ten-game means were **2,967 / 3,980**, all
+stage one. It still sampled 540 long holds and nearly 8,000 key-factor
+redraws before stopping, so the stronger exploration happened but did
+not improve learned play. Full stopped model/optimizer/RNG state and a
+native-verified local replay are archived. It is not extended, compared
+on fresh seeds, or promoted; the protected best remains unchanged.
 
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
