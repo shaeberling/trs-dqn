@@ -16,6 +16,13 @@ Both runs keep isolated artifact roots, watched by the one independent
 collector. The global verified best replay is never overwritten by a
 lower-ranked result.
 
+The first [full optimizer/RNG milestone](milestone-000008538880/state.json)
+is preserved after **131,072 new actions**. Its ten complete fixed-seed
+games averaged **10,438**, median **10,435**, best **10,480**; all stayed
+in stage one. This is an early score check, not a barrier clear or an
+independent result. The grouped arm's first mean was 9,457, and both
+learners continue to the predeclared endpoint.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-canonical-control-113 \

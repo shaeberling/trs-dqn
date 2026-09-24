@@ -24,6 +24,13 @@ The live output will be `runs/defense-ppo-canonical-112/`. Exact
 configuration/source and all full model/optimizer/RNG milestones will be
 archived here.
 
+The first [full optimizer/RNG milestone](milestone-000008538880/state.json)
+is preserved after **131,072 new actions**. Its ten complete fixed-seed
+games averaged **9,457**, median **10,460**, best **10,480**; none reached
+stage two. This is below the matched control's first mean of 10,438,
+but one ten-game batch cannot establish a reliable ranking. The
+independently verified global replay remains unchanged.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-canonical-112 \
