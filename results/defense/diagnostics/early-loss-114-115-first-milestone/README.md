@@ -19,6 +19,11 @@ score. Equal life scores do not prove identical course positions or physical
 collision sites. The white-screen marker is an alignment heuristic, not a
 collision label; some panels already show loss animation. Only the planned
 fresh complete-game comparison can judge the trained variants fairly.
+Pure directional movement accounted for **54.7–64.1%** of the 64-action
+windows before the alignment marker across these eight lives. Thus the
+repeated failure is not simply an absence of movement commands. Counts do
+not measure displacement, and in stage one adding Space to an arrow suppresses
+movement; the trace alone cannot identify which choices caused a collision.
 
 [Machine-readable report](report.json) records provenance, action windows and
 the original independent neural-action verification for both traces.

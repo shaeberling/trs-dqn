@@ -19,6 +19,12 @@ confirmed common parent and near-loss arm will be tested on those seeds too.
 All are screen-only learned policies, with displayed-score reward and no
 demonstrations, collision oracle, scripted steering or evaluation-time resets.
 
+The first [full model/optimizer/RNG milestone](milestone-000008669952/state.json)
+is preserved after 131,072 new actions. Its ten fixed complete games
+averaged **7,888**, median **7,900**, best **10,280**; all stayed in stage
+one. This is an early regression, not evidence of improved barrier credit;
+the predeclared continuation remains active.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-long-credit-117 \
