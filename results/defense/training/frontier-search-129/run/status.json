@@ -1,0 +1,22 @@
+{
+  "expansions": 100000,
+  "archive_cells": 4096,
+  "distinct_cells": 10898,
+  "seed_best_life_score": 2640,
+  "exploration_best_life_score": 2640,
+  "counts": {
+    "seeded": 368,
+    "exploration_actions": 871071,
+    "admitted": 12005,
+    "life_losses": 53057
+  },
+  "rng_state": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 106703031410502340880416866801872193627,
+      "inc": 30972426650731158278230651694608615767
+    },
+    "has_uint32": 0,
+    "uinteger": 687063387
+  }
+}

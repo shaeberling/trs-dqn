@@ -1,0 +1,72 @@
+{
+  "config": {
+    "source_archive": "/Users/sascha/source/trs-dqn/results/defense/training/ars-score-gated-69/run/own-loss-states",
+    "source_index_sha256": "7cf67fe2992b120a415d8aa46ecdbbacf2c01ccf04e4f59acbda894aea21b47d",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "source_sha256": "1c5ec47eef597aa93971f8edce4372826180bd2c88225f1f3cd5f66dbc4a36aa",
+    "screen_cell_encoding": "graphics-9x16x8-v1",
+    "effective_commands": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "holds": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "args": {
+      "source_archive": "results/defense/training/ars-score-gated-69/run/own-loss-states",
+      "output": "runs/defense-frontier-search-129",
+      "expansions": 100000,
+      "capacity": 4096,
+      "source_stride": 8,
+      "seed": 503
+    },
+    "training_only": true,
+    "model_updates": 0,
+    "policy_inputs_changed": false,
+    "score_reward_unchanged": true,
+    "random_actions_not_learned_replay": true
+  },
+  "expansions": 100000,
+  "source_games": 12,
+  "source_states": 48,
+  "archive_cells": 4096,
+  "distinct_cells": 10898,
+  "seed_best_life_score": 2640,
+  "exploration_best_life_score": 2640,
+  "counts": {
+    "seeded": 368,
+    "exploration_actions": 871071,
+    "admitted": 12005,
+    "life_losses": 53057
+  },
+  "rng_state": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 106703031410502340880416866801872193627,
+      "inc": 30972426650731158278230651694608615767
+    },
+    "has_uint32": 0,
+    "uinteger": 687063387
+  },
+  "discovery": false,
+  "model_updates": 0,
+  "published_replay": false,
+  "limitations": [
+    "Random held-key branches are not neural-policy actions.",
+    "Screen-cell novelty chooses reset states, not rewards or actions.",
+    "Opaque native bytes are never decoded or fed to a model.",
+    "Visible life loss may lag physical collision."
+  ]
+}
