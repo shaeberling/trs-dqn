@@ -46,6 +46,17 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
     from .recurrent_policy import RECURRENT_ARCHITECTURE
     architecture = config.get("architecture")
+    if config.get("learned_durations"):
+        from .defense_duration_ppo import duration_action_names
+        durations = config["learned_durations"]
+        if (algorithm != "ppo" or architecture is not None or config.get("canonical_fire")
+                or config.get("repeat_previous_action") or config.get("allow_enter", False)
+                or config.get("policy_action_names") != list(duration_action_names(durations))
+                or not config.get("life_terminal")):
+            raise ValueError("Invalid learned-duration PPO policy profile")
+        return ("learned categorical key-duration options, sampled; holds end at visible life boundaries"
+                if temperature == 1 else
+                "learned categorical key-duration options, temperature-scaled; holds end at visible life boundaries")
     if config.get("repeat_previous_action"):
         from .defense_repeat_previous import POLICY_ACTION_NAMES
         if (algorithm != "ppo" or architecture is not None or config.get("canonical_fire")
@@ -176,7 +187,9 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         from .defense_quantile import QuantileQ
         model = QuantileQ(len(names), config["quantiles"])
     else:
-        model = QNetwork(action_count=len(names) + int(config.get("repeat_previous_action", False)))
+        model = QNetwork(action_count=(len(names)*len(config["learned_durations"])
+                       if config.get("learned_durations") else
+                       len(names) + int(config.get("repeat_previous_action", False))))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
     if config.get('algorithm') == ARS_ALGORITHM:
@@ -208,6 +221,9 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
     if config.get("repeat_previous_action"):
         from .defense_repeat_previous import RepeatPreviousPolicy
         policy = RepeatPreviousPolicy(policy)
+    if config.get("learned_durations"):
+        from .defense_duration_ppo import DurationCategoricalPolicy
+        policy = DurationCategoricalPolicy(policy, config["learned_durations"])
     return policy, config
 
 

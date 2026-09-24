@@ -33,6 +33,8 @@ def main():
                        help="own feedforward PPO checkpoint for a zero-output recurrent residual base")
     start.add_argument("--initialize-repeat-policy", type=Path,
                        help="own ordinary PPO checkpoint for a fresh continue-previous-action learner")
+    start.add_argument("--initialize-duration-policy", type=Path,
+                       help="own ordinary PPO checkpoint for a fresh learned key-duration policy")
     parser.add_argument("--continue-initial-bias-offset", type=float, default=0.,
                         help="direction-neutral extra-action bias on own-policy initialization; 0 preserves mean row")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
@@ -60,6 +62,8 @@ def main():
                         help="training-only actor output-weight noise std, fixed per life; 0 disables")
     parser.add_argument("--policy-key-noise", type=float, default=0,
                         help="training-only symmetric key-factor logit noise std, fixed per life; 0 disables")
+    parser.add_argument("--policy-duration-noise", type=float, default=0,
+                        help="training-only direction-neutral duration-factor logit noise std per life")
     parser.add_argument("--policy-key-noise-interval", type=int, default=0,
                         help="redraw key factors after N own actions per worker; 0 = only at visible boundaries")
     parser.add_argument("--policy-key-noise-min-interval", type=int, default=0,
@@ -75,6 +79,10 @@ def main():
                         help="add Enter as a learned action; never automatically skip an intro")
     parser.add_argument("--repeat-previous-action", action=argparse.BooleanOptionalAction, default=False,
                         help="learn a twenty-first choice that continues the policy's own last key")
+    parser.add_argument("--learned-durations", nargs="*", type=int, default=[],
+                        help="learn joint physical keys and option holds, e.g. 1 4 16 64")
+    parser.add_argument("--duration-initial-logit-spacing", type=float, default=2.,
+                        help="direction-neutral initial logit penalty per longer hold; only for fresh duration initialization")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
                         help="train a fixed twelve-choice categorical policy combining nine fire-key aliases")
     parser.add_argument("--tstates", type=int, default=100_000)
@@ -117,7 +125,7 @@ def main():
         prior = json.loads((args.resume/"state.json").read_text())
         explicit = {word.split("=", 1)[0] for word in sys.argv[1:] if word.startswith("--")}
         for key, value in prior["config"].items():
-            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_repeat_policy", "initialize_only")
+            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_repeat_policy", "initialize_duration_policy", "initialize_only")
                     and "--"+key.replace("_", "-") not in explicit
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
@@ -131,6 +139,10 @@ def main():
             parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
         if args.repeat_previous_action != config.get("repeat_previous_action", False):
             parser.error("Changing continue-action profile requires fresh initialization")
+        if args.learned_durations != config.get("learned_durations", []):
+            parser.error("Changing learned-duration profile requires fresh initialization")
+        if args.duration_initial_logit_spacing != config.get("duration_initial_logit_spacing", 2.):
+            parser.error("Changing duration initialization spacing requires fresh initialization")
         if args.continue_initial_bias_offset != config.get("continue_initial_bias_offset", 0.):
             parser.error("Continue-action initialization offset cannot change on optimizer resume")
         from .recurrent_policy import RECURRENT_ARCHITECTURE
@@ -165,6 +177,23 @@ def main():
         parser.error("continue-action learner requires ordinary feedforward PPO without Enter, SIL or other initialization")
     if args.initialize_repeat_policy and not args.repeat_previous_action:
         parser.error("--initialize-repeat-policy requires --repeat-previous-action")
+    if args.learned_durations:
+        from .defense_repeat import validate_spec
+        try:
+            validate_spec(20, args.learned_durations)
+        except ValueError as error:
+            parser.error(str(error))
+        if (args.allow_enter or args.recurrent_hidden or args.canonical_fire
+                or args.repeat_previous_action or args.sil_updates or args.initialize_encoder
+                or args.initialize_policy or args.initialize_repeat_policy or not args.life_terminal
+                or not (args.initialize_duration_policy or args.resume)):
+            parser.error("learned durations require own ordinary-policy initialization, life terminals, and plain feedforward PPO")
+    elif args.initialize_duration_policy:
+        parser.error("--initialize-duration-policy requires --learned-durations")
+    if (not np.isfinite(args.duration_initial_logit_spacing)
+            or not 0 <= args.duration_initial_logit_spacing <= 20
+            or (not args.learned_durations and args.duration_initial_logit_spacing != 2.)):
+        parser.error("duration initial spacing must be in 0..20 and requires learned durations")
     if (not np.isfinite(args.continue_initial_bias_offset)
             or not 0 <= args.continue_initial_bias_offset <= 10
             or (args.continue_initial_bias_offset and not (args.initialize_repeat_policy or args.resume))):
@@ -205,6 +234,11 @@ def main():
                                            or args.sil_updates or args.allow_enter or args.canonical_fire
                                            or args.recurrent_hidden))):
         parser.error("policy-key-noise requires ordinary feedforward Defense actions without other noise or SIL")
+    if (not np.isfinite(args.policy_duration_noise) or args.policy_duration_noise < 0
+            or (args.policy_duration_noise and (not args.learned_durations or args.policy_bias_noise
+                                                or args.policy_weight_noise or args.policy_key_noise
+                                                or args.sil_updates))):
+        parser.error("policy-duration-noise requires learned durations without other noise or SIL")
     if args.policy_key_noise_interval < 0 or (args.policy_key_noise_interval and not args.policy_key_noise):
         parser.error("policy-key-noise-interval requires positive key noise and a nonnegative interval")
     if (args.policy_key_noise_min_interval or args.policy_key_noise_max_interval) and (
@@ -224,13 +258,18 @@ def main():
     from mlx.utils import tree_unflatten
     mx.set_cache_limit(args.mlx_cache_mb*1024*1024)
     agent_class, extra_agent = PPO, dict(canonical_fire=args.canonical_fire)
+    if args.learned_durations:
+        from .defense_duration_ppo import DurationPPO
+        agent_class = DurationPPO
     if args.recurrent_hidden:
         from .defense_recurrent import RecurrentPPO
         from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
         agent_class = RecurrentPPO
         extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale,
                           freeze_base=args.freeze_recurrent_base)
-    policy_action_count = len(action_names(args.allow_enter)) + int(args.repeat_previous_action)
+    policy_action_count = (len(action_names(False))*len(args.learned_durations)
+                           if args.learned_durations else
+                           len(action_names(args.allow_enter)) + int(args.repeat_previous_action))
     agent = agent_class(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
                         action_count=policy_action_count,
                         value_coefficient=args.value_coefficient, **extra_agent)
@@ -254,6 +293,15 @@ def main():
                                                           bias_offset=args.continue_initial_bias_offset)
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
+        elif args.initialize_duration_policy:
+            from .defense_duration_ppo import initialize_duration_policy
+            try:
+                initialization = initialize_duration_policy(
+                    agent.model, args.initialize_duration_policy, args.learned_durations,
+                    tstates=args.tstates, observation_stride=args.observation_stride,
+                    logit_spacing=args.duration_initial_logit_spacing)
+            except (OSError, ValueError, KeyError) as error:
+                parser.error(str(error))
         elif args.initialize_policy:
             from .defense_initialization import initialize_policy
             try:
@@ -270,7 +318,7 @@ def main():
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
         # Broad initial exploration; no preference for a hand-selected action.
-        if not (args.initialize_policy or args.initialize_repeat_policy):
+        if not (args.initialize_policy or args.initialize_repeat_policy or args.initialize_duration_policy):
             head = agent.model.base.advantage if args.recurrent_hidden else agent.model.advantage
             head.weight *= .1
             head.bias *= .1
@@ -288,8 +336,10 @@ def main():
     boot_episodes = prior.get("boot_episodes", episodes) if prior else 0
     restored_segments = prior.get("restored_segments", 0) if prior else 0
     noise = None
-    if args.policy_bias_noise or args.policy_weight_noise or args.policy_key_noise:
-        from .defense_noise import PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise, NoiseRollout
+    if (args.policy_bias_noise or args.policy_weight_noise or args.policy_key_noise
+            or args.policy_duration_noise):
+        from .defense_noise import (PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise,
+                                    PolicyDurationNoise, NoiseRollout)
         noise_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 1873]))
         if prior and "policy_noise_rng" in prior:
             noise_rng.bit_generator.state = prior["policy_noise_rng"]
@@ -305,6 +355,10 @@ def main():
                                                    args.policy_key_noise_max_interval)
                                    if args.policy_key_noise_min_interval else None)
             noise_argument, noise_kind = "logit_bias", "factorized-key-output-bias"
+        elif args.policy_duration_noise:
+            noise = PolicyDurationNoise(args.envs, len(action_names(False)),
+                                        len(args.learned_durations), args.policy_duration_noise, noise_rng)
+            noise_argument, noise_kind = "logit_bias", "factorized-duration-output-bias"
         else:
             noise = PolicyBiasNoise(args.envs, policy_action_count,
                                     args.policy_bias_noise, noise_rng)
@@ -327,6 +381,14 @@ def main():
                       repeat_previous_source_sha256=sha256(Path(__file__).with_name("defense_repeat_previous.py")),
                       policy="learned categorical with own-previous-key continuation, sampled",
                       previous_action_reset="visible life loss or episode boundary; NOOP at boot/resume")
+    if args.learned_durations:
+        from .defense_duration_ppo import duration_action_names
+        config.update(policy_action_names=list(duration_action_names(args.learned_durations)),
+                      duration_source_sha256=sha256(Path(__file__).with_name("defense_duration_ppo.py")),
+                      duration_executor_source_sha256=sha256(Path(__file__).with_name("defense_repeat.py")),
+                      policy="learned categorical joint physical key-duration options, sampled",
+                      actor_update="only actual option starts; every base action trains the score-value critic",
+                      duration_reset="visible life loss or episode boundary; pending hold cancelled")
     if args.recurrent_hidden:
         config.update(architecture=RECURRENT_ARCHITECTURE,
                       recurrent_source_sha256=sha256(Path(__file__).with_name('defense_recurrent.py')),
@@ -340,7 +402,9 @@ def main():
     if initialization is not None:
         config.update(initialization=initialization,
                       initialization_source_sha256=sha256(Path(__file__).with_name(
-                          "defense_repeat_previous.py" if args.initialize_repeat_policy else "defense_initialization.py")))
+                          "defense_repeat_previous.py" if args.initialize_repeat_policy else
+                          "defense_duration_ppo.py" if args.initialize_duration_policy else
+                          "defense_initialization.py")))
     elif prior and "initialization" in prior["config"]:
         # Keep ancestry without reapplying initialization or requiring its source.
         config["initialization"] = prior["config"]["initialization"]
@@ -432,6 +496,11 @@ def main():
                             observation_stride=args.observation_stride, **curriculum)
         obs = workers.observations
         repeat_actions = RepeatPreviousActions(args.envs) if args.repeat_previous_action else None
+        if args.learned_durations:
+            from .defense_repeat import RepeatedActions
+            duration_actions = RepeatedActions(args.envs, durations=args.learned_durations)
+        else:
+            duration_actions = None
         if args.recurrent_hidden:
             agent.reset_memory(args.envs)
             episode_starts = np.ones(args.envs, dtype=bool)
@@ -439,6 +508,7 @@ def main():
         agent.save(args.run/"latest", state())
         while not stop and not args.initialize_only and (not args.steps or steps < args.steps):
             screens, actions_buffer, logps, values_buffer, rewards, boundaries = [], [], [], [], [], []
+            actor_masks = []
             hidden_buffer, starts_buffer = [], []
             noise_rollout = None if noise is None else NoiseRollout(noise)
             for _ in range(args.rollout):
@@ -447,15 +517,23 @@ def main():
                     starts_buffer.append(episode_starts.copy())
                     episode_starts[:] = False
                 exploration = {} if noise is None else {noise_argument: noise_rollout.record()}
-                actions, logp, values = agent.act(obs, rng, **exploration)
+                decision_mask = ((duration_actions.remaining == 0)
+                                 if duration_actions is not None else None)
+                actions, logp, values = agent.act(
+                    obs, rng, **({"actor_mask": decision_mask} if decision_mask is not None else {}),
+                    **exploration)
                 screens.append(obs)
                 actions_buffer.append(actions)
                 logps.append(logp)
                 values_buffer.append(values)
+                if decision_mask is not None:
+                    actor_masks.append(decision_mask.copy())
                 next_obs, reward_row, boundary_row = [], [], []
                 noise_boundaries = np.zeros(args.envs, dtype=bool) if noise is not None else None
-                physical_actions = repeat_actions.execute(actions) if repeat_actions is not None else actions
+                physical_actions = (duration_actions.select(actions) if duration_actions is not None else
+                                    repeat_actions.execute(actions) if repeat_actions is not None else actions)
                 repeat_boundaries = np.zeros(args.envs, dtype=bool) if repeat_actions is not None else None
+                duration_boundaries = np.zeros(args.envs, dtype=bool) if duration_actions is not None else None
                 for worker, result in enumerate(workers.step(physical_actions)):
                     frame, reward, terminal, truncated, info, reset = result
                     reward *= args.reward_scale
@@ -464,6 +542,8 @@ def main():
                         noise_boundaries[worker] = terminal or truncated or info["life_lost"]
                     if repeat_actions is not None:
                         repeat_boundaries[worker] = terminal or truncated or info["life_lost"]
+                    if duration_actions is not None:
+                        duration_boundaries[worker] = terminal or truncated or info["life_lost"]
                     if sil is not None:
                         # Only this learner's own screens, selected actions and
                         # score returns; never evaluation/replay-file examples.
@@ -502,13 +582,23 @@ def main():
                     noise_rollout.redraw(noise_boundaries)
                 if repeat_actions is not None:
                     repeat_actions.reset(repeat_boundaries)
+                if duration_actions is not None:
+                    duration_actions.reset(duration_boundaries)
                 steps += args.envs
             last_value = (agent.bootstrap_value(obs) if args.recurrent_hidden
                           else agent.predict(mx.array(obs))[1])
             advantages, returns = gae(np.asarray(rewards, np.float32), np.asarray(values_buffer),
                                       np.asarray(boundaries, np.float32), np.array(last_value),
                                       args.gamma, args.gae_lambda)
-            advantages = (advantages-advantages.mean())/(advantages.std()+1e-8)
+            if duration_actions is not None:
+                flat_mask = np.concatenate(actor_masks).astype(np.float32)
+                selected = advantages.reshape(-1)[flat_mask > 0]
+                if not len(selected):
+                    raise RuntimeError("duration rollout contained no policy decisions")
+                advantages = ((advantages-selected.mean())/(selected.std()+1e-8)
+                              *flat_mask.reshape(advantages.shape))
+            else:
+                advantages = (advantages-advantages.mean())/(advantages.std()+1e-8)
             if args.recurrent_hidden:
                 data = tuple(sequence_batches(x, args.sequence_length) for x in
                              (screens, actions_buffer, logps, advantages, returns))
@@ -517,6 +607,8 @@ def main():
             else:
                 data = (np.concatenate(screens), np.concatenate(actions_buffer), np.concatenate(logps),
                         advantages.reshape(-1), returns.reshape(-1))
+                if duration_actions is not None:
+                    data += (flat_mask,)
             if noise is not None:
                 noise_bank, noise_ids = noise_rollout.arrays()
             metrics = []
@@ -558,9 +650,12 @@ def main():
                          value_loss=float(np.mean(metrics, axis=0)[1]),
                          entropy=float(np.mean(metrics, axis=0)[2]),
                          approx_kl=float(np.mean(metrics, axis=0)[3]),
+                         **({"duration_options": duration_actions.stats()}
+                            if duration_actions is not None else {}),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
                          **({"policy_weight_noise_std" if args.policy_weight_noise else
-                             "policy_key_noise_std" if args.policy_key_noise else "policy_bias_noise_std":
+                             "policy_key_noise_std" if args.policy_key_noise else
+                             "policy_duration_noise_std" if args.policy_duration_noise else "policy_bias_noise_std":
                              noise.std, "policy_noise_draws": noise.draws}
                             if noise is not None else {}),
                          **sil_metrics))
@@ -575,6 +670,9 @@ def main():
                 evaluation_policy = agent.policy()
                 if args.repeat_previous_action:
                     evaluation_policy = RepeatPreviousPolicy(evaluation_policy)
+                if args.learned_durations:
+                    from .defense_duration_ppo import DurationCategoricalPolicy
+                    evaluation_policy = DurationCategoricalPolicy(evaluation_policy, args.learned_durations)
                 result = evaluate(evaluation_policy, range(args.eval_seed, args.eval_seed+args.eval_games),
                                   tstates=args.tstates, max_steps=args.eval_max_steps, envs=args.eval_envs,
                                   log=log, should_stop=lambda: stop, allow_enter=args.allow_enter,

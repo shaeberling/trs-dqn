@@ -41,6 +41,34 @@ class PolicyBiasNoise(PolicyParameterNoise):
         return self.values
 
 
+class PolicyDurationNoise(PolicyParameterNoise):
+    """One independent per-life logit offset per hold length, not per key.
+
+    The same offset is broadcast to every physical command of that length.
+    Thus exploration changes how long the *learned* key is held without
+    injecting a hand-selected movement direction or timing rule.
+    """
+
+    def __init__(self, envs, action_count, duration_count, std, rng):
+        action_count, duration_count = operator.index(action_count), operator.index(duration_count)
+        if (isinstance(action_count, bool) or isinstance(duration_count, bool)
+                or action_count < 1 or duration_count < 2):
+            raise ValueError("duration noise requires positive keys and multiple durations")
+        self.action_count, self.duration_count = action_count, duration_count
+        super().__init__(envs, (action_count * duration_count,), std, rng)
+
+    def redraw(self, boundaries):
+        boundaries = np.asarray(boundaries)
+        if boundaries.shape != (len(self.values),) or boundaries.dtype != np.bool_:
+            raise ValueError("noise boundaries must be one boolean per worker")
+        count = int(boundaries.sum())
+        if count and self.std:
+            factors = self.rng.normal(0, self.std, (count, self.duration_count))
+            self.values[boundaries] = np.repeat(factors, self.action_count, axis=1)
+            self.draws += count
+        return boundaries
+
+
 class PolicyWeightNoise(PolicyParameterNoise):
     def __init__(self, envs, actions, features, std, rng):
         super().__init__(envs, (actions, features), std, rng)

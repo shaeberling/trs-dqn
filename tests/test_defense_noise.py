@@ -7,10 +7,49 @@ import unittest
 
 import numpy as np
 
-from rl.defense_noise import PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise, NoiseRollout
+from rl.defense_noise import (PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise,
+                              PolicyDurationNoise, NoiseRollout)
 
 
 class DefenseNoiseTests(unittest.TestCase):
+    def test_duration_factor_noise_is_direction_neutral_and_replay_aligned(self):
+        noise = PolicyDurationNoise(2, 20, 4, 4, np.random.default_rng(19))
+        self.assertEqual(noise.values.shape, (2, 80))
+        for worker in range(2):
+            for duration in range(4):
+                self.assertEqual(len(set(noise.values[worker, duration*20:(duration+1)*20])), 1)
+        rollout = NoiseRollout(noise)
+        before = rollout.record().copy()
+        rollout.redraw(np.array([True, False]))
+        after = rollout.record().copy()
+        np.testing.assert_array_equal(after[1], before[1])
+        self.assertFalse(np.array_equal(after[0], before[0]))
+        bank, ids = rollout.arrays()
+        np.testing.assert_array_equal(bank[ids], np.concatenate((before, after)))
+        self.assertEqual(noise.draws, 3)
+        zero_rng = np.random.default_rng(19)
+        state = copy.deepcopy(zero_rng.bit_generator.state)
+        zero = PolicyDurationNoise(2, 20, 4, 0, zero_rng)
+        zero.redraw(np.array([True, True]))
+        self.assertEqual(zero_rng.bit_generator.state, state)
+        np.testing.assert_array_equal(zero.values, np.zeros((2, 80)))
+        for spec in ((2, 20, 1, 4), (2, 20, 4, -1), (2, 20, 4, float('nan'))):
+            with self.assertRaises(ValueError):
+                PolicyDurationNoise(*spec, rng=np.random.default_rng(19))
+
+    def test_duration_noise_cli_requires_joint_options_and_no_other_noise(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)/'unused'
+            for flags in (['--policy-duration-noise=-1'], ['--policy-duration-noise=nan'],
+                          ['--policy-duration-noise=4'],
+                          ['--policy-duration-noise=4', '--policy-bias-noise=1']):
+                result = subprocess.run([sys.executable, '-m', 'rl.defense_train',
+                                         '--run', str(output), *flags],
+                                        capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn('policy-duration-noise', result.stderr)
+                self.assertFalse(output.exists())
+
     def test_key_factor_noise_is_direction_symmetric_and_correlated(self):
         noise = PolicyKeyNoise(2, 21, 1, np.random.default_rng(7))
         self.assertEqual(noise.values.shape, (2, 21))
