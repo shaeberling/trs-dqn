@@ -1,0 +1,82 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-duration-credit-136/run/fresh-selected-replay",
+  "source_trace_sha256": "c1c13c9108b15b780488311138ef976da3d084f7fe72bae65f9ed9e81ad10575",
+  "source_model_sha256": "bb9f3dbcd3740191106c092da61143d87674fc6b7384bf54ff5e329c2062f9c9",
+  "source_sha256": "0fd8a9f03cc254d9e5dd46918a326220f25dd40417ba59b3017e7d09424532de",
+  "phase_source_sha256": "24445817228feace9998adcf5181950ed6f683fe24283f44828c87d81f94ce2a",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "source_seed": 607200,
+  "anchor": 280,
+  "waypoint": 355,
+  "horizon": 512,
+  "delays": [
+    0,
+    8,
+    16,
+    24
+  ],
+  "holds": [
+    8,
+    16,
+    24
+  ],
+  "symmetric_first_second_commands": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "third_command": "RIGHT from waypoint to first boundary or horizon",
+  "total_candidates": 3600,
+  "requested_candidates": 100,
+  "source_score_at_waypoint": 2600,
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "training_data_written": false,
+  "promotion_eligible": false,
+  "native_snapshots_opaque": true,
+  "baseline": {
+    "actions": 127,
+    "absolute_frame": 407,
+    "score": 2620,
+    "stage": 1,
+    "highest_stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false,
+    "first_above_2620": null,
+    "marks": {
+      "339": {
+        "score": 1080,
+        "ship_column": 23,
+        "lives": 4,
+        "stage": 1
+      },
+      "355": {
+        "score": 2600,
+        "ship_column": 25,
+        "lives": 4,
+        "stage": 1
+      },
+      "387": {
+        "score": 2620,
+        "ship_column": 25,
+        "lives": 4,
+        "stage": 1
+      },
+      "407": {
+        "score": 2620,
+        "ship_column": null,
+        "lives": 3,
+        "stage": 1
+      }
+    }
+  }
+}

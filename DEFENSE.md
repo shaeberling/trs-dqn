@@ -5,7 +5,15 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
-Current status: the [visible-gameplay survival experiment](results/defense/training/ppo-visible-survival-155/README.md)
+Current status: the [early two-phase reachability diagnostic](results/defense/diagnostics/early-two-phase-reach-156/README.md)
+tested **3,600** exact original-emulator action combinations from a
+native-verified own first life. All combinations lost by frame 409;
+none exceeded the source's 2,620 points, survived to frame 512 or
+entered stage two. Only 69 preserved 2,600 points at frame 355, with
+the visible ship no farther right than the original. This is a bounded
+diagnostic, not a learned model or proof of impossibility. The full
+**521-test** suite passes, and the protected best remains unchanged.
+The preceding [visible-gameplay survival experiment](results/defense/training/ppo-visible-survival-155/README.md)
 tested 262,144 new PPO actions with an explicitly shaped, visible-HUD
 survival reward. Its selected model averaged **10,454** on 64 untouched
 complete games versus **10,471** for the matched score-only control, and
@@ -20,8 +28,8 @@ The novelty arm preserved strong fixed-seed score play but averaged
 **10,435** frozen parent; all 192 fresh games stayed in stage one. The
 reward often marked ordinary moving screens as new, so this coarse signal
 did not distinguish the required passage. Neither model was promoted; the
-protected 10,480-point replay remains available. The full **519-test**
-regression suite passes, and full states/replays are archived. Original
+protected 10,480-point replay remains available. Full states/replays
+are archived. Original
 game completion remains unverified.
 
 Historical status: **Defense training resumed after the user freed disk space**

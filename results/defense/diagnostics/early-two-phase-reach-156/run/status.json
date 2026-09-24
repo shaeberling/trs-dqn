@@ -1,0 +1,13 @@
+{
+  "completed": 3500,
+  "counts": {
+    "survived_waypoint": 856,
+    "full_score_waypoint": 69,
+    "full_score_readable_waypoint": 69,
+    "score_above_2620": 0,
+    "horizon_survivors": 0,
+    "later_stage": 0
+  },
+  "best_score": 2620,
+  "max_full_score_ship_column": 25
+}
