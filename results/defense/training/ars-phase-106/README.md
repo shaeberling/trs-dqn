@@ -1,6 +1,6 @@
 # Long score-only search over late own-screen visual phases
 
-This active run starts from the last independently confirmed stage-one
+This completed run starts from the last independently confirmed stage-one
 policy, not either short-sample action-row update. Its frozen visual
 encoder processes only the usual four rendered-screen frames. The
 [own-screen phase basis](../ars-phase-pilot-105/README.md) is built from
@@ -18,9 +18,10 @@ and diversified across command rows. Fixed ten-game validation seeds
 10000–10009 are never used for update selection. Stage progression is
 checked as an outcome, not substituted for score fitness.
 
-The live output is `runs/defense-ars-phase-106/`. Full model/RNG
-checkpoints, each candidate plan, complete-game scores and locally
-verified replays will be archived here at milestones and completion.
+The live output was `runs/defense-ars-phase-106/`; its entire immutable
+history is now archived in [run/](run/), including full model/RNG
+checkpoints, each candidate plan, complete-game scores and a locally
+verified replay.
 The sole global best-replay collector watches this run and all 101
 other artifact roots, independently re-executing any prospective best
 before promotion. The global verified 10,480-point replay remains the
@@ -46,7 +47,19 @@ on seeds 610000–610063 against the last independently confirmed parent.
 That result **reversed** the apparent gain: candidate **10,210.16** versus
 parent **10,305.78**, a **-95.63-point** difference, with no stage-two game.
 This candidate remains in the live search history but is not a confirmed
-successor or promoted replay. The planned last generation continues.
+successor or promoted replay.
+
+The full search ended cleanly at **11 generations, 5,648 complete training
+games and 14,243,473 neural actions**. Generation eleven's nominee gained
+248.13 points in its 16-game comparison but lost 26.09 in the fresh
+64-game gate. The final fixed ten-game mean/median/best is **10,450 /
+10,450 / 10,480**, still all stage one; no training game reached stage two.
+The final model equals the internally accepted generation-ten head and
+fails its additional independent check above. The complete archived run
+contains every generation's model/RNG checkpoint, plans/scores/logs and a
+separately native-verified 10,480-point, 2,565-action local replay. The
+older global best remains unchanged. Repeating this same phase-action-row
+search is not supported by the independent result.
 
 ```bash
 venv/bin/python -u -m rl.defense_ars_boot_search \
