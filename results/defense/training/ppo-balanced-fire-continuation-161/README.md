@@ -95,3 +95,27 @@ The complete model/optimizer/RNG checkpoint and resolved replay bundle
 were copied byte-for-byte into this archive. This is the provisional
 stage-then-fixed-mean selection, not a new global-best replay or evidence
 of passage. The run continues to its predeclared target.
+
+## Seventh fixed checkpoint: new provisional selection
+
+The fourth, fifth and sixth fixed ten-game means at **12,582,912 / 13,631,488 /
+14,680,064** actions were **10,006 / 10,043 / 10,156**; all 30 games
+remained in stage one. None surpassed the third checkpoint's fixed mean.
+
+At **15,728,640** total actions (**7,340,032** new), the seventh frozen
+[ten-game evaluation](milestone-000015728640/evaluation.json) averaged
+**10,258**, median **10,280**, best **10,370**, all complete and stage one.
+This narrowly exceeds the third checkpoint's **10,220** fixed mean. Because
+the ordinary artifact publisher ranks best *single* games and did not
+publish a replay for this higher-*mean* selection, an independent frozen
+ten-game evaluation was run on the same seeds and reproduced every game
+record exactly. Its seed-10001 [10,370-point replay](milestone-replay-000015728640/replay.html)
+then independently reproduced all **2,431** learned actions from original
+boot with `verified: true`. Its four life scores were **2,600 / 2,550 /
+2,600 / 2,620**: one life again reached the known stage-one score ceiling
+without advancing. Model SHA-256 is
+`51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28`.
+The complete model/optimizer/RNG state, both fixed evaluations and resolved
+replay bundle were copied byte-for-byte into this archive. This is the new
+provisional stage-then-mean selection, not a mission claim or replacement
+for the protected global-best replay. The final planned fixed check remains.
