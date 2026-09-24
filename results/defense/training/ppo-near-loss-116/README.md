@@ -25,6 +25,12 @@ observed native stage transition; a score ceiling is insufficient. The sole
 independent collector watches this run's isolated artifacts and preserves
 the verified global best unless a higher-ranked result passes replay checks.
 
+The first [full model/optimizer/RNG milestone](milestone-000008669952/state.json)
+is preserved after 131,072 new actions. Its ten fixed complete games
+averaged **9,949**, median **10,435**, best **10,480**; all stayed in stage
+one. This small reused-seed check is not a reason to promote the checkpoint
+or end the planned continuation.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-near-loss-116 \
