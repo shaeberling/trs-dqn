@@ -1,0 +1,535 @@
+{
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "original_binary_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "static_audit_source_sha256": "25eba681ae343012e2682653437d4e76c080638667f42475cf03384f0d7356e8",
+  "probe_source_sha256": "da9b1f03d6974fb3405ac7f69d25475fbde706db4e5d52b907a55dfd4d5e26ec",
+  "course_start": "0x76A9",
+  "course_end": "0x7BD8",
+  "total_stage_one_stream_rows": 126,
+  "memory_address_read": "0x819B/0x819C",
+  "bundles": [
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-continue-121/fresh-confirm-selected-replay",
+      "trace_sha256": "0c620358c261829a49c586184d3a17eedc6c7946f59e0da20a185df91415ccea",
+      "model_sha256": "8f922da2be6ce50f4c10ddcddb0b4af2bd663559c3753bf918e0b177199e087d",
+      "verified_neural_actions": 2551,
+      "losses": [
+        {
+          "frame": 405,
+          "displayed_score": 2620,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1108,
+          "displayed_score": 5240,
+          "next_stream_byte": "0x7733",
+          "decoded_rows": 33
+        },
+        {
+          "frame": 1836,
+          "displayed_score": 7860,
+          "next_stream_byte": "0x7733",
+          "decoded_rows": 33
+        },
+        {
+          "frame": 2551,
+          "displayed_score": 10480,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        }
+      ]
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-random-phase-key-128/fresh-selected-replay",
+      "trace_sha256": "4cc19e530d9d9f2c0314264f25f5578fb1247ed5af2473e965193aab7a40ba6d",
+      "model_sha256": "71fbf92c5b45ff7f8ea6bcad54c208c99ddb00f4cd7054febdf0f823a3284558",
+      "verified_neural_actions": 2569,
+      "losses": [
+        {
+          "frame": 408,
+          "displayed_score": 2620,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1141,
+          "displayed_score": 5240,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1875,
+          "displayed_score": 7860,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 2569,
+          "displayed_score": 10480,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        }
+      ]
+    }
+  ],
+  "own_source_archive": {
+    "archive": "/Users/sascha/source/trs-dqn/results/defense/training/ars-score-gated-69/run/own-loss-states",
+    "index_sha256": "7cf67fe2992b120a415d8aa46ecdbbacf2c01ccf04e4f59acbda894aea21b47d",
+    "own_games": 12,
+    "own_life_states": 48,
+    "decoded_row_histogram": {
+      "28": 1,
+      "31": 1,
+      "32": 8,
+      "33": 6,
+      "34": 32
+    },
+    "losses": [
+      {
+        "source": "seed-75000-life-1.npz",
+        "source_npz_sha256": "05c9e0b63836b094a0fd920fb0ad372cf452a28b3a30fef75c1032712acd3826",
+        "seed": 75000,
+        "life": 1,
+        "displayed_life_score": 1030,
+        "next_stream_byte": "0x7719",
+        "decoded_rows": 28
+      },
+      {
+        "source": "seed-75000-life-2.npz",
+        "source_npz_sha256": "909ef02a5bd921304675ebd246fb31d87c68af2d8b865c2e888289d78d9dbc81",
+        "seed": 75000,
+        "life": 2,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7733",
+        "decoded_rows": 33
+      },
+      {
+        "source": "seed-75000-life-3.npz",
+        "source_npz_sha256": "4246cfa9c2db97aa88f77867c1408955959b9a05bb6f1cd05c83db5c6207650c",
+        "seed": 75000,
+        "life": 3,
+        "displayed_life_score": 2600,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75000-life-4.npz",
+        "source_npz_sha256": "eb0db41f1c107c1f5c48245ac7caf79b507684a473229289c7fbcc85d1a0134c",
+        "seed": 75000,
+        "life": 4,
+        "displayed_life_score": 2640,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75001-life-1.npz",
+        "source_npz_sha256": "958cafd877b3fae45350140a4f1e20b1bbcbe2babfea8891dafc36344b9484dd",
+        "seed": 75001,
+        "life": 1,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75001-life-2.npz",
+        "source_npz_sha256": "1c2367cfd56acac8342ea4782249076232619d8f10c95b023b182997309c523b",
+        "seed": 75001,
+        "life": 2,
+        "displayed_life_score": 2550,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75001-life-3.npz",
+        "source_npz_sha256": "21830b58ab24e44f2dfcb578afc1ec1ecc9fc692bd3edd3448724932f102bc73",
+        "seed": 75001,
+        "life": 3,
+        "displayed_life_score": 2640,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75001-life-4.npz",
+        "source_npz_sha256": "63913b572bf136258f97cc16d8c1c356027db4a68f7b255586cc27276125983c",
+        "seed": 75001,
+        "life": 4,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75002-life-1.npz",
+        "source_npz_sha256": "74deaec931b4b13f30977050210323a81d3edb1366aa296fe225fc63cbe64d33",
+        "seed": 75002,
+        "life": 1,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75002-life-2.npz",
+        "source_npz_sha256": "c40014a1683b5ff233d001e24bdf802a926fa9ef2ee8d9aef64c56ca597a3b77",
+        "seed": 75002,
+        "life": 2,
+        "displayed_life_score": 2600,
+        "next_stream_byte": "0x7727",
+        "decoded_rows": 31
+      },
+      {
+        "source": "seed-75002-life-3.npz",
+        "source_npz_sha256": "a5a8c5032d6b46232db1837249ac0ebb48852cbe811c5c7024b9f98a9ea00f63",
+        "seed": 75002,
+        "life": 3,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75002-life-4.npz",
+        "source_npz_sha256": "6f26124daa3471f604821539bb6237f25d634bad53b0c5ccfbe33101927f32bf",
+        "seed": 75002,
+        "life": 4,
+        "displayed_life_score": 2640,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75003-life-1.npz",
+        "source_npz_sha256": "ca65624689ae4737188e9c35c05d7496e1cadfa5c406a3950f99c7e8c1983374",
+        "seed": 75003,
+        "life": 1,
+        "displayed_life_score": 2520,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75003-life-2.npz",
+        "source_npz_sha256": "15f67c848a30484183de19a5cb899375ac0de08838f0dcb1e5f3e4575d3fe7c0",
+        "seed": 75003,
+        "life": 2,
+        "displayed_life_score": 2600,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75003-life-3.npz",
+        "source_npz_sha256": "552ba5b64689fe4c72a759e03468004bcc4bccbd6238dc505fccdc8c669a17d1",
+        "seed": 75003,
+        "life": 3,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75003-life-4.npz",
+        "source_npz_sha256": "706dd5da9ff161bdb704b9d5424a8542fcdcff0bd90784c1d25c1fcfe08bdc54",
+        "seed": 75003,
+        "life": 4,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75004-life-1.npz",
+        "source_npz_sha256": "27865f1ad3b65d375d4c80f43e3649133eab03714c450c0327756ccb226d9e0a",
+        "seed": 75004,
+        "life": 1,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75004-life-2.npz",
+        "source_npz_sha256": "25d76cc9b708fb5d4090ef473259c9beed465296d4e8fcccfb3a5fbf61943677",
+        "seed": 75004,
+        "life": 2,
+        "displayed_life_score": 2550,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75004-life-3.npz",
+        "source_npz_sha256": "ae9b2fbb0f168dd495f2a5ec47d28f40d4cb62f1e120489e40e1b9c0b39de612",
+        "seed": 75004,
+        "life": 3,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7733",
+        "decoded_rows": 33
+      },
+      {
+        "source": "seed-75004-life-4.npz",
+        "source_npz_sha256": "7b966b664d63c5bce48f996fa6e12bf9c54de05ecc187ced0985638d3ce8450e",
+        "seed": 75004,
+        "life": 4,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75005-life-1.npz",
+        "source_npz_sha256": "bdd05c8986dc01c77d79d78a9faaa7e1eebbbbf08e2e272c0c382d27950a97ac",
+        "seed": 75005,
+        "life": 1,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75005-life-2.npz",
+        "source_npz_sha256": "bcabe68fe93dcc5805eeaac492020a5816cdff4a816003e4c15764b52717ccd4",
+        "seed": 75005,
+        "life": 2,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7733",
+        "decoded_rows": 33
+      },
+      {
+        "source": "seed-75005-life-3.npz",
+        "source_npz_sha256": "f41494584f37a43979437c98a4197ad44efc344dd4d552471e2b26586cbd1be5",
+        "seed": 75005,
+        "life": 3,
+        "displayed_life_score": 2600,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75005-life-4.npz",
+        "source_npz_sha256": "3012f13a2840d5ca9f3d07f69543770ce72955a13e4c40c92dad5fe85c12f447",
+        "seed": 75005,
+        "life": 4,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75006-life-1.npz",
+        "source_npz_sha256": "7cb961df54fd11d6100ff0c7ca67f237a295a12cfe4f5c7f474cb7f0fe32770d",
+        "seed": 75006,
+        "life": 1,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75006-life-2.npz",
+        "source_npz_sha256": "d323d14b3f58556a52a4f4b5a1691c61c87014554e9cccd6340118f16df4796b",
+        "seed": 75006,
+        "life": 2,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75006-life-3.npz",
+        "source_npz_sha256": "f45d68c44d56d273c59812933ea1f93442e6c6bddc7042db898245ecbffb10cb",
+        "seed": 75006,
+        "life": 3,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75006-life-4.npz",
+        "source_npz_sha256": "d3c3ac70bec16da8f914a366f0e2a6f4f841fbfc40484ed4c28cfba52b0dfaf9",
+        "seed": 75006,
+        "life": 4,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75007-life-1.npz",
+        "source_npz_sha256": "bbe91cc17c664f28652b1774e969e6345ac35d183f40c35bc2a4c1824f1ed4b1",
+        "seed": 75007,
+        "life": 1,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7733",
+        "decoded_rows": 33
+      },
+      {
+        "source": "seed-75007-life-2.npz",
+        "source_npz_sha256": "c8b6c10b4cd917fbae0d6a2ab9f4232f92e8d3a3533665a395ba6bf9c37e81b9",
+        "seed": 75007,
+        "life": 2,
+        "displayed_life_score": 2550,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75007-life-3.npz",
+        "source_npz_sha256": "0b1be7fc9c18f4dd5380320210fa43695a409070fae94749580f9ca1e80d02cf",
+        "seed": 75007,
+        "life": 3,
+        "displayed_life_score": 2600,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75007-life-4.npz",
+        "source_npz_sha256": "07c40a7a123329cab861d6133c0748bfb1228923fb8440123770b24ebb3875d5",
+        "seed": 75007,
+        "life": 4,
+        "displayed_life_score": 2590,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75008-life-1.npz",
+        "source_npz_sha256": "454f9c94d3e526d842112d405e64ef0e437402e6ce238ae749b9d07750c44f17",
+        "seed": 75008,
+        "life": 1,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75008-life-2.npz",
+        "source_npz_sha256": "73a79a90d12cd6851b9e51faab719eb51c973c60343780b86d4237f0f405c6de",
+        "seed": 75008,
+        "life": 2,
+        "displayed_life_score": 1000,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75008-life-3.npz",
+        "source_npz_sha256": "996eeafb51fca123ba67bbd45cec7085a175a6f061a6ff0cd56bde31021776bb",
+        "seed": 75008,
+        "life": 3,
+        "displayed_life_score": 2640,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75008-life-4.npz",
+        "source_npz_sha256": "c32c4ffe1ca2e170e4de543b1bbbcd99a08500344b66edd44705de2d33b637ce",
+        "seed": 75008,
+        "life": 4,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75009-life-1.npz",
+        "source_npz_sha256": "bc9c92a1380ad4a72cb3b24ea6039a0e15f3a1bfacb034ab5daa730f15d82ff1",
+        "seed": 75009,
+        "life": 1,
+        "displayed_life_score": 2550,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75009-life-2.npz",
+        "source_npz_sha256": "808e4b2479bb4d801803ab919b180903fcec719292635b5833333e5fd2842abe",
+        "seed": 75009,
+        "life": 2,
+        "displayed_life_score": 2640,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75009-life-3.npz",
+        "source_npz_sha256": "19fb0de3e1806c2d8df9325a932cfbf6b3904849419795c5cda590ff238391e9",
+        "seed": 75009,
+        "life": 3,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75009-life-4.npz",
+        "source_npz_sha256": "1e785baaed68f39044af7ed2bf86abbe5d13dc5d793e6ad0b52b46fbb9732c78",
+        "seed": 75009,
+        "life": 4,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75010-life-1.npz",
+        "source_npz_sha256": "523981f52d9d4484e4a463ec4bd55408a925a1341b7a0b56e922dd0b7df79aef",
+        "seed": 75010,
+        "life": 1,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7733",
+        "decoded_rows": 33
+      },
+      {
+        "source": "seed-75010-life-2.npz",
+        "source_npz_sha256": "09544a411ec6652ca02c00d153356da5692f320334f9e7a9778d8ab865745c09",
+        "seed": 75010,
+        "life": 2,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75010-life-3.npz",
+        "source_npz_sha256": "7bb4af54917473b72ed59b9d29abaa404367252c7015b4e48fc7a928cc1ccf36",
+        "seed": 75010,
+        "life": 3,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75010-life-4.npz",
+        "source_npz_sha256": "28a2db390780bde61c358c82825808c189fe70e2431fb1d19dcfad8198bd239e",
+        "seed": 75010,
+        "life": 4,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75011-life-1.npz",
+        "source_npz_sha256": "87e3cf4a02475ae59c4b689f01c1b9c9c9df50c97b386a751c9ff23ba0acbcf2",
+        "seed": 75011,
+        "life": 1,
+        "displayed_life_score": 2600,
+        "next_stream_byte": "0x7733",
+        "decoded_rows": 33
+      },
+      {
+        "source": "seed-75011-life-2.npz",
+        "source_npz_sha256": "3cef60429a79ee7d253e1108dce03c8fc1c32f6ffd6049f03cd36586451a4278",
+        "seed": 75011,
+        "life": 2,
+        "displayed_life_score": 2620,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      },
+      {
+        "source": "seed-75011-life-3.npz",
+        "source_npz_sha256": "76104c4d5d956cc45499d531b66f6eeb814e6dfae4b41fc204bcb6ac52a40cd5",
+        "seed": 75011,
+        "life": 3,
+        "displayed_life_score": 1050,
+        "next_stream_byte": "0x7729",
+        "decoded_rows": 32
+      },
+      {
+        "source": "seed-75011-life-4.npz",
+        "source_npz_sha256": "c8bb23910daae602224414b64ecea9ce434c5b51c4d6bc8e952814ea28d0f351",
+        "seed": 75011,
+        "life": 4,
+        "displayed_life_score": 2570,
+        "next_stream_byte": "0x7735",
+        "decoded_rows": 34
+      }
+    ]
+  },
+  "diagnostic_only": true,
+  "hidden_ram_never_policy_input": true,
+  "hidden_ram_never_reward_or_curriculum": true,
+  "model_updates": 0,
+  "replay_promotion_eligible": false,
+  "limitations": [
+    "Pointer is sampled at visible ship-loss bookkeeping, not exact collision.",
+    "Decoded rows are stream progress, not rows safely navigated by a ship.",
+    "The original program may render obstacles ahead of or behind this pointer.",
+    "The forensic pointer and row index must never enter training or evaluation selection."
+  ]
+}
