@@ -30,6 +30,20 @@ score-reward own actions, with fixed stage-gated checks, a 5.1 GiB disk
 guard and fresh comparison against its frozen parent. This is a test of
 continued learning, not evidence of a stage-two passage.
 
+Storage retention is active, not just a warning threshold. After archiving
+the balanced comparison, **14** unselected live checkpoint directories
+(about **130 MiB**) were removed; selected/terminal optimizer states, every
+fixed evaluation, logs and verified replays remain. A separate stopped
+[DQN-24 archive](results/defense/training/dqn-24-bootstrap/) was checked
+byte-for-byte against its local final and two intermediate checkpoints,
+compressed full metrics and all **13** replay bundles. Only its duplicate
+local checkpoint/replay directories (about **681 MiB**) were removed;
+the tracked archive and lightweight local config/log/status remain. These
+deleted local duplicates are recoverable from the tracked archive and
+pushed branch. The current PPO run has a separate exact-PID 5.1 GiB disk
+guard, and intermediate optimizer snapshots will be pruned only after
+their own selection/comparison archive is complete.
+
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
 added both distinct stage-one side-fire combinations; **290,508** branches
