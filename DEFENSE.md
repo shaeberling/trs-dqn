@@ -8215,3 +8215,16 @@ actions beyond their own source's visible-loss age. Original source future
 loss times were used only in post-hoc analysis. This negative result does
 not justify simply extending the same random-hold search; the confirmed
 learned score parent and verified global best replay remain unchanged.
+
+A [fine-bottom-screen archive comparison](results/defense/training/frontier-bottom-detail-131/README.md)
+tested a concrete aliasing concern: the coarse screen key can ignore one-
+to-three-column visible ship shifts near the repeated gap. It kept run 129's
+same source states, score-biased selection, random holds, capacity, seed and
+100,000-expansion gate, changing only the reset-state fingerprint to include
+exact bottom-three-row video bytes. It retained **15,640** distinct cells
+and explored **847,199** new emulator actions, but still never exceeded its
+2,640-point source best, entered stage two or showed a mission. At 2,600+
+life points, surviving branches extended at most twelve actions beyond
+their own source's visible-loss age. This bounds the simple archive-aliasing
+explanation; it does not establish that the screen lacks enough information
+for a learned policy or that a different exploration method would fail.
