@@ -1,0 +1,30 @@
+{
+  "source_checkpoint": "results/defense/training/ppo-persistent-noise-long-119/run/step-000009718528/model.safetensors",
+  "source_model_sha256": "730fcc1774d1bb17f0fc163f1a29cf40a3b30a60010dcb00e26063dafb0a0fc4",
+  "treatment_model_sha256": "91eaa48e33b7a2b4483d7723251d735bb8d08f185411e2753faec983cbe29bac",
+  "control_model_sha256": "76c9e762729a1e232fcd15e59b285d6421701cc6ee8f871c460cf552b34cd597",
+  "base_parameters_exact": {
+    "treatment": true,
+    "control": true
+  },
+  "original_boot_trace_checks": [
+    {
+      "seed": 610000,
+      "source_actions": 2518,
+      "source_score": 10380,
+      "source_highest_stage": 1,
+      "treatment_and_control_screen_action_reward_result_equal": true
+    },
+    {
+      "seed": 610001,
+      "source_actions": 2496,
+      "source_score": 10460,
+      "source_highest_stage": 1,
+      "treatment_and_control_screen_action_reward_result_equal": true
+    }
+  ],
+  "training_updates": 0,
+  "candidate_actions_used_for_training": false,
+  "diagnostic_only": true,
+  "promotion_eligible": false
+}

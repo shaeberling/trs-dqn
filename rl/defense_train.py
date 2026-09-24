@@ -53,6 +53,9 @@ def main():
                         help="weight on half mean-squared value error; default preserves prior PPO")
     parser.add_argument("--recurrent-hidden", type=int, default=0,
                         help="0 preserves feedforward PPO; positive adds screen-history GRU memory")
+    parser.add_argument("--recurrent-own-action", action=argparse.BooleanOptionalAction,
+                        default=False,
+                        help="also give the recurrent GRU its own previous physical key; never game state")
     parser.add_argument("--sequence-length", type=int, default=32)
     parser.add_argument("--memory-scale", type=float, default=1.,
                         help="recurrent residual scale; 0 is a matched memory-disabled control")
@@ -161,10 +164,13 @@ def main():
             parser.error("Changing the appended duration's initialization prior on resume is invalid")
         if args.continue_initial_bias_offset != config.get("continue_initial_bias_offset", 0.):
             parser.error("Continue-action initialization offset cannot change on optimizer resume")
-        from .recurrent_policy import RECURRENT_ARCHITECTURE
+        from .recurrent_policy import RECURRENT_ARCHITECTURE, OWN_ACTION_RECURRENT_ARCHITECTURE
         from .defense_spatial_spec import SPATIAL_ARCHITECTURE
         if (args.recurrent_hidden != config.get('recurrent_hidden', 0)
-                or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else
+                or args.recurrent_own_action != config.get('recurrent_own_action', False)
+                or config.get('architecture') != ((OWN_ACTION_RECURRENT_ARCHITECTURE
+                                                  if args.recurrent_own_action else RECURRENT_ARCHITECTURE)
+                                                 if args.recurrent_hidden else
                                                  SPATIAL_ARCHITECTURE if args.spatial_residual else None)):
             parser.error("Changing learned architecture requires initialization, not an optimizer resume")
         if args.freeze_recurrent_base != config.get('freeze_recurrent_base', False):
@@ -176,7 +182,8 @@ def main():
         parser.error("counts and intervals must be positive")
     if args.envs*args.rollout % args.batch_size:
         parser.error("envs * rollout must be divisible by batch-size")
-    if (args.recurrent_hidden < 0 or args.sequence_length < 1
+    if (args.recurrent_hidden < 0 or (args.recurrent_own_action and not args.recurrent_hidden)
+            or args.sequence_length < 1
             or not np.isfinite(args.memory_scale) or not 0 <= args.memory_scale <= 1
             or (args.recurrent_hidden and (args.rollout % args.sequence_length
                                           or args.batch_size % args.sequence_length))
@@ -303,10 +310,12 @@ def main():
             extra_agent["duration_explore_mix"] = args.duration_explore_mix
     if args.recurrent_hidden:
         from .defense_recurrent import RecurrentPPO
-        from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
+        from .recurrent_policy import (RECURRENT_ARCHITECTURE,
+                                       OWN_ACTION_RECURRENT_ARCHITECTURE, sequence_batches)
         agent_class = RecurrentPPO
         extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale,
-                          freeze_base=args.freeze_recurrent_base)
+                          freeze_base=args.freeze_recurrent_base,
+                          own_action_input=args.recurrent_own_action)
     policy_action_count = (len(action_names(False))*len(args.learned_durations)
                            if args.learned_durations else
                            len(action_names(args.allow_enter)) + int(args.repeat_previous_action))
@@ -457,15 +466,21 @@ def main():
                           "mix*actor key marginal/uniform duration; PPO ratios use exact mixture",
                           evaluation_policy="unperturbed learned categorical, sampled")
     if args.recurrent_hidden:
-        config.update(architecture=RECURRENT_ARCHITECTURE,
+        config.update(architecture=(OWN_ACTION_RECURRENT_ARCHITECTURE if args.recurrent_own_action
+                                    else RECURRENT_ARCHITECTURE),
                       recurrent_source_sha256=sha256(Path(__file__).with_name('defense_recurrent.py')),
                       recurrent_policy_source_sha256=sha256(Path(__file__).with_name('recurrent_policy.py')),
-                      policy='learned recurrent categorical, sampled; screen-history memory',
+                      policy=('learned recurrent categorical, sampled; screen and own-previous-key memory'
+                              if args.recurrent_own_action else
+                              'learned recurrent categorical, sampled; screen-history memory'),
                       memory_reset='zero at boot/actual environment reset, not visible life loss; cleared on resume',
                       recurrent_training='contiguous within-worker truncated BPTT; rollout initial states detached',
                       resume_semantics='optimizer and policy RNG restored; episodes and neural memory restart from boot')
         if args.freeze_recurrent_base:
             config['frozen_parameter_scope'] = 'base CNN, feature layer, actor and value heads; memory and residual heads trainable'
+        if args.recurrent_own_action:
+            config['own_action_input'] = ('one-hot previous chosen physical key; reset sentinel only at '
+                                          'actual environment reset, never a hidden game-state read')
     if args.spatial_residual:
         from .defense_spatial_spec import SPATIAL_ARCHITECTURE
         config.update(architecture=SPATIAL_ARCHITECTURE,
@@ -584,12 +599,14 @@ def main():
         while not stop and not args.initialize_only and (not args.steps or steps < args.steps):
             screens, actions_buffer, logps, values_buffer, rewards, boundaries = [], [], [], [], [], []
             actor_masks = []
-            hidden_buffer, starts_buffer = [], []
+            hidden_buffer, starts_buffer, previous_action_buffer = [], [], []
             noise_rollout = None if noise is None else NoiseRollout(noise)
             for _ in range(args.rollout):
                 if args.recurrent_hidden:
                     hidden_buffer.append(agent.memory.copy())
                     starts_buffer.append(episode_starts.copy())
+                    if args.recurrent_own_action:
+                        previous_action_buffer.append(agent.previous_actions.copy())
                     episode_starts[:] = False
                 exploration = {} if noise is None else {noise_argument: noise_rollout.record()}
                 decision_mask = ((duration_actions.remaining == 0)
@@ -691,6 +708,8 @@ def main():
                              (screens, actions_buffer, logps, advantages, returns))
                 data += (sequence_batches(hidden_buffer, args.sequence_length)[:, 0],
                          sequence_batches(starts_buffer, args.sequence_length))
+                if args.recurrent_own_action:
+                    data += (sequence_batches(previous_action_buffer, args.sequence_length),)
             else:
                 data = (np.concatenate(screens), np.concatenate(actions_buffer), np.concatenate(logps),
                         advantages.reshape(-1), returns.reshape(-1))
