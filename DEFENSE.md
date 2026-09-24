@@ -8102,3 +8102,11 @@ windows. The [full negative run](results/defense/training/ppo-key-noise-strong-1
 and [read-only loss frames](results/defense/diagnostics/key-noise-strong-124-losses/README.md)
 are preserved. The run-121 score parent and older global best remain
 protected; stronger exploration noise by itself did not solve this obstacle.
+
+The next [boot-diversity allocation test](results/defense/training/ppo-boot-diversity-125/README.md)
+responds to the 116 complete boot games versus 4,172 short restored segments
+in run 124. It resumes the confirmed run-121 full optimizer and changes only
+four to twelve reserved boot workers, leaving four self-restoring workers.
+This tests whether more complete approaches improve exploration of the
+recurring barrier; it does not change model inputs, reward, actions or native
+evaluation. The bounded gate and independent comparison are predeclared.
