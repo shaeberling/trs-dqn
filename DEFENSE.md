@@ -8156,3 +8156,15 @@ sampled continuation choice among 2,583 neural decisions. The
 and [loss sheets](results/defense/diagnostics/key-noise-windowed-126-losses/README.md)
 are preserved. Neither this within-life schedule nor its per-life control
 has produced a verified passing policy; the global best remains protected.
+
+A [frozen score-value diagnostic](results/defense/diagnostics/score-value-barrier-01/README.md)
+adds a training-signal clue without modifying the learner. On the confirmed
+run-121 replay, its critic predicts about **1,433–1,481** additional
+displayed points 64 decisions before each visible life loss (the suffixes
+earn 1,520–1,540), then only **6–44** points 32 decisions before loss
+(actual suffixes earn 0–20). The repeated late score jump is learned, but
+the remaining return near the obstacle is small on these failed paths.
+This is one selected four-life replay, not proof that all evasive actions
+are unrewarded or that the game is impassable. It focuses the next search
+on discovering genuinely higher-score own trajectories rather than another
+stage-one score tie, while preserving the score-only/no-oracle rules.

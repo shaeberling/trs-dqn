@@ -1,0 +1,148 @@
+{
+  "bundle": "results/defense/training/ppo-continue-121/fresh-confirm-selected-replay",
+  "model_sha256": "8f922da2be6ce50f4c10ddcddb0b4af2bd663559c3753bf918e0b177199e087d",
+  "trace_sha256": "0c620358c261829a49c586184d3a17eedc6c7946f59e0da20a185df91415ccea",
+  "probe_source_sha256": "fed34ea0ab159f1e15edb3a18fe133fb627e0c3f94b1ac97c5a284156e2b2dd5",
+  "original_native_verification": {
+    "verified": true,
+    "verified_actions": 2551,
+    "temperature": 1.0,
+    "observation_stride": 1,
+    "checkpoint_sha256": "8f922da2be6ce50f4c10ddcddb0b4af2bd663559c3753bf918e0b177199e087d",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "environment_version": "obstacle-run-screen-v1",
+    "method": "reload weights; reproduce every policy action, reward and screen from boot"
+  },
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "model_updates": 0,
+  "promotion_eligible": false,
+  "rows": [
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 64,
+      "predicted_remaining_score_points": 1477.6094436645508,
+      "actual_remaining_visible_score_points": 1540.0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 48,
+      "predicted_remaining_score_points": 19.525355100631714,
+      "actual_remaining_visible_score_points": 20.0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 32,
+      "predicted_remaining_score_points": 30.88582158088684,
+      "actual_remaining_visible_score_points": 20.0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 16,
+      "predicted_remaining_score_points": 9.978306293487549,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 1,
+      "decisions_before_visible_loss": 8,
+      "predicted_remaining_score_points": 159.1924548149109,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 64,
+      "predicted_remaining_score_points": 1481.0471534729004,
+      "actual_remaining_visible_score_points": 1520.0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 48,
+      "predicted_remaining_score_points": 14.207178354263306,
+      "actual_remaining_visible_score_points": 20.0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 32,
+      "predicted_remaining_score_points": 6.300771236419678,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 16,
+      "predicted_remaining_score_points": 1.232665777206421,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 2,
+      "decisions_before_visible_loss": 8,
+      "predicted_remaining_score_points": 54.826366901397705,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 64,
+      "predicted_remaining_score_points": 1481.318187713623,
+      "actual_remaining_visible_score_points": 1520.0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 48,
+      "predicted_remaining_score_points": 14.864128828048706,
+      "actual_remaining_visible_score_points": 20.0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 32,
+      "predicted_remaining_score_points": 14.019471406936646,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 16,
+      "predicted_remaining_score_points": 30.73895573616028,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 3,
+      "decisions_before_visible_loss": 8,
+      "predicted_remaining_score_points": 97.8223443031311,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 64,
+      "predicted_remaining_score_points": 1433.0077171325684,
+      "actual_remaining_visible_score_points": 1520.0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 48,
+      "predicted_remaining_score_points": 1514.944076538086,
+      "actual_remaining_visible_score_points": 1520.0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 32,
+      "predicted_remaining_score_points": 44.07257437705994,
+      "actual_remaining_visible_score_points": 20.0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 16,
+      "predicted_remaining_score_points": 24.173271656036377,
+      "actual_remaining_visible_score_points": 0.0
+    },
+    {
+      "life": 4,
+      "decisions_before_visible_loss": 8,
+      "predicted_remaining_score_points": 2.5748074054718018,
+      "actual_remaining_visible_score_points": 0.0
+    }
+  ],
+  "limitations": [
+    "One selected four-life replay, not a held-out calibration study.",
+    "Predictions are the score critic's values, not collision probabilities.",
+    "Visible life loss may lag the physical collision.",
+    "No value, frame, label or action from this diagnostic enters training."
+  ]
+}
