@@ -118,11 +118,12 @@
     "runs/defense-ppo-key-noise-123/artifacts",
     "runs/defense-ppo-key-noise-strong-124/artifacts",
     "runs/defense-ppo-boot-diversity-125/artifacts",
-    "runs/defense-ppo-key-noise-windowed-126/artifacts"
+    "runs/defense-ppo-key-noise-windowed-126/artifacts",
+    "runs/defense-ppo-screen-frontier-127/artifacts"
   ],
   "output": "results/defense/learned",
   "run": "runs/defense-collector",
   "interval": 30,
   "prior_sources_preserved": true,
-  "new_sources": "within-life symmetric key-factor PPO exploration from confirmed run 121 score parent"
+  "new_sources": "diverse own-screen loss-state PPO resets from confirmed run 121 score parent"
 }
