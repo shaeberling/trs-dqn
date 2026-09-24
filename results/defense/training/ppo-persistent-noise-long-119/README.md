@@ -28,6 +28,12 @@ complete games, seeds 601400–601527. Score gains alone will not count as
 barrier passage. The full optimizer/RNG and local replays will be archived
 regardless of outcome.
 
+For clarity, the fresh comparison includes **both** the immediate noise-run
+parent at 8,801,024 and the older independently confirmed ordinary-action
+score parent at 8,538,880, all on those same seeds. The immediate parent
+tests the effect of this longer continuation; the confirmed parent prevents
+a regression from being disguised by a weak intermediate baseline.
+
 The first [full optimizer/RNG milestone](milestone-000008932096/state.json)
 is preserved after 131,072 new actions. Ten ordinary complete games
 averaged **9,933**, median **10,330**, best **10,430**, all stage one.
