@@ -35,3 +35,22 @@ venv/bin/python -u -m rl.defense_evaluate \
 Repeat with `--tstates 50000` and `--tstates 25000`, writing to separate
 `half-64.json` and `quarter-64.json` results. Neither override supports
 the normal replay bundle, so save its complete evaluation record only.
+
+## Result
+
+All **192** evaluations completed; none reached stage two or a mission.
+The same frozen weights produced:
+
+| T states / decision | Mean | Median | Best | Scores below 9,000 |
+| ---: | ---: | ---: | ---: | ---: |
+| [100,000](native-64.json) | 10,475.16 | 10,480 | 10,480 | 0 / 64 |
+| [50,000](half-64.json) | 7,649.84 | 8,075 | 9,690 | 61 / 64 |
+| [25,000](quarter-64.json) | 7,418.13 | 7,460 | 9,710 | 63 / 64 |
+
+Both finer-cadence arms lost **all 64 paired games** against native timing.
+The frozen policy plainly does not transfer by just calling it more often:
+its observation history, hold lengths and learned temporal dynamics all
+change in real game time. This negative override test does **not** show
+that a separately trained finer-cadence policy would fail, nor does it
+identify the physical collision cause. It gives no basis to change the
+protected best replay or claim a later-stage result.
