@@ -2,10 +2,35 @@ import unittest
 
 import numpy as np
 
-from rl.defense_frontier_search import FrontierArchive, trace_path
+from rl.defense_frontier_search import AgeFrontierArchive, FrontierArchive, trace_path
 
 
 class DefenseFrontierSearchTests(unittest.TestCase):
+    def test_age_frontier_retains_later_own_survival_without_changing_reward(self):
+        rng = np.random.default_rng(17)
+        archive = AgeFrontierArchive(2, 16)
+        key_a, key_b, key_c = (character*32 for character in "abc")
+        self.assertTrue(archive.add(key_a, 0, 32, "a0", rng))
+        self.assertFalse(archive.add(key_a, 1, 32, "a1", rng))
+        self.assertTrue(archive.add(key_a, 2, 40, "a2", rng))
+        self.assertTrue(archive.add(key_a, 3, 48, "a3", rng))
+        self.assertEqual(archive.cells[(key_a, 2)], (2, 40, "a2"))
+        self.assertEqual(archive.cells[(key_a, 3)], (3, 48, "a3"))
+        archive.add(key_b, 4, 64, "b4", rng)
+        archive.add(key_c, 5, 80, "c5", rng)
+        self.assertLessEqual(len(archive.cells), 2)
+        self.assertEqual(len(archive.seen), 4)
+        for _ in range(20):
+            self.assertIn(archive.choose(rng), archive.cells.values())
+        for invalid in (0, -1, True, 1.5):
+            with self.assertRaises(ValueError):
+                AgeFrontierArchive(invalid, 16)
+            with self.assertRaises(ValueError):
+                AgeFrontierArchive(2, invalid)
+        for key, age in (("bad", 10), (key_a, -1), (key_a, True)):
+            with self.assertRaises(ValueError):
+                archive.add(key, 6, age, "bad", rng)
+
     def test_archive_is_bounded_and_uses_visible_score_for_same_cell(self):
         rng = np.random.default_rng(13)
         archive = FrontierArchive(2)

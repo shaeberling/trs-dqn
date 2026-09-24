@@ -24,6 +24,59 @@ from .defense_snapshot import capture, restore
 HOLDS = (4, 8, 16, 32)
 
 
+class AgeFrontierArchive:
+    """Bounded visible-screen/own-life-age cells, prioritizing survival time.
+
+    Age is counted only from visible life boundaries in the learner's own game.
+    It is a training reset selector, never a policy input or reward.
+    """
+
+    def __init__(self, capacity, interval):
+        if (isinstance(capacity, bool) or not isinstance(capacity, int) or capacity < 1
+                or isinstance(interval, bool) or not isinstance(interval, int) or interval < 1):
+            raise ValueError("positive archive capacity and age interval required")
+        self.capacity, self.interval = capacity, interval
+        self.cells, self.seen = {}, set()
+
+    def add(self, key, node_id, age, saved, rng):
+        if (not isinstance(key, str) or len(key) != 32 or
+                isinstance(age, bool) or not isinstance(age, int) or age < 0):
+            raise ValueError("invalid visible screen cell or own life age")
+        cell = (key, age//self.interval)
+        self.seen.add(cell)
+        old = self.cells.get(cell)
+        if old is not None:
+            if age <= old[1]:
+                return False
+            self.cells[cell] = (node_id, age, saved)
+            return True
+        if len(self.cells) < self.capacity:
+            self.cells[cell] = (node_id, age, saved)
+            return True
+        if int(rng.integers(len(self.seen))) >= self.capacity:
+            return False
+        victim = tuple(self.cells)[int(rng.integers(self.capacity))]
+        del self.cells[victim]
+        self.cells[cell] = (node_id, age, saved)
+        return True
+
+    def choose(self, rng):
+        if not self.cells:
+            raise ValueError("empty frontier archive")
+        rows = tuple(self.cells.values())
+        draw = rng.random()
+        if draw < .5:
+            cutoff = float(np.quantile([row[1] for row in rows], .9))
+            rows = tuple(row for row in rows if row[1] >= cutoff)
+        elif draw < .75:
+            low = float(np.quantile([row[1] for row in rows], .75))
+            high = float(np.quantile([row[1] for row in rows], .9))
+            band = tuple(row for row in rows if low <= row[1] <= high)
+            if band:
+                rows = band
+        return rows[int(rng.integers(len(rows)))]
+
+
 class FrontierArchive:
     """Bounded screen-cell reservoir; higher displayed score wins exact ties."""
 
@@ -116,10 +169,15 @@ def main():
     parser.add_argument("--expansions", type=int, default=20_000)
     parser.add_argument("--capacity", type=int, default=1024)
     parser.add_argument("--source-stride", type=int, default=8)
+    parser.add_argument("--priority", choices=("score", "age"), default="score")
+    parser.add_argument("--age-cell-interval", type=int, default=16)
+    parser.add_argument("--source-life", type=int, default=0,
+                        help="0 uses every own life; 1-4 selects one visible life number")
     parser.add_argument("--seed", type=int, default=503)
     args = parser.parse_args()
-    if (args.output.exists() or min(args.expansions, args.capacity, args.source_stride) < 1
-            or args.seed < 0):
+    if (args.output.exists() or min(args.expansions, args.capacity, args.source_stride,
+                                    args.age_cell_interval) < 1
+            or args.seed < 0 or args.source_life not in (0, 1, 2, 3, 4)):
         parser.error("fresh output and positive bounded settings required")
     source_archive = args.source_archive.resolve(strict=True)
     index = json.loads((source_archive/"index.json").read_text())
@@ -131,42 +189,61 @@ def main():
     config = dict(source_archive=str(source_archive), source_index_sha256=sha256(source_archive/"index.json"),
                   game_sha256=GAME_SHA256, environment_version=ENVIRONMENT_VERSION,
                   source_sha256=sha256(Path(__file__)), screen_cell_encoding=CELL_ENCODING,
+                  frontier_cell_encoding=(f"{CELL_ENCODING}+own-life-age/{args.age_cell_interval}"
+                                          if args.priority == "age" else CELL_ENCODING),
                   effective_commands=list(command_ids("effective-stage-one")), holds=list(HOLDS),
                   args={k:str(v) if isinstance(v, Path) else v for k,v in vars(args).items()},
                   training_only=True, model_updates=0, policy_inputs_changed=False,
-                  score_reward_unchanged=True, random_actions_not_learned_replay=True)
+                  score_reward_unchanged=True, random_actions_not_learned_replay=True,
+                  age_is_reset_selection_only=True)
     write_json(args.output/"config.json", config)
     env = DefenseEnv(tstates=100_000, max_steps=0, observation_stride=1)
-    archive, rng = FrontierArchive(args.capacity), np.random.default_rng(args.seed)
+    archive = (AgeFrontierArchive(args.capacity, args.age_cell_interval)
+               if args.priority == "age" else FrontierArchive(args.capacity))
+    rng = np.random.default_rng(args.seed)
     records, counters, source_hashes = [], Counter(), {}
     max_seed_life_score, max_explore_life_score = 0, 0
+    max_seed_life_age, max_explore_life_age = 0, 0
+    max_surviving_life_age = 0
     try:
-        prior = {}
+        prior, prior_loss_step = {}, {}
         for name in index["files"]:
             saved, actions, rewards, screens, metadata = load_source(source_archive/name)
-            source_hashes[name] = metadata["npz_sha256"]
             source = metadata["source"]
             seed = source["seed"]
             base = prior.get(seed, 0)
+            life_start = prior_loss_step.get(seed, 0)
             prior[seed] = source["visible_loss_score"]
+            prior_loss_step[seed] = source["visible_loss_frame"]
+            if args.source_life and source["life"] != args.source_life:
+                continue
+            source_hashes[name] = metadata["npz_sha256"]
             if (saved.stage != 1 or saved.tstates != env.tstates or saved.max_steps != 0
                     or saved.observation_stride != 1 or saved.score < base
                     or len(actions) < args.source_stride):
                 raise ValueError("source not a compatible own stage-one life")
             obs = restore(env, saved)
+            if saved.steps != source["snapshot_action"] or saved.steps < life_start:
+                raise ValueError("own source visible life age is inconsistent")
             for prefix in range(len(actions)):
                 if prefix % args.source_stride == 0:
                     life_score = env.score-base
+                    life_age = env.steps-life_start
+                    max_seed_life_score = max(max_seed_life_score, life_score)
+                    max_seed_life_age = max(max_seed_life_age, life_age)
                     key = screen_cell(obs)
                     node_id = len(records)
                     snapshot = capture(env)
-                    if archive.add(key, node_id, life_score, snapshot, rng):
+                    admitted = (archive.add(key, node_id, life_age, snapshot, rng)
+                                if args.priority == "age" else
+                                archive.add(key, node_id, life_score, snapshot, rng))
+                    if admitted:
                         records.append(dict(kind="own_prefix", source=name, prefix=prefix,
                                             parent=None, base_score=base,
-                                            life_score=life_score, cell=key,
+                                            life_score=life_score, life_start=life_start,
+                                            life_age=life_age, cell=key,
                                             stage=env.stage))
                         counters["seeded"] += 1
-                        max_seed_life_score = max(max_seed_life_score, life_score)
                 obs, reward, terminal, truncated, info = env.step(int(actions[prefix]))
                 if reward != rewards[prefix] or not np.array_equal(obs[-1], screens[prefix]):
                     raise RuntimeError("own source prefix failed exact native verification")
@@ -201,11 +278,16 @@ def main():
                 if info["mission_completed"]:
                     counters["mission"] += 1
                 base = records[parent_id]["base_score"]
+                life_start = records[parent_id]["life_start"]
                 life_score = env.score-base
+                life_age = env.steps-life_start
                 max_explore_life_score = max(max_explore_life_score, life_score)
+                max_explore_life_age = max(max_explore_life_age, life_age)
+                if not boundary:
+                    max_surviving_life_age = max(max_surviving_life_age, life_age)
                 row = dict(attempt=attempt, parent=parent_id, action=action, hold=hold,
                            length=length, score_gain=env.score-start_score,
-                           life_score=life_score, stage=info["stage"],
+                           life_score=life_score, life_age=life_age, stage=info["stage"],
                            life_lost=bool(info["life_lost"]),
                            mission_completed=bool(info["mission_completed"]),
                            admitted=False)
@@ -213,11 +295,15 @@ def main():
                     key = screen_cell(obs)
                     node_id = len(records)
                     snapshot = capture(env)
-                    if archive.add(key, node_id, life_score, snapshot, rng):
+                    admitted = (archive.add(key, node_id, life_age, snapshot, rng)
+                                if args.priority == "age" else
+                                archive.add(key, node_id, life_score, snapshot, rng))
+                    if admitted:
                         records.append(dict(kind="random_hold", parent=parent_id,
                                             action=action, length=length,
                                             source=None, prefix=None, base_score=base,
-                                            life_score=life_score, cell=key, stage=env.stage))
+                                            life_start=life_start, life_score=life_score,
+                                            life_age=life_age, cell=key, stage=env.stage))
                         counters["admitted"] += 1
                         row["admitted"] = True
                         row["node"] = node_id
@@ -228,11 +314,16 @@ def main():
                         archive_cells=len(archive.cells), distinct_cells=len(archive.seen),
                         seed_best_life_score=max_seed_life_score,
                         exploration_best_life_score=max_explore_life_score,
+                        seed_max_life_age=max_seed_life_age,
+                        exploration_max_life_age=max_explore_life_age,
+                        exploration_max_surviving_life_age=max_surviving_life_age,
                         counts=dict(counters),
                         rng_state=rng.bit_generator.state))
                     print(json.dumps(dict(expansions=attempt+1,
                         cells=len(archive.cells), seed_best_life_score=max_seed_life_score,
                         exploration_best_life_score=max_explore_life_score,
+                        exploration_max_life_age=max_explore_life_age,
+                        exploration_max_surviving_life_age=max_surviving_life_age,
                         stage_two=counters["stage_two"], counts=dict(counters))), flush=True)
                     disk_guard(args.output)
                 if info["stage"] > 1:
@@ -249,10 +340,13 @@ def main():
                     break
         write_json(args.output/"nodes.json", records)
         write_json(args.output/"report.json", dict(config=config, expansions=attempt+1,
-            source_games=len(index["games"]), source_states=len(index["files"]),
+            source_games=len(index["games"]), source_states=len(source_hashes),
             archive_cells=len(archive.cells), distinct_cells=len(archive.seen),
             seed_best_life_score=max_seed_life_score,
             exploration_best_life_score=max_explore_life_score,
+            seed_max_life_age=max_seed_life_age,
+            exploration_max_life_age=max_explore_life_age,
+            exploration_max_surviving_life_age=max_surviving_life_age,
             counts=dict(counters),
             rng_state=rng.bit_generator.state,
             discovery=(args.output/"discovery.json").exists(), model_updates=0,
