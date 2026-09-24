@@ -33,6 +33,11 @@ averaged **9,933**, median **10,330**, best **10,430**, all stage one.
 This is an early regression from the frozen parent, not stage progress;
 the longer predeclared continuation remains active.
 
+The second [full optimizer/RNG milestone](milestone-000009063168/state.json)
+is preserved after 262,144 new actions. Ten fixed complete games averaged
+**10,468**, best **10,480**, all stage one. This is a reused-seed score
+rebound, not an independently confirmed improvement or barrier clear.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-long-119 \
