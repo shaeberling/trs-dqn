@@ -57,3 +57,14 @@ No trainer or environment code changes are needed. The complete native
 537-test suite passed earlier; the focused four-test continuation-watcher
 suite also passed. This run uses the same tested trainer path and a fresh
 new run/artifact directory.
+
+An unattended [`rl.defense_seed42_compare`](../../../../rl/defense_seed42_compare.py)
+watcher checks the exact trainer PID and final configuration. It fails
+closed on an early/incompatible stop, missing optimizer or any incomplete
+fixed check. If the selected fixed checkpoint reports a later stage, it
+independently replays that original-boot seed before a claim. It then
+evaluates both frozen selections on the two predeclared 128-game fresh
+sets, verifies one local replay per arm and set, and writes a paired
+report without changing model weights or promoting a best replay. Four
+focused tests of the stop, selection, provenance and replay gates pass.
+The live watcher state is `runs/defense-ppo-balanced-seed42-162/comparison-status.json`.
