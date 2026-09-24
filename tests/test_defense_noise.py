@@ -7,10 +7,47 @@ import unittest
 
 import numpy as np
 
-from rl.defense_noise import PolicyBiasNoise, PolicyWeightNoise, NoiseRollout
+from rl.defense_noise import PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise, NoiseRollout
 
 
 class DefenseNoiseTests(unittest.TestCase):
+    def test_key_factor_noise_is_direction_symmetric_and_correlated(self):
+        noise = PolicyKeyNoise(2, 21, 1, np.random.default_rng(7))
+        self.assertEqual(noise.values.shape, (2, 21))
+        matrix = noise.matrix
+        self.assertEqual(matrix.shape, (21, 7))
+        np.testing.assert_array_equal(matrix[3], [0, 0, 0, 1, 0, 0, 0])  # LEFT
+        np.testing.assert_array_equal(matrix[4], [0, 0, 0, 0, 1, 0, 0])  # RIGHT
+        np.testing.assert_array_equal(matrix[20], [0, 0, 0, 0, 0, 0, 1])
+        self.assertAlmostEqual(float(matrix[6, 1]), 2**-.5)  # UP+RIGHT
+        self.assertAlmostEqual(float(matrix[6, 4]), 2**-.5)
+        self.assertAlmostEqual(float(matrix[5, 1]), 2**-.5)  # UP+LEFT mirror
+        self.assertAlmostEqual(float(matrix[5, 3]), 2**-.5)
+        np.testing.assert_allclose(np.sum(matrix*matrix, axis=1), 1, atol=1e-7)
+        before = noise.values.copy()
+        noise.redraw(np.array([False, True]))
+        np.testing.assert_array_equal(noise.values[0], before[0])
+        self.assertFalse(np.array_equal(noise.values[1], before[1]))
+        self.assertEqual(noise.draws, 3)
+
+    def test_key_factor_noise_rollout_and_zero_rng_contract(self):
+        rng = np.random.default_rng(11)
+        state = copy.deepcopy(rng.bit_generator.state)
+        zero = PolicyKeyNoise(2, 20, 0, rng)
+        zero.redraw(np.ones(2, dtype=bool))
+        self.assertEqual(rng.bit_generator.state, state)
+        np.testing.assert_array_equal(zero.values, np.zeros((2, 20)))
+        noise = PolicyKeyNoise(2, 20, 1, np.random.default_rng(11))
+        rollout = NoiseRollout(noise)
+        first = rollout.record().copy()
+        rollout.redraw(np.array([True, False]))
+        second = rollout.record().copy()
+        bank, ids = rollout.arrays()
+        np.testing.assert_array_equal(bank[ids], np.concatenate((first, second)))
+        for args in ((2, 19, 1), (2, 21, -1), (2, 20, float('nan'))):
+            with self.assertRaises(ValueError):
+                PolicyKeyNoise(*args, rng=np.random.default_rng(2))
+
     def test_noise_persists_and_only_boundary_workers_are_redrawn(self):
         noise = PolicyBiasNoise(4, 20, 1, np.random.default_rng(42))
         original = noise.bias.copy()
@@ -74,6 +111,20 @@ class DefenseNoiseTests(unittest.TestCase):
                                         capture_output=True, text=True, timeout=30)
                 self.assertEqual(result.returncode, 2, result.stderr)
                 self.assertIn('policy-weight-noise', result.stderr)
+                self.assertFalse(output.exists())
+
+    def test_key_noise_cli_rejects_invalid_or_combined_modes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)/'unused'
+            for flags in (['--policy-key-noise=-1'], ['--policy-key-noise=nan'],
+                          ['--policy-key-noise=1', '--policy-bias-noise=1'],
+                          ['--policy-key-noise=1', '--sil-updates=1'],
+                          ['--policy-key-noise=1', '--allow-enter']):
+                result = subprocess.run([sys.executable, '-m', 'rl.defense_train',
+                                         '--run', str(output), *flags],
+                                        capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn('policy-key-noise', result.stderr)
                 self.assertFalse(output.exists())
 
     def test_rollout_bank_preserves_time_worker_and_shuffle_alignment(self):

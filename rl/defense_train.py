@@ -58,6 +58,8 @@ def main():
                         help="training-only actor bias noise std, fixed per life; 0 disables")
     parser.add_argument("--policy-weight-noise", type=float, default=0,
                         help="training-only actor output-weight noise std, fixed per life; 0 disables")
+    parser.add_argument("--policy-key-noise", type=float, default=0,
+                        help="training-only symmetric key-factor logit noise std, fixed per life; 0 disables")
     parser.add_argument("--gamma", type=float, default=.997)
     parser.add_argument("--gae-lambda", type=float, default=.95)
     parser.add_argument("--reward-scale", type=float, default=.01,
@@ -192,6 +194,11 @@ def main():
     if (not np.isfinite(args.policy_weight_noise) or args.policy_weight_noise < 0
             or (args.policy_weight_noise and (args.policy_bias_noise or args.sil_updates))):
         parser.error("policy-weight-noise must be finite/nonnegative and cannot be combined with bias noise or SIL")
+    if (not np.isfinite(args.policy_key_noise) or args.policy_key_noise < 0
+            or (args.policy_key_noise and (args.policy_bias_noise or args.policy_weight_noise
+                                           or args.sil_updates or args.allow_enter or args.canonical_fire
+                                           or args.recurrent_hidden))):
+        parser.error("policy-key-noise requires ordinary feedforward Defense actions without other noise or SIL")
     if (not all(np.isfinite(v) for v in (args.learning_rate, args.entropy, args.gamma,
                                         args.gae_lambda, args.reward_scale, args.value_coefficient))
             or args.learning_rate <= 0 or args.entropy < 0 or args.reward_scale <= 0
@@ -268,8 +275,8 @@ def main():
     boot_episodes = prior.get("boot_episodes", episodes) if prior else 0
     restored_segments = prior.get("restored_segments", 0) if prior else 0
     noise = None
-    if args.policy_bias_noise or args.policy_weight_noise:
-        from .defense_noise import PolicyBiasNoise, PolicyWeightNoise, NoiseRollout
+    if args.policy_bias_noise or args.policy_weight_noise or args.policy_key_noise:
+        from .defense_noise import PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise, NoiseRollout
         noise_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 1873]))
         if prior and "policy_noise_rng" in prior:
             noise_rng.bit_generator.state = prior["policy_noise_rng"]
@@ -278,6 +285,9 @@ def main():
             noise = PolicyWeightNoise(args.envs, policy_action_count,
                                       agent.model.advantage.weight.shape[1], args.policy_weight_noise, noise_rng)
             noise_argument, noise_kind = "head_weight_noise", "output-weight"
+        elif args.policy_key_noise:
+            noise = PolicyKeyNoise(args.envs, policy_action_count, args.policy_key_noise, noise_rng)
+            noise_argument, noise_kind = "logit_bias", "factorized-key-output-bias"
         else:
             noise = PolicyBiasNoise(args.envs, policy_action_count,
                                     args.policy_bias_noise, noise_rng)
@@ -521,7 +531,8 @@ def main():
                          entropy=float(np.mean(metrics, axis=0)[2]),
                          approx_kl=float(np.mean(metrics, axis=0)[3]),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
-                         **({"policy_weight_noise_std" if args.policy_weight_noise else "policy_bias_noise_std":
+                         **({"policy_weight_noise_std" if args.policy_weight_noise else
+                             "policy_key_noise_std" if args.policy_key_noise else "policy_bias_noise_std":
                              noise.std, "policy_noise_draws": noise.draws}
                             if noise is not None else {}),
                          **sil_metrics))
