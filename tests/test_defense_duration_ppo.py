@@ -1,5 +1,7 @@
 import json
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -7,9 +9,11 @@ import numpy as np
 
 from rl.defense import ENVIRONMENT_VERSION, GAME_SHA256, action_names
 from rl.defense_duration_ppo import (DurationCategoricalPolicy, DurationPPO,
-                                     duration_action_names, initialize_duration_policy)
+                                     duration_action_names, initialize_duration_policy,
+                                     option_actor_gae)
 from rl.defense_learning import evaluate, load_policy, record_game, verify_policy_trace
 from rl.defense_repeat import RepeatedActions
+from rl.ppo import gae
 
 
 class SequencePolicy:
@@ -29,6 +33,62 @@ class SequencePolicy:
 
 
 class DefenseDurationPPOTests(unittest.TestCase):
+    def test_complete_option_credit_reaches_delayed_score(self):
+        rewards = np.zeros((64, 1), np.float32)
+        rewards[-1, 0] = 1.
+        values = np.zeros_like(rewards)
+        boundaries = np.zeros_like(rewards, bool)
+        boundaries[-1, 0] = True
+        starts = np.zeros_like(rewards, bool)
+        starts[0, 0] = True
+        actor, mask = option_actor_gae(rewards, values, boundaries, starts,
+                                      np.zeros(1, np.float32), np.array([False]), .997, .95)
+        ordinary, _ = gae(rewards, values, boundaries.astype(np.float32),
+                          np.zeros(1, np.float32), .997, .95)
+        self.assertTrue(mask[0, 0])
+        self.assertAlmostEqual(float(actor[0, 0]), .997**63, places=6)
+        self.assertAlmostEqual(float(ordinary[0, 0]), (.997*.95)**63, places=6)
+        self.assertGreater(float(actor[0, 0]), 20*float(ordinary[0, 0]))
+        np.testing.assert_array_equal(actor[1:], 0)
+
+    def test_option_credit_respects_boundaries_bootstrap_and_unfinished_hold(self):
+        rewards = np.array([[1, 1], [2, 1], [3, 1], [4, 1], [5, 1]], np.float32)
+        values = np.zeros_like(rewards)
+        boundaries = np.zeros_like(rewards, bool)
+        boundaries[4, 0] = True
+        starts = np.zeros_like(rewards, bool)
+        starts[0] = True
+        starts[2, 0] = True
+        actor, mask = option_actor_gae(rewards, values, boundaries, starts,
+                                      np.zeros(2, np.float32), np.array([False, True]), .9, .8)
+        last = 3+.9*4+.9**2*5
+        self.assertAlmostEqual(float(actor[2, 0]), last, places=6)
+        self.assertAlmostEqual(float(actor[0, 0]), 1+.9*2+.9**2*.8*last, places=6)
+        self.assertFalse(mask[0, 1])
+        self.assertEqual(float(actor[0, 1]), 0.)
+        self.assertEqual(int(mask.sum()), 2)
+        with self.assertRaises(ValueError):
+            changed = boundaries.copy()
+            changed[0, 0] = True
+            option_actor_gae(rewards, values, changed, starts,
+                             np.zeros(2, np.float32), np.array([False, True]), .9, .8)
+        bootstrapped, completed = option_actor_gae(
+            np.array([[1.], [2.]], np.float32), np.zeros((2, 1), np.float32),
+            np.zeros((2, 1), bool), np.array([[True], [False]]),
+            np.array([7.], np.float32), np.array([False]), .9, .8)
+        self.assertTrue(completed[0, 0])
+        self.assertAlmostEqual(float(bootstrapped[0, 0]), 1+.9*2+.9**2*7, places=6)
+
+    def test_option_actor_credit_requires_joint_policy(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)/"unused"
+            result = subprocess.run([sys.executable, "-m", "rl.defense_train",
+                                     "--run", str(output), "--option-actor-gae"],
+                                    capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 2, result.stderr)
+            self.assertIn("--option-actor-gae requires learned durations", result.stderr)
+            self.assertFalse(output.exists())
+
     def test_executor_and_parallel_policy_cancel_only_on_visible_boundaries(self):
         durations = (1, 4, 16)
         executor = RepeatedActions(2, durations=durations)

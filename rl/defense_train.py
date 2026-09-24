@@ -81,6 +81,8 @@ def main():
                         help="learn a twenty-first choice that continues the policy's own last key")
     parser.add_argument("--learned-durations", nargs="*", type=int, default=[],
                         help="learn joint physical keys and option holds, e.g. 1 4 16 64")
+    parser.add_argument("--option-actor-gae", action=argparse.BooleanOptionalAction, default=False,
+                        help="credit a completed learned hold's whole score return to its option start")
     parser.add_argument("--duration-initial-logit-spacing", type=float, default=2.,
                         help="direction-neutral initial logit penalty per longer hold; only for fresh duration initialization")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
@@ -190,6 +192,8 @@ def main():
             parser.error("learned durations require own ordinary-policy initialization, life terminals, and plain feedforward PPO")
     elif args.initialize_duration_policy:
         parser.error("--initialize-duration-policy requires --learned-durations")
+    if args.option_actor_gae and not args.learned_durations:
+        parser.error("--option-actor-gae requires learned durations")
     if (not np.isfinite(args.duration_initial_logit_spacing)
             or not 0 <= args.duration_initial_logit_spacing <= 20
             or (not args.learned_durations and args.duration_initial_logit_spacing != 2.)):
@@ -395,7 +399,9 @@ def main():
                       duration_source_sha256=sha256(Path(__file__).with_name("defense_duration_ppo.py")),
                       duration_executor_source_sha256=sha256(Path(__file__).with_name("defense_repeat.py")),
                       policy="learned categorical joint physical key-duration options, sampled",
-                      actor_update="only actual option starts; every base action trains the score-value critic",
+                      actor_update=("semi-Markov score GAE at complete option starts; every base action trains the critic"
+                                    if args.option_actor_gae else
+                                    "only actual option starts; every base action trains the score-value critic"),
                       duration_reset="visible life loss or episode boundary; pending hold cancelled")
     if args.recurrent_hidden:
         config.update(architecture=RECURRENT_ARCHITECTURE,
@@ -598,8 +604,20 @@ def main():
             advantages, returns = gae(np.asarray(rewards, np.float32), np.asarray(values_buffer),
                                       np.asarray(boundaries, np.float32), np.array(last_value),
                                       args.gamma, args.gae_lambda)
+            option_credit_stats = {}
             if duration_actions is not None:
-                flat_mask = np.concatenate(actor_masks).astype(np.float32)
+                if args.option_actor_gae:
+                    from .defense_duration_ppo import option_actor_gae
+                    advantages, completed_mask = option_actor_gae(
+                        rewards, values_buffer, boundaries, actor_masks, np.array(last_value),
+                        duration_actions.remaining > 0, args.gamma, args.gae_lambda)
+                    flat_mask = completed_mask.reshape(-1).astype(np.float32)
+                    option_credit_stats = dict(
+                        option_actor_completed=int(completed_mask.sum()),
+                        option_actor_dropped_incomplete=int(np.asarray(actor_masks).sum()
+                                                            -completed_mask.sum()))
+                else:
+                    flat_mask = np.concatenate(actor_masks).astype(np.float32)
                 selected = advantages.reshape(-1)[flat_mask > 0]
                 if not len(selected):
                     raise RuntimeError("duration rollout contained no policy decisions")
@@ -669,6 +687,7 @@ def main():
                          approx_kl=float(np.mean(metrics, axis=0)[3]),
                          **({"duration_options": duration_actions.stats()}
                             if duration_actions is not None else {}),
+                         **option_credit_stats,
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
                          **noise_fields,
                          **sil_metrics))
