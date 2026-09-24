@@ -134,6 +134,14 @@ course rows 33–34. The spatial residual is a negative result, not a
 score parent or promoted global replay; full states and records are
 preserved.
 
+The [bounded stronger phase-noise follow-up](results/defense/training/ppo-duration-strong-phase-144/README.md)
+now tests whether more vigorous, still direction-neutral key/duration
+exploration can escape the same failure point. It resumes the original
+option-credit full state and changes training-only noise strength, not
+screen input, displayed-score reward, or frozen evaluation. Its short
+native smoke completed with a verified stage-one replay; the planned
+524,288-action first gate will determine whether to extend or archive it.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
