@@ -258,3 +258,10 @@ monitor records paired outcomes under
 `runs/defense-ppo-balanced-fire-160/fresh-comparison/` and never promotes
 either model or modifies the protected global best. It waits for at least
 6 GiB free before starting each frozen evaluation.
+
+The separate [read-only seventh-replay loss comparison](../../diagnostics/balanced-fire-160-loss-comparison/README.md)
+checks whether the large score jump represents a different passage through
+the shared obstacle. Its verified treatment life scores were 2,530–2,570,
+with forensic visible-loss stream rows 31–34 of 126. Despite more movement
+choices than the protected best near those losses, it has not passed the
+stage-one barrier. The diagnostic never enters learning or promotion.

@@ -1,0 +1,89 @@
+{
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "original_binary_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "static_audit_source_sha256": "25eba681ae343012e2682653437d4e76c080638667f42475cf03384f0d7356e8",
+  "probe_source_sha256": "da9b1f03d6974fb3405ac7f69d25475fbde706db4e5d52b907a55dfd4d5e26ec",
+  "course_start": "0x76A9",
+  "course_end": "0x7BD8",
+  "total_stage_one_stream_rows": 126,
+  "memory_address_read": "0x819B/0x819C",
+  "bundles": [
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-balanced-fire-from-scratch-160/milestone-replay-000007344128",
+      "trace_sha256": "0e696d4bfff607854db8ab0d8d721630383706c78b62cc96f3d098e8463cc0f0",
+      "model_sha256": "5fd070f2372089901c935b4baa560bc99b4713c95a4e4c08c902bf57d1abc377",
+      "verified_neural_actions": 2487,
+      "losses": [
+        {
+          "frame": 414,
+          "displayed_score": 2550,
+          "next_stream_byte": "0x7733",
+          "decoded_rows": 33
+        },
+        {
+          "frame": 1121,
+          "displayed_score": 5120,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1825,
+          "displayed_score": 7690,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 2487,
+          "displayed_score": 10220,
+          "next_stream_byte": "0x7727",
+          "decoded_rows": 31
+        }
+      ]
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+      "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+      "model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+      "verified_neural_actions": 2580,
+      "losses": [
+        {
+          "frame": 410,
+          "displayed_score": 2620,
+          "next_stream_byte": "0x7733",
+          "decoded_rows": 33
+        },
+        {
+          "frame": 1133,
+          "displayed_score": 5240,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1863,
+          "displayed_score": 7860,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 2580,
+          "displayed_score": 10480,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        }
+      ]
+    }
+  ],
+  "own_source_archive": null,
+  "diagnostic_only": true,
+  "hidden_ram_never_policy_input": true,
+  "hidden_ram_never_reward_or_curriculum": true,
+  "model_updates": 0,
+  "replay_promotion_eligible": false,
+  "limitations": [
+    "Pointer is sampled at visible ship-loss bookkeeping, not exact collision.",
+    "Decoded rows are stream progress, not rows safely navigated by a ship.",
+    "The original program may render obstacles ahead of or behind this pointer.",
+    "The forensic pointer and row index must never enter training or evaluation selection."
+  ]
+}
