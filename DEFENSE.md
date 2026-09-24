@@ -7809,3 +7809,13 @@ stage one. Every checkpoint, candidate plan, full log and a 2,565-action
 verified local replay are archived. The internally accepted generation-ten
 head remains negative on the additional independent 64-seed check, so
 the global best and last independently confirmed search parent stay put.
+
+The [probability-preserving canonical-fire probe](results/defense/diagnostics/action-group-110/README.md)
+then merged the nine stage-one fire-alias logits by log-sum-exp while
+retaining their total probability and sending the draw through Space.
+On 64 new matched full games, **all paired displayed scores matched**:
+both means were **10,251.09**, all stage one. This read-only result
+explains why the naive ten-command mask failed (it discarded learned
+fire mass) and supports a trainable grouped-action PPO test. It does not
+prove identical native trajectories or later-stage command equivalence;
+the verified global best remains unchanged.
