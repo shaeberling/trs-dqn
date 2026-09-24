@@ -8124,3 +8124,19 @@ again lost four 2,620-point lives at the recurring obstacle. The
 show only 1/2/0/1 learned continuation choices in the four 64-action
 pre-loss windows. The [full negative run](results/defense/training/ppo-boot-diversity-125/README.md)
 is archived; the run-121 score parent and global best remain unchanged.
+
+The [native held-key diagnostic](results/defense/diagnostics/boot-diversity-125-losses/README.md)
+reproduced the run-125 selected replay exactly to its own pre-loss states,
+then tried all 20 constant physical commands from 192, 128 and 64 actions
+before the first visible loss. None of the 60 diagnostic suffixes passed
+stage one. Holding RIGHT delayed visible loss versus NOOP from the earlier
+two anchors but hastened it from the 64-action anchor, while earning much
+less score than the learned suffix from the earlier anchors. This is a
+single-state, diagnostic-only observation, not a route or training example.
+
+A [bounded within-life key-noise test](results/defense/training/ppo-key-noise-windowed-126/README.md)
+now tests whether zero-mean symmetric key factors changing every 32 own
+actions, rather than staying fixed for the whole life, give the learned
+policy more useful coherent exploration. It keeps the original visible-
+score reward, screen-only policy and native evaluation. Full source, tests,
+fixed selection and fresh-game gates are recorded in its run plan.

@@ -48,6 +48,30 @@ class DefenseNoiseTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 PolicyKeyNoise(*args, rng=np.random.default_rng(2))
 
+    def test_key_factor_noise_fixed_interval_is_worker_local_and_recorded(self):
+        noise = PolicyKeyNoise(2, 21, 1, np.random.default_rng(29), interval=3)
+        rollout = NoiseRollout(noise)
+        initial = rollout.record().copy()
+        rollout.redraw(np.array([False, True]))
+        after_boundary = rollout.record().copy()
+        np.testing.assert_array_equal(after_boundary[0], initial[0])
+        self.assertFalse(np.array_equal(after_boundary[1], initial[1]))
+        rollout.redraw(np.array([False, False]))
+        before_interval = rollout.record().copy()
+        np.testing.assert_array_equal(before_interval, after_boundary)
+        rollout.redraw(np.array([False, False]))
+        after_interval = rollout.record().copy()
+        self.assertFalse(np.array_equal(after_interval[0], before_interval[0]))
+        np.testing.assert_array_equal(after_interval[1], before_interval[1])
+        bank, ids = rollout.arrays()
+        np.testing.assert_array_equal(bank[ids], np.concatenate(
+            (initial, after_boundary, before_interval, after_interval)))
+        self.assertEqual(noise.draws, 4)
+        self.assertEqual(noise.elapsed.tolist(), [0, 2])
+        for interval in (-1, True, 1.5):
+            with self.assertRaises(ValueError):
+                PolicyKeyNoise(2, 21, 1, np.random.default_rng(3), interval=interval)
+
     def test_noise_persists_and_only_boundary_workers_are_redrawn(self):
         noise = PolicyBiasNoise(4, 20, 1, np.random.default_rng(42))
         original = noise.bias.copy()
@@ -119,7 +143,9 @@ class DefenseNoiseTests(unittest.TestCase):
             for flags in (['--policy-key-noise=-1'], ['--policy-key-noise=nan'],
                           ['--policy-key-noise=1', '--policy-bias-noise=1'],
                           ['--policy-key-noise=1', '--sil-updates=1'],
-                          ['--policy-key-noise=1', '--allow-enter']):
+                          ['--policy-key-noise=1', '--allow-enter'],
+                          ['--policy-key-noise-interval=-1'],
+                          ['--policy-key-noise-interval=32']):
                 result = subprocess.run([sys.executable, '-m', 'rl.defense_train',
                                          '--run', str(output), *flags],
                                         capture_output=True, text=True, timeout=30)

@@ -60,6 +60,8 @@ def main():
                         help="training-only actor output-weight noise std, fixed per life; 0 disables")
     parser.add_argument("--policy-key-noise", type=float, default=0,
                         help="training-only symmetric key-factor logit noise std, fixed per life; 0 disables")
+    parser.add_argument("--policy-key-noise-interval", type=int, default=0,
+                        help="redraw key factors after N own actions per worker; 0 = only at visible boundaries")
     parser.add_argument("--gamma", type=float, default=.997)
     parser.add_argument("--gae-lambda", type=float, default=.95)
     parser.add_argument("--reward-scale", type=float, default=.01,
@@ -199,6 +201,8 @@ def main():
                                            or args.sil_updates or args.allow_enter or args.canonical_fire
                                            or args.recurrent_hidden))):
         parser.error("policy-key-noise requires ordinary feedforward Defense actions without other noise or SIL")
+    if args.policy_key_noise_interval < 0 or (args.policy_key_noise_interval and not args.policy_key_noise):
+        parser.error("policy-key-noise-interval requires positive key noise and a nonnegative interval")
     if (not all(np.isfinite(v) for v in (args.learning_rate, args.entropy, args.gamma,
                                         args.gae_lambda, args.reward_scale, args.value_coefficient))
             or args.learning_rate <= 0 or args.entropy < 0 or args.reward_scale <= 0
@@ -286,7 +290,8 @@ def main():
                                       agent.model.advantage.weight.shape[1], args.policy_weight_noise, noise_rng)
             noise_argument, noise_kind = "head_weight_noise", "output-weight"
         elif args.policy_key_noise:
-            noise = PolicyKeyNoise(args.envs, policy_action_count, args.policy_key_noise, noise_rng)
+            noise = PolicyKeyNoise(args.envs, policy_action_count, args.policy_key_noise, noise_rng,
+                                   interval=args.policy_key_noise_interval)
             noise_argument, noise_kind = "logit_bias", "factorized-key-output-bias"
         else:
             noise = PolicyBiasNoise(args.envs, policy_action_count,
@@ -329,12 +334,16 @@ def main():
         config["initialization"] = prior["config"]["initialization"]
         config["initialization_source_sha256"] = prior["config"]["initialization_source_sha256"]
     if noise is not None:
-        config.update(training_policy=f"learned categorical with per-life Gaussian {noise_kind} perturbations",
+        reset_rule = (f"visible life loss, episode boundary, or each {args.policy_key_noise_interval} "
+                      "own actions per worker; fresh draw after resume") if args.policy_key_noise_interval else (
+                      "visible life loss or episode boundary; fresh draw after resume")
+        period = "within-life" if args.policy_key_noise_interval else "per-life"
+        config.update(training_policy=f"learned categorical with {period} Gaussian {noise_kind} perturbations",
                       evaluation_policy="unperturbed learned categorical, sampled",
                       policy_noise_source_sha256=sha256(Path(__file__).with_name("defense_noise.py")),
                       ppo_source_sha256=sha256(Path(__file__).with_name("ppo.py")),
                       model_source_sha256=sha256(Path(__file__).with_name("model.py")),
-                      policy_noise_reset="visible life loss or episode boundary; fresh draw after resume")
+                      policy_noise_reset=reset_rule)
     if args.canonical_fire:
         config.update(policy="learned categorical over fixed twelve command groups, sampled",
                       evaluation_policy="same fixed grouped categorical policy, sampled",
