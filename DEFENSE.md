@@ -8194,3 +8194,24 @@ continuation choices among 2,563 decisions. The
 [full run](results/defense/training/ppo-screen-frontier-127/README.md)
 and [loss sheets](results/defense/diagnostics/screen-frontier-127-losses/README.md)
 are preserved, and the global best remains protected.
+
+A standalone [native-verified course-progress audit](results/defense/diagnostics/course-progress-129/README.md)
+found that the repeated learned loss occurs when the original stage-one
+stream decoder has consumed about row **33–34 of 126**, not near the end of
+the course. This hidden pointer is forensic-only and never enters training,
+action choice, reward, curriculum or replay ranking. A subsequent
+[100,000-expansion chained own-screen search](results/defense/training/frontier-search-129/README.md)
+chained up to twelve unbiased held commands from the learner's own exact
+states but found no score above its 2,640-point source best or stage-two
+screen. No weights were updated by that search.
+
+An [age-prioritized first-life frontier comparison](results/defense/training/frontier-age-130/README.md)
+then used visible screen plus own action age **only to select training reset
+states**. Its fixed 100,000 expansions explored 677,998 more emulator
+actions and 7,553 screen/age cells. It prolonged a few low-scoring branches,
+but never exceeded its 2,620-point source best, entered stage two or showed
+a mission. At 2,600+ points, surviving branches extended at most twelve
+actions beyond their own source's visible-loss age. Original source future
+loss times were used only in post-hoc analysis. This negative result does
+not justify simply extending the same random-hold search; the confirmed
+learned score parent and verified global best replay remain unchanged.
