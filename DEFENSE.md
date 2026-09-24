@@ -21,6 +21,7 @@ places all eight new visible life losses at original stage-one stream row
 were diagnostic only, never training inputs or rewards. The protected
 10,480-point global replay and original game's bits are unchanged. The
 then-current full **489-test** regression suite passed.
+
 The subsequent [joint key-and-duration exploration](results/defense/training/ppo-duration-joint-134/README.md)
 sampled hundreds more long holds over 1,048,576 own training actions.
 Its selected checkpoint averaged 10,474 on fixed validation, but **all 80**
@@ -32,6 +33,7 @@ wins. A [fresh verified replay](results/defense/diagnostics/joint-134-course-pro
 still loses all four lives at decoded first-stage rows 33–34 of 126. The
 original game, protected best replay and no-oracle training contract remain
 unchanged. The full **491-test** regression suite passes with this joint mode.
+
 The next [screen-diverse reset continuation](results/defense/training/ppo-duration-screen-135/README.md)
 filled 128 own-visible-screen cells per worker and reached the exact
 10,480 stage-one ceiling on four fixed ten-game checks. All 80 fixed and
@@ -41,6 +43,29 @@ frozen joint input; the apparent fixed-seed improvement did not transfer.
 The [verified fresh replay audit](results/defense/diagnostics/screen-duration-135-course-progress/README.md)
 still loses at original first-stage stream rows 33–34 of 126. The global
 best replay is unchanged.
+
+The [semi-Markov option-credit continuation](results/defense/training/ppo-duration-credit-136/README.md)
+gave every learned hold's entire real displayed-score return to its
+actor start while leaving the base-screen critic unchanged. It completed
+1,048,576 new actions with all **80** fixed games in stage one. On two
+fresh matched sets (**192 games each**), its selected checkpoint averaged
+**10,406.41** against **10,398.28** for the established ordinary-action
+parent, with four sub-9,000 scores each. This narrowly meets its
+predeclared *score-training-parent* eligibility rule but not the actual
+gameplay goal; its [verified replay](results/defense/diagnostics/option-credit-136-course-progress/README.md)
+again loses at decoded rows 33–34 of 126. The protected replay remains
+unchanged, and the full **494-test** suite passed before production.
+
+An [expanded exact-prefix gate probe](results/defense/diagnostics/gate-window-137/README.md)
+held all 20 physical keys from each of 18 adjacent verified first-life
+frames before the common loss. All **360** diagnostic branches still lost
+within 160 actions without exceeding the learned life’s 2,620-point
+score. Holding RIGHT earlier died at 1,080–1,100; holding it later
+reached 2,620 and died there. These intervention actions are **not**
+training data or learned replays. The evidence favors testing
+phase-changing exploration over merely lengthening a constant hold,
+without proving any particular route.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
