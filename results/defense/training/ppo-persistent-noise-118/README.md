@@ -41,6 +41,18 @@ averaged **10,466**, median/best **10,480**, all stage one. This is a
 stronger reused-seed score than the first check, but no visible barrier
 passage or independent improvement has been established.
 
+The run completed all four fixed checks, selecting the second checkpoint
+above (mean 10,466) over the final checkpoint (10,464). On the first fresh
+128-game set, seeds 601000–601127, its mean exceeded the common parent by
+only **20.94** points; all games stayed in stage one. The paired median
+change was zero, and a symmetric 10% trimmed mean was approximately **+0.39**
+points. Therefore, before treating this as a new score parent, a second
+untouched confirmation set is predeclared: **128 more complete matched
+games, seeds 601200–601327**, for the same frozen selected checkpoint and
+common parent. No further checkpoint selection, parameter update or training
+will use either fresh set. Any stage transition still requires a native
+screen-observed replay, regardless of score.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-118 \
