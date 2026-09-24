@@ -8019,3 +8019,35 @@ none in the four pre-loss 64-action windows. Thus the score gain does not
 demonstrate learned persistence through the barrier. A longer identical
 run would not be a meaningful test of the proposed mechanism until the
 continuation action is actually explored.
+
+A read-only calibration on the run-121 model's own verified screens exposed
+why the new action went unused: its initial mean selection probability was
+only **0.0717%**, then **0.0116%** after training. A neutral **+7** bias to
+that extra action row, leaving all twenty parent rows untouched, predicts
+12.76% overall and 6.80% near the four observed loss windows. A separate
+no-learning native replay then verified **320** learned continuation choices
+among 2,531 actions (12.64%), across all lives. This is not a scripted
+direction or an added reward; it makes the categorical action genuinely
+available to PPO. A [predeclared calibrated pilot](results/defense/training/ppo-continue-calibrated-122/README.md)
+will test whether that changes the repeated stage-one outcome while keeping
+the earlier confirmed score parent and global best protected.
+
+Run 122 completed all **1,048,576** calibrated-continuation actions. Its
+fixed ten-game means were **10,126 / 10,406 / 10,406 / 10,416 / 10,166 /
+10,407 / 10,243 / 10,456**, all stage one. The final checkpoint passed the
+predeclared gate, but the [128 fresh matched games](results/defense/training/ppo-continue-calibrated-122/comparison.json)
+averaged **10,450.94**, below both the run-121 score parent (**10,456.80**)
+and run-119 ordinary parent (**10,453.13**) on the same seeds. All **384**
+games remained stage one. The full optimizer/RNG history, exact source and
+verified local replay are [archived](results/defense/training/ppo-continue-calibrated-122/README.md);
+the older confirmed score parent and global best remain unchanged.
+
+The [read-only loss check](results/defense/diagnostics/continue-calibrated-122-losses/README.md)
+again shows four 2,620-point lives at the recurring right-opening barrier.
+Unlike run 121, the calibrated model did use its extra action: a native-
+matched replay sampled it **132 times in 2,576 decisions**, yet only
+**2/2/2/0** times in the four 64-action pre-loss windows. Pure physical
+movement choices occupied 70–84% of those windows, but that did not move
+the policy beyond the obstacle. This rules out the simple explanation that
+the option was *never* tried; it does not identify the exact fatal action
+or prove that a learned action-duration mechanism could never work.
