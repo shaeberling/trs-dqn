@@ -148,6 +148,12 @@ but it does **not** complete the original game or exceed the protected
 global-best replay's stage or score. The selected seventh checkpoint is an
 eligible score-training parent for a *different* next experiment. Merely
 repeating this same continuation again is not justified by these outcomes.
-After this archive is committed, retain the selected and terminal full
-states, all evaluations, logs and verified replays, and prune unselected
-intermediate live optimizer snapshots under the documented retention rule.
+After the completed archive was committed and pushed, the seven
+nonselected live checkpoint directories, duplicate local comparison/proof
+bundles and lower-scoring local artifact versions were removed (about
+**95 MiB**). The selected seventh and terminal full states remain in the
+ignored run; all eight fixed evaluations, the full log and both verified
+fresh replays remain in this pushed archive. Nonselected intermediate
+optimizer states and lower-scoring replay versions not separately archived
+are not recoverable; selected and terminal states are recoverable from the
+pushed archive.

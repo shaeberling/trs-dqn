@@ -47,8 +47,18 @@ local checkpoint/replay directories (about **681 MiB**) were removed;
 the tracked archive and lightweight local config/log/status remain. These
 deleted local duplicates are recoverable from the tracked archive and
 pushed branch. The continuation had a separate exact-PID 5.1 GiB disk
-guard, and its unselected intermediate optimizer snapshots are pruned only
-after the completed comparison archive is committed.
+guard. After its completed comparison archive was pushed, seven
+nonselected live checkpoint directories and duplicate local bundles were
+pruned (about **95 MiB**), retaining selected/terminal full states and all
+evaluation records.
+
+The next bounded [seed-42 balanced run](results/defense/training/ppo-balanced-seed42-162/README.md)
+tests independent initialization/experience diversity rather than another
+continuation of the seed-41 optimizer. It uses the same score-only,
+screen-only rules, fixed stage-gated checks, a 5.1 GiB exact-run disk
+guard and two untouched 128-game comparisons before any score-parent
+claim. Earlier actor-head ARS searches were already negative, so that
+method is not being redundantly relaunched.
 
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
