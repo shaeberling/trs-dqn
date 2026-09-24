@@ -24,6 +24,13 @@ transition; score alone is not enough.
 The sole independent collector watches this run's isolated `artifacts/` and
 preserves the globally verified best replay if no better candidate appears.
 
+The first [full model/optimizer/RNG milestone](milestone-000008669952/state.json)
+is preserved after 131,072 new actions. Its ten complete fixed-seed games
+averaged **10,385**, median **10,460**, best **10,480**; all stayed in stage
+one. The matched control averaged **10,430**. This early reused-seed check
+does not select a winner or demonstrate barrier passage; the predeclared
+continuations and fresh comparisons remain necessary.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-early-loss-114 \
