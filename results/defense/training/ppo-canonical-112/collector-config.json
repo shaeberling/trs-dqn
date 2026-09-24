@@ -115,11 +115,12 @@
     "runs/defense-ppo-wide-history-120/artifacts",
     "runs/defense-ppo-continue-121/artifacts",
     "runs/defense-ppo-continue-calibrated-122/artifacts",
-    "runs/defense-ppo-key-noise-123/artifacts"
+    "runs/defense-ppo-key-noise-123/artifacts",
+    "runs/defense-ppo-key-noise-strong-124/artifacts"
   ],
   "output": "results/defense/learned",
   "run": "runs/defense-collector",
   "interval": 30,
   "prior_sources_preserved": true,
-  "new_sources": "symmetric per-life key-factor PPO exploration from confirmed run 121 score parent"
+  "new_sources": "stronger symmetric per-life key-factor PPO exploration from same run 121 score parent"
 }
