@@ -27,6 +27,12 @@ complete games, seeds 601400–601527. Score gains alone will not count as
 barrier passage. The full optimizer/RNG and local replays will be archived
 regardless of outcome.
 
+The first [full optimizer/RNG milestone](milestone-000008932096/state.json)
+is preserved after 131,072 new actions. Ten ordinary complete games
+averaged **9,933**, median **10,330**, best **10,430**, all stage one.
+This is an early regression from the frozen parent, not stage progress;
+the longer predeclared continuation remains active.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-long-119 \
