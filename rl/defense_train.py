@@ -81,6 +81,8 @@ def main():
                         help="constant units conversion; no shaping or clipping")
     parser.add_argument("--novelty-beta", type=float, default=0.,
                         help="training-only first visit to a HUD-free visible-screen cell per life; 0 disables")
+    parser.add_argument("--alive-beta", type=float, default=0.,
+                        help="training-only bonus for a visible gameplay HUD with a surviving ship")
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False,
                         help="add Enter as a learned action; never automatically skip an intro")
@@ -162,6 +164,8 @@ def main():
             parser.error("Changing the duration behavior mixture on resume is invalid")
         if ("novelty_beta" in config and args.novelty_beta != config["novelty_beta"]):
             parser.error("Changing an established novelty reward on optimizer resume is invalid")
+        if ("alive_beta" in config and args.alive_beta != config["alive_beta"]):
+            parser.error("Changing an established alive reward on optimizer resume is invalid")
         if args.duration_initial_logit_spacing != config.get("duration_initial_logit_spacing", 2.):
             parser.error("Changing duration initialization spacing requires fresh initialization")
         if args.appended_longest_logit_offset != config.get("appended_longest_logit_offset", -2.):
@@ -239,6 +243,9 @@ def main():
     if (not np.isfinite(args.novelty_beta) or not 0 <= args.novelty_beta <= .5
             or (args.novelty_beta and args.sil_updates)):
         parser.error("novelty-beta must be in [0,0.5] and cannot be combined with SIL")
+    if (not np.isfinite(args.alive_beta) or not 0 <= args.alive_beta <= .5
+            or (args.alive_beta and (args.sil_updates or args.novelty_beta))):
+        parser.error("alive-beta must be in [0,0.5] and cannot be combined with SIL or novelty")
     if (not np.isfinite(args.duration_initial_logit_spacing)
             or not 0 <= args.duration_initial_logit_spacing <= 20
             or (not args.learned_durations and args.duration_initial_logit_spacing != 2.)):
@@ -460,6 +467,11 @@ def main():
                       novelty_source_sha256=sha256(Path(__file__).with_name("defense_novelty.py")),
                       novelty_cells_source_sha256=sha256(Path(__file__).with_name("defense_cells.py")),
                       evaluation_reward="original displayed score only; no novelty bonus or shaping")
+    if args.alive_beta:
+        config.update(reward=("visible score difference times reward scale plus training-only "
+                              "bonus for a visible gameplay HUD and surviving ship"),
+                      alive_source_sha256=sha256(Path(__file__).with_name("defense_alive.py")),
+                      evaluation_reward="original displayed score only; no alive bonus or shaping")
     if args.repeat_previous_action:
         from .defense_repeat_previous import POLICY_ACTION_NAMES, RepeatPreviousActions, RepeatPreviousPolicy
         config.update(policy_action_names=list(POLICY_ACTION_NAMES),
@@ -605,6 +617,10 @@ def main():
             novelty = LifeScreenNovelty(obs, args.novelty_beta)
         else:
             novelty = None
+        if args.alive_beta:
+            from .defense_alive import visible_alive_bonus
+        alive_bonus_sum = 0.
+        alive_bonus_hits = 0
         repeat_actions = RepeatPreviousActions(args.envs) if args.repeat_previous_action else None
         if args.learned_durations:
             from .defense_repeat import RepeatedActions
@@ -651,6 +667,13 @@ def main():
                     reward *= args.reward_scale
                     if novelty is not None:
                         reward += novelty.step(worker, frame, life_lost=info["life_lost"], reset=reset)
+                    if args.alive_beta:
+                        extra_reward = visible_alive_bonus(
+                            frame, args.alive_beta, life_lost=info["life_lost"],
+                            terminal=terminal, truncated=truncated)
+                        reward += extra_reward
+                        alive_bonus_sum += extra_reward
+                        alive_bonus_hits += bool(extra_reward)
                     learning_terminal = terminal or (args.life_terminal and info["life_lost"])
                     if noise is not None:
                         noise_boundaries[worker] = terminal or truncated or info["life_lost"]
@@ -787,6 +810,10 @@ def main():
                          steps_per_second=(steps-start_steps)/(time.monotonic()-started),
                          recent={k: v for k, v in recent_summary.items() if k != "games"},
                          **({"novelty": novelty.metrics()} if novelty is not None else {}),
+                         **({"visible_alive_bonus": dict(beta=args.alive_beta,
+                                                          hits=alive_bonus_hits,
+                                                          bonus_sum=round(alive_bonus_sum, 6))}
+                            if args.alive_beta else {}),
                          actor_loss=float(np.mean(metrics, axis=0)[0]),
                          value_loss=float(np.mean(metrics, axis=0)[1]),
                          entropy=float(np.mean(metrics, axis=0)[2]),
