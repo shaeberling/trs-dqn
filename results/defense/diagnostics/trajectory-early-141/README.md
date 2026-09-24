@@ -40,3 +40,22 @@ The [200-candidate smoke](smoke/report.json) exactly reproduced the
 source baseline's 2,620 points and 247-action suffix, with no stage-two
 observation. It checks the earlier native snapshot and bookkeeping;
 it is excluded from production selection.
+
+## Completed result
+
+The full run completed all **20,000 distinct mutations** plus the
+baseline. The baseline scored 2,620 and lost the first life after 247
+actions from frame 160. The best mutant scored the same 2,620 and lost
+after **249** actions. **2,789** plans matched 2,620 points and **1,846**
+of them outlasted the baseline by at least one action, but none scored
+above 2,620, survived the 272-action horizon, reached stage two or
+completed a mission. The [full archive](run/) preserves each 272-action
+plan, its real outcome, source checksums, code snapshot and RNG state.
+
+The later [frame-288 comparison](../trajectory-search-140/README.md)
+likewise gained at most two visible actions without extra score. Moving
+the branch point 128 actions earlier did not overcome the flat
+2,620-point outcome under this score-first elite selection. That is
+negative evidence for this specific search topology, not proof that an
+earlier screen-conditioned route is impossible. No search plan was used
+to train or promote a policy; the verified global best remains intact.

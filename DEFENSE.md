@@ -96,6 +96,16 @@ losses across 20 verified selected replays, but the same full traces have
 Therefore a raw white-majority screen cannot safely replace the actual
 visible life boundary; no terminal-target change was made.
 
+Two [own-trajectory mutation searches](results/defense/diagnostics/trajectory-search-140/README.md)
+tested 20,000 distinct score-ranked candidate suffixes each from exact
+verified first-life prefixes at frames 288 and
+[160](results/defense/diagnostics/trajectory-early-141/README.md). Both
+preserved the 2,620-point first-life plateau and extended visible survival
+by at most two actions; neither produced extra score or stage two. The
+entire candidate-plan/RNG histories are archived. These were diagnostics,
+not neural training or learned replays; the result argues against simply
+extending the same score-first local sequence search.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
