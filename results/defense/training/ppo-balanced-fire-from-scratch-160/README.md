@@ -232,6 +232,10 @@ The terminal fixed mean narrowly exceeds the seventh check's 8,434, so it
 is the treatment's provisional validation selection under the predeclared
 stage-then-mean rule. The state, evaluation and replay were copied into
 this archive and compared byte-for-byte against their finished-run sources.
+The [full compressed training log](treatment-metrics.jsonl.gz), including
+every scored episode, validation and clean stop event, was decompression-
+compared byte-for-byte against the finished run. The
+[terminal status](treatment-status.json) is also preserved.
 No game reached stage two or the successful mission sequence, and neither
 model is promoted over the protected global best.
 
