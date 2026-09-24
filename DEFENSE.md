@@ -8168,3 +8168,12 @@ This is one selected four-life replay, not proof that all evasive actions
 are unrewarded or that the game is impassable. It focuses the next search
 on discovering genuinely higher-score own trajectories rather than another
 stage-one score tie, while preserving the score-only/no-oracle rules.
+
+The next [diverse own-screen reset trial](results/defense/training/ppo-screen-frontier-127/README.md)
+keeps the confirmed run-121 model, optimizer, screen policy, reward and
+own-loss 128-action rewind, but changes the training archive from 16×4
+score bins to up to 128 distinct HUD-excluded visible-screen cells. It tests
+whether broader approaches to the repeated obstacle are needed before
+score-only learning can see new return. Cells select only previously
+reached training reset states; they do not enter the policy or reward.
+Fixed/fresh selection gates and actual-occupancy reporting are predeclared.
