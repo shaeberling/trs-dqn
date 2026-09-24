@@ -148,6 +148,17 @@ not improve learned play. Full stopped model/optimizer/RNG state and a
 native-verified local replay are archived. It is not extended, compared
 on fresh seeds, or promoted; the protected best remains unchanged.
 
+An [exhaustive two-phase gap diagnostic](results/defense/diagnostics/phase-grid-145/README.md)
+then tested all **7,500** combinations of two unbiased short physical
+commands from one exact native-verified learned first-life approach.
+None exceeded the source's **2,620** first-life points, reached stage
+two, or survived its 512-action horizon. Seven candidates at the same
+score delayed visible loss by only one action. This is a bounded
+black-box feasibility check, **not** a trained policy, extra reward,
+demonstration or promoted replay; it rules out only that fixed
+open-loop family from that particular state. The full **503-test**
+suite passed before the production grid.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.

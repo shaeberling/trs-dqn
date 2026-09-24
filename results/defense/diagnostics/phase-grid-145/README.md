@@ -54,3 +54,26 @@ frame-322 anchor, 2,620 displayed points, stage one. No smoke candidate
 improved it; that prefix is not an outcome estimate for the full grid.
 Both focused grid tests and the full **503-test** repository suite passed
 before production.
+
+## Completed exhaustive grid
+
+The [full run](run/report.json) finished all **7,500** predeclared
+command/delay/hold combinations from the exact verified own frame-322
+state. Its [complete outcome table](run/outcomes.jsonl) retains every
+phase choice and visible result; the original [baseline plan](run/baseline-actions.npz)
+and source hashes make the grid reconstructible.
+
+The source life lost **85** actions after the anchor at **2,620** points.
+Of the candidate combinations, **1,022** also reached exactly 2,620
+points, but **none** exceeded that score, entered stage two, showed a
+mission, or survived the 512-action horizon. Seven matched the source
+score and delayed visible loss by **one** action; no 2,620-point trial
+survived longer. Three combinations had the longest visible survival,
+**87** actions, but earned only **1,120** points before losing. This
+separates mere animation/life-loss timing from actual score progress.
+
+The negative result does not justify copying a searched action plan into
+the neural learner. It bounds this fixed two-phase open-loop intervention
+family from one exact own state, not longer screen-conditioned control,
+other starting lives, or the game's overall solvability. The protected
+learned replay and full optimizer state remain unchanged.
