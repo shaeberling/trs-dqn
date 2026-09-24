@@ -123,9 +123,16 @@ spatial and matched ordinary-duration arms start with exactly the same
 own trained policy outputs and fresh optimizer/RNG, with no new reward or
 game-state input. Both 16,384-action native smokes and a spatial resume
 check finished, and their independently verified stage-one replays are
-archived. The full **501-test** suite passes. The planned 524,288-action
-matched stage gate is the next evidence; the short reused-seed smoke scores
-do not establish a gameplay improvement.
+archived. The full **501-test** suite passes. The 524,288-action matched
+stage gate has now finished: spatial/control best fixed means were
+**10,456 / 10,462**, with all 80 fixed games still in stage one. On 64
+untouched matched complete games each, spatial/control/frozen-source
+means were **10,224.84 / 10,294.69 / 10,387.50**, all stage one. The
+spatial arm also had six sub-9,000 games versus three and two,
+respectively. Fresh verified replays still lose at decoded original
+course rows 33–34. The spatial residual is a negative result, not a
+score parent or promoted global replay; full states and records are
+preserved.
 
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
