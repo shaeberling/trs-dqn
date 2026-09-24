@@ -7847,3 +7847,14 @@ first checkpoint a stronger **score** parent with full optimizer/RNG
 preserved, but it still hits the repeated barrier. Both complete runs,
 logs and verified local 10,480-point replays are archived; the global
 best remains unchanged.
+
+The next [earlier own-loss PPO trial](results/defense/training/ppo-early-loss-114/README.md)
+tests a concrete response to the repeated visible barrier: rewind 256
+decisions before the learner's own visible loss, versus a
+[same-parent 128-decision control](results/defense/training/ppo-early-loss-control-115/README.md).
+Both resume the independently confirmed ordinary-action score checkpoint
+at 8,538,880 actions, retain four full-boot workers, and are scheduled for
+524,288 new actions and four complete-game checks each. Their independent
+collector sources are isolated; only a native-verified higher-ranked replay
+can replace the global best. This is a training-reset comparison, not
+collision localization, a hand-coded path, or evidence of stage passage.
