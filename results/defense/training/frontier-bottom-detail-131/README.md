@@ -45,3 +45,22 @@ venv/bin/python -u -m rl.defense_frontier_search \
   --priority score --cell-encoding bottom-detail \
   --expansions 100000 --capacity 4096 --source-stride 8 --seed 503
 ```
+
+The [full run](run/) completed all **100,000** expansions and **847,199**
+new emulator actions, filling 4,096 retained cells and encountering
+**15,640** distinct fine-bottom cells. It admitted **13,562** new states,
+including chains of up to 11 random holds, and registered 55,234 visible
+life losses. These exceed run 129's 10,898 distinct coarse cells and 12,005
+admitted new states; the finer encoding did retain more differences.
+
+Nevertheless, the source and exploration maxima were both **2,640**
+displayed life points. There were **14,342** exploratory trials at that
+score, **zero** above it, **zero** stage-two screens and **zero** missions.
+Post-hoc comparison to each branch's own source loss found surviving
+branches at most 20 actions beyond the source's visible-loss age; at
+**2,600+** displayed life points, at most **12**. The [checked analysis](analysis.json)
+and full plans, accepted-node ancestry, exact search and cell-encoding
+source, source hashes and RNG state are preserved. The higher-resolution
+archive did not resolve the repeated barrier. No neural model changed and
+the protected verified best replay remains unchanged; per the fixed gate,
+the same random-held-key search will not be extended unchanged.

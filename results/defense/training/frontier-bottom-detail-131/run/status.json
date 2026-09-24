@@ -1,0 +1,25 @@
+{
+  "expansions": 100000,
+  "archive_cells": 4096,
+  "distinct_cells": 15640,
+  "seed_best_life_score": 2640,
+  "exploration_best_life_score": 2640,
+  "seed_max_life_age": 728,
+  "exploration_max_life_age": 736,
+  "exploration_max_surviving_life_age": 732,
+  "counts": {
+    "seeded": 519,
+    "exploration_actions": 847199,
+    "life_losses": 55234,
+    "admitted": 13562
+  },
+  "rng_state": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 224302317266305948028924287360761040770,
+      "inc": 30972426650731158278230651694608615767
+    },
+    "has_uint32": 0,
+    "uinteger": 2190795075
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source_archive": "results/defense/training/ars-score-gated-69/run/own-loss-states",
+  "source_games": 12,
+  "source_life_states": 48,
+  "expansions": 100000,
+  "exploration_actions": 847199,
+  "archive_capacity": 4096,
+  "final_archive_cells": 4096,
+  "distinct_visible_cells": 15640,
+  "seeded_nodes": 519,
+  "new_admitted_nodes": 13562,
+  "max_chained_random_holds": 11,
+  "visible_life_losses": 55234,
+  "source_best_displayed_life_score": 2640,
+  "exploration_best_displayed_life_score": 2640,
+  "exploration_trials_at_2640": 14342,
+  "exploration_trials_above_2640": 0,
+  "posthoc_relative_to_own_source_visible_loss": {
+    "surviving_branches_beyond_source_loss_age": 3171,
+    "surviving_branches_at_least_16_actions_beyond": 39,
+    "surviving_branches_at_least_32_actions_beyond": 0,
+    "maximum_surviving_actions_beyond": 20,
+    "score_at_maximum_surviving_actions_beyond": 1070,
+    "maximum_surviving_actions_beyond_with_life_score_at_least_2600": 12
+  },
+  "stage_two_discoveries": 0,
+  "mission_discoveries": 0,
+  "policy_updates": 0,
+  "promotion_eligible": false,
+  "interpretation": "Adding exact bottom-screen bytes increased frontier state diversity over the 10,898 coarse cells of run 129, but did not improve displayed score or stage. Original source future loss ages were used only for post-hoc analysis."
+}

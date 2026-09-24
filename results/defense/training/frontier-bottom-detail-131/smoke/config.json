@@ -1,0 +1,46 @@
+{
+  "source_archive": "/Users/sascha/source/trs-dqn/results/defense/training/ars-score-gated-69/run/own-loss-states",
+  "source_index_sha256": "7cf67fe2992b120a415d8aa46ecdbbacf2c01ccf04e4f59acbda894aea21b47d",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "source_sha256": "6a9d2d953d9661f66c5e712fe233f37b1652293d9e20e2586c93cdeaff93600c",
+  "screen_cell_encoding": "graphics-9x16x8+raw-bottom-three-rows-v1",
+  "cell_source_sha256": "9fe7497a0995c82cc6ebdb854223325defb2b2912c1f58c23230acb560bcfbbc",
+  "frontier_cell_encoding": "graphics-9x16x8+raw-bottom-three-rows-v1",
+  "effective_commands": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "holds": [
+    4,
+    8,
+    16,
+    32
+  ],
+  "args": {
+    "source_archive": "results/defense/training/ars-score-gated-69/run/own-loss-states",
+    "output": "runs/defense-frontier-bottom-detail-131-final-smoke",
+    "expansions": 100,
+    "capacity": 4096,
+    "source_stride": 8,
+    "priority": "score",
+    "cell_encoding": "bottom-detail",
+    "age_cell_interval": 16,
+    "source_life": 0,
+    "seed": 503
+  },
+  "training_only": true,
+  "model_updates": 0,
+  "policy_inputs_changed": false,
+  "score_reward_unchanged": true,
+  "random_actions_not_learned_replay": true,
+  "age_is_reset_selection_only": true
+}
