@@ -72,6 +72,42 @@ class DefenseNoiseTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 PolicyKeyNoise(2, 21, 1, np.random.default_rng(3), interval=interval)
 
+    def test_random_key_interval_renews_independently_and_preserves_rollout_bank(self):
+        noise = PolicyKeyNoise(2, 21, 2, np.random.default_rng(31), interval_range=(3, 5))
+        self.assertTrue(np.all((3 <= noise.periods) & (noise.periods <= 5)))
+        initial = noise.values.copy()
+        first_period = int(noise.periods[0])
+        rollout = NoiseRollout(noise)
+        recorded = []
+        for step in range(first_period):
+            recorded.append(rollout.record().copy())
+            rollout.redraw(np.array([False, step == 0]))
+            if step < first_period-1:
+                np.testing.assert_array_equal(noise.values[0], initial[0])
+        self.assertFalse(np.array_equal(noise.values[0], initial[0]))
+        self.assertEqual(int(noise.elapsed[0]), 0)
+        self.assertTrue(np.all((3 <= noise.periods) & (noise.periods <= 5)))
+        bank, ids = rollout.arrays()
+        np.testing.assert_array_equal(bank[ids], np.concatenate(recorded))
+        periods = []
+        for _ in range(64):
+            noise.redraw(np.array([True, False]))
+            periods.append(int(noise.periods[0]))
+        self.assertTrue(all(3 <= period <= 5 for period in periods))
+        self.assertGreater(len(set(periods)), 1)
+        for interval_range in ((0, 4), (5, 4), (True, 5), (2.5, 5), [3, 5]):
+            with self.assertRaises(ValueError):
+                PolicyKeyNoise(2, 21, 1, np.random.default_rng(3), interval_range=interval_range)
+        with self.assertRaises(ValueError):
+            PolicyKeyNoise(2, 21, 1, np.random.default_rng(3), interval=3,
+                           interval_range=(3, 5))
+        rng = np.random.default_rng(10)
+        before = copy.deepcopy(rng.bit_generator.state)
+        zero = PolicyKeyNoise(2, 20, 0, rng, interval_range=(3, 5))
+        zero.redraw(np.ones(2, dtype=bool))
+        self.assertEqual(rng.bit_generator.state, before)
+        np.testing.assert_array_equal(zero.values, np.zeros((2, 20)))
+
     def test_noise_persists_and_only_boundary_workers_are_redrawn(self):
         noise = PolicyBiasNoise(4, 20, 1, np.random.default_rng(42))
         original = noise.bias.copy()
@@ -146,6 +182,22 @@ class DefenseNoiseTests(unittest.TestCase):
                           ['--policy-key-noise=1', '--allow-enter'],
                           ['--policy-key-noise-interval=-1'],
                           ['--policy-key-noise-interval=32']):
+                result = subprocess.run([sys.executable, '-m', 'rl.defense_train',
+                                         '--run', str(output), *flags],
+                                        capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 2, result.stderr)
+                self.assertIn('policy-key-noise', result.stderr)
+                self.assertFalse(output.exists())
+
+    def test_random_key_interval_cli_rejects_bad_bounds_and_fixed_mix(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)/'unused'
+            for flags in (['--policy-key-noise-min-interval=3'],
+                          ['--policy-key-noise=2', '--policy-key-noise-max-interval=5'],
+                          ['--policy-key-noise=2', '--policy-key-noise-min-interval=5',
+                           '--policy-key-noise-max-interval=3'],
+                          ['--policy-key-noise=2', '--policy-key-noise-min-interval=3',
+                           '--policy-key-noise-max-interval=5', '--policy-key-noise-interval=4']):
                 result = subprocess.run([sys.executable, '-m', 'rl.defense_train',
                                          '--run', str(output), *flags],
                                         capture_output=True, text=True, timeout=30)

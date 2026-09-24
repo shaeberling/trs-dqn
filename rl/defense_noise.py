@@ -1,8 +1,8 @@
 """Training-only Gaussian perturbations of the learned actor's output layer.
 
-Draws are independent across workers. An optional fixed action-count interval
-can redraw symmetric key factors within a life; it reads no game state and
-never selects or overrides an action.
+Draws are independent across workers. Optional fixed or randomly renewed
+action-count intervals can redraw symmetric key factors within a life; they
+read no game state and never select or override an action.
 """
 
 import operator
@@ -52,13 +52,14 @@ class PolicyKeyNoise:
     One Gaussian factor per physical key, plus separate NOOP/CONTINUE factors.
     A composite command receives the sum of its factors normalized to unit
     variance, so related commands explore coherently without favoring a
-    particular key, screen position or route. Only the resulting action-logit
-    bias is retained by PPO's existing rollout likelihood machinery.
+    particular key, screen position or route. Optional random renewal periods
+    are worker-local and independent of game state. Only the resulting
+    action-logit bias is retained by PPO's rollout likelihood machinery.
     """
 
     FACTORS = ("NOOP", "UP", "DOWN", "LEFT", "RIGHT", "SPACE", "CONTINUE_PREVIOUS")
 
-    def __init__(self, envs, actions, std, rng, interval=0):
+    def __init__(self, envs, actions, std, rng, interval=0, interval_range=None):
         from .defense import action_names
         from .defense_repeat_previous import POLICY_ACTION_NAMES
 
@@ -68,6 +69,12 @@ class PolicyKeyNoise:
                 or isinstance(std, bool) or not np.isfinite(std) or std < 0
                 or isinstance(interval, bool) or not isinstance(interval, int) or interval < 0):
             raise ValueError("invalid factorized-key noise configuration")
+        if interval_range is not None:
+            if (not isinstance(interval_range, tuple) or len(interval_range) != 2
+                    or any(isinstance(value, bool) or not isinstance(value, int)
+                           for value in interval_range)
+                    or not 1 <= interval_range[0] <= interval_range[1] or interval):
+                raise ValueError("random key-noise interval requires a positive ordered pair and no fixed interval")
         names = action_names(False) if actions == 20 else POLICY_ACTION_NAMES
         matrix = np.zeros((actions, len(self.FACTORS)), np.float32)
         for index, name in enumerate(names):
@@ -76,9 +83,10 @@ class PolicyKeyNoise:
                 matrix[index, self.FACTORS.index(key)] = 1.
             matrix[index] /= np.sqrt(len(keys))
         self.matrix, self.std, self.rng = matrix, float(std), rng
-        self.interval = interval
+        self.interval, self.interval_range = interval, interval_range
         self.values = np.zeros((envs, actions), np.float32)
         self.elapsed = np.zeros(envs, np.int32)
+        self.periods = np.zeros(envs, np.int32)
         self.draws = 0
         self.redraw(np.ones(envs, dtype=bool))
 
@@ -87,12 +95,19 @@ class PolicyKeyNoise:
         if boundaries.shape != (len(self.values),) or boundaries.dtype != np.bool_:
             raise ValueError("noise boundaries must be one boolean per worker")
         self.elapsed += 1
-        effective = boundaries | (self.interval > 0 and self.elapsed >= self.interval)
+        if self.interval_range is None:
+            effective = boundaries | (self.interval > 0 and self.elapsed >= self.interval)
+        else:
+            effective = boundaries | (self.elapsed >= self.periods)
         count = int(effective.sum())
         if count and self.std:
             factors = self.rng.normal(0, self.std, (count, len(self.FACTORS)))
             self.values[effective] = factors @ self.matrix.T
             self.draws += count
+        if count and self.interval_range is not None:
+            low, high = self.interval_range
+            self.periods[effective] = (self.rng.integers(low, high+1, size=count)
+                                       if self.std else low)
         self.elapsed[effective] = 0
         return effective
 
