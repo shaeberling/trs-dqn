@@ -159,6 +159,19 @@ demonstration or promoted replay; it rules out only that fixed
 open-loop family from that particular state. The full **503-test**
 suite passed before the production grid.
 
+The next [fine-cadence learned-option probe](results/defense/training/ppo-duration-fine-cadence-146/README.md)
+holds the strong option-credit weights fixed and compares native
+100,000-T-state actions with 50,000-T-state actions on 32 matched
+complete-game seeds. Stride-2 history at the fine cadence retains a
+**10,477.19** mean versus **10,480** native, while stride-1 history
+falls to **7,942.81**; all 96 games still lose in stage one. Matching
+the original physical screen-history span therefore preserves nearly
+all frozen score consistency while doubling decision opportunities.
+The [selected-replay screen sheets](results/defense/diagnostics/spatial-143-loss-sheets/README.md)
+show the ship still far from the right opening in recent policies.
+A bounded fine-cadence training adaptation is the next stage test;
+neither frozen override is a learned passage or promotion candidate.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
