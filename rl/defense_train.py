@@ -87,6 +87,10 @@ def main():
                         help="credit a completed learned hold's whole score return to its option start")
     parser.add_argument("--spatial-residual", action=argparse.BooleanOptionalAction, default=False,
                         help="learn a zero-initialized spatial mixing residual over an own duration policy")
+    parser.add_argument("--extend-longest-duration", action="store_true",
+                        help="append one longer hold to an own duration checkpoint with a direction-neutral actor row")
+    parser.add_argument("--appended-longest-logit-offset", type=float, default=-2.,
+                        help="uniform initial new-long-option logit relative to the copied former longest option")
     parser.add_argument("--duration-initial-logit-spacing", type=float, default=2.,
                         help="direction-neutral initial logit penalty per longer hold; only for fresh duration initialization")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
@@ -149,6 +153,8 @@ def main():
             parser.error("Changing learned-duration profile requires fresh initialization")
         if args.duration_initial_logit_spacing != config.get("duration_initial_logit_spacing", 2.):
             parser.error("Changing duration initialization spacing requires fresh initialization")
+        if args.appended_longest_logit_offset != config.get("appended_longest_logit_offset", -2.):
+            parser.error("Changing the appended duration's initialization prior on resume is invalid")
         if args.continue_initial_bias_offset != config.get("continue_initial_bias_offset", 0.):
             parser.error("Continue-action initialization offset cannot change on optimizer resume")
         from .recurrent_policy import RECURRENT_ARCHITECTURE
@@ -201,6 +207,14 @@ def main():
     if args.spatial_residual and (not args.learned_durations or args.recurrent_hidden
                                   or not (args.initialize_duration_checkpoint or args.resume)):
         parser.error("spatial residual requires own trained duration initialization and feedforward PPO")
+    if args.extend_longest_duration and (args.spatial_residual
+                                         or not (args.initialize_duration_checkpoint or args.resume)
+                                         or (args.resume and not prior["config"].get("extend_longest_duration", False))):
+        parser.error("extended longest hold requires own duration initialization or its exact resume")
+    if (not np.isfinite(args.appended_longest_logit_offset)
+            or not -4. <= args.appended_longest_logit_offset <= 4.
+            or (not args.extend_longest_duration and args.appended_longest_logit_offset != -2.)):
+        parser.error("appended-longest-logit-offset requires extension and must be in -4..4")
     if args.option_actor_gae and not args.learned_durations:
         parser.error("--option-actor-gae requires learned durations")
     if (not np.isfinite(args.duration_initial_logit_spacing)
@@ -325,7 +339,9 @@ def main():
                 initialization = initialize_duration_checkpoint(
                     agent.model, args.initialize_duration_checkpoint, args.learned_durations,
                     tstates=args.tstates, observation_stride=args.observation_stride,
-                    spatial=args.spatial_residual)
+                    spatial=args.spatial_residual,
+                    extend_longest=args.extend_longest_duration,
+                    appended_logit_offset=args.appended_longest_logit_offset)
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
         elif args.initialize_policy:

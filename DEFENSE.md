@@ -181,6 +181,24 @@ The same-place failure survives a doubled decision rate: further work
 must address long-horizon exploration and credit at this bottleneck,
 not simply replay the same fixed-seed ceiling.
 
+The [long physical-hold integration trial](results/defense/training/ppo-duration-long-option-147/README.md)
+tested whether restoring a 6.4-million-T-state learned hold at the
+fine decision cadence could improve that approach. It copied the
+confirmed fine-cadence model's 80 existing action logits exactly and
+added a direction-neutral 128-step option. Three 16,384-action smokes
+with uniform new-option logit offsets −2 / 0 / +2 started only
+**1 / 2 / 4** long holds, below the predeclared exposure gate.
+Their ten-game means were **10,470 / 10,214 / 9,220**, all stage one;
+a +2 optimizer-resume integration check dropped further to **6,012**.
+All four local best replays independently verified, and full states
+are archived. The planned production comparison was not launched.
+A [read-only frozen-logit audit](results/defense/training/ppo-duration-long-option-147/frozen-parent-duration-mass.json)
+shows why: the source assigns roughly 98–99% probability to one-step
+holds on selected pre-loss screens and around 0.001% to 64-step holds.
+Appending a longer row to that collapsed duration distribution barely
+explores it; a stronger flat prior also harms score. No stage passage
+or best-replay promotion resulted.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.

@@ -1,0 +1,106 @@
+{
+  "checkpoint": "results/defense/training/ppo-duration-fine-cadence-146/full/step-000001441792/model.safetensors",
+  "checkpoint_sha256": "06fdcb5c603dcf054b1658de375f1fc2ccdad8b0dbf44e7a1e04c7a6a0a7ad5f",
+  "trace_sha256": "3379b780b2d44eeceaa96cac8d192de5f46f1fc94e5604b09d6a3f91cad66274",
+  "probe_source_sha256": "1f48f380649f463655fb6717a6c63b2ad7fd5cf2ab97ab8b25106f09485f5941",
+  "durations": [
+    1,
+    4,
+    16,
+    64
+  ],
+  "observation_stride": 2,
+  "first_visible_loss_frame": 813,
+  "first_major_white_marker_frame": 784,
+  "windows": [
+    {
+      "label": "first_life_before_marker",
+      "sample_frames": 196,
+      "range": [
+        0,
+        784
+      ],
+      "mean_duration_mass": [
+        0.9834625720977783,
+        0.016483444720506668,
+        4.228631223668344e-05,
+        1.155521022155881e-05
+      ],
+      "max_duration_mass": [
+        0.9999995827674866,
+        0.41626179218292236,
+        0.0011063861893489957,
+        0.00023710960522294044
+      ]
+    },
+    {
+      "label": "marker_minus_224_to_128",
+      "sample_frames": 24,
+      "range": [
+        560,
+        656
+      ],
+      "mean_duration_mass": [
+        0.9713559150695801,
+        0.028640462085604668,
+        2.800316224238486e-06,
+        9.134517426900857e-07
+      ],
+      "max_duration_mass": [
+        0.9999995231628418,
+        0.41626229882240295,
+        1.3326097359822597e-05,
+        8.3965715020895e-06
+      ]
+    },
+    {
+      "label": "marker_minus_128_to_64",
+      "sample_frames": 16,
+      "range": [
+        656,
+        720
+      ],
+      "mean_duration_mass": [
+        0.9726179838180542,
+        0.02727913297712803,
+        8.918730600271374e-05,
+        1.3653710993821733e-05
+      ],
+      "max_duration_mass": [
+        0.9999637603759766,
+        0.30799201130867004,
+        0.0006511617684736848,
+        4.4653228542301804e-05
+      ]
+    },
+    {
+      "label": "marker_minus_64_to_0",
+      "sample_frames": 16,
+      "range": [
+        720,
+        784
+      ],
+      "mean_duration_mass": [
+        0.9924758672714233,
+        0.007454028353095055,
+        5.9639693063218147e-05,
+        1.0470135748619214e-05
+      ],
+      "max_duration_mass": [
+        0.9998483657836914,
+        0.028168782591819763,
+        0.00031816610135138035,
+        5.257599332253449e-05
+      ]
+    }
+  ],
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "training_data_written": false,
+  "promotion_eligible": false,
+  "limitations": [
+    "Sampled frames include forced continuation, not just actual option starts.",
+    "A visible white flash is an alignment marker, not a collision timestamp.",
+    "One selected replay is not a fresh-sample action-distribution estimate."
+  ]
+}
