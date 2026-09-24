@@ -52,6 +52,14 @@ nonselected live checkpoint directories and duplicate local bundles were
 pruned (about **95 MiB**), retaining selected/terminal full states and all
 evaluation records.
 
+A wider stopped-run retention pass then removed **171** additional local
+DQN/PPO checkpoint directories (about **2.0 GiB** by `du`) only after each
+directory matched a tracked archive copy byte-for-byte. The active seed-42
+run and every unmatched local checkpoint were excluded. The archived copies
+remain on the pushed branch, so these deleted duplicates are recoverable.
+APFS free-space accounting did not immediately increase by the nominal
+`du` total; the live free-space guard still uses actual filesystem space.
+
 The next bounded [seed-42 balanced run](results/defense/training/ppo-balanced-seed42-162/README.md)
 tests independent initialization/experience diversity rather than another
 continuation of the seed-41 optimizer. It uses the same score-only,
