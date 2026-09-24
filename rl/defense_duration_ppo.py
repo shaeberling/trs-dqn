@@ -25,6 +25,58 @@ def duration_action_names(durations, action_count=20):
     return tuple(f"{name}@{duration}" for duration in durations for name in names)
 
 
+def option_actor_gae(rewards, values, boundaries, starts, last_value, unfinished,
+                     gamma, lam):
+    """Semi-Markov score advantage at completed own option starts only.
+
+    A hold's entire observed reward and actual duration belong to its
+    selected option. The critic may still use ordinary base-step GAE.
+    Rollout-end partial holds are dropped from the actor objective, never
+    mislabeled as complete; their base transitions remain critic data.
+    """
+    rewards = np.asarray(rewards, np.float32)
+    values = np.asarray(values, np.float32)
+    boundaries = np.asarray(boundaries, bool)
+    starts = np.asarray(starts, bool)
+    last_value = np.asarray(last_value, np.float32)
+    unfinished = np.asarray(unfinished, bool)
+    if (rewards.ndim != 2 or not len(rewards) or values.shape != rewards.shape
+            or boundaries.shape != rewards.shape or starts.shape != rewards.shape
+            or last_value.shape != (rewards.shape[1],)
+            or unfinished.shape != (rewards.shape[1],)
+            or not 0 < gamma < 1 or not 0 < lam <= 1
+            or not np.isfinite(rewards).all() or not np.isfinite(values).all()
+            or not np.isfinite(last_value).all()):
+        raise ValueError("invalid complete-option advantage inputs")
+    length, workers = rewards.shape
+    actor_advantages = np.zeros_like(rewards)
+    completed_mask = starts.copy()
+    for worker in range(workers):
+        decisions = np.flatnonzero(starts[:, worker])
+        completed = []
+        for index, begin in enumerate(decisions):
+            end = int(decisions[index+1]) if index+1 < len(decisions) else length
+            if np.any(boundaries[begin:end-1, worker]):
+                raise ValueError("an option cannot continue across a visible boundary")
+            if end == length and unfinished[worker]:
+                completed_mask[begin, worker] = False
+                continue
+            discount, observed = 1., 0.
+            for step in range(begin, end):
+                observed += discount*float(rewards[step, worker])
+                discount *= gamma
+            continuation = not boundaries[end-1, worker]
+            following = (float(values[end, worker]) if end < length else
+                         float(last_value[worker])) if continuation else 0.
+            delta = observed+discount*following-float(values[begin, worker])
+            completed.append((begin, discount, continuation, delta))
+        carry = 0.
+        for begin, discount, continuation, delta in reversed(completed):
+            carry = delta+(discount*lam*carry if continuation else 0.)
+            actor_advantages[begin, worker] = carry
+    return actor_advantages, completed_mask
+
+
 class DurationPPO(PPO):
     """PPO whose actor loss is evaluated only at real option decisions."""
 
