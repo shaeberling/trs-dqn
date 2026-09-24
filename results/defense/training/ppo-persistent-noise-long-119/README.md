@@ -38,6 +38,12 @@ is preserved after 262,144 new actions. Ten fixed complete games averaged
 **10,468**, best **10,480**, all stage one. This is a reused-seed score
 rebound, not an independently confirmed improvement or barrier clear.
 
+The seventh [full optimizer/RNG milestone](milestone-000009718528/state.json)
+is preserved after 917,504 new actions. Its ten fixed complete games
+averaged **10,470**, median/best **10,480**, all stage one: a new
+validation-score leader by two points, but no native passage or fresh
+confirmation. The remaining nine checks continue as planned.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-long-119 \
