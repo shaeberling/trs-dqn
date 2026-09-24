@@ -241,3 +241,16 @@ with the same 8,388,608-action target and its own exact-run disk guard.
 The control's live state remains under
 `runs/defense-ppo-balanced-fire-160/control/`; the treatment/control
 comparison and untouched fresh-seed gates have not yet run.
+
+A separate one-shot [`rl.defense_balanced_compare`](../../../../rl/defense_balanced_compare.py)
+monitor waits for the exact control process to stop normally at its target.
+It fails closed on incompatible or incomplete states, requires all eight
+ten-game fixed checks in each arm, and selects each frozen checkpoint by
+successful mission, highest stage, then fixed mean (earliest on a tie).
+It then runs both selected models on **64 matched fresh complete games** at
+seeds 611000–611063 and a second untouched matched set 611200–611263.
+Each set includes an independently native-verified local replay. The
+monitor records paired outcomes under
+`runs/defense-ppo-balanced-fire-160/fresh-comparison/` and never promotes
+either model or modifies the protected global best. It waits for at least
+6 GiB free before starting each frozen evaluation.
