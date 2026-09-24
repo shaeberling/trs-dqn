@@ -106,6 +106,16 @@ entire candidate-plan/RNG histories are archived. These were diagnostics,
 not neural training or learned replays; the result argues against simply
 extending the same score-first local sequence search.
 
+The next [screen-diverse trajectory selector](results/defense/diagnostics/trajectory-diverse-142/README.md)
+kept 1,024 raw-visible-screen cells at the pre-gap approach and drew
+10,060 of 20,000 mutation parents from that archive. It encountered
+2,310 distinct cells, but still found no candidate above 2,620
+first-life points or stage two; its best delayed visible loss by one
+action. All plans, outcomes and RNG state are preserved, and the full
+**498-test** suite passed before production. This was also diagnostic
+only, not a trained policy or promoted replay. More of this exact
+mutation topology is not supported by its observed outcome.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
