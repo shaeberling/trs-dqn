@@ -7799,3 +7799,13 @@ but an additional **64 fresh matched games** reversed it to **-95.63**
 against the last independently confirmed parent. Both stayed in stage one.
 Its full model/RNG milestone is preserved, but this short-sample head is
 not a confirmed improvement or a replacement for the verified replay.
+
+The [full phase-search run](results/defense/training/ars-phase-106/README.md)
+then finished cleanly after **11 generations, 5,648 complete games and
+14.24 million actions**. Its generation-eleven nominee also reversed in
+the fresh gate (+248.13 comparison to -26.09 confirmation). Final fixed
+ten-game mean/median/best were **10,450 / 10,450 / 10,480**, still all
+stage one. Every checkpoint, candidate plan, full log and a 2,565-action
+verified local replay are archived. The internally accepted generation-ten
+head remains negative on the additional independent 64-seed check, so
+the global best and last independently confirmed search parent stay put.
