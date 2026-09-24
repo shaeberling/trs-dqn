@@ -6,19 +6,22 @@ already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
 Current learned-policy experiment: the [fresh balanced-control PPO
-treatment](results/defense/training/ppo-balanced-fire-from-scratch-160/README.md)
-finished **8,388,608** score-only, screen-only own actions. Its terminal
-frozen ten-game mean/median/best were **8,502 / 8,750 / 9,910**, all in
-stage one; the seventh checkpoint's independently verified best replay
-scored **10,220**. The matched fresh no-offset control is now training,
-with an exact-run disk guard and unattended two-set fresh comparison after
-its target. A [post-training forensic replay comparison](results/defense/diagnostics/balanced-fire-160-loss-comparison/README.md)
+comparison](results/defense/training/ppo-balanced-fire-from-scratch-160/README.md)
+completed **8,388,608** own score-only, screen-only actions per arm. The
+balanced initializer selected its terminal checkpoint (fixed ten-game mean
+**8,502**), while the otherwise matched no-offset control selected its
+4,194,304-action checkpoint (fixed mean **588**). On two untouched sets of
+64 complete games each, balanced/control means were **9,382.97 / 579.69**
+and **9,424.38 / 581.88**; balanced won all **128** paired games. Every
+game still ended in stage one. Four local replays were independently
+verified, and full selected/terminal state, fixed checks, logs and fresh
+results are archived. A [post-training forensic replay comparison](results/defense/diagnostics/balanced-fire-160-loss-comparison/README.md)
 shows that the treatment moves more often near loss yet still fails around
 the original stage-one stream rows 31–34 of 126. Hidden course reads were
 diagnostic only, never learner inputs, rewards or selection criteria. No
 stage-two play or successful mission has been verified; the protected
 [10,480-point best replay](results/defense/learned/best/replay.html) remains
-unchanged. Full treatment state, logs and verified replays are archived.
+unchanged.
 
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
