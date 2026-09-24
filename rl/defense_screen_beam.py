@@ -35,7 +35,7 @@ EARLY_ANCHOR = 280
 EARLY_SCHEDULE = (4,)*10 + SCHEDULE
 COMMANDS = command_ids("effective-stage-one")
 SIDE_FIRE_COMMANDS = COMMANDS + (18, 19)
-SOURCE_LIFE_SCORE = 2620
+SCORE_GATE = 2620
 
 
 @dataclass
@@ -167,9 +167,11 @@ def main():
         parser.error("fresh output, beam 1..512, valid layer prefix and nonnegative seed required")
     report, source_frames, source_actions = analyze(args.bundle)
     first_loss = report["lives"][0]["visible_loss_frame"]
-    if (first_loss != 407 or report["lives"][0]["visible_score_at_loss"] != SOURCE_LIFE_SCORE
-            or len(source_actions) < HORIZON):
-        parser.error("requires the exact verified own first-life source")
+    source_life_score = report["lives"][0]["visible_score_at_loss"]
+    if (not anchor < first_loss < HORIZON or len(source_actions) < HORIZON
+            or not isinstance(source_life_score, int) or source_life_score < 0):
+        parser.error("requires a verified own first life that ends between anchor and horizon")
+    progress_score_threshold = max(SCORE_GATE, source_life_score)
     with np.load(args.bundle/"trace.npz", allow_pickle=False) as data:
         source_rewards = data["rewards"].copy()
         metadata = json.loads(str(data["metadata"]))
@@ -184,7 +186,9 @@ def main():
                   game_sha256=GAME_SHA256, environment_version=ENVIRONMENT_VERSION,
                   source_seed=metadata["result"]["seed"], anchor=anchor,
                   horizon=HORIZON, source_visible_loss=first_loss,
-                  source_life_score=SOURCE_LIFE_SCORE, schedule=list(schedule),
+                  source_life_score=source_life_score,
+                  progress_score_threshold=progress_score_threshold,
+                  schedule=list(schedule),
                   symmetric_commands=list(commands), beam=args.beam,
                   side_fire=args.side_fire,
                   requested_layers=args.layers or len(schedule), search_seed=args.seed,
@@ -248,7 +252,7 @@ def main():
                             ended = bool(info["life_lost"] or terminal or truncated)
                             if not ended:
                                 max_alive_frame = max(max_alive_frame, absolute)
-                            progress = (info["score"] > SOURCE_LIFE_SCORE
+                            progress = (info["score"] > progress_score_threshold
                                         or info["stage"] >= 2 or info["mission_completed"]
                                         or (absolute >= HORIZON and not ended))
                             if progress or ended:

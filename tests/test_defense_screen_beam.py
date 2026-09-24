@@ -13,6 +13,7 @@ from rl.defense_screen_beam import (ANCHOR, COMMANDS, SIDE_FIRE_COMMANDS, EARLY_
 
 
 SOURCE = Path('results/defense/training/ppo-duration-credit-136/run/fresh-selected-replay')
+NEW_SOURCE = Path('results/defense/training/ppo-balanced-fire-from-scratch-160/milestone-replay-000007344128')
 
 
 class DefenseScreenBeamTests(unittest.TestCase):
@@ -87,6 +88,22 @@ class DefenseScreenBeamTests(unittest.TestCase):
             self.assertEqual(earlier_report['config']['anchor'], 200)
             self.assertEqual(earlier_report['latest_frame'], 208)
             self.assertEqual(earlier_report['completed_layers'], 2)
+
+    def test_distinct_verified_own_first_life_uses_shared_score_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)/'new-source'
+            command = [sys.executable, '-m', 'rl.defense_screen_beam', str(NEW_SOURCE),
+                       '--output', str(output), '--beam', '8', '--layers', '2',
+                       '--anchor', '200', '--side-fire']
+            result = subprocess.run(command, capture_output=True, text=True, timeout=90)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            report = json.loads((output/'report.json').read_text())
+            self.assertEqual(report['config']['source_visible_loss'], 414)
+            self.assertEqual(report['config']['source_life_score'], 2550)
+            self.assertEqual(report['config']['progress_score_threshold'], 2620)
+            self.assertEqual(report['completed_layers'], 2)
+            self.assertTrue(report['config']['diagnostic_only'])
+            self.assertFalse(report['config']['promotion_eligible'])
 
 
 if __name__ == '__main__':
