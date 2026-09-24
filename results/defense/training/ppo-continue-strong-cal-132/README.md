@@ -83,3 +83,33 @@ venv/bin/python -u -m rl.defense_train \
   --resume runs/defense-ppo-continue-strong-cal-132-init/latest \
   --steps 1048576
 ```
+
+The bounded [full run](run/) completed all **1,048,576** score-only
+training actions, with **115** complete boot games, **3,984** restored
+segments, eight fixed ten-game validations and no observed stage-two or
+mission event. Fixed means in order were **10,291 / 10,446 / 10,160 /
+9,908 / 10,156 / 9,924 / 10,456 / 10,158**. The predeclared rule selected
+the seventh full model/optimizer/RNG checkpoint at 917,504 actions.
+All eight checkpoints, final state, log, local artifacts, three fresh
+evaluation records and a natively verified selected replay are preserved.
+
+The [128-game matched fresh comparison](comparison.json) on seeds
+604100–604227 found selected / confirmed run-121 parent / +7 run-122
+predecessor means **10,319.69 / 10,476.56 / 10,472.81**. The selected
+model was **−156.88** versus its score parent, with 2 paired wins,
+118 losses and 8 ties; it was **−153.13** versus +7. All **384** fresh
+games ended in stage one. Only 9/128 selected games reached the usual
+10,480 ceiling, versus 108/128 and 106/128 for the comparators. The
+selected model is therefore a clear score regression, not a promoted
+successor. The protected global best remains unchanged.
+
+The selected model's [fresh replay](run/fresh-selected-replay/replay.html)
+independently reproduces **2,586** neural physical actions. A separate
+[exact choice-use check](selected-continuation-use.json) counted **766**
+sampled `CONTINUE` choices overall, yet only **4 / 3 / 1 / 5** in the four
+pre-flash 64-action loss approaches; the four lives each scored 2,620.
+Thus a stronger neutral initial bias genuinely increased continuation
+use, but PPO again reduced it near the recurring obstacle and did not
+escape. More unchanged training from this model is not justified by the
+predeclared gate. The result does not rule out a different learned
+temporal-control architecture or score-only exploration method.

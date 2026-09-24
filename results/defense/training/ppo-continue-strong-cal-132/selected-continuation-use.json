@@ -1,0 +1,13 @@
+{
+  "checkpoint_model_sha256": "b08bbd836fa1bd8bedc750adec41264d76da2386b998019f70f02c73caeb2c90",
+  "fresh_replay_trace_sha256": "33c0595d07d163c2f5872f2774f824804072b8c392389d483ecb9f946163f0ec",
+  "fresh_replay_seed": 604102,
+  "verified_actions": 2586,
+  "sampled_continue_choices": 766,
+  "pre_flash_64_action_continue_choices_by_life": [4, 3, 1, 5],
+  "displayed_points_by_life": [2620, 2620, 2620, 2620],
+  "method": "Reload selected frozen model; intercept sampled 21-way choices while independently reexecuting the exact original game, and assert every physical action, screen, reward and final result equal the native-verified fresh replay before counting.",
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "promotion_eligible": false
+}

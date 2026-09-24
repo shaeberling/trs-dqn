@@ -1,0 +1,55 @@
+{
+  "selection_rule": "Highest fixed ten-game mean, earliest exact tie",
+  "selected_training_actions": 917504,
+  "selected_fixed_mean": 10456.0,
+  "fresh_seed_start": 604100,
+  "fresh_games_per_policy": 128,
+  "fresh_complete_games_per_policy": 128,
+  "selected_checkpoint_sha256": "b08bbd836fa1bd8bedc750adec41264d76da2386b998019f70f02c73caeb2c90",
+  "parent_121_checkpoint_sha256": "8f922da2be6ce50f4c10ddcddb0b4af2bd663559c3753bf918e0b177199e087d",
+  "predecessor_122_checkpoint_sha256": "05a06fc017cdcda1c3df475de0b6cd127a68b863edbe255597e2bc16bb8dd16e",
+  "selected_evaluation_sha256": "3d731ffb7efeddc6c3877e4b7c6af1af322b5909ce9f110aca0c87bd7dd66020",
+  "parent_121_evaluation_sha256": "24f197c5573254a8445d656502f43b42f0dca3fe5f29536bb473931fb0bd89e7",
+  "predecessor_122_evaluation_sha256": "17adb3d98653b5ae323651a849cd599dfc553db8c7f1990ab198d9770d32b4be",
+  "selected": {
+    "mean": 10319.6875,
+    "median": 10440,
+    "best": 10480,
+    "exact_10480_games": 9,
+    "under_10000_games": 6,
+    "stage_two_games": 0,
+    "mission_games": 0
+  },
+  "parent_121": {
+    "mean": 10476.5625,
+    "median": 10480,
+    "best": 10480,
+    "exact_10480_games": 108,
+    "under_10000_games": 0,
+    "stage_two_games": 0,
+    "mission_games": 0
+  },
+  "predecessor_122": {
+    "mean": 10472.8125,
+    "median": 10480,
+    "best": 10480,
+    "exact_10480_games": 106,
+    "under_10000_games": 0,
+    "stage_two_games": 0,
+    "mission_games": 0
+  },
+  "selected_vs_parent_121": {
+    "mean_difference": -156.875,
+    "paired_wins": 2,
+    "paired_losses": 118,
+    "paired_ties": 8
+  },
+  "selected_vs_predecessor_122": {
+    "mean_difference": -153.125,
+    "paired_wins": 6,
+    "paired_losses": 107,
+    "paired_ties": 15
+  },
+  "all_games_stage_one": true,
+  "promotion_eligible": false
+}
