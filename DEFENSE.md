@@ -7912,3 +7912,18 @@ control. Four complete-game checks are planned over 524,288 new actions,
 then 128 fresh matched complete games. Only an unperturbed model's native
 stage transition and verified replay can establish progress. The sole
 collector now watches **111** sources; the global best remains protected.
+
+The [persistent-noise PPO run](results/defense/training/ppo-persistent-noise-118/README.md)
+completed 524,288 new actions with four fixed ten-game means **10,213 /
+10,466 / 9,946 / 10,464**, all stage one. Validation selected the second
+full optimizer/RNG checkpoint. On 128 new matched complete games, it
+averaged **10,365.70** versus the confirmed parent's **10,344.77**, but
+the paired median was zero and the trimmed mean nearly zero. The
+predeclared second 128-game set reversed the mean margin (**10,386.02**
+versus **10,418.28**). Across both sets, selected / parent means were
+**10,375.86 / 10,381.52**; none of the 512 games reached stage two.
+Per-life noise increased exact-ceiling frequency but not confirmed mean
+score or barrier passage. All training/validation/fresh games stayed in
+stage one; full histories and neural-verified fresh replays are preserved.
+The strongest independently confirmed score parent and global verified
+best replay remain unchanged.

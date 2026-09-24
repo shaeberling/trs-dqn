@@ -53,6 +53,40 @@ common parent. No further checkpoint selection, parameter update or training
 will use either fresh set. Any stage transition still requires a native
 screen-observed replay, regardless of score.
 
+The complete 524,288-action run finished cleanly with **63 boot games and
+2,122 restored segments**. Its four fixed ten-game unperturbed means were
+**10,213 / 10,466 / 9,946 / 10,464**, all stage one. The second
+[8,801,024-action checkpoint](milestone-000008801024/state.json) was
+selected by those fixed games before fresh checking. The entire model,
+optimizer, noise RNG, metrics and verified local replay history is archived
+in [run/](run/). No noisy training game reached stage two either.
+
+On the [first 128 fresh complete games](fresh-selected-128.json), seeds
+601000–601127, selected / [parent](fresh-parent-128.json) /
+[ordinary control](fresh-control-128.json) means were **10,365.70 /
+10,344.77 / 10,345.94**, all stage one. The selected model improved 47
+paired seeds over the parent, worsened 38, tied 43, and had five scores
+below 9,000 versus the parent's seven. That +20.94 mean gain was fragile:
+the paired median was zero and the symmetric 10% trimmed mean only +0.39.
+
+The predeclared [second 128-game confirmation](fresh-confirm-selected-128.json)
+on seeds 601200–601327 reversed the mean gain: selected **10,386.02** versus
+[parent](fresh-confirm-parent-128.json) **10,418.28**, all stage one. It
+improved 48 paired seeds, worsened 39 and tied 41, but had three sub-9,000
+games versus the parent's two. Across both fresh sets (256 games per policy),
+the selected model averaged **10,375.86** versus parent **10,381.52**:
+**-5.66**. It produced more exact-10,480 games (154 versus 127), but the
+downside offset that gain. This is neither a confirmed mean-score successor
+nor barrier passage; the confirmed parent and global best stay unchanged.
+
+The [first](fresh-selected-replay/replay.html) and
+[second](fresh-confirm-selected-replay/replay.html) fresh best-effort replays
+independently verify **2,504** and **2,530** neural actions, respectively.
+Both end in stage-one GAME OVER, not a mission win. The corresponding
+parent and ordinary-control verified replay bundles remain alongside the
+evaluation records; no result has been promoted from an evaluation-only
+probe.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-118 \
