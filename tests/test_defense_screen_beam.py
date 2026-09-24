@@ -7,7 +7,7 @@ import unittest
 
 import numpy as np
 
-from rl.defense_screen_beam import (ANCHOR, COMMANDS, EARLY_ANCHOR,
+from rl.defense_screen_beam import (ANCHOR, COMMANDS, SIDE_FIRE_COMMANDS, EARLY_ANCHOR,
                                     EARLY_SCHEDULE, HORIZON, SCHEDULE,
                                     Node, select_beam)
 
@@ -21,6 +21,7 @@ class DefenseScreenBeamTests(unittest.TestCase):
         self.assertEqual(HORIZON, 428)
         self.assertEqual(EARLY_ANCHOR + sum(EARLY_SCHEDULE), HORIZON)
         self.assertEqual(set(COMMANDS), set(range(10)))
+        self.assertEqual(set(SIDE_FIRE_COMMANDS), set(range(10)) | {18, 19})
         self.assertEqual(SCHEDULE[4:16], (1,) * 12)
 
     def test_selects_unique_visible_cells_and_preserves_source(self):
@@ -63,6 +64,29 @@ class DefenseScreenBeamTests(unittest.TestCase):
             self.assertTrue(report['config']['diagnostic_only'])
             self.assertFalse(report['config']['promotion_eligible'])
             self.assertEqual(len((output / 'layers.jsonl').read_text().splitlines()), 2)
+
+            side_output = Path(tmp) / 'side-fire'
+            side_command = command[:]
+            side_command[side_command.index(str(output))] = str(side_output)
+            side_command.append('--side-fire')
+            result = subprocess.run(side_command, capture_output=True, text=True, timeout=90)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            side_report = json.loads((side_output / 'report.json').read_text())
+            self.assertEqual(side_report['config']['symmetric_commands'],
+                             list(SIDE_FIRE_COMMANDS))
+            self.assertTrue(side_report['config']['side_fire'])
+            self.assertEqual(side_report['completed_layers'], 2)
+
+            earlier_output = Path(tmp) / 'earlier'
+            earlier_command = command[:]
+            earlier_command[earlier_command.index(str(output))] = str(earlier_output)
+            earlier_command.extend(('--anchor', '200', '--side-fire'))
+            result = subprocess.run(earlier_command, capture_output=True, text=True, timeout=90)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            earlier_report = json.loads((earlier_output / 'report.json').read_text())
+            self.assertEqual(earlier_report['config']['anchor'], 200)
+            self.assertEqual(earlier_report['latest_frame'], 208)
+            self.assertEqual(earlier_report['completed_layers'], 2)
 
 
 if __name__ == '__main__':

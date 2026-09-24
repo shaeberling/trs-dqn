@@ -147,8 +147,6 @@ def main():
     parser.add_argument("--seed", type=int, default=521)
     parser.add_argument("--early-anchor", action="store_true",
                         help="start at frame 280 with ten extra four-action layers")
-    parser.add_argument("--anchor", type=int, choices=(200, 280, 320),
-                        help="exact own-policy source frame; earlier frames add four-action layers")
     parser.add_argument("--fine-cadence", action="store_true",
                         help="one action per layer from frame 320 onward")
     parser.add_argument("--history-key", action="store_true",
@@ -156,11 +154,9 @@ def main():
     parser.add_argument("--side-fire", action="store_true",
                         help="also branch on stage-one side-fire commands 18 and 19")
     args = parser.parse_args()
-    if args.early_anchor and args.anchor is not None:
-        parser.error("choose --early-anchor or --anchor, not both")
-    anchor = args.anchor if args.anchor is not None else EARLY_ANCHOR if args.early_anchor else ANCHOR
+    anchor = EARLY_ANCHOR if args.early_anchor else ANCHOR
     commands = SIDE_FIRE_COMMANDS if args.side_fire else COMMANDS
-    schedule = (4,)*((ANCHOR-anchor)//4) + (
+    schedule = ((4,)*10 if args.early_anchor else ()) + (
         (1,)*(HORIZON-ANCHOR) if args.fine_cadence else SCHEDULE)
     if (args.output.exists() or not 1 <= args.beam <= 512
             or not 0 <= args.layers <= len(schedule) or args.seed < 0):
