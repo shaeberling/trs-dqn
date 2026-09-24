@@ -16,8 +16,8 @@ from rl.temporal_probe import TemporalPolicy
 
 
 class DefenseTemporalProbeTests(unittest.TestCase):
-    def test_rejects_fresh_seeds_and_existing_output_before_loading(self):
-        for extra in [['--seed', '20000'], ['--games', '11'], ['--envs', '0']]:
+    def test_rejects_invalid_seeds_counts_and_existing_output_before_loading(self):
+        for extra in [['--seed', '9999'], ['--games', '129'], ['--envs', '0']]:
             args = ['probe', '/nonexistent/model.safetensors', '--stride', '2',
                     '--output', '/nonexistent/out.json', *extra]
             with patch.object(sys, 'argv', args), contextlib.redirect_stderr(io.StringIO()), \
@@ -101,6 +101,28 @@ class DefenseTemporalProbeTests(unittest.TestCase):
             self.assertFalse(saved['promotion_eligible'])
             self.assertIn('greedy',saved['policy'])
             self.assertEqual(checkpoint.read_bytes(),b'frozen-q')
+
+    def test_wider_history_uses_fresh_complete_games_without_promotion(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p = Path(tmp); checkpoint = p/'model.safetensors'; checkpoint.write_bytes(b'frozen')
+            cfg = dict(algorithm='ppo', game_sha256='game', environment_version='version',
+                       tstates=100000, observation_stride=1)
+            (p/'state.json').write_text(json.dumps(dict(config=cfg)))
+            policy = categorical_policy(lambda obs: np.zeros((len(obs), 20), np.float32))
+            evaluation = dict(complete_games=16, incomplete_games=0, games=[])
+            args = ['probe', str(checkpoint), '--stride', '8', '--tstates', '100000',
+                    '--games', '16', '--seed', '602000', '--output', str(p/'out.json')]
+            with patch.object(sys, 'argv', args), \
+                    patch.object(defense_temporal_probe, 'load_policy', return_value=(policy, cfg)), \
+                    patch.object(defense_temporal_probe, 'evaluate', return_value=evaluation) as evaluate, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                defense_temporal_probe.main()
+            self.assertEqual(list(evaluate.call_args.args[1]), list(range(602000, 602016)))
+            self.assertEqual(evaluate.call_args.kwargs['observation_stride'], 8)
+            saved = json.loads((p/'out.json').read_text())
+            self.assertEqual(saved['nominal_history_span_tstates'], 2400000)
+            self.assertEqual(saved['checkpoint_observation_stride'], 1)
+            self.assertFalse(saved['promotion_eligible'])
 
 
 if __name__ == '__main__':

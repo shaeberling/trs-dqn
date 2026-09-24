@@ -10,15 +10,15 @@ from .defense_learning import evaluate, load_policy, policy_description, sha256
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("checkpoint", type=Path)
-    parser.add_argument("--stride", type=int, choices=(1, 2), required=True)
+    parser.add_argument("--stride", type=int, choices=(1, 2, 4, 8), required=True)
     parser.add_argument("--tstates", type=int, choices=(50_000, 100_000), default=50_000)
     parser.add_argument("--games", type=int, default=10)
     parser.add_argument("--seed", type=int, default=10_000)
     parser.add_argument("--envs", type=int, default=4)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    if not 1 <= args.games <= 10 or not 10_000 <= args.seed <= 10_010-args.games:
-        parser.error("this diagnostic is restricted to reused primary seeds 10000-10009")
+    if not 1 <= args.games <= 128 or args.seed < 10_000:
+        parser.error("games must be 1..128 and seed at least 10000")
     if args.envs < 1:
         parser.error("--envs must be positive")
     if args.output.exists():
@@ -50,7 +50,7 @@ def main():
                   environment_source_sha256=sha256(Path(__file__).with_name("defense.py")),
                   limitations=["Nominal history span excludes variable HUD/terminal settling.",
                                "Frozen-policy timing probe, not learning at a new control rate.",
-                               "Reused validation seeds; not a fresh success-rate test."])
+                               "An observation override is diagnostic, not a trained-policy result."])
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x") as stream:
         stream.write(json.dumps(result, indent=2)+"\n")
