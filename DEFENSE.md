@@ -20,7 +20,18 @@ places all eight new visible life losses at original stage-one stream row
 33–34 of 126, matching the historical bottleneck. These hidden row reads
 were diagnostic only, never training inputs or rewards. The protected
 10,480-point global replay and original game's bits are unchanged. The
-current full **489-test** regression suite passes.
+then-current full **489-test** regression suite passed.
+The subsequent [joint key-and-duration exploration](results/defense/training/ppo-duration-joint-134/README.md)
+sampled hundreds more long holds over 1,048,576 own training actions.
+Its selected checkpoint averaged 10,474 on fixed validation, but **all 80**
+validation games and both untouched comparison sets stayed in stage one.
+Across 192 fresh matched games, its mean was **10,378.02** versus
+**10,391.51** for the established ordinary-action score parent; rare
+low-score failures prevent a score-parent promotion despite more paired
+wins. A [fresh verified replay](results/defense/diagnostics/joint-134-course-progress/README.md)
+still loses all four lives at decoded first-stage rows 33–34 of 126. The
+original game, protected best replay and no-oracle training contract remain
+unchanged. The full **491-test** regression suite passes with this joint mode.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
