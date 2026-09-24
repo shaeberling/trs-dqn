@@ -1,11 +1,39 @@
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 
 import numpy as np
 
-from rl.defense_trajectory_search import COMMANDS, HOLDS, mutate_plan, outcome_rank
+from rl.defense_trajectory_search import COMMANDS, HOLDS, mutate_plan, outcome_rank, play
 
 
 class DefenseTrajectorySearchTests(unittest.TestCase):
+    def test_diversity_cell_is_recorded_only_at_a_surviving_visible_screen(self):
+        class FakeEnv:
+            count = 0
+
+            def step(self, action):
+                self.count += 1
+                screen = np.zeros((4, 16, 64), np.uint8)
+                screen[-1, 14, self.count] = 0xA8
+                return (screen, 10, False, False,
+                        dict(score=10*self.count, stage=1,
+                             life_lost=self.count == 3, mission_completed=False))
+
+        saved = SimpleNamespace(stage=1)
+        initial = np.zeros((4, 16, 64), np.uint8)
+        with patch("rl.defense_trajectory_search.restore", return_value=initial):
+            early, frames, rewards = play(FakeEnv(), saved, np.zeros(4, np.uint8),
+                                          trace=True, diversity_offset=2)
+            loss = play(FakeEnv(), saved, np.zeros(4, np.uint8), diversity_offset=3)
+        self.assertEqual(early["actions"], 3)
+        self.assertEqual(early["score"], 30)
+        self.assertIsInstance(early["checkpoint_cell"], str)
+        self.assertEqual(len(early["checkpoint_cell"]), 32)
+        self.assertIsNone(loss["checkpoint_cell"])
+        self.assertEqual(frames.shape, (4, 16, 64))
+        np.testing.assert_array_equal(rewards, [10., 10., 10.])
+
     def test_symmetric_contiguous_mutation_preserves_own_source(self):
         parent = np.arange(144, dtype=np.uint8) % 20
         original = parent.copy()
