@@ -241,10 +241,7 @@ def main():
         parser.error("policy-key-noise requires ordinary feedforward Defense actions without other noise or SIL")
     if (not np.isfinite(args.policy_duration_noise) or args.policy_duration_noise < 0
             or (args.policy_duration_noise and (not args.learned_durations or args.policy_bias_noise
-                                                or args.policy_weight_noise or args.sil_updates
-                                                or args.policy_key_noise_interval
-                                                or args.policy_key_noise_min_interval
-                                                or args.policy_key_noise_max_interval))):
+                                                or args.policy_weight_noise or args.sil_updates))):
         parser.error("policy-duration-noise requires learned durations without other noise or SIL")
     if args.policy_key_noise_interval < 0 or (args.policy_key_noise_interval and not args.policy_key_noise):
         parser.error("policy-key-noise-interval requires positive key noise and a nonnegative interval")
@@ -358,7 +355,11 @@ def main():
         elif args.policy_key_noise and args.policy_duration_noise:
             noise = PolicyKeyDurationNoise(args.envs, len(action_names(False)),
                                            len(args.learned_durations), args.policy_key_noise,
-                                           args.policy_duration_noise, noise_rng)
+                                           args.policy_duration_noise, noise_rng,
+                                           interval=args.policy_key_noise_interval,
+                                           interval_range=(args.policy_key_noise_min_interval,
+                                                           args.policy_key_noise_max_interval)
+                                           if args.policy_key_noise_min_interval else None)
             noise_argument, noise_kind = "logit_bias", "factorized-key-and-duration-output-bias"
         elif args.policy_key_noise:
             noise = PolicyKeyNoise(args.envs, policy_action_count, args.policy_key_noise, noise_rng,
@@ -669,6 +670,9 @@ def main():
                 noise_fields = {}
                 if noise is not None:
                     noise_fields["policy_noise_draws"] = noise.draws
+                    if isinstance(noise, PolicyKeyDurationNoise):
+                        noise_fields["policy_noise_key_draws"] = noise.key.draws
+                        noise_fields["policy_noise_duration_draws"] = noise.duration.draws
                     for kind, strength in (("policy_weight_noise_std", args.policy_weight_noise),
                                            ("policy_key_noise_std", args.policy_key_noise),
                                            ("policy_duration_noise_std", args.policy_duration_noise),
