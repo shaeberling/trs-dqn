@@ -35,6 +35,8 @@ def main():
                        help="own ordinary PPO checkpoint for a fresh continue-previous-action learner")
     start.add_argument("--initialize-duration-policy", type=Path,
                        help="own ordinary PPO checkpoint for a fresh learned key-duration policy")
+    start.add_argument("--initialize-duration-checkpoint", type=Path,
+                       help="copy own trained key-duration weights with fresh optimizer and policy RNG")
     parser.add_argument("--continue-initial-bias-offset", type=float, default=0.,
                         help="direction-neutral extra-action bias on own-policy initialization; 0 preserves mean row")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
@@ -83,6 +85,8 @@ def main():
                         help="learn joint physical keys and option holds, e.g. 1 4 16 64")
     parser.add_argument("--option-actor-gae", action=argparse.BooleanOptionalAction, default=False,
                         help="credit a completed learned hold's whole score return to its option start")
+    parser.add_argument("--spatial-residual", action=argparse.BooleanOptionalAction, default=False,
+                        help="learn a zero-initialized spatial mixing residual over an own duration policy")
     parser.add_argument("--duration-initial-logit-spacing", type=float, default=2.,
                         help="direction-neutral initial logit penalty per longer hold; only for fresh duration initialization")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
@@ -127,7 +131,7 @@ def main():
         prior = json.loads((args.resume/"state.json").read_text())
         explicit = {word.split("=", 1)[0] for word in sys.argv[1:] if word.startswith("--")}
         for key, value in prior["config"].items():
-            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_repeat_policy", "initialize_duration_policy", "initialize_only")
+            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_repeat_policy", "initialize_duration_policy", "initialize_duration_checkpoint", "initialize_only")
                     and "--"+key.replace("_", "-") not in explicit
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
@@ -148,9 +152,11 @@ def main():
         if args.continue_initial_bias_offset != config.get("continue_initial_bias_offset", 0.):
             parser.error("Continue-action initialization offset cannot change on optimizer resume")
         from .recurrent_policy import RECURRENT_ARCHITECTURE
+        from .defense_spatial_spec import SPATIAL_ARCHITECTURE
         if (args.recurrent_hidden != config.get('recurrent_hidden', 0)
-                or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else None)):
-            parser.error("Changing recurrent architecture requires initialization, not an optimizer resume")
+                or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else
+                                                 SPATIAL_ARCHITECTURE if args.spatial_residual else None)):
+            parser.error("Changing learned architecture requires initialization, not an optimizer resume")
         if args.freeze_recurrent_base != config.get('freeze_recurrent_base', False):
             parser.error("Changing frozen parameters requires fresh initialization, not an optimizer resume")
         if not (args.resume/"optimizer.npz").exists():
@@ -188,10 +194,13 @@ def main():
         if (args.allow_enter or args.recurrent_hidden or args.canonical_fire
                 or args.repeat_previous_action or args.sil_updates or args.initialize_encoder
                 or args.initialize_policy or args.initialize_repeat_policy or not args.life_terminal
-                or not (args.initialize_duration_policy or args.resume)):
+                or not (args.initialize_duration_policy or args.initialize_duration_checkpoint or args.resume)):
             parser.error("learned durations require own ordinary-policy initialization, life terminals, and plain feedforward PPO")
-    elif args.initialize_duration_policy:
-        parser.error("--initialize-duration-policy requires --learned-durations")
+    elif args.initialize_duration_policy or args.initialize_duration_checkpoint:
+        parser.error("duration initialization requires --learned-durations")
+    if args.spatial_residual and (not args.learned_durations or args.recurrent_hidden
+                                  or not (args.initialize_duration_checkpoint or args.resume)):
+        parser.error("spatial residual requires own trained duration initialization and feedforward PPO")
     if args.option_actor_gae and not args.learned_durations:
         parser.error("--option-actor-gae requires learned durations")
     if (not np.isfinite(args.duration_initial_logit_spacing)
@@ -264,7 +273,11 @@ def main():
     agent_class, extra_agent = PPO, dict(canonical_fire=args.canonical_fire)
     if args.learned_durations:
         from .defense_duration_ppo import DurationPPO
-        agent_class = DurationPPO
+        if args.spatial_residual:
+            from .defense_spatial import SpatialDurationPPO
+            agent_class = SpatialDurationPPO
+        else:
+            agent_class = DurationPPO
     if args.recurrent_hidden:
         from .defense_recurrent import RecurrentPPO
         from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
@@ -306,6 +319,15 @@ def main():
                     logit_spacing=args.duration_initial_logit_spacing)
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
+        elif args.initialize_duration_checkpoint:
+            from .defense_spatial import initialize_duration_checkpoint
+            try:
+                initialization = initialize_duration_checkpoint(
+                    agent.model, args.initialize_duration_checkpoint, args.learned_durations,
+                    tstates=args.tstates, observation_stride=args.observation_stride,
+                    spatial=args.spatial_residual)
+            except (OSError, ValueError, KeyError) as error:
+                parser.error(str(error))
         elif args.initialize_policy:
             from .defense_initialization import initialize_policy
             try:
@@ -322,7 +344,8 @@ def main():
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
         # Broad initial exploration; no preference for a hand-selected action.
-        if not (args.initialize_policy or args.initialize_repeat_policy or args.initialize_duration_policy):
+        if not (args.initialize_policy or args.initialize_repeat_policy or args.initialize_duration_policy
+                or args.initialize_duration_checkpoint):
             head = agent.model.base.advantage if args.recurrent_hidden else agent.model.advantage
             head.weight *= .1
             head.bias *= .1
@@ -414,11 +437,19 @@ def main():
                       resume_semantics='optimizer and policy RNG restored; episodes and neural memory restart from boot')
         if args.freeze_recurrent_base:
             config['frozen_parameter_scope'] = 'base CNN, feature layer, actor and value heads; memory and residual heads trainable'
+    if args.spatial_residual:
+        from .defense_spatial_spec import SPATIAL_ARCHITECTURE
+        config.update(architecture=SPATIAL_ARCHITECTURE,
+                      spatial_source_sha256=sha256(Path(__file__).with_name("defense_spatial.py")),
+                      spatial_spec_source_sha256=sha256(Path(__file__).with_name("defense_spatial_spec.py")),
+                      policy="learned spatial-residual categorical key-duration options, sampled",
+                      spatial_initialization="zero gate preserves transferred own-policy outputs")
     if initialization is not None:
         config.update(initialization=initialization,
                       initialization_source_sha256=sha256(Path(__file__).with_name(
                           "defense_repeat_previous.py" if args.initialize_repeat_policy else
                           "defense_duration_ppo.py" if args.initialize_duration_policy else
+                          "defense_spatial.py" if args.initialize_duration_checkpoint else
                           "defense_initialization.py")))
     elif prior and "initialization" in prior["config"]:
         # Keep ancestry without reapplying initialization or requiring its source.
