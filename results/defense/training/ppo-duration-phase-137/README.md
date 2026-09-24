@@ -61,3 +61,39 @@ venv/bin/python -u -m rl.defense_train \
   --policy-key-noise-max-interval 64 \
   --steps 2228224 --eval-every 131072 --eval-games 10 --eval-envs 10
 ```
+
+## Completed result
+
+The full run stopped normally at action **2,228,224**. Its eight fixed
+ten-game means were **10,480 / 10,475 / 10,228 / 10,480 / 10,456 /
+10,476 / 10,478 / 10,224**. All **80** complete games ended in stage one.
+The earliest highest-mean checkpoint, **1,310,720**, was frozen for the
+predeclared fresh test; the later tie at 1,703,936 was not selected.
+At the last progress report (action 2,215,936), the trainer had logged
+**25,947 key-factor draws** and **4,594 duration-factor draws**. This
+confirms within-life key renewal occurred much more often than per-life
+duration renewal. The log does not claim these are final draw totals.
+
+On the **64 untouched matched seeds 607600–607663**, the frozen selected
+checkpoint averaged **10,392.34**, versus **10,421.25** for its frozen
+[option-credit input](../ppo-duration-credit-136/README.md) and
+**10,295.47** for the older ordinary-action parent. Selected versus input:
+**7 paired wins / 11 losses / 46 ties**; **two** versus **one** games
+below 9,000 points. All **192** fresh games ended in stage one. The
+selected policy did beat the older ordinary-action parent on these seeds,
+but regressed against its own stronger starting checkpoint. Thus this
+exploration change is **not** promoted as a new training parent or best
+replay. The protected global best remains unchanged.
+
+The [selected fresh replay](run/fresh-selected-replay/replay.html) was
+independently reproduced from boot for all **2,520** neural decisions
+and 10,480 points. Its four lives each scored 2,620. A separate
+[diagnostic-only original-course audit](run/course-progress-selected/report.json)
+reexecuted that trace exactly and found visible losses at immutable
+stage-one stream rows **33 / 33 / 34 / 34 of 126**. These pointer rows
+are *not* collision timestamps and never enter learning or checkpoint
+selection. The [visible loss-window sheet](run/loss-windows-selected/policy-1-losses.png)
+shows the ship still far from the right-side opening as a wall approaches;
+it is illustrative evidence from one replay, not a solved route. The
+same bottleneck has survived longer holds, screen-diverse resets,
+option-aware credit, and now within-life key preference renewal.
