@@ -275,6 +275,25 @@ point lives. The treatment is negative versus its parent, so neither
 new arm is promoted; complete optimizer/RNG states, evaluations and
 replays are archived, and the protected best remains available.
 
+An [own-previous-action recurrent PPO comparison](results/defense/training/ppo-own-action-memory-153/README.md)
+then copied the strongest ordinary 20-action PPO into two zero-output
+residual GRUs, freezing the same base. The treatment GRU received its
+own prior chosen key plus screen history; control received only
+screens. Both saved initializers exactly matched the parent's
+original-boot actions/screens/rewards on two complete parity games,
+and the full **514-test** suite passed. After 262,144 training actions
+per arm, all 40 fixed games remained stage one. The first 64 fresh
+matched games gave treatment/control/parent means **10,412.97 /
+10,452.50 / 10,414.38**; a separately frozen 64-game confirmation
+reversed the new-arm ordering at **10,457.19 / 10,424.06 / 10,412.81**.
+All **384** fresh games stayed stage one. The control failed its
+predeclared confirmation against treatment, and treatment had failed
+its first-set score-parent gate, so neither is promoted. Both native-
+verified fresh replays still lose four 2,620-point lives at the
+recurring barrier. Full optimizer/RNG states, six fresh evaluation
+tables and exact source metadata are archived; the protected global
+best model and replay remain unchanged.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.

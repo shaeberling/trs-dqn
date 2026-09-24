@@ -44,7 +44,7 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
                 or not np.isfinite(quantile_power) or not 0 <= quantile_power <= 4
                 or temperature != 1):
             raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
-    from .recurrent_policy import RECURRENT_ARCHITECTURE
+    from .recurrent_policy import RECURRENT_ARCHITECTURE, OWN_ACTION_RECURRENT_ARCHITECTURE
     from .defense_spatial_spec import SPATIAL_ARCHITECTURE
     architecture = config.get("architecture")
     if config.get("learned_durations"):
@@ -80,8 +80,15 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
         return ('learned imagined-return actor, categorical sampling; screen/own-action memory'
                 if temperature == 1 else 'learned imagined-return actor, temperature-scaled; screen/own-action memory')
     if architecture is not None and architecture != SPATIAL_ARCHITECTURE:
-        if architecture != RECURRENT_ARCHITECTURE or algorithm != 'ppo':
+        if (architecture not in (RECURRENT_ARCHITECTURE, OWN_ACTION_RECURRENT_ARCHITECTURE)
+                or algorithm != 'ppo'
+                or bool(config.get('recurrent_own_action', False))
+                   != (architecture == OWN_ACTION_RECURRENT_ARCHITECTURE)):
             raise ValueError("Unsupported Defense policy architecture")
+        if architecture == OWN_ACTION_RECURRENT_ARCHITECTURE:
+            return ("learned recurrent categorical, sampled; screen and own-previous-key memory"
+                    if temperature == 1 else
+                    "learned recurrent categorical, temperature-scaled; screen and own-previous-key memory")
         return ("learned recurrent categorical, sampled; screen-history memory" if temperature == 1 else
                 "learned recurrent categorical, temperature-scaled; screen-history memory")
     if config.get('recurrent_hidden', 0):
@@ -154,7 +161,8 @@ def summarize(games):
 def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
     from .model import QNetwork
     from .temperature_probe import temperature_policy
-    from .recurrent_policy import RECURRENT_ARCHITECTURE
+    from .recurrent_policy import (RECURRENT_ARCHITECTURE,
+                                   OWN_ACTION_RECURRENT_ARCHITECTURE)
     from .defense_spatial_spec import SPATIAL_ARCHITECTURE
     import mlx.core as mx
     checkpoint = Path(checkpoint)
@@ -174,13 +182,22 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         model.load_weights(str(checkpoint))
         mx.eval(model.state)
         return acting_policy(model, temperature), config
-    if config.get("architecture") == RECURRENT_ARCHITECTURE:
+    if config.get("architecture") in (RECURRENT_ARCHITECTURE,
+                                       OWN_ACTION_RECURRENT_ARCHITECTURE):
         from .defense_recurrent import ResidualRecurrentNetwork
-        from .recurrent_policy import RecurrentPolicy
-        model = ResidualRecurrentNetwork(len(names), config['recurrent_hidden'], config['memory_scale'])
+        from .recurrent_policy import OwnActionRecurrentPolicy, RecurrentPolicy
+        own_action = config["architecture"] == OWN_ACTION_RECURRENT_ARCHITECTURE
+        model = ResidualRecurrentNetwork(len(names), config['recurrent_hidden'],
+                                         config['memory_scale'], own_action_input=own_action)
         model.load_weights(str(checkpoint))
         mx.eval(model.state)
         predict = mx.compile(model.step, inputs=model.state)
+        if own_action:
+            def infer(obs, hidden, previous):
+                logits, _, updated = predict(mx.array(obs), mx.array(hidden), mx.array(previous))
+                return np.array(logits), np.array(updated)
+            return OwnActionRecurrentPolicy(infer, config['recurrent_hidden'], len(names),
+                                            temperature=temperature), config
         def infer(obs, hidden):
             logits, _, updated = predict(mx.array(obs), mx.array(hidden))
             return np.array(logits), np.array(updated)
