@@ -106,3 +106,59 @@ venv/bin/python -u -m rl.defense_train \
 For the production control, use a distinct `...-control-full` run and
 artifacts path with `--duration-explore-mix 0`; keep every other flag
 and the frozen initializer identical.
+
+## Treatment stage gate: stopped on predeclared collapse rule
+
+The [production treatment](treatment-full/) did expose long options
+in real training (**1,154** 128-step starts across 319,488 actions),
+but its first and second ten-game fixed-check means were **3,616** and
+**2,305**, both entirely stage one. Two consecutive means below
+5,000 triggered the planned graceful stop. The learner exited normally
+after finishing its in-flight rollout at **319,488** total actions,
+with full model/optimizer/policy-RNG state, both fixed checkpoints,
+metrics and any verified local replay retained. No mission or stage-two
+result was observed. The control is evaluated separately from the
+same initial policy. The stopped treatment remains in the predeclared
+fresh-score comparison, but cannot be promoted without outperforming
+both alternatives on score and low-tail safety; fixed results alone
+do not make it a candidate.
+
+The [matched control](control-full/) completed all **524,288** actions
+normally. Its four fixed ten-game means were **10,472 / 9,956 /
+10,416 / 10,446**, every game stage one. By the frozen selection rule,
+the earliest highest fixed mean is checkpoint **131,072** for both
+treatment (3,616) and control (10,472). No checkpoint was selected
+from the new-seed comparison.
+
+## Frozen fresh comparison and disposition
+
+All three frozen policies played **64 complete games on the same new
+seeds 608700–608763** at 50,000 T states and stride 2:
+
+| Arm | Mean / median / best | Below 9,000 | Stage-two games |
+| --- | --- | ---: | ---: |
+| [Mixture treatment](fresh-treatment-64.json) | **5,177.97 / 5,390 / 10,410** | **61** | 0 |
+| [No-mixture control](fresh-control-64.json) | **10,067.50 / 10,480 / 10,480** | **10** | 0 |
+| [Unchanged run-146 parent](fresh-parent-64.json) | **10,420.63 / 10,480 / 10,480** | **1** | 0 |
+
+Treatment versus control had **2 paired wins / 62 losses / 0 ties**;
+versus its parent it had **0 wins / 64 losses / 0 ties**. The control
+also trailed the parent (6 wins / 24 losses / 34 ties). No arm met the
+predeclared score-parent criterion, so a second fresh confirmation
+would not change the decision and is not run. The treatment's
+[5,117-action best fresh replay](fresh-treatment-replay/replay.html)
+and control's [5,013-action replay](fresh-control-replay/replay.html)
+were independently reproduced from original boot. A strictly
+post-hoc [course-pointer audit](../../diagnostics/duration-mixture-148-course-progress/README.md)
+finds their visible losses around original stage-one stream rows
+**32–34 of 126**, not later passage. Neither this hidden pointer nor
+any diagnostic trajectory entered learning.
+
+Conclusion: the mixture achieved actual, correctly credited
+long-duration exposure but severely damaged screen-only score play,
+and even the no-mixture fresh-optimizer control underperformed the
+confirmed parent. Retain all full states and replays as negative
+evidence; do not promote either checkpoint or repeat this unchanged
+mixture. The original game, run-146 score parent and protected global
+best model/replay remain unchanged. The active gameplay goal remains
+unmet.
