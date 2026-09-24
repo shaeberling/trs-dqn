@@ -1,0 +1,13 @@
+{
+  "checkpoint_model_sha256": "44c540252a71018e15f00665cc969df0a28c7240ad74f7b8e1f9d50857d9ac55",
+  "replay_trace_sha256": "3ee2ae8834f646533441261bb16b767c0ba5507f69289d9cd2d16d3757658cb7",
+  "verified_actions": 2539,
+  "sampled_continue_choices": 691,
+  "pre_flash_64_action_continue_choices_by_life": [18, 10, 9, 7],
+  "displayed_points_by_life": [2620, 2620, 2620, 2620],
+  "method": "Reload frozen initializer and replay original seed; intercept policy sampled 21-way choices, then assert every physical action, screen, reward and final result equal the native-verified trace before counting.",
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "training_data_written": false,
+  "promotion_eligible": false
+}

@@ -43,6 +43,19 @@ gate fails, archive and stop this calibration rather than simply run it
 longer unchanged. The collector and global best remain independently
 available throughout.
 
+The no-learning [initializer](initializer/) was saved with complete
+model/optimizer/RNG state. Its 32 fresh complete games averaged **10,454.38**
+points (median 10,460; best 10,480), all stage one. The separately
+[verified replay](initializer-replay/replay.html) reproduces **2,539**
+physical actions, screens and rewards from the frozen 21-way policy. A
+read-only [choice-use check](initializer/continuation-use.json) reexecuted
+that same game exactly and counted **691** sampled `CONTINUE` choices,
+including **18 / 10 / 9 / 7** in the four pre-flash 64-action windows.
+It still lost each life at 2,620 displayed points. The calibration is
+therefore effective at making the option available without destroying
+baseline score, but is not gameplay progress. No policy update occurred
+before the bounded training run.
+
 ```sh
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-continue-strong-cal-132-init \
