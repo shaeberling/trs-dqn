@@ -86,3 +86,15 @@ graceful stop if free space falls below **5.1 GiB**; it neither reads screens
 nor changes learning. The trainer's `status.json`, optimizer checkpoint and
 local verified replay are the authoritative progress records. A disk stop
 is a safety pause, not an evaluation result or goal completion.
+
+## First production checkpoint
+
+At **1,048,576** new actions, the treatment's [fixed ten-game evaluation](milestone-000001048576/evaluation.json)
+averaged **322**, median **320**, best **340**, all complete original-boot
+games in stage one. Its [local best-effort replay](milestone-replay-000001048576/replay.html)
+independently reproduced **1,580** neural actions and has `verified: true`.
+The complete immutable model/optimizer/RNG checkpoint, fixed evaluation,
+replay and frozen config were copied into this archive and compared
+byte-for-byte with the active run. Training continues toward the remaining
+predeclared checkpoints. This early score is not a barrier improvement or
+global-best promotion; the protected replay remains unchanged.
