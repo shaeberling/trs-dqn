@@ -246,6 +246,19 @@ still near **25** as the latter wall approaches. This motivates an
 late fixed-action substitutions. It is diagnostic evidence only, not a
 learned escape route; no searched action entered training or promotion.
 
+An [earlier visible prepositioning audit](results/defense/diagnostics/preposition-window-151/README.md)
+then tested every **3,600** single-RIGHT start/hold pair from action
+280 to the frame-355 waypoint of that same verified first life. At
+frame 339, the farthest full-score readable ship glyph was column
+**25** versus the learner's **23**. At frame 355, the farthest was
+**29** versus **25**, among **855** readable branches that kept all
+2,600 displayed points. Farther-right branches had typically missed
+the earlier reward-bearing passage; no branch reached another stage.
+The complete native outcome table and hashes are archived. This
+rules out only one contiguous RIGHT correction, and reinforces the
+need to investigate multi-step, earlier screen-conditioned control
+without treating diagnostic actions as demonstrations.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.

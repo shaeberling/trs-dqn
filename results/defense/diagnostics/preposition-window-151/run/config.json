@@ -1,0 +1,19 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-duration-credit-136/run/fresh-selected-replay",
+  "trace_sha256": "c1c13c9108b15b780488311138ef976da3d084f7fe72bae65f9ed9e81ad10575",
+  "model_sha256": "bb9f3dbcd3740191106c092da61143d87674fc6b7384bf54ff5e329c2062f9c9",
+  "source_sha256": "dde609bf597847152d9256123c0e058fc09c7b20eb596d85fa2ca4c8a7340ff1",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "seed": 607200,
+  "anchor": 280,
+  "intermediate": 339,
+  "waypoint": 355,
+  "max_hold": 48,
+  "ordered_pairs": 3600,
+  "held_command": "RIGHT",
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "candidate_actions_never_training_data": true,
+  "promotion_eligible": false
+}
