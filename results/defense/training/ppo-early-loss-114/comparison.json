@@ -1,0 +1,20 @@
+{
+  "diagnostic_only": true,
+  "selection": "highest mean displayed score on four fixed ten-game complete evaluations per arm, before fresh games",
+  "fresh_seeds": [600600, 600727],
+  "complete_games_per_policy": 128,
+  "selected_256_checkpoint": "run/step-000009063168/model.safetensors",
+  "selected_128_checkpoint": "../ppo-early-loss-control-115/milestone-000008669952/model.safetensors",
+  "common_parent_checkpoint": "../ppo-canonical-control-113/milestone-000008538880/model.safetensors",
+  "results": {
+    "lookback_256": {"mean_score": 10399.6875, "median_score": 10440, "best_score": 10480, "stage_2_games": 0, "below_9000": 1, "at_10480": 3},
+    "lookback_128_control": {"mean_score": 10291.796875, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 9, "at_10480": 24},
+    "parent": {"mean_score": 10416.484375, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 2, "at_10480": 55}
+  },
+  "paired_vs_parent": {
+    "lookback_256": {"improved": 29, "worsened": 88, "tied": 11, "mean_delta": -16.796875},
+    "lookback_128_control": {"improved": 38, "worsened": 67, "tied": 23, "mean_delta": -124.6875}
+  },
+  "paired_256_vs_128": {"improved": 43, "worsened": 65, "tied": 20, "mean_delta": 107.890625},
+  "conclusion": "neither continuation passed stage one or improved the common parent's mean on fresh games; no replacement of confirmed parent or verified global best"
+}

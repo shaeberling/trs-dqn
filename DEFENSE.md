@@ -7858,3 +7858,19 @@ at 8,538,880 actions, retain four full-boot workers, and are scheduled for
 collector sources are isolated; only a native-verified higher-ranked replay
 can replace the global best. This is a training-reset comparison, not
 collision localization, a hand-coded path, or evidence of stage passage.
+
+The [longer own-loss rewind](results/defense/training/ppo-early-loss-114/README.md)
+and [same-parent control](results/defense/training/ppo-early-loss-control-115/README.md)
+have now both completed 524,288 new actions. Fixed ten-game means were
+**10,385 / 10,193 / 10,292 / 10,429** for the 256-decision rewind and
+**10,430 / 9,708 / 10,229 / 10,081** for the 128-decision control; every
+game remained in stage one. Their validation-selected checkpoints were
+then evaluated on **128 new matched complete games** alongside their
+confirmed common parent. Fresh means were **10,399.69 / 10,291.80 /
+10,416.48** for longer/control/parent, respectively. All 384 fresh games
+lost in stage one. The longer rewind reduced sub-9,000 scores to one
+versus two in the parent, but worsened 88 of 128 paired games and was
+16.80 mean points lower. The control had nine sub-9,000 games. These are
+preserved negative barrier results, not a new confirmed score parent.
+The selected models' fresh-best replay traces each passed independent
+neural-action verification; the globally ranked best replay is unchanged.
