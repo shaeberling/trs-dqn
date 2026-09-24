@@ -1,0 +1,23 @@
+{
+  "selection_rule": "highest fixed ten-game mean; earliest exact tie",
+  "selected_checkpoint": "run/step-000001179648",
+  "selected_fixed_mean_score": 10480,
+  "fresh_seed_first": 604000,
+  "fresh_seed_last": 604127,
+  "fresh_games_per_policy": 128,
+  "selected_mean_score": 10402.421875,
+  "run_121_parent_mean_score": 10475.859375,
+  "selected_minus_parent": -73.4375,
+  "selected_vs_parent_paired_wins": 24,
+  "selected_vs_parent_paired_losses": 14,
+  "selected_vs_parent_ties": 90,
+  "selected_exact_10480": 114,
+  "parent_exact_10480": 103,
+  "selected_below_9000": 3,
+  "parent_below_9000": 0,
+  "selected_stage_2_games": 0,
+  "parent_stage_2_games": 0,
+  "selected_mission_games": 0,
+  "parent_mission_games": 0,
+  "decision": "screen-diverse own-loss resets did not cross the barrier; lower fresh mean from severe low-score tails; do not promote"
+}

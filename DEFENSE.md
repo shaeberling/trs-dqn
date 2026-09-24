@@ -8177,3 +8177,20 @@ whether broader approaches to the repeated obstacle are needed before
 score-only learning can see new return. Cells select only previously
 reached training reset states; they do not enter the policy or reward.
 Fixed/fresh selection gates and actual-occupancy reporting are predeclared.
+
+Run 127 completed its planned **1,048,576** actions and eight ten-game
+checks (fixed means **10,480 / 10,462 / 10,222 / 10,194 / 10,440 /
+10,460 / 10,224 / 10,446**), all stage one. Its own-loss archive
+encountered **170 distinct screen cells** and every worker's latest
+inventory filled all **128** slots, confirming a broader reset population.
+Nevertheless, the selected first checkpoint's [128 fresh matched games](results/defense/training/ppo-screen-frontier-127/comparison.json)
+averaged **10,402.42** versus **10,475.86** for the run-121 parent; all
+**256** games still lost in stage one. The new policy won more individual
+seed comparisons than it lost, but severe low-score tails lowered its
+mean, so it is not a confirmed score parent. Its
+[verified local replay](results/defense/training/ppo-screen-frontier-127/fresh-selected-replay/replay.html)
+again lost four 2,620-point lives at the same obstacle, with zero sampled
+continuation choices among 2,563 decisions. The
+[full run](results/defense/training/ppo-screen-frontier-127/README.md)
+and [loss sheets](results/defense/diagnostics/screen-frontier-127-losses/README.md)
+are preserved, and the global best remains protected.
