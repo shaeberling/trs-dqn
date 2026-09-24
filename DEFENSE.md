@@ -232,6 +232,20 @@ the visible loss by one action at equal score. These were diagnostic
 counterfactuals only, never policy actions, rewards or demonstrations;
 the frozen learned checkpoints and best replay are unchanged.
 
+The [third-phase follow-up](results/defense/diagnostics/three-phase-grid-150/README.md)
+expanded this bounded late correction family to **81,000** plans from
+each of the same two verified anchors. All **162,000** full candidates
+were executed in the original emulator, with complete outcomes and source
+hashes preserved. None exceeded the source's **2,620** first-life points,
+reached stage two, survived the 512-action horizon, or even extended
+same-score survival. The recorded screen at action 339 visibly shows a
+near lower opening at columns **21–30**, the ship near column **23**,
+and the next upper opening at **51–62**; by action 387 the ship is
+still near **25** as the latter wall approaches. This motivates an
+*earlier screen-conditioned anticipation* experiment rather than more
+late fixed-action substitutions. It is diagnostic evidence only, not a
+learned escape route; no searched action entered training or promotion.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
