@@ -1,0 +1,25 @@
+{
+  "screen_corpus": "results/defense/training/ppo-continue-121/fresh-confirm-selected-replay/trace.npz",
+  "screen_corpus_sha256": "0c620358c261829a49c586184d3a17eedc6c7946f59e0da20a185df91415ccea",
+  "window_definition": "Four actual 64-decision windows ending at the first major white flash before each visible life loss in the verified run-121 replay; screen stacks use the four recorded raw video frames immediately preceding each decision.",
+  "expected_continue_choices_per_64_action_window": {
+    "untrained_plus9": [11.89, 9.37, 12.20, 13.16],
+    "trained_plus9_selected": [0.74, 1.65, 0.68, 0.47],
+    "trained_plus7_predecessor": [0.68, 3.01, 0.64, 0.93]
+  },
+  "mean_expected_choices_per_window": {
+    "untrained_plus9": 11.65,
+    "trained_plus9_selected": 0.89,
+    "trained_plus7_predecessor": 1.31
+  },
+  "model_sha256": {
+    "untrained_plus9": "44c540252a71018e15f00665cc969df0a28c7240ad74f7b8e1f9d50857d9ac55",
+    "trained_plus9_selected": "b08bbd836fa1bd8bedc750adec41264d76da2386b998019f70f02c73caeb2c90",
+    "trained_plus7_predecessor": "05a06fc017cdcda1c3df475de0b6cd127a68b863edbe255597e2bc16bb8dd16e"
+  },
+  "method": "Load each frozen 21-action screen network, compute softmax probability of the learned CONTINUE_PREVIOUS choice on identical verified four-frame inputs, and sum those probabilities separately over each window. No sampled actions, rewards, parameters, or training data are changed.",
+  "interpretation": "PPO strongly lowered continuation propensity near the repeated loss on identical visible inputs. The actual selected replay also used continuation only 4/3/1/5 times in its own pre-flash windows. This supports learned suppression rather than merely a different sampled trajectory, but does not prove which gradient terms caused it or that continuation could solve the obstacle.",
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "promotion_eligible": false
+}

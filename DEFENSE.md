@@ -8245,3 +8245,15 @@ flash approach windows, again losing at 2,620 points per life. Full model,
 optimizer, RNG, training logs, paired results and verified local replays
 are preserved. This stronger bias is not a successor and cannot replace
 the globally protected best replay.
+
+A [same-screen frozen-logit comparison](results/defense/diagnostics/continue-suppression-132/README.md)
+then isolated that action-use change from differing replay trajectories.
+On the same four verified pre-flash 64-action windows, the untrained +9
+initializer assigned an average **11.65** expected continuation choices
+per window; the selected trained +9 model assigned only **0.89**. The
+trained +7 model assigned **1.31**. This is direct evidence of learned
+continuation suppression on those visible inputs, not a claim about its
+cause or about whether any particular held direction would pass the gap.
+Repeating neutral-bias calibration alone is not the next justified step;
+a genuinely different learned temporal-control and credit-assignment
+mechanism must be tested against the same complete-game stage gate.
