@@ -1,0 +1,31 @@
+{
+  "diagnostic_only": true,
+  "selection": "highest mean displayed score on four fixed ten-game complete unperturbed evaluations before fresh games",
+  "selected_checkpoint": "milestone-000008801024/model.safetensors",
+  "parent_checkpoint": "../ppo-canonical-control-113/milestone-000008538880/model.safetensors",
+  "ordinary_control_checkpoint": "../ppo-early-loss-control-115/milestone-000008669952/model.safetensors",
+  "first_fresh_seeds": [601000, 601127],
+  "confirmation_seeds_predeclared_before_use": [601200, 601327],
+  "complete_games_per_policy_per_set": 128,
+  "first_set": {
+    "selected": {"mean_score": 10365.703125, "median_score": 10480, "best_score": 10480, "stage_2_games": 0, "below_9000": 5, "at_10480": 78},
+    "parent": {"mean_score": 10344.765625, "median_score": 10480, "best_score": 10480, "stage_2_games": 0, "below_9000": 7, "at_10480": 66},
+    "ordinary_control": {"mean_score": 10345.9375, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 7, "at_10480": 26},
+    "selected_vs_parent": {"mean_delta": 20.9375, "improved": 47, "worsened": 38, "tied": 43, "paired_median": 0, "symmetric_10_percent_trimmed_mean": 0.39215686274509803}
+  },
+  "confirmation_set": {
+    "selected": {"mean_score": 10386.015625, "median_score": 10480, "best_score": 10480, "stage_2_games": 0, "below_9000": 3, "at_10480": 76},
+    "parent": {"mean_score": 10418.28125, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 2, "at_10480": 61},
+    "selected_vs_parent": {"mean_delta": -32.265625, "improved": 48, "worsened": 39, "tied": 41, "paired_median": 0}
+  },
+  "combined_256_per_policy": {
+    "selected_mean_score": 10375.859375,
+    "parent_mean_score": 10381.5234375,
+    "selected_minus_parent": -5.6640625,
+    "selected_vs_parent": {"improved": 95, "worsened": 77, "tied": 84},
+    "below_9000": {"selected": 8, "parent": 9},
+    "at_10480": {"selected": 154, "parent": 127},
+    "stage_2_games": 0
+  },
+  "conclusion": "score-ceiling frequency improved, but mean gain reversed on predeclared confirmation and all 512 selected/parent games remained in stage one; no confirmed successor or barrier passage"
+}
