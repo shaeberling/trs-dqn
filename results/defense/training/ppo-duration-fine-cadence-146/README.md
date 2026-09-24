@@ -78,3 +78,51 @@ regression. It does **not** prove fine cadence will learn passage.
 The predeclared ≥9,000 condition is met, so the bounded score-only
 training adaptation is warranted. These diagnostic override records
 are evaluation-only and cannot promote a best replay.
+
+## Trained short gate and full-stage continuation
+
+The [bounded 131,072-action adaptation](gate/) resumed the source's
+full model/Adam/policy RNG at absolute counter 1,179,648 with the planned
+50,000/2 timing, doubled 512-action rollout and 256-action own-loss
+rewind, and square-root-adjusted score discount/GAE lambda. It stopped
+normally at **1,310,720** actions. Its ten noise-free fixed complete
+games averaged **10,476**, median 10,480 and best 10,480, all stage one.
+The local [10,480-point replay](gate/artifacts/best/replay.html) was
+independently reproduced from original boot for all **5,069** selected
+neural actions at 50,000 T states and observation stride 2. Full weights,
+optimizer, RNG and training log are archived; neither this replay nor
+the frozen timing overrides replace the protected global best.
+
+The ≥5,000 no-collapse gate is met. Before extending, freeze this exact
+checkpoint and continue for **393,216** more base actions to absolute
+counter **1,703,936**, making **524,288 new fine-cadence actions** in
+all. Preserve full model/optimizer/RNG milestones at **1,441,792 /
+1,572,864 / 1,703,936**, with ten complete fixed games on seeds
+10000–10009 every 131,072 actions. A standard resume restarts emulator
+episodes from boot and refills the own-state archive; it restores learner
+weights, optimizer and policy RNG. Stop early only if two consecutive
+fixed means fall below 5,000; archive any collapse. Select the earliest
+highest-stage checkpoint, breaking ties by fixed-game mean across the
+short gate and full continuation. Stage two or a mission requires exact
+native reexecution from boot at 50,000/2, then fresh complete-game
+confirmation before global promotion.
+
+If all remain stage one, only a selected fixed mean at least **10,450**
+triggers **64 new matched complete games** on seeds 608400–608463.
+Compare the frozen selected trained checkpoint against the unmodified
+option-credit source **at the same 50,000/2 timing**, and report the
+source's native 100,000/1 result as context if measured. A score-only
+improvement must have no worse sub-9,000 tail and survive a separate
+fresh confirmation before becoming a *score-training* parent. It still
+cannot count as stage passage or replace the protected best replay.
+Keep all source/selection hashes and full-game records. No wall/gap
+parser, hidden course index, hand-coded steering, demonstration or
+reward other than displayed score enters learning.
+
+```sh
+venv/bin/python -u -m rl.defense_train \
+  --run runs/defense-duration-fine-cadence-146-full \
+  --artifacts runs/defense-duration-fine-cadence-146-full/artifacts \
+  --resume results/defense/training/ppo-duration-fine-cadence-146/gate/step-000001310720 \
+  --steps 1703936 --eval-every 131072 --eval-games 10 --eval-envs 10
+```

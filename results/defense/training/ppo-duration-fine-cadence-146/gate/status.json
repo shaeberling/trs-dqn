@@ -1,0 +1,10 @@
+{
+  "wall_seconds": 99.69,
+  "event": "stopped",
+  "steps": 1310720,
+  "stop_requested": false,
+  "pid": 3761,
+  "training_steps": 1310720,
+  "episodes": 5068,
+  "updated_unix": 1790251352.5996008
+}
