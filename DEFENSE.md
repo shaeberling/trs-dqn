@@ -7927,3 +7927,13 @@ score or barrier passage. All training/validation/fresh games stayed in
 stage one; full histories and neural-verified fresh replays are preserved.
 The strongest independently confirmed score parent and global verified
 best replay remain unchanged.
+
+A [longer continuation](results/defense/training/ppo-persistent-noise-long-119/README.md)
+now resumes that noise trial's **full 8,801,024-action optimizer, policy RNG
+and per-life noise RNG** from its validation score peak, rather than claiming
+the borderline fresh score result as a new parent. It retains all screen-only,
+displayed-score-only and own-loss training settings for **2,097,152 more
+actions** and 16 planned unperturbed complete-game checks. A frozen
+validation-selected checkpoint will then face 128 new matched games. The
+single collector watches **112** sources and keeps the native-verified best
+replay available independently of this exploratory run.
