@@ -1,0 +1,23 @@
+{
+  "selection_rule": "highest fixed ten-game mean; earliest exact tie",
+  "selected_checkpoint": "run/step-000001966080",
+  "selected_fixed_mean_score": 10480,
+  "fresh_seed_first": 603600,
+  "fresh_seed_last": 603727,
+  "fresh_games_per_policy": 128,
+  "selected_mean_score": 10366.015625,
+  "run_121_parent_mean_score": 10470.234375,
+  "selected_minus_run_121": -104.21875,
+  "selected_vs_parent_paired_wins": 18,
+  "selected_vs_parent_paired_losses": 37,
+  "selected_vs_parent_ties": 73,
+  "selected_exact_10480": 88,
+  "parent_exact_10480": 104,
+  "selected_below_9000": 4,
+  "parent_below_9000": 0,
+  "selected_stage_2_games": 0,
+  "parent_stage_2_games": 0,
+  "selected_mission_games": 0,
+  "parent_mission_games": 0,
+  "decision": "more complete boot training did not cross the barrier and regressed on untouched games; do not promote"
+}

@@ -8110,3 +8110,17 @@ four to twelve reserved boot workers, leaving four self-restoring workers.
 This tests whether more complete approaches improve exploration of the
 recurring barrier; it does not change model inputs, reward, actions or native
 evaluation. The bounded gate and independent comparison are predeclared.
+
+Run 125 completed all **1,048,576** planned actions, adding **305** full
+boot games and **1,331** own-restored segments. Its fixed ten-game means
+were **10,405 / 10,432 / 10,245 / 10,472 / 10,444 / 10,466 / 10,480 /
+10,456**, all stage one. The seventh checkpoint's perfect fixed mean did
+not generalize: [128 fresh matched games](results/defense/training/ppo-boot-diversity-125/comparison.json)
+averaged **10,366.02** against **10,470.23** for the confirmed parent, with
+18 paired wins, 37 losses and 73 ties. No fresh game reached stage two.
+Its [verified local replay](results/defense/training/ppo-boot-diversity-125/fresh-selected-replay/replay.html)
+again lost four 2,620-point lives at the recurring obstacle. The
+[read-only loss sheets](results/defense/diagnostics/boot-diversity-125-losses/README.md)
+show only 1/2/0/1 learned continuation choices in the four 64-action
+pre-loss windows. The [full negative run](results/defense/training/ppo-boot-diversity-125/README.md)
+is archived; the run-121 score parent and global best remain unchanged.
