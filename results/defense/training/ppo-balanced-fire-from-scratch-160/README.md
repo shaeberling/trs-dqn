@@ -192,3 +192,26 @@ The one-shot monitor was launched while the treatment was live at about
 `runs/defense-ppo-balanced-fire-160/followup-status.json`. Its command is
 `venv/bin/python -u -m rl.defense_balanced_followup`. The trainer and
 original exact-run disk watchdog remain separate live processes.
+
+## Seventh checkpoint: fresh score learning finally emerges
+
+The fifth and sixth fixed ten-game checks at **5,246,976 / 6,295,552**
+actions averaged **562 / 512**, with all games in stage one. Between the
+sixth and seventh checkpoints, the last 100 complete own-training games
+rose from roughly 500 points to over 8,000 mean. These episodes can span
+weight updates, so their scores are learning signals, not frozen-policy
+validation or replay candidates.
+
+The immutable [seventh checkpoint](milestone-000007344128/state.json) at
+**7,344,128** actions then averaged **8,434**, median **9,170**, best
+**10,220** over the ten complete original-boot fixed seeds 10000–10009.
+All ten remained in stage one; no successful mission was observed. The
+[10,220-point replay](milestone-replay-000007344128/replay.html) for seed
+10002 was independently reexecuted for all **2,487** frozen-neural actions
+with `verified: true`. Its checkpoint SHA-256 is
+`5fd070f2372089901c935b4baa560bc99b4713c95a4e4c08c902bf57d1abc377`.
+The complete model/optimizer/RNG/evaluation and dereferenced verified
+replay bundle were copied into this archive and compared byte-for-byte
+with the live originals. Training continues to its target; this result
+does not replace the protected 10,480-point global best or imply passage
+of the stage-one barrier.
