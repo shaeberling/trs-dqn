@@ -79,6 +79,8 @@ def main():
     parser.add_argument("--gae-lambda", type=float, default=.95)
     parser.add_argument("--reward-scale", type=float, default=.01,
                         help="constant units conversion; no shaping or clipping")
+    parser.add_argument("--novelty-beta", type=float, default=0.,
+                        help="training-only first visit to a HUD-free visible-screen cell per life; 0 disables")
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False,
                         help="add Enter as a learned action; never automatically skip an intro")
@@ -158,6 +160,8 @@ def main():
             parser.error("Changing learned-duration profile requires fresh initialization")
         if args.duration_explore_mix != config.get("duration_explore_mix", 0.):
             parser.error("Changing the duration behavior mixture on resume is invalid")
+        if ("novelty_beta" in config and args.novelty_beta != config["novelty_beta"]):
+            parser.error("Changing an established novelty reward on optimizer resume is invalid")
         if args.duration_initial_logit_spacing != config.get("duration_initial_logit_spacing", 2.):
             parser.error("Changing duration initialization spacing requires fresh initialization")
         if args.appended_longest_logit_offset != config.get("appended_longest_logit_offset", -2.):
@@ -232,6 +236,9 @@ def main():
             or (args.duration_explore_mix and (len(args.learned_durations) < 2
                                                   or args.spatial_residual))):
         parser.error("duration-explore-mix requires ordinary learned durations and a fraction in [0,1)")
+    if (not np.isfinite(args.novelty_beta) or not 0 <= args.novelty_beta <= .5
+            or (args.novelty_beta and args.sil_updates)):
+        parser.error("novelty-beta must be in [0,0.5] and cannot be combined with SIL")
     if (not np.isfinite(args.duration_initial_logit_spacing)
             or not 0 <= args.duration_initial_logit_spacing <= 20
             or (not args.learned_durations and args.duration_initial_logit_spacing != 2.)):
@@ -445,6 +452,14 @@ def main():
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
+    if args.novelty_beta:
+        from .defense_cells import CELL_ENCODING
+        config.update(reward=("visible score difference times reward scale plus training-only "
+                              "first-visit HUD-free screen-cell bonus per visible life"),
+                      novelty_encoding=CELL_ENCODING,
+                      novelty_source_sha256=sha256(Path(__file__).with_name("defense_novelty.py")),
+                      novelty_cells_source_sha256=sha256(Path(__file__).with_name("defense_cells.py")),
+                      evaluation_reward="original displayed score only; no novelty bonus or shaping")
     if args.repeat_previous_action:
         from .defense_repeat_previous import POLICY_ACTION_NAMES, RepeatPreviousActions, RepeatPreviousPolicy
         config.update(policy_action_names=list(POLICY_ACTION_NAMES),
@@ -585,6 +600,11 @@ def main():
                             max_steps=args.max_episode_steps, allow_enter=args.allow_enter,
                             observation_stride=args.observation_stride, **curriculum)
         obs = workers.observations
+        if args.novelty_beta:
+            from .defense_novelty import LifeScreenNovelty
+            novelty = LifeScreenNovelty(obs, args.novelty_beta)
+        else:
+            novelty = None
         repeat_actions = RepeatPreviousActions(args.envs) if args.repeat_previous_action else None
         if args.learned_durations:
             from .defense_repeat import RepeatedActions
@@ -629,6 +649,8 @@ def main():
                 for worker, result in enumerate(workers.step(physical_actions)):
                     frame, reward, terminal, truncated, info, reset = result
                     reward *= args.reward_scale
+                    if novelty is not None:
+                        reward += novelty.step(worker, frame, life_lost=info["life_lost"], reset=reset)
                     learning_terminal = terminal or (args.life_terminal and info["life_lost"])
                     if noise is not None:
                         noise_boundaries[worker] = terminal or truncated or info["life_lost"]
@@ -764,6 +786,7 @@ def main():
                              mean_new_score=float(np.mean(recent_restored)) if recent_restored else None),
                          steps_per_second=(steps-start_steps)/(time.monotonic()-started),
                          recent={k: v for k, v in recent_summary.items() if k != "games"},
+                         **({"novelty": novelty.metrics()} if novelty is not None else {}),
                          actor_loss=float(np.mean(metrics, axis=0)[0]),
                          value_loss=float(np.mean(metrics, axis=0)[1]),
                          entropy=float(np.mean(metrics, axis=0)[2]),

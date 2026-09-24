@@ -5,7 +5,19 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
-Status: **Defense training has resumed after the user freed disk space**
+Current status: the [visible-screen novelty experiment](results/defense/training/ppo-life-novelty-154/README.md)
+tested a new, explicitly training-only auxiliary reward against a matched
+score-only control, each for 262,144 new actions from the same PPO parent.
+The novelty arm preserved strong fixed-seed score play but averaged
+**10,348** on 64 untouched complete games versus **10,388** control and
+**10,435** frozen parent; all 192 fresh games stayed in stage one. The
+reward often marked ordinary moving screens as new, so this coarse signal
+did not distinguish the required passage. Neither model was promoted; the
+protected 10,480-point replay remains available. The full **517-test**
+regression suite passes, and full states/replays are archived. Original
+game completion remains unverified.
+
+Historical status: **Defense training resumed after the user freed disk space**
 (23 GiB available at restart). The full **414-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
 The latest [learned key-duration PPO investigation](results/defense/training/ppo-duration-133/README.md)
