@@ -8051,3 +8051,33 @@ movement choices occupied 70–84% of those windows, but that did not move
 the policy beyond the obstacle. This rules out the simple explanation that
 the option was *never* tried; it does not identify the exact fatal action
 or prove that a learned action-duration mechanism could never work.
+
+A [symmetric key-factor PPO exploration trial](results/defense/training/ppo-key-noise-123/README.md)
+now tests a different failure hypothesis: independent per-command noise may
+not produce coherent directional trials even when the screen policy knows
+physical key combinations. Training-only zero-mean factors for each known
+key make related commands fluctuate together, with left/right treated
+identically; the frozen model and replay use no such noise. This is not a
+hard-coded direction or route, and score-only reward and original episode
+boundaries remain unchanged. A tiny optimizer-resume smoke passed, including
+a native-verified 2,552-action stage-one replay. The bounded full pilot's
+checkpoint and fresh-comparison gates are fixed in its README.
+
+Run 123 completed all **1,048,576** planned additional actions with
+training-only symmetric key-factor noise. Its fixed ten-game means were
+**10,466 / 10,470 / 9,574 / 10,478 / 10,468 / 10,400 / 10,476 /
+10,232**; the fourth full optimizer/RNG checkpoint was selected. No
+training or validation game entered stage two. On [128 new matched games](results/defense/training/ppo-key-noise-123/comparison.json),
+selected / confirmed run-121 parent / older ordinary parent averaged
+**10,473.67 / 10,470.23 / 10,449.30**, all stage one. The selected
+policy's +3.44-point margin over its actual score parent had 17 paired
+wins and 18 losses, so it is not promoted as a new score parent. Its
+[native-verified local replay](results/defense/training/ppo-key-noise-123/fresh-selected-replay/replay.html)
+and complete [run archive](results/defense/training/ppo-key-noise-123/README.md)
+are preserved; the shared best remains untouched.
+
+The [read-only loss sheets](results/defense/diagnostics/key-noise-123-losses/README.md)
+again show four 2,620-point lives near the broad right-opening barrier.
+Byte-exact re-execution of the selected replay found **zero** frozen-policy
+`CONTINUE_PREVIOUS` choices among 2,528 decisions, including all pre-loss
+windows. Coherent training noise did not become a learned escape behavior.
