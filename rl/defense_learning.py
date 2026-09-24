@@ -46,6 +46,14 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
     from .recurrent_policy import RECURRENT_ARCHITECTURE
     architecture = config.get("architecture")
+    if config.get("repeat_previous_action"):
+        from .defense_repeat_previous import POLICY_ACTION_NAMES
+        if (algorithm != "ppo" or architecture is not None or config.get("canonical_fire")
+                or config.get("allow_enter", False)
+                or config.get("policy_action_names") != list(POLICY_ACTION_NAMES)):
+            raise ValueError("Invalid own-previous-action policy profile")
+        return ("learned categorical with own-previous-key continuation, sampled" if temperature == 1 else
+                "learned categorical with own-previous-key continuation, temperature-scaled")
     if config.get("canonical_fire") and (algorithm != "ppo" or architecture is not None
                                          or config.get("allow_enter", False)):
         raise ValueError("Canonical fire requires standard feedforward Defense PPO")
@@ -168,7 +176,7 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         from .defense_quantile import QuantileQ
         model = QuantileQ(len(names), config["quantiles"])
     else:
-        model = QNetwork(action_count=len(names))
+        model = QNetwork(action_count=len(names) + int(config.get("repeat_previous_action", False)))
     model.load_weights(str(checkpoint))
     mx.eval(model.state)
     if config.get('algorithm') == ARS_ALGORITHM:
@@ -196,7 +204,11 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
     if config.get('canonical_fire'):
         from .defense_canonical_fire import CanonicalFirePolicy
         return CanonicalFirePolicy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
-    return temperature_policy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
+    policy = temperature_policy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature)
+    if config.get("repeat_previous_action"):
+        from .defense_repeat_previous import RepeatPreviousPolicy
+        policy = RepeatPreviousPolicy(policy)
+    return policy, config
 
 
 def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
