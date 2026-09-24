@@ -22,6 +22,7 @@ the sole independent collector replays it before promotion. Otherwise the
 global verified best remains untouched.
 
 At the predeclared endpoint, select a checkpoint by fixed ten-game mean,
+breaking any exact tie in favor of the earliest checkpoint,
 then independently compare it with the frozen parent on 128 new matched
 complete games, seeds 601400–601527. Score gains alone will not count as
 barrier passage. The full optimizer/RNG and local replays will be archived
@@ -43,6 +44,10 @@ is preserved after 917,504 new actions. Its ten fixed complete games
 averaged **10,470**, median/best **10,480**, all stage one: a new
 validation-score leader by two points, but no native passage or fresh
 confirmation. The remaining nine checks continue as planned.
+
+The eleventh check at counter 10,242,816 tied the seventh check's **10,470**
+fixed-game mean; all ten games again ended in stage one. The earlier saved
+checkpoint remains provisional under the tie rule above.
 
 ```bash
 venv/bin/python -u -m rl.defense_train \
