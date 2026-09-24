@@ -31,6 +31,35 @@ averaged **9,949**, median **10,435**, best **10,480**; all stayed in stage
 one. This small reused-seed check is not a reason to promote the checkpoint
 or end the planned continuation.
 
+The full 524,288-action run finished cleanly, with **63 boot games and
+4,203 restored practice segments**. Its four fixed ten-game means were
+**9,949 / 9,729 / 10,346 / 9,680**, with no stage-two game. The third
+[full optimizer/RNG checkpoint](run/step-000008932096/state.json) was
+selected by those fixed games before testing fresh seeds. The complete
+checkpoint, log and verified local replay history is preserved in [run/](run/).
+The substantially larger number of short restored segments confirms that
+the closer reset changed practice allocation, not that it taught passage.
+
+On [128 new matched complete games](fresh-selected-128.json), seeds
+600800–600927, the frozen selected model averaged **9,764.30**, median
+**10,360**, best **10,480**; all were stage-one losses. The
+[common parent](fresh-parent-128.json) averaged **10,398.91**, and the
+[ordinary 128-decision control](fresh-control-128.json) averaged
+**10,377.27**. Against the parent, near-loss practice improved **24**
+paired games, worsened **92**, and tied **12**. It produced **30** scores
+below 9,000 versus **four** for the parent, a **-634.61** mean difference.
+The [longer-credit arm](../ppo-long-credit-117/fresh-selected-128.json)
+averaged **10,121.80** on the same seeds; all 512 combined fresh games
+stayed in stage one. Near-loss practice is not a confirmed successor and
+did not break the repeated barrier.
+
+The selected policy's [fresh best replay](fresh-selected-replay/replay.html)
+independently verifies **2,581 neural actions**. Separately verified
+[parent](fresh-parent-replay/replay.html) and
+[ordinary-control](fresh-control-replay/replay.html) fresh best efforts
+are kept for comparison. These are not mission wins. The globally ranked
+best replay remains unchanged.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-near-loss-116 \

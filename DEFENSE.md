@@ -7886,3 +7886,19 @@ advantages within a rollout. Both resume the confirmed control-113 model,
 optimizer and RNG, with 524,288 new actions planned. The completed run-115
 is their matched ordinary continuation. The independent collector now
 watches **110** sources; the verified global best remains protected.
+
+Both trials completed their predeclared 524,288 new actions and four fixed
+ten-game checks. The 64-decision own-loss arm's fixed means were **9,949 /
+9,729 / 10,346 / 9,680**; the longer-credit arm's were **7,888 / 9,445 /
+10,152 / 10,402**. Every training and validation game stayed in stage one.
+After validation-only checkpoint selection, [128 new matched complete games](results/defense/training/ppo-near-loss-116/comparison.json)
+on seeds 600800–600927 produced parent / ordinary control / near-loss /
+long-credit means **10,398.91 / 10,377.27 / 9,764.30 / 10,121.80**.
+All **512 fresh games** remained in stage one. The closer reset yielded
+4,203 short restored practice segments but 30 sub-9,000 fresh games versus
+four for the parent; longer credit had 14. Neither is a confirmed successor.
+Full model/optimizer/RNG histories and independently verified fresh-best
+replays are archived in [run 116](results/defense/training/ppo-near-loss-116/README.md)
+and [run 117](results/defense/training/ppo-long-credit-117/README.md).
+The repeated visible navigation bottleneck and global verified best remain
+unchanged.
