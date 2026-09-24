@@ -7985,3 +7985,37 @@ independently verifies 2,539 learned actions, but cannot displace the older
 global best. Full optimizer/RNG, metrics, source and all four checkpoints are
 preserved in the [run archive](results/defense/training/ppo-wide-history-120/README.md).
 The recurring barrier remains unsolved; wider history alone was not a win.
+
+A distinct [learned-continuation PPO pilot](results/defense/training/ppo-continue-121/README.md)
+now tests whether the policy can sustain its *own* previous key across
+ordinary action intervals. The twenty established actor rows and value/
+screen encoder transfer unchanged from the run-119 score parent; a neutral
+twenty-first `CONTINUE_PREVIOUS` row is learned with fresh PPO optimizer and
+score-only experience. The one-key memory resets at visible life/episode
+boundaries. The model never receives an obstacle detector, route script,
+hidden RAM, demonstrated actions or stage-based reward. This is not the
+earlier DQN multi-step hold experiment; every step remains a learned
+decision. No-learning and one-update native smokes passed, including a
+2,537-action independently verified local replay. The predeclared million-
+action pilot and independent score/mission gates are in its README.
+
+Run 121 finished all **1,048,576** planned actions and eight complete
+ten-game checks. The fixed means were **10,148 / 10,426 / 10,388 / 10,450 /
+10,114 / 10,314 / 10,328 / 10,472**; the final full state was selected.
+Two predeclared, independent [128-game matched sets](results/defense/training/ppo-continue-121/comparison.json)
+confirm a **+26.48-point score-consistency gain** over the run-119 parent
+across 256 games per policy, with 114 paired wins, 29 losses and 113 ties.
+The new model scored exactly 10,480 on 202/256 games versus 119/256 for
+the parent. Nevertheless all **512** fresh games stayed in stage one.
+The full run, source, optimizer/RNG states and native-verified local replays
+are [preserved](results/defense/training/ppo-continue-121/README.md), while
+the shared best remains the older equal-ranked 10,480-point replay.
+
+The [new loss-screen diagnostic](results/defense/diagnostics/continue-121-losses/README.md)
+again finds four 2,620-point lives near the same right-opening barrier. A
+read-only re-execution matching every recorded screen/action/reward found
+just **one** `CONTINUE_PREVIOUS` choice among 2,551 neural decisions and
+none in the four pre-loss 64-action windows. Thus the score gain does not
+demonstrate learned persistence through the barrier. A longer identical
+run would not be a meaningful test of the proposed mechanism until the
+continuation action is actually explored.
