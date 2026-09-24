@@ -19,3 +19,23 @@ do not measure net displacement or identify the exact fatal action.
 No diagnostic frame or action entered training. The analysis changed no
 model input, reward, policy, evaluation or replay; the source trace and
 independent verification remain in the archived evaluation bundle.
+
+An additional [native counterfactual probe](held-keys-128.json) first
+replayed the selected model exactly to its own frame **279**, 128 decisions
+before the first visible life loss, captured the opaque emulator state, and
+reproduced the entire recorded suffix byte-for-byte. It then restored only
+that state and tried each of the original 20 physical commands held until
+the next visible boundary. The same procedure was repeated from
+[192](held-keys-192.json) and [64](held-keys-64.json) decisions before the
+loss. All 60 constant-key suffixes still lost a life in stage one.
+
+The timing matters: holding RIGHT from the 192-action anchor delayed visible
+loss to 49 actions versus 21 for held NOOP, and from the 128-action anchor
+to 79 versus 56. But from the 64-action anchor it lost after **31** actions
+versus **63** for NOOP. These are single-state counterfactual timings, not
+evidence that RIGHT is a route: from the earlier anchors, fixed RIGHT also
+earned far less score than the learned suffix. The physical outcome varies
+within the same life, so an entire-life direction preference may be too
+coarse. The probes are diagnostic interventions only; no generated action
+sequence was supplied to training, used as a demonstration, or promoted as
+learned play. They do not prove a passable path or identify collision time.
