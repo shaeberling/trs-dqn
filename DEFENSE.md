@@ -5,6 +5,16 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
+Two follow-up diagnostics closed control-profile and earlier-approach gaps.
+The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
+added both distinct stage-one side-fire combinations; **290,508** branches
+still capped at **2,620** points with no later stage. The
+[frame-200 beam](results/defense/diagnostics/screen-beam-early-159/README.md)
+tested **346,224** earlier screen-conditioned branches using all twelve
+distinct controls and again found no passage. These are bounded searches,
+not learned policies or proofs of impossibility; neither searched route
+entered training. The best verified learned model and replay remain intact.
+
 Latest diagnostic: the [screen-conditioned beam study](results/defense/diagnostics/screen-beam-157/README.md)
 tested **312,190** original-emulator branches from a verified learned
 first life, including an earlier frame-280 start, one-action timing and

@@ -76,6 +76,12 @@ and episode length secondary. A searched branch would still not be a
 learned policy or admissible demonstration. The protected best weights
 and verified replay are unchanged.
 
+Scope correction: the ten-command profile tested here covers ordinary
+movement and forward fire, but **omits stage-one side-fire commands 18 and
+19**, which are physically distinct. The following diagnostic tests that
+remaining action-profile possibility before treating this negative search
+as evidence about all physical controls.
+
 The full repository regression suite passed **525 tests** with native Mac
 access. Each run archives its exact executed `source.py`, config, complete
 selected-node ledger, and report; the later runs were made after the

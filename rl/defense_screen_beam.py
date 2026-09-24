@@ -34,6 +34,7 @@ HORIZON = ANCHOR+sum(SCHEDULE)
 EARLY_ANCHOR = 280
 EARLY_SCHEDULE = (4,)*10 + SCHEDULE
 COMMANDS = command_ids("effective-stage-one")
+SIDE_FIRE_COMMANDS = COMMANDS + (18, 19)
 SOURCE_LIFE_SCORE = 2620
 
 
@@ -146,13 +147,20 @@ def main():
     parser.add_argument("--seed", type=int, default=521)
     parser.add_argument("--early-anchor", action="store_true",
                         help="start at frame 280 with ten extra four-action layers")
+    parser.add_argument("--anchor", type=int, choices=(200, 280, 320),
+                        help="exact own-policy source frame; earlier frames add four-action layers")
     parser.add_argument("--fine-cadence", action="store_true",
                         help="one action per layer from frame 320 onward")
     parser.add_argument("--history-key", action="store_true",
                         help="deduplicate by visible cell and last action")
+    parser.add_argument("--side-fire", action="store_true",
+                        help="also branch on stage-one side-fire commands 18 and 19")
     args = parser.parse_args()
-    anchor = EARLY_ANCHOR if args.early_anchor else ANCHOR
-    schedule = ((4,)*10 if args.early_anchor else ()) + (
+    if args.early_anchor and args.anchor is not None:
+        parser.error("choose --early-anchor or --anchor, not both")
+    anchor = args.anchor if args.anchor is not None else EARLY_ANCHOR if args.early_anchor else ANCHOR
+    commands = SIDE_FIRE_COMMANDS if args.side_fire else COMMANDS
+    schedule = (4,)*((ANCHOR-anchor)//4) + (
         (1,)*(HORIZON-ANCHOR) if args.fine_cadence else SCHEDULE)
     if (args.output.exists() or not 1 <= args.beam <= 512
             or not 0 <= args.layers <= len(schedule) or args.seed < 0):
@@ -177,7 +185,8 @@ def main():
                   source_seed=metadata["result"]["seed"], anchor=anchor,
                   horizon=HORIZON, source_visible_loss=first_loss,
                   source_life_score=SOURCE_LIFE_SCORE, schedule=list(schedule),
-                  symmetric_commands=list(COMMANDS), beam=args.beam,
+                  symmetric_commands=list(commands), beam=args.beam,
+                  side_fire=args.side_fire,
                   requested_layers=args.layers or len(schedule), search_seed=args.seed,
                   cell_encoding=BOTTOM_DETAIL_ENCODING,
                   history_key=args.history_key, fine_cadence=args.fine_cadence,
@@ -227,7 +236,7 @@ def main():
                 children = []
                 alive_children, layer_deaths, layer_max_score = 0, 0, 0
                 for parent in beam:
-                    for command in COMMANDS:
+                    for command in commands:
                         obs = restore(env, parent.saved)
                         executed = 0
                         for _ in range(duration):
