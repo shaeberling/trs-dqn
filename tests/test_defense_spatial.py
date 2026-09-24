@@ -35,6 +35,51 @@ def own_duration_checkpoint(folder):
 
 
 class DefenseSpatialTests(unittest.TestCase):
+    def test_longest_duration_extension_copies_all_old_rows_without_key_bias(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            own_duration_checkpoint(tmp)
+            target = QNetwork(100)
+            transfer = initialize_duration_checkpoint(
+                target, tmp, (*DURATIONS, 128), tstates=100_000,
+                observation_stride=1, spatial=False, extend_longest=True)
+            source = mx.load(str(Path(tmp)/"model.safetensors"))
+            copied = dict(tree_flatten(target.parameters()))
+            for name, value in source.items():
+                got = np.array(copied[name])
+                old = np.array(value)
+                np.testing.assert_array_equal(got[:len(old)] if name.startswith("advantage.") else got,
+                                              old)
+            np.testing.assert_array_equal(
+                np.array(copied["advantage.weight"])[80:100],
+                np.array(source["advantage.weight"])[60:80])
+            np.testing.assert_array_equal(
+                np.array(copied["advantage.bias"])[80:100],
+                np.array(source["advantage.bias"])[60:80]-2.)
+            self.assertEqual(transfer["source_durations"], list(DURATIONS))
+            self.assertEqual(transfer["target_durations"], [1, 4, 16, 64, 128])
+            self.assertEqual(transfer["appended_logit_offset"], -2.)
+            self.assertFalse(transfer["trajectories_loaded"])
+            initialize_duration_checkpoint(
+                target, tmp, (*DURATIONS, 128), tstates=100_000,
+                observation_stride=1, spatial=False, extend_longest=True,
+                appended_logit_offset=0.)
+            np.testing.assert_array_equal(
+                np.array(target.advantage.bias)[80:100],
+                np.array(source["advantage.bias"])[60:80])
+            with self.assertRaises(ValueError):
+                initialize_duration_checkpoint(QNetwork(100), tmp, (1, 4, 16, 64, 128),
+                                               tstates=100_000, observation_stride=1,
+                                               spatial=False)
+            with self.assertRaises(ValueError):
+                initialize_duration_checkpoint(QNetwork(100), tmp, (1, 4, 16, 64, 128),
+                                               tstates=100_000, observation_stride=1,
+                                               spatial=True, extend_longest=True)
+            with self.assertRaises(ValueError):
+                initialize_duration_checkpoint(QNetwork(100), tmp, (1, 4, 16, 64, 128),
+                                               tstates=100_000, observation_stride=1,
+                                               spatial=False, extend_longest=True,
+                                               appended_logit_offset=True)
+
     def test_zero_gate_preserves_full_own_duration_policy_on_real_screens(self):
         with tempfile.TemporaryDirectory() as tmp:
             config = own_duration_checkpoint(tmp)

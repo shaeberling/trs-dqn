@@ -70,21 +70,35 @@ class SpatialDurationPPO(DurationPPO):
 
 
 def initialize_duration_checkpoint(model, checkpoint, durations, *, tstates,
-                                   observation_stride, spatial):
-    """Copy an own trained duration policy, with fresh Adam and policy RNG."""
+                                   observation_stride, spatial, extend_longest=False,
+                                   appended_logit_offset=-2.):
+    """Copy an own trained duration policy, optionally adding one neutral long hold."""
     checkpoint = Path(checkpoint)
     state_path, weights_path = checkpoint/"state.json", checkpoint/"model.safetensors"
     state_bytes, weights_bytes = state_path.read_bytes(), weights_path.read_bytes()
     config = json.loads(state_bytes)["config"]
     names = action_names(False)
+    source_durations = config.get("learned_durations")
+    if not isinstance(extend_longest, bool) or (extend_longest and spatial):
+        raise ValueError("longest-duration extension requires an ordinary duration target")
+    if (isinstance(appended_logit_offset, bool)
+            or not np.isfinite(appended_logit_offset) or not -4. <= appended_logit_offset <= 4.
+            or (not extend_longest and appended_logit_offset != -2.)):
+        raise ValueError("long-hold logit offset must be finite, in -4..4, and require extension")
+    if extend_longest:
+        if (not isinstance(source_durations, list) or len(durations) != len(source_durations)+1
+                or list(durations[:-1]) != source_durations
+                or durations[-1] <= source_durations[-1]):
+            raise ValueError("extended durations must append one longer hold to the own source")
+    elif source_durations != list(durations):
+        raise ValueError("own trained duration checkpoint has incompatible hold options")
     if (config.get("game") != "defense" or config.get("game_sha256") != GAME_SHA256
             or config.get("environment_version") != ENVIRONMENT_VERSION
             or config.get("algorithm") != "ppo" or config.get("architecture") is not None
             or config.get("allow_enter") or config.get("repeat_previous_action")
             or config.get("canonical_fire") or not config.get("life_terminal")
-            or config.get("learned_durations") != list(durations)
             or config.get("action_names") != list(names)
-            or config.get("policy_action_names") != list(duration_action_names(durations))
+            or config.get("policy_action_names") != list(duration_action_names(source_durations))
             or config.get("tstates") != tstates
             or config.get("observation_stride", 1) != observation_stride):
         raise ValueError("own trained duration checkpoint has incompatible screen/action protocol")
@@ -98,6 +112,15 @@ def initialize_duration_checkpoint(model, checkpoint, durations, *, tstates,
     copied = []
     for name, wanted in expected.items():
         value = source[name]
+        if extend_longest and name in ("advantage.weight", "advantage.bias"):
+            if (value.shape[0] != len(names)*len(source_durations)
+                    or wanted.shape[0] != len(names)*len(durations)
+                    or value.shape[1:] != wanted.shape[1:]):
+                raise ValueError("extended actor rows differ from own source")
+            final_rows = value[-len(names):]
+            if name == "advantage.bias":
+                final_rows = final_rows+float(appended_logit_offset)
+            value = mx.concatenate((value, final_rows), axis=0)
         if (value.shape != wanted.shape or value.dtype != wanted.dtype
                 or not bool(mx.all(mx.isfinite(value)).item())):
             raise ValueError("invalid own duration parameter: " + name)
@@ -107,8 +130,12 @@ def initialize_duration_checkpoint(model, checkpoint, durations, *, tstates,
     target.update(tree_unflatten(copied))
     mx.eval(model.state)
     return dict(method="own full trained key-duration policy; fresh optimizer and RNG; "
-                       + ("zero-output learned spatial residual" if spatial else "unchanged CNN control"),
+                       + ("zero-output learned spatial residual" if spatial else
+                          "uniformly penalized extra long option" if extend_longest else
+                          "unchanged CNN control"),
                 source_checkpoint=str(checkpoint),
+                source_durations=source_durations, target_durations=list(durations),
+                appended_logit_offset=float(appended_logit_offset) if extend_longest else None,
                 source_model_sha256=hashlib.sha256(weights_bytes).hexdigest(),
                 source_state_sha256=hashlib.sha256(state_bytes).hexdigest(),
                 source_training_steps=json.loads(state_bytes)["steps"],
