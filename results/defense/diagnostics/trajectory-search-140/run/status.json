@@ -1,0 +1,36 @@
+{
+  "completed": 20000,
+  "requested": 20000,
+  "distinct": 20001,
+  "best": {
+    "candidate": 2343,
+    "actions": 121,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false
+  },
+  "baseline": {
+    "actions": 119,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false,
+    "candidate": 0,
+    "plan_sha256": "0dbc7f6efb649571e4d0beaec2dc16f4774da4dc338d991b76f812fdbb58c03c"
+  },
+  "elite_size": 64,
+  "discovery": false,
+  "rng_state": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 225687115612246412625660932937151220604,
+      "inc": 295898182951938550628978921016297106669
+    },
+    "has_uint32": 1,
+    "uinteger": 831210687
+  },
+  "stop_requested": false
+}
