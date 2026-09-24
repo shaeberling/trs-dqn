@@ -25,6 +25,34 @@ def duration_action_names(durations, action_count=20):
     return tuple(f"{name}@{duration}" for duration in durations for name in names)
 
 
+def duration_mixture_log_probs_numpy(logits, duration_count, mix):
+    """Exact log probability of a key-marginal-preserving duration mixture."""
+    logits = np.asarray(logits)
+    if (logits.ndim != 2 or logits.shape[1] != 20*duration_count
+            or not 0 <= mix < 1 or not np.isfinite(mix)):
+        raise ValueError("invalid joint logits or duration mixture")
+    log_probs = logits-np.logaddexp.reduce(logits, axis=-1, keepdims=True)
+    if mix == 0:
+        return log_probs
+    joint = log_probs.reshape(len(logits), duration_count, 20)
+    key = np.logaddexp.reduce(joint, axis=1, keepdims=True)
+    return np.logaddexp(joint+np.log1p(-mix),
+                        key-np.log(duration_count)+np.log(mix)).reshape(logits.shape)
+
+
+def duration_mixture_log_probs_mlx(logits, duration_count, mix):
+    """Differentiable copy of the behavior distribution used by PPO."""
+    import mlx.core as mx
+
+    log_probs = logits-mx.logsumexp(logits, axis=-1, keepdims=True)
+    if mix == 0:
+        return log_probs
+    joint = log_probs.reshape(logits.shape[0], duration_count, 20)
+    key = mx.logsumexp(joint, axis=1, keepdims=True)
+    return mx.logaddexp(joint+np.log1p(-mix),
+                        key-np.log(duration_count)+np.log(mix)).reshape(logits.shape)
+
+
 def option_actor_gae(rewards, values, boundaries, starts, last_value, unfinished,
                      gamma, lam):
     """Semi-Markov score advantage at completed own option starts only.
@@ -80,6 +108,18 @@ def option_actor_gae(rewards, values, boundaries, starts, last_value, unfinished
 class DurationPPO(PPO):
     """PPO whose actor loss is evaluated only at real option decisions."""
 
+    def __init__(self, seed=17, learning_rate=2.5e-4, entropy=.01,
+                 reference_kl_weight=0, action_count=6, value_coefficient=.5,
+                 canonical_fire=False, duration_explore_mix=0.):
+        if (not np.isfinite(duration_explore_mix) or not 0 <= duration_explore_mix < 1
+                or (duration_explore_mix and (action_count < 40 or action_count % 20))):
+            raise ValueError("duration exploration mixture requires at least two full key-duration rows")
+        self.duration_explore_mix = float(duration_explore_mix)
+        super().__init__(seed=seed, learning_rate=learning_rate, entropy=entropy,
+                         reference_kl_weight=reference_kl_weight,
+                         action_count=action_count, value_coefficient=value_coefficient,
+                         canonical_fire=canonical_fire)
+
     def _loss(self, model, obs, actions, old_logp, advantages, returns, actor_mask,
               reference_log_probs=None, logit_bias=None, head_weight_noise=None):
         import mlx.core as mx
@@ -90,7 +130,8 @@ class DurationPPO(PPO):
             logits, values = model.policy_value(obs, head_weight_noise=head_weight_noise)
         if logit_bias is not None:
             logits = logits + mx.stop_gradient(logit_bias)
-        log_probs = logits-mx.logsumexp(logits, axis=-1, keepdims=True)
+        mix = getattr(self, "duration_explore_mix", 0.)
+        log_probs = duration_mixture_log_probs_mlx(logits, logits.shape[-1]//20, mix)
         logp = mx.take_along_axis(log_probs, actions[:, None], axis=-1)[:, 0]
         mask = actor_mask.astype(mx.float32)
         decision_count = mx.maximum(mx.sum(mask), 1.)
@@ -125,8 +166,30 @@ class DurationPPO(PPO):
         # Draws on forced steps are discarded; they are never executed or
         # assigned actor likelihood. This retains the standard vectorized
         # inference path and keeps all value predictions at base cadence.
-        actions, logp, values = super().act(obs, rng, logit_bias=logit_bias,
-                                            head_weight_noise=head_weight_noise)
+        mix = getattr(self, "duration_explore_mix", 0.)
+        if mix:
+            import mlx.core as mx
+
+            if head_weight_noise is not None:
+                expected = (len(obs), *self.model.advantage.weight.shape)
+                if head_weight_noise.shape != expected or not np.isfinite(head_weight_noise).all():
+                    raise ValueError("policy weight noise must match actor head and be finite")
+                logits, values = self.predict(mx.array(obs), head_weight_noise=mx.array(head_weight_noise))
+            else:
+                logits, values = self.predict(mx.array(obs))
+            logits, values = np.array(logits), np.array(values)
+            if logit_bias is not None:
+                if logit_bias.shape != logits.shape or not np.isfinite(logit_bias).all():
+                    raise ValueError("policy bias noise must match logits and be finite")
+                logits = logits+logit_bias
+            log_probs = duration_mixture_log_probs_numpy(logits, logits.shape[-1]//20, mix)
+            probs = np.exp(log_probs)
+            actions = (rng.random(len(obs))[:, None] > np.cumsum(probs, axis=1)).sum(axis=1)
+            actions = actions.clip(0, logits.shape[1]-1).astype(np.int32)
+            logp = log_probs[np.arange(len(obs)), actions]
+        else:
+            actions, logp, values = super().act(obs, rng, logit_bias=logit_bias,
+                                                head_weight_noise=head_weight_noise)
         actions[~mask] = 0
         logp[~mask] = 0.
         return actions, logp, values

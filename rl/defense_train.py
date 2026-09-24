@@ -85,6 +85,8 @@ def main():
                         help="learn joint physical keys and option holds, e.g. 1 4 16 64")
     parser.add_argument("--option-actor-gae", action=argparse.BooleanOptionalAction, default=False,
                         help="credit a completed learned hold's whole score return to its option start")
+    parser.add_argument("--duration-explore-mix", type=float, default=0.,
+                        help="training-only key-marginal-preserving uniform-duration mixture at option starts")
     parser.add_argument("--spatial-residual", action=argparse.BooleanOptionalAction, default=False,
                         help="learn a zero-initialized spatial mixing residual over an own duration policy")
     parser.add_argument("--extend-longest-duration", action="store_true",
@@ -151,6 +153,8 @@ def main():
             parser.error("Changing continue-action profile requires fresh initialization")
         if args.learned_durations != config.get("learned_durations", []):
             parser.error("Changing learned-duration profile requires fresh initialization")
+        if args.duration_explore_mix != config.get("duration_explore_mix", 0.):
+            parser.error("Changing the duration behavior mixture on resume is invalid")
         if args.duration_initial_logit_spacing != config.get("duration_initial_logit_spacing", 2.):
             parser.error("Changing duration initialization spacing requires fresh initialization")
         if args.appended_longest_logit_offset != config.get("appended_longest_logit_offset", -2.):
@@ -217,6 +221,10 @@ def main():
         parser.error("appended-longest-logit-offset requires extension and must be in -4..4")
     if args.option_actor_gae and not args.learned_durations:
         parser.error("--option-actor-gae requires learned durations")
+    if (not np.isfinite(args.duration_explore_mix) or not 0 <= args.duration_explore_mix < 1
+            or (args.duration_explore_mix and (len(args.learned_durations) < 2
+                                                  or args.spatial_residual))):
+        parser.error("duration-explore-mix requires ordinary learned durations and a fraction in [0,1)")
     if (not np.isfinite(args.duration_initial_logit_spacing)
             or not 0 <= args.duration_initial_logit_spacing <= 20
             or (not args.learned_durations and args.duration_initial_logit_spacing != 2.)):
@@ -292,6 +300,7 @@ def main():
             agent_class = SpatialDurationPPO
         else:
             agent_class = DurationPPO
+            extra_agent["duration_explore_mix"] = args.duration_explore_mix
     if args.recurrent_hidden:
         from .defense_recurrent import RecurrentPPO
         from .recurrent_policy import RECURRENT_ARCHITECTURE, sequence_batches
@@ -443,6 +452,10 @@ def main():
                                     if args.option_actor_gae else
                                     "only actual option starts; every base action trains the score-value critic"),
                       duration_reset="visible life loss or episode boundary; pending hold cancelled")
+        if args.duration_explore_mix:
+            config.update(duration_exploration="training option starts: (1-mix)*joint actor + "
+                          "mix*actor key marginal/uniform duration; PPO ratios use exact mixture",
+                          evaluation_policy="unperturbed learned categorical, sampled")
     if args.recurrent_hidden:
         config.update(architecture=RECURRENT_ARCHITECTURE,
                       recurrent_source_sha256=sha256(Path(__file__).with_name('defense_recurrent.py')),
