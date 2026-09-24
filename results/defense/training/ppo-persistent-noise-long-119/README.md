@@ -69,6 +69,47 @@ the same three frozen checkpoints. No checkpoint will be reselected or
 updated from these fresh results. Mission success still requires native
 screen-observed evidence, not a score difference.
 
+The entire planned **2,097,152-action continuation** finished cleanly with
+**220 boot games, 8,206 restored segments and sixteen fixed ten-game
+evaluations**. No training or validation game reached stage two. Fixed-game
+means were **9,933 / 10,468 / 10,267 / 10,457 / 10,200 / 10,208 /
+10,470 / 9,142 / 10,375 / 10,227 / 10,470 / 9,540 / 10,234 /
+10,229 / 10,408 / 10,465**. The earliest 10,470-point checkpoint at
+**9,718,528** was selected under the committed tie rule, not the final
+weights. The full model, optimizer, both RNGs, metrics and native-verified
+local replay history are archived in [run/](run/); the selected full
+[optimizer/RNG milestone](milestone-000009718528/state.json) is separate.
+
+On [the first 128 new complete games](fresh-selected-128.json), seeds
+601400–601527, selected / [immediate noise parent](fresh-noise-parent-128.json)
+/ [confirmed ordinary parent](fresh-confirmed-parent-128.json) means were
+**10,429.22 / 10,401.72 / 10,362.97**, all stage one. The selected model
+had only one sub-9,000 score versus three and five, respectively. It lost
+more paired games than it won against the immediate parent (31 improved,
+58 worsened, 39 tied), so the mean advantage warranted confirmation.
+
+The predeclared [second 128-game set](fresh-confirm-selected-128.json),
+seeds 601600–601727, gave selected **10,444.77**,
+[immediate parent](fresh-confirm-noise-parent-128.json) **10,304.22** and
+[confirmed parent](fresh-confirm-confirmed-parent-128.json) **10,377.97**,
+again all stage one. It had **zero** sub-9,000 games versus eight and five.
+Across both untouched sets (**256 games per policy**), selected / immediate
+parent / confirmed parent means were **10,436.99 / 10,352.97 / 10,370.47**.
+The selected model is **+66.52 mean points** over the confirmed score parent
+on these seeds and cut sub-9,000 games from ten to one. It improved 107
+paired games against that parent, worsened 86 and tied 63. This supports a
+new **score** training parent, not barrier passage: all **768** fresh games
+ended in stage one. Its lower-tail gain also comes with fewer exact-10,480
+games than the immediate noise parent (114 versus 176), so the change is
+not a uniform improvement on every seed.
+
+The selected policy's [first](fresh-selected-replay/replay.html) and
+[second](fresh-confirm-selected-replay/replay.html) fresh best-effort
+replays independently reproduce **2,544** and **2,543** neural actions.
+The corresponding parent and noise-parent replay bundles are preserved.
+No fresh replay showed a mission; the global verified best remains the
+older 10,480-point game and is not overwritten by this score-parent update.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-long-119 \

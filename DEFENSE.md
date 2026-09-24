@@ -7937,3 +7937,19 @@ actions** and 16 planned unperturbed complete-game checks. A frozen
 validation-selected checkpoint will then face 128 new matched games. The
 single collector watches **112** sources and keeps the native-verified best
 replay available independently of this exploratory run.
+
+The [long persistent-exploration continuation](results/defense/training/ppo-persistent-noise-long-119/README.md)
+finished **2,097,152 additional actions**, 220 boot games, 8,206 restored
+segments and sixteen complete ten-game validations, with no stage-two
+training or validation game. Its seventh checkpoint at **9,718,528** had
+the earliest peak mean **10,470** and was frozen before fresh checking.
+On two predeclared new 128-game seed sets, it averaged **10,436.99** versus
+**10,370.47** for the last independently confirmed ordinary-action score
+parent; sub-9,000 games fell from ten to one. The immediate noise parent
+averaged **10,352.97** on the same 256 seeds. These are meaningful
+independently checked **score** gains, but **all 768 fresh games** still
+ended in stage one. The new full optimizer/RNG checkpoint can serve as a
+score-training parent; it is not a mission solution, and the older native-
+verified global best replay remains preserved. All model/optimizer/RNG
+history, source snapshots and independently verified fresh-best replays
+are archived with the run.

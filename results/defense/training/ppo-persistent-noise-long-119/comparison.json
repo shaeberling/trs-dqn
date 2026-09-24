@@ -1,0 +1,37 @@
+{
+  "diagnostic_only": true,
+  "selection": "highest fixed ten-game mean across 16 evaluations; exact ties choose earliest checkpoint; frozen before either fresh set",
+  "selected_checkpoint": "milestone-000009718528/model.safetensors",
+  "immediate_noise_parent_checkpoint": "../ppo-persistent-noise-118/milestone-000008801024/model.safetensors",
+  "confirmed_ordinary_parent_checkpoint": "../ppo-canonical-control-113/milestone-000008538880/model.safetensors",
+  "first_fresh_seeds": [601400, 601527],
+  "confirmation_seeds_predeclared_before_use": [601600, 601727],
+  "complete_games_per_policy_per_set": 128,
+  "first_set": {
+    "selected": {"mean_score": 10429.21875, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 1, "at_10480": 55},
+    "immediate_noise_parent": {"mean_score": 10401.71875, "median_score": 10480, "best_score": 10480, "stage_2_games": 0, "below_9000": 3, "at_10480": 88},
+    "confirmed_ordinary_parent": {"mean_score": 10362.96875, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 5, "at_10480": 54},
+    "paired_vs_immediate": {"mean_delta": 27.5, "improved": 31, "worsened": 58, "tied": 39},
+    "paired_vs_confirmed": {"mean_delta": 66.25, "improved": 54, "worsened": 46, "tied": 28}
+  },
+  "confirmation_set": {
+    "selected": {"mean_score": 10444.765625, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 0, "at_10480": 59},
+    "immediate_noise_parent": {"mean_score": 10304.21875, "median_score": 10480, "best_score": 10480, "stage_2_games": 0, "below_9000": 8, "at_10480": 88},
+    "confirmed_ordinary_parent": {"mean_score": 10377.96875, "median_score": 10460, "best_score": 10480, "stage_2_games": 0, "below_9000": 5, "at_10480": 54},
+    "paired_vs_immediate": {"mean_delta": 140.546875, "improved": 31, "worsened": 48, "tied": 49},
+    "paired_vs_confirmed": {"mean_delta": 66.796875, "improved": 53, "worsened": 40, "tied": 35}
+  },
+  "combined_256_per_policy": {
+    "selected_mean_score": 10436.9921875,
+    "immediate_noise_parent_mean_score": 10352.96875,
+    "confirmed_ordinary_parent_mean_score": 10370.46875,
+    "selected_minus_immediate": 84.0234375,
+    "selected_minus_confirmed": 66.5234375,
+    "paired_vs_immediate": {"improved": 62, "worsened": 106, "tied": 88},
+    "paired_vs_confirmed": {"improved": 107, "worsened": 86, "tied": 63},
+    "below_9000": {"selected": 1, "immediate_noise_parent": 11, "confirmed_ordinary_parent": 10},
+    "at_10480": {"selected": 114, "immediate_noise_parent": 176, "confirmed_ordinary_parent": 108},
+    "stage_2_games": 0
+  },
+  "conclusion": "confirmed reduction in low-score failures and positive fresh mean against both parents; no stage-two game or mission completion; global verified best replay unchanged"
+}
