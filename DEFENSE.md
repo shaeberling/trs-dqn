@@ -222,6 +222,16 @@ original stream rows **32–34**. This correctly exposes long actions
 but hurts score, so neither new arm is promoted; full states and
 replays are archived.
 
+The [adjacent later-turn two-phase grids](results/defense/diagnostics/late-phase-grid-149/README.md)
+then closed a specific timing gap in the earlier action-322 search:
+from exact verified own first-life anchors **339 and 340**, they
+tested **7,500** symmetric command/duration plans each. Neither
+exceeded the learned 2,620-point first-life plateau, entered stage
+two or survived its 512-action horizon. A few action-340 plans delayed
+the visible loss by one action at equal score. These were diagnostic
+counterfactuals only, never policy actions, rewards or demonstrations;
+the frozen learned checkpoints and best replay are unchanged.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.

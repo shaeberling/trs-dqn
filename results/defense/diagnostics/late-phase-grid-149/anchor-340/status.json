@@ -1,0 +1,28 @@
+{
+  "completed": 7500,
+  "requested": 7500,
+  "baseline": {
+    "actions": 67,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false
+  },
+  "best": {
+    "candidate": 3553,
+    "delay": 8,
+    "first_hold": 16,
+    "first_command": 1,
+    "second_hold": 4,
+    "second_command": 2,
+    "actions": 68,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false
+  },
+  "stage_two_discovery": false,
+  "stop_requested": false
+}
