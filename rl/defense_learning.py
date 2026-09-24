@@ -45,18 +45,23 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
                 or temperature != 1):
             raise ValueError("Quantile power overrides require quantile DQN, power 0..4 and temperature 1")
     from .recurrent_policy import RECURRENT_ARCHITECTURE
+    from .defense_spatial_spec import SPATIAL_ARCHITECTURE
     architecture = config.get("architecture")
     if config.get("learned_durations"):
         from .defense_duration_ppo import duration_action_names
         durations = config["learned_durations"]
-        if (algorithm != "ppo" or architecture is not None or config.get("canonical_fire")
+        if (algorithm != "ppo" or architecture not in (None, SPATIAL_ARCHITECTURE)
+                or config.get("canonical_fire")
                 or config.get("repeat_previous_action") or config.get("allow_enter", False)
                 or config.get("policy_action_names") != list(duration_action_names(durations))
                 or not config.get("life_terminal")):
             raise ValueError("Invalid learned-duration PPO policy profile")
-        return ("learned categorical key-duration options, sampled; holds end at visible life boundaries"
-                if temperature == 1 else
-                "learned categorical key-duration options, temperature-scaled; holds end at visible life boundaries")
+        kind = "learned spatial-residual categorical key-duration options" if architecture else \
+               "learned categorical key-duration options"
+        return (f"{kind}, sampled; holds end at visible life boundaries" if temperature == 1 else
+                f"{kind}, temperature-scaled; holds end at visible life boundaries")
+    if architecture == SPATIAL_ARCHITECTURE:
+        raise ValueError("Spatial residual requires learned-duration PPO")
     if config.get("repeat_previous_action"):
         from .defense_repeat_previous import POLICY_ACTION_NAMES
         if (algorithm != "ppo" or architecture is not None or config.get("canonical_fire")
@@ -74,7 +79,7 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             raise ValueError('unsupported learned-world policy configuration')
         return ('learned imagined-return actor, categorical sampling; screen/own-action memory'
                 if temperature == 1 else 'learned imagined-return actor, temperature-scaled; screen/own-action memory')
-    if architecture is not None:
+    if architecture is not None and architecture != SPATIAL_ARCHITECTURE:
         if architecture != RECURRENT_ARCHITECTURE or algorithm != 'ppo':
             raise ValueError("Unsupported Defense policy architecture")
         return ("learned recurrent categorical, sampled; screen-history memory" if temperature == 1 else
@@ -149,6 +154,8 @@ def summarize(games):
 def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
     from .model import QNetwork
     from .temperature_probe import temperature_policy
+    from .recurrent_policy import RECURRENT_ARCHITECTURE
+    from .defense_spatial_spec import SPATIAL_ARCHITECTURE
     import mlx.core as mx
     checkpoint = Path(checkpoint)
     config = json.loads((checkpoint.parent/"state.json").read_text())["config"]
@@ -167,7 +174,7 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         model.load_weights(str(checkpoint))
         mx.eval(model.state)
         return acting_policy(model, temperature), config
-    if config.get("architecture") is not None:
+    if config.get("architecture") == RECURRENT_ARCHITECTURE:
         from .defense_recurrent import ResidualRecurrentNetwork
         from .recurrent_policy import RecurrentPolicy
         model = ResidualRecurrentNetwork(len(names), config['recurrent_hidden'], config['memory_scale'])
@@ -178,7 +185,10 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
             logits, _, updated = predict(mx.array(obs), mx.array(hidden))
             return np.array(logits), np.array(updated)
         return RecurrentPolicy(infer, config['recurrent_hidden'], temperature=temperature), config
-    if config.get("algorithm") == REPEAT_ALGORITHM:
+    if config.get("architecture") == SPATIAL_ARCHITECTURE:
+        from .defense_spatial import SpatialDurationNetwork
+        model = SpatialDurationNetwork(action_count=len(names)*len(config["learned_durations"]))
+    elif config.get("algorithm") == REPEAT_ALGORITHM:
         model = QNetwork(action_count=len(names) * len(config['learned_repeats']))
     elif config.get("algorithm") == BOOTSTRAP_ALGORITHM:
         from .defense_bootstrap import BootstrapQ
