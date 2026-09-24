@@ -66,6 +66,27 @@ training data or learned replays. The evidence favors testing
 phase-changing exploration over merely lengthening a constant hold,
 without proving any particular route.
 
+The [phase-changing learned-option continuation](results/defense/training/ppo-duration-phase-137/README.md)
+then renewed unbiased physical-key preferences every 24–64 own base actions
+while retaining per-life duration factors. Its 1,048,576-action run
+completed normally with all 80 fixed games in stage one. The earliest
+10,480-mean checkpoint averaged **10,392.34** on 64 untouched complete
+games, below its own frozen option-credit input's **10,421.25**; all 192
+matched selected/input/ordinary-parent games remained stage one. The
+selected replay was reexecuted for all 2,520 actions; its four visible
+losses still occur at original course rows **33 / 33 / 34 / 34 of 126**.
+It is archived as a negative result, not a new score parent or promoted
+replay. The full **495-test** suite passed before production.
+
+A separate [frozen cadence diagnostic](results/defense/diagnostics/cadence-138/README.md)
+played the stronger option-credit input on 64 matched complete games per
+100,000 / 50,000 / 25,000 T-state base-action timing. Native timing
+averaged **10,475.16**; both finer evaluation-only overrides regressed to
+**7,649.84 / 7,418.13**, losing all 64 paired games apiece and reaching
+no later stage. This does not test retraining at finer cadence. Neither
+trial changed the original game, reward, protected best replay or no-oracle
+learning boundary.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
