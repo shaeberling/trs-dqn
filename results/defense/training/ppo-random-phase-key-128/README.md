@@ -55,3 +55,37 @@ resumed the same parent for 4,096 actions, completed two frozen games at
 10,480-point local replay. Its full model/optimizer/RNG and source-linked
 records are retained but excluded from the shared best collector. It is
 only an implementation check, not evidence of new game progress.
+
+The production trial finished its planned **1,048,576 new actions** in about
+730 seconds. It completed **130** new boot games and **4,779** restored
+segments. The last periodic progress record logged **26,337** key-factor
+draws, confirming the renewal schedule was exercised. Its eight fixed
+ten-game means were **9,799 / 10,015 / 10,464 / 10,325 / 10,462 /
+10,460 / 10,359 / 10,476**. The final full optimizer/RNG checkpoint at
+counter **2,097,152** won the predeclared highest-mean selection. No
+training or validation game reached stage two. The [complete run archive](run/)
+retains every saved checkpoint, optimizer/RNG state, evaluation, metric and
+local replay; the archived tree was content-checked against the live run.
+Exact trainer, noise, PPO, model, environment, curriculum, snapshot,
+continuation, evaluation and worker sources are saved beside it, and eight
+recorded source hashes match.
+
+The predeclared [128 fresh matched games](comparison.json) on seeds
+604200–604327 gave selected / unchanged run-121 parent means **10,473.67 /
+10,476.88**, a **−3.20**-point difference. The selected policy won **18**
+paired seeds, lost **4**, and tied **106**; it earned the exact 10,480-point
+stage-one ceiling **124/128** times versus the parent's **110/128**.
+However, one selected **9,730**-point game against a 10,480-point parent
+game offset those small wins. Neither arm had a score below 9,000, and all
+**256** games stayed in stage one. The high ceiling count is genuine
+score-consistency behavior, not passage or a confirmed improvement in mean
+score. The original run-121 parent remains the confirmed parent.
+
+The selected [local best replay](fresh-selected-replay/replay.html) and
+[paired parent replay](fresh-parent-replay/replay.html) independently
+reproduced **2,569 / 2,524** learned actions. Both earned four 2,620-point
+lives near the same visible right-opening barrier; see the [read-only loss
+sheets](../../diagnostics/random-phase-128-losses/README.md). Neither
+replay is a win, and the protected global best remains unchanged. This
+bounded trial does not support repeating the same random-phase setting
+longer without a new source of learning signal or exploration coverage.

@@ -119,11 +119,12 @@
     "runs/defense-ppo-key-noise-strong-124/artifacts",
     "runs/defense-ppo-boot-diversity-125/artifacts",
     "runs/defense-ppo-key-noise-windowed-126/artifacts",
-    "runs/defense-ppo-screen-frontier-127/artifacts"
+    "runs/defense-ppo-screen-frontier-127/artifacts",
+    "runs/defense-ppo-random-phase-key-128/artifacts"
   ],
   "output": "results/defense/learned",
   "run": "runs/defense-collector",
   "interval": 30,
   "prior_sources_preserved": true,
-  "new_sources": "diverse own-screen loss-state PPO resets from confirmed run 121 score parent"
+  "new_sources": "random-phase key-factor PPO from confirmed run 121 score parent"
 }
