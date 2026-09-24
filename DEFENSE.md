@@ -7874,3 +7874,15 @@ versus two in the parent, but worsened 88 of 128 paired games and was
 preserved negative barrier results, not a new confirmed score parent.
 The selected models' fresh-best replay traces each passed independent
 neural-action verification; the globally ranked best replay is unchanged.
+
+The next same-parent comparison tests two more specific explanations for
+that repeated failure. [Run 116](results/defense/training/ppo-near-loss-116/README.md)
+rewinds to the learner's own visible state 64, not 128, decisions before
+loss; input-responsiveness diagnostics cover this region but do not prove
+recoverability. [Run 117](results/defense/training/ppo-long-credit-117/README.md)
+keeps the 128-decision window and changes only PPO GAE lambda from 0.95 to
+0.995, so later displayed-score consequences can affect earlier action
+advantages within a rollout. Both resume the confirmed control-113 model,
+optimizer and RNG, with 524,288 new actions planned. The completed run-115
+is their matched ordinary continuation. The independent collector now
+watches **110** sources; the verified global best remains protected.
