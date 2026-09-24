@@ -68,3 +68,55 @@ The smoke checkpoints, optimizer and RNG states, logs, and replays are under
 `smoke-spatial/`, `smoke-control/` and `smoke-resume/` here (and under their
 original `runs/` directories). The production comparison restarts from the
 same frozen parent, not from either smoke checkpoint.
+
+## Completed matched gate
+
+Both planned 524,288-action runs finished normally. The four fixed
+ten-game means on seeds 10000–10009 were:
+
+| Actions | Spatial residual | Unchanged-network control |
+| ---: | ---: | ---: |
+| 131,072 | 10,445 | 10,445 |
+| 262,144 | 10,198 | 10,428 |
+| 393,216 | 10,440 | **10,462** |
+| 524,288 | **10,456** | 10,221 |
+
+All **80 fixed games** stayed in stage one. The earliest highest fixed
+stage/mean checkpoints selected by the predeclared rule are the spatial
+[524,288-action checkpoint](run-spatial/step-000000524288/) and control
+[393,216-action checkpoint](run-control/step-000000393216/). Neither arm
+hit the two-consecutive-check collapse criterion. All four full
+model/optimizer/RNG checkpoints, training logs and native-verified local
+training-best replays are retained in [run-spatial](run-spatial/) and
+[run-control](run-control/). The latter training-best replays rank a
+**single complete game**, not the selected fixed-game mean.
+
+Because the spatial selection reached the predeclared 10,450 fixed-mean
+threshold, all three **frozen** policies were evaluated on 64 untouched
+matched complete games, seeds 607900–607963:
+
+| Frozen policy | Mean score | Scores below 9,000 | Stage-two games |
+| --- | ---: | ---: | ---: |
+| [Spatial selection](fresh-spatial-64.json) | 10,224.84 | 6 | 0 |
+| [Fresh-optimizer control](fresh-control-64.json) | 10,294.69 | 3 | 0 |
+| [Unmodified source](fresh-source-64.json) | **10,387.50** | **2** | 0 |
+
+Spatial versus control has 18 paired wins, 19 losses and 27 ties; versus
+the unmodified source it has 13 wins, 23 losses and 28 ties. Its fresh
+mean is 69.84 points below the control and 162.66 below the source,
+with a worse low-score tail. All **192 fresh games** remained stage one.
+This spatial-residual hypothesis therefore **fails** its stage gate and
+does not qualify even as a score-training parent. No score-only tie or
+early fixed-check peak replaces the protected global best replay.
+
+Separate [fresh native-verified spatial](fresh-spatial-replay/replay.html)
+and [control](fresh-control-replay/replay.html) replays reproduce every
+screen, action and reward from boot. A post-hoc
+[original-course forensic audit](../../diagnostics/spatial-143-course-progress/README.md)
+finds visible losses at decoded original stage-one rows 34/33/34/34 and
+34/34/34/33 respectively, of 126 rows. This hidden pointer was read only
+after the frozen replays and never enters training, action choice, reward,
+checkpoint selection or replay promotion. The negative result argues
+against simply adding this particular spatial mixing residual to the same
+score-only PPO protocol; it does not establish that spatial learning or
+screen-only play in general cannot pass the obstacle.

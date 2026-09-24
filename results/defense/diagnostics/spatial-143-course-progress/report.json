@@ -1,0 +1,89 @@
+{
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "original_binary_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "static_audit_source_sha256": "25eba681ae343012e2682653437d4e76c080638667f42475cf03384f0d7356e8",
+  "probe_source_sha256": "da9b1f03d6974fb3405ac7f69d25475fbde706db4e5d52b907a55dfd4d5e26ec",
+  "course_start": "0x76A9",
+  "course_end": "0x7BD8",
+  "total_stage_one_stream_rows": 126,
+  "memory_address_read": "0x819B/0x819C",
+  "bundles": [
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-spatial-residual-143/fresh-spatial-replay",
+      "trace_sha256": "ff8937ec4c4c66d4578493cb78b3781e7c0c58279c810ec33f30636bf0e38a1f",
+      "model_sha256": "f7f05df5957028a5cdaed48fe0fbd0a1a578785f60b394cd9603a3152174d4c5",
+      "verified_neural_actions": 2497,
+      "losses": [
+        {
+          "frame": 406,
+          "displayed_score": 2620,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1108,
+          "displayed_score": 5240,
+          "next_stream_byte": "0x7733",
+          "decoded_rows": 33
+        },
+        {
+          "frame": 1806,
+          "displayed_score": 7860,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 2497,
+          "displayed_score": 10480,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        }
+      ]
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-spatial-residual-143/fresh-control-replay",
+      "trace_sha256": "6c8d02d58407f7c36420e2949d72eb581cdda1231b8d3ae20b874deb3457a86e",
+      "model_sha256": "e9552b3f73058f0d1b4e33574da478ac839fbe10ae8256cd6a60227b254d29fc",
+      "verified_neural_actions": 2526,
+      "losses": [
+        {
+          "frame": 406,
+          "displayed_score": 2620,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1135,
+          "displayed_score": 5240,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 1836,
+          "displayed_score": 7860,
+          "next_stream_byte": "0x7735",
+          "decoded_rows": 34
+        },
+        {
+          "frame": 2526,
+          "displayed_score": 10480,
+          "next_stream_byte": "0x7733",
+          "decoded_rows": 33
+        }
+      ]
+    }
+  ],
+  "own_source_archive": null,
+  "diagnostic_only": true,
+  "hidden_ram_never_policy_input": true,
+  "hidden_ram_never_reward_or_curriculum": true,
+  "model_updates": 0,
+  "replay_promotion_eligible": false,
+  "limitations": [
+    "Pointer is sampled at visible ship-loss bookkeeping, not exact collision.",
+    "Decoded rows are stream progress, not rows safely navigated by a ship.",
+    "The original program may render obstacles ahead of or behind this pointer.",
+    "The forensic pointer and row index must never enter training or evaluation selection."
+  ]
+}
