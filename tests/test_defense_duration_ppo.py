@@ -10,7 +10,8 @@ import numpy as np
 from rl.defense import ENVIRONMENT_VERSION, GAME_SHA256, action_names
 from rl.defense_duration_ppo import (DurationCategoricalPolicy, DurationPPO,
                                      duration_action_names, initialize_duration_policy,
-                                     option_actor_gae)
+                                     option_actor_gae, duration_mixture_log_probs_numpy,
+                                     duration_mixture_log_probs_mlx)
 from rl.defense_learning import evaluate, load_policy, record_game, verify_policy_trace
 from rl.defense_repeat import RepeatedActions
 from rl.ppo import gae
@@ -33,6 +34,52 @@ class SequencePolicy:
 
 
 class DefenseDurationPPOTests(unittest.TestCase):
+    def test_duration_mixture_preserves_each_key_marginal_and_matches_mlx(self):
+        import mlx.core as mx
+
+        rng = np.random.default_rng(408)
+        logits = rng.normal(size=(3, 100)).astype(np.float32)
+        original = np.exp(duration_mixture_log_probs_numpy(logits, 5, 0.)).reshape(3, 5, 20)
+        for mix in (0., .08, .5):
+            numpy_logp = duration_mixture_log_probs_numpy(logits, 5, mix)
+            mlx_logp = np.array(duration_mixture_log_probs_mlx(mx.array(logits), 5, mix))
+            np.testing.assert_allclose(numpy_logp, mlx_logp, rtol=1e-5, atol=1e-6)
+            mixed = np.exp(numpy_logp).reshape(3, 5, 20)
+            np.testing.assert_allclose(mixed.sum(axis=(1, 2)), 1., rtol=1e-6)
+            np.testing.assert_allclose(mixed.sum(axis=1), original.sum(axis=1), rtol=1e-6)
+            expected = (1-mix)*original+mix*original.sum(axis=1, keepdims=True)/5
+            np.testing.assert_allclose(mixed, expected, rtol=1e-6, atol=1e-7)
+        with self.assertRaises(ValueError):
+            duration_mixture_log_probs_numpy(logits, 5, 1.)
+        with self.assertRaises(ValueError):
+            duration_mixture_log_probs_numpy(logits[:, :-1], 5, .08)
+
+    def test_mixed_actor_samples_and_ppo_ratio_use_same_behavior_likelihood(self):
+        import mlx.core as mx
+
+        agent = DurationPPO(seed=441, action_count=100, entropy=.002,
+                            duration_explore_mix=.08)
+        obs = np.zeros((3, 4, 16, 64), np.uint8)
+        bias = np.zeros((3, 100), np.float32)
+        bias[:, 80:] = .5
+        mask = np.array([True, False, True])
+        rng = np.random.default_rng(442)
+        actions, logp, values = agent.act(obs, rng, actor_mask=mask, logit_bias=bias)
+        logits, _ = agent.predict(mx.array(obs))
+        expected = duration_mixture_log_probs_numpy(np.array(logits)+bias, 5, .08)
+        check_rng = np.random.default_rng(442)
+        choices = (check_rng.random(3)[:, None] > np.cumsum(np.exp(expected), axis=1)).sum(axis=1)
+        np.testing.assert_array_equal(actions, np.where(mask, choices, 0))
+        np.testing.assert_allclose(logp[mask], expected[np.flatnonzero(mask), choices[mask]],
+                                   rtol=1e-6, atol=1e-6)
+        self.assertEqual(float(logp[1]), 0.)
+        _, metrics = agent._loss(agent.model, mx.array(obs), mx.array(actions), mx.array(logp),
+                                 mx.ones(3), mx.array(values), mx.array(mask.astype(np.float32)),
+                                 logit_bias=mx.array(bias))
+        self.assertLess(abs(float(metrics[3].item())), 1e-5)
+        with self.assertRaises(ValueError):
+            DurationPPO(action_count=100, duration_explore_mix=1.)
+
     def test_complete_option_credit_reaches_delayed_score(self):
         rewards = np.zeros((64, 1), np.float32)
         rewards[-1, 0] = 1.

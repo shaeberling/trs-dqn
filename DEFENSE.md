@@ -199,6 +199,19 @@ Appending a longer row to that collapsed duration distribution barely
 explores it; a stronger flat prior also harms score. No stage passage
 or best-replay promotion resulted.
 
+The follow-up [duration-mixture test](results/defense/training/ppo-duration-mixture-148/README.md)
+keeps the same cautious five-option actor but makes duration exploration
+explicit during training. At each real option start an 8% mixture
+draws a uniform duration while preserving the actor's physical-key
+marginal. PPO stores and differentiates the *actual mixed likelihood*;
+unperturbed complete-game evaluation is unchanged. Its treatment and
+matched no-mixture control passed 16,384-action training and independent
+replay smokes. The treatment genuinely started **52** 128-step holds
+versus **one** in the control; the control's weights and optimizer bytes
+exactly reproduce the earlier default-path run. Both full-state resume
+checks also passed. This is an exposure/integration result, not stage
+passage; the predeclared matched production stage gate follows.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
