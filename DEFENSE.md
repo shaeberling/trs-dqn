@@ -210,7 +210,17 @@ replay smokes. The treatment genuinely started **52** 128-step holds
 versus **one** in the control; the control's weights and optimizer bytes
 exactly reproduce the earlier default-path run. Both full-state resume
 checks also passed. This is an exposure/integration result, not stage
-passage; the predeclared matched production stage gate follows.
+passage. The ensuing matched production test stopped the mixture arm
+after two fixed means **3,616 / 2,305**, while its no-mixture control
+completed all 524,288 actions with fixed means **10,472 / 9,956 /
+10,416 / 10,446**; every game remained stage one. On 64 new matched
+complete games, treatment/control/unchanged parent means were
+**5,177.97 / 10,067.50 / 10,420.63**, with **61 / 10 / 1** games
+below 9,000 and no later-stage games. The treatment lost to the parent
+on all 64 paired seeds. Native-verified fresh replays still lose near
+original stream rows **32–34**. This correctly exposes long actions
+but hurts score, so neither new arm is promoted; full states and
+replays are archived.
 
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
