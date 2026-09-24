@@ -265,3 +265,38 @@ the shared obstacle. Its verified treatment life scores were 2,530–2,570,
 with forensic visible-loss stream rows 31–34 of 126. Despite more movement
 choices than the protected best near those losses, it has not passed the
 stage-one barrier. The diagnostic never enters learning or promotion.
+
+## Matched control and untouched-seed comparison complete
+
+The no-offset control stopped normally at its exact **8,388,608**-action
+target. Its eight fixed ten-game means were **384 / 558 / 578 / 588 / 580 /
+588 / 574 / 586**, all stage one. The predeclared stage-then-mean rule
+selected the earliest tied **588** checkpoint at **4,194,304** actions;
+the balanced arm selected its **8,388,608**-action terminal checkpoint
+(fixed mean **8,502**). The selected model SHA-256 values are respectively
+`f349809cd8607a8ad14bffebe5031d350e87dd05aa461fad2c8af62686e50659`
+and `c0f84420424b25ef129803e7f3144764ebc15bb9754e40704da9a7808d4bc241`.
+
+The [fresh matched report](fresh-comparison/report.json) used frozen models,
+64 complete original-boot games per arm at seeds 611000–611063, then a
+second untouched 64 per arm at 611200–611263. Balanced/control means were
+**9,382.97 / 579.69** and **9,424.38 / 581.88**. The balanced arm won all
+**128** paired seed comparisons. All **256** complete games remained in
+stage one, with zero successful missions. Each of the four [fresh replay
+bundles](fresh-comparison/) contains an independently native-verified local
+replay (`verified: true`) tied to the selected model hash. Thus the
+balanced physical-action prior substantially improved *learning from
+scratch* under the same displayed-score reward, but did not solve the
+observed stage-one obstacle or justify replacing the protected global-best
+replay.
+
+The archive preserves the control's [selected](control-selected/state.json)
+and [terminal](control-terminal/state.json) complete model/optimizer/RNG
+states, all eight [fixed evaluations](control-fixed/), its
+[full compressed training log](control-metrics.jsonl.gz), resolved config
+and terminal status, and the complete fresh comparison. These copies were
+byte-compared against the finished run; the compressed log was
+decompression-compared against the original. Intermediate checkpoints not
+selected for either arm can now be pruned from the ignored live run after
+this archive has been committed, retaining selected and terminal resumable
+states and all evaluations.
