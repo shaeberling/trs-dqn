@@ -215,3 +215,29 @@ replay bundle were copied into this archive and compared byte-for-byte
 with the live originals. Training continues to its target; this result
 does not replace the protected 10,480-point global best or imply passage
 of the stage-one barrier.
+
+## Treatment complete; matched control started
+
+The treatment stopped normally at its exact **8,388,608**-action target,
+with a complete [terminal model/optimizer/RNG state](terminal-checkpoint/state.json).
+The one-shot follow-up evaluated that frozen model on the same ten
+original-boot seeds 10000–10009 because the resumed run's next automatic
+check fell beyond the target. The [terminal evaluation](terminal-evaluation.json)
+averaged **8,502**, median **8,750**, best **9,910**; all ten games remained
+in stage one. Its [9,910-point terminal replay](terminal-replay/replay.html)
+was independently reexecuted for all **2,586** frozen-policy actions with
+`verified: true`; model SHA-256 is
+`c0f84420424b25ef129803e7f3144764ebc15bb9754e40704da9a7808d4bc241`.
+The terminal fixed mean narrowly exceeds the seventh check's 8,434, so it
+is the treatment's provisional validation selection under the predeclared
+stage-then-mean rule. The state, evaluation and replay were copied into
+this archive and compared byte-for-byte against their finished-run sources.
+No game reached stage two or the successful mission sequence, and neither
+model is promoted over the protected global best.
+
+After verifying the terminal state and replay, the follow-up launched the
+fresh seed-41 grouped-action **control without balanced initialization**,
+with the same 8,388,608-action target and its own exact-run disk guard.
+The control's live state remains under
+`runs/defense-ppo-balanced-fire-160/control/`; the treatment/control
+comparison and untouched fresh-seed gates have not yet run.
