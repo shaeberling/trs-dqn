@@ -1,0 +1,71 @@
+{
+  "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-duration-credit-136/run/fresh-selected-replay",
+  "trace_sha256": "c1c13c9108b15b780488311138ef976da3d084f7fe72bae65f9ed9e81ad10575",
+  "model_sha256": "bb9f3dbcd3740191106c092da61143d87674fc6b7384bf54ff5e329c2062f9c9",
+  "source_sha256": "24445817228feace9998adcf5181950ed6f683fe24283f44828c87d81f94ce2a",
+  "play_source_sha256": "b19c3bc2fb0875465af9d35fbcca909b88ce7683e998bcc072db32c17c0dadb0",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "seed": 607200,
+  "anchor": 322,
+  "horizon": 512,
+  "total_candidates": 7500,
+  "requested_candidates": 7500,
+  "delays": [
+    0,
+    8,
+    16
+  ],
+  "holds": [
+    4,
+    8,
+    16,
+    24,
+    32
+  ],
+  "symmetric_commands": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "policy_inputs_changed": false,
+  "reward_changed": false,
+  "candidate_actions_never_training_data": true,
+  "promotion_eligible": false,
+  "baseline_actions_sha256": "3690b3478d55860db4f76ed26bef72ab1dcae9b187230087192cca8be8b18928",
+  "baseline": {
+    "actions": 85,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false
+  },
+  "best": {
+    "candidate": 2967,
+    "delay": 8,
+    "first_hold": 4,
+    "first_command": 9,
+    "second_hold": 8,
+    "second_command": 6,
+    "actions": 86,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false
+  },
+  "completed": 7500,
+  "stage_two_discovery": false,
+  "stopped": false,
+  "outcomes_sha256": "8beb0bb1831a6b5f32f690e8618cfd1833bb9806d0c41225454cb2eefb801c24"
+}
