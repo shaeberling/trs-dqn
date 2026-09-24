@@ -1,0 +1,47 @@
+{
+  "completed": 20000,
+  "requested": 20000,
+  "distinct": 20001,
+  "best": {
+    "candidate": 720,
+    "actions": 248,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false,
+    "checkpoint_cell": "ff37a0ad6484b6c9522f4d336161b29a"
+  },
+  "baseline": {
+    "actions": 247,
+    "score": 2620,
+    "stage": 1,
+    "life_lost": true,
+    "mission_completed": false,
+    "survived_horizon": false,
+    "checkpoint_cell": "ff37a0ad6484b6c9522f4d336161b29a",
+    "candidate": 0,
+    "plan_sha256": "2ba5438e92002b64dff63aa1e43a70cf7d74847f071e66de1d20a1601c8e5229"
+  },
+  "elite_size": 64,
+  "archive_cells": 1024,
+  "distinct_cells": 2310,
+  "counts": {
+    "checkpoint_reached": 9204,
+    "archive_admitted": 2254,
+    "archive_parent_draws": 10060,
+    "elite_parent_draws": 7387,
+    "top_elite_parent_draws": 2553
+  },
+  "discovery": false,
+  "rng_state": {
+    "bit_generator": "PCG64",
+    "state": {
+      "state": 183156836164483935156234070954207436345,
+      "inc": 295898182951938550628978921016297106669
+    },
+    "has_uint32": 1,
+    "uinteger": 283918611
+  },
+  "stop_requested": false
+}

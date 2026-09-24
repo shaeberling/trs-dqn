@@ -56,3 +56,29 @@ smoke (both projected plan streams have SHA-256
 The new code therefore leaves the old score-only selection path intact;
 the diverse arm changes its parent pool as specified above.
 The full **498-test** regression suite passed before production.
+
+## Completed result
+
+The production search completed all **20,000 distinct candidate plans**.
+It reached the pre-gap screen checkpoint in **9,204** plans, encountered
+**2,310 distinct visible cells**, retained the full **1,024-cell**
+reservoir, and drew **10,060** mutation parents from that reservoir.
+This is substantially broader *observed screen coverage* than the
+score-only elite, not evidence of safer navigation.
+
+The best candidate still scored exactly **2,620** first-life points and
+lost after **248** actions from frame 160, only one beyond the own-policy
+baseline's 247. Of 20,001 total plans including the baseline, **1,380**
+matched 2,620 and **793** of those outlasted the source by at least one
+action. **None** exceeded 2,620, survived the 272-action horizon,
+reached stage two or completed a mission. The [full run archive](run/)
+preserves all plans and real outcomes, code/cell/archive snapshots,
+source hashes, final report and RNG state. The protected best learned
+replay remains unchanged.
+
+This negative result does not rule out all screen-conditioned policies;
+the archive merely selected which *open-loop* candidate plans to mutate.
+It does show that retaining many more visibly different approaches did
+not solve the plateau under this action-sequence mutation mechanism.
+Further runs with the same selector and source are not justified by the
+outcome. No searched plan was supplied to a neural learner.
