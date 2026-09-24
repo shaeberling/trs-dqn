@@ -35,6 +35,12 @@ averaged **10,213**, median **10,440**, best **10,460**; all stayed in stage
 one. No noise-assisted training score is being mistaken for an ordinary
 learned-policy result. The planned run and independent fresh check continue.
 
+The second [full optimizer/RNG milestone](milestone-000008801024/state.json)
+is preserved after 262,144 new actions. Its ten fixed complete games
+averaged **10,466**, median/best **10,480**, all stage one. This is a
+stronger reused-seed score than the first check, but no visible barrier
+passage or independent improvement has been established.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-118 \
