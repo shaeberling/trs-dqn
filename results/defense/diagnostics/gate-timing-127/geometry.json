@@ -1,0 +1,65 @@
+{
+  "source_bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-screen-frontier-127/fresh-selected-replay",
+  "replay_trace_sha256": "60963ae6c02e10b700a74b4648b20d51529daa52bfa6a648ea63bd759aa03c11",
+  "probe_source_sha256": "e6b07069396c91863ccd13daa8d5c29e51f0b80a596189fae62c4348fca4b591",
+  "first_visible_loss_frame": 407,
+  "recorded_ship_columns": {
+    "322": 18,
+    "387": 26,
+    "388": 26
+  },
+  "recorded_wall_runs": [
+    {
+      "frame": 322,
+      "row": 9,
+      "runs": [
+        [
+          1,
+          20
+        ],
+        [
+          31,
+          62
+        ]
+      ]
+    },
+    {
+      "frame": 322,
+      "row": 2,
+      "runs": [
+        [
+          1,
+          50
+        ]
+      ]
+    }
+  ],
+  "held_right_samples": [
+    {
+      "anchor": 341,
+      "sample": 388,
+      "held_command": "RIGHT",
+      "ship_column": 45,
+      "displayed_score": 2620,
+      "stage": 1
+    },
+    {
+      "anchor": 347,
+      "sample": 387,
+      "held_command": "RIGHT",
+      "ship_column": 43,
+      "displayed_score": 2620,
+      "stage": 1
+    }
+  ],
+  "diagnostic_only": true,
+  "training_data_written": false,
+  "parameter_updates": 0,
+  "promotion_eligible": false,
+  "limitations": [
+    "A visible sprite glyph can be occluded or animated away.",
+    "Wall glyph runs are visible geometry, not collision flags.",
+    "Visible life loss can lag the physical collision.",
+    "Held-key interventions are not learned-policy actions or training examples."
+  ]
+}

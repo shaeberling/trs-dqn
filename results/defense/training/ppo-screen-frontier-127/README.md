@@ -86,3 +86,9 @@ The diverse own-screen archive did not produce a verified escape
 behavior; the run-121 score parent and global verified best remain
 protected. Repeating this exact archive setting longer is not supported
 by its independent stage and score results.
+
+A subsequent [exact-prefix timing diagnostic](../../diagnostics/gate-timing-127/README.md)
+shows why the repeated loss is not simply a missing RIGHT command: an
+early held RIGHT loses before the usual score plateau, while later held
+RIGHT reaches toward but still misses the visible far-right opening.
+Those intervention actions were not used to train or promote a model.
