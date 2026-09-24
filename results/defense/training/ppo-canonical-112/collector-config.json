@@ -107,11 +107,13 @@
     "runs/defense-ppo-canonical-112/artifacts",
     "runs/defense-ppo-canonical-control-113/artifacts",
     "runs/defense-ppo-early-loss-114/artifacts",
-    "runs/defense-ppo-early-loss-control-115/artifacts"
+    "runs/defense-ppo-early-loss-control-115/artifacts",
+    "runs/defense-ppo-near-loss-116/artifacts",
+    "runs/defense-ppo-long-credit-117/artifacts"
   ],
   "output": "results/defense/learned",
   "run": "runs/defense-collector",
   "interval": 30,
   "prior_sources_preserved": true,
-  "new_sources": "longer own-loss lookback and matched same-parent control"
+  "new_sources": "nearer own-loss practice and isolated longer-return credit"
 }
