@@ -47,3 +47,15 @@ The trainer restores inherited settings from the checkpoint and records
 the resolved configuration in its own run directory. The full Mac-native
 537-test suite passed after the preceding trainer/diagnostic changes;
 this continuation changes no code or architecture.
+
+The [`rl.defense_continuation_compare`](../../../../rl/defense_continuation_compare.py)
+watcher waits for the exact trainer PID and target. It rejects an early
+stop, incompatible source/configuration, missing optimizer or incomplete
+fixed checks. If a selected fixed check reports stage two or mission
+success, it independently replays the corresponding original-boot seed
+before making a claim. It then evaluates the selected frozen continuation
+and frozen parent on the predeclared 128 matched fresh games, verifies a
+local replay for each, and writes a comparison report without promotion.
+Its current state appears in the live run's `comparison-status.json`.
+Four focused fail-closed tests pass. The watcher and disk guard are separate
+processes; neither changes the learner's action, reward or checkpoint.
