@@ -259,6 +259,22 @@ rules out only one contiguous RIGHT correction, and reinforces the
 need to investigate multi-step, earlier screen-conditioned control
 without treating diagnostic actions as demonstrations.
 
+A [matched small-duration-mixture PPO trial](results/defense/training/ppo-duration-short-mix-152/README.md)
+then tested a 2% duration exploration floor over only the existing
+1/4/16/64-action options, versus a no-mixture control from identical
+verified fine-cadence weights. The treatment genuinely started
+**1,593** 64-action options by its last progress event, versus **374**
+for control, without the catastrophic fixed-score collapse seen with
+the added 128-action option. Both arms completed **524,288** actions
+and four complete-game checks, all stage one. On **64 new matched
+complete games**, selected treatment/control/unchanged-parent means
+were **10,105.31 / 10,032.50 / 10,412.34**, with **9 / 9 / 2**
+sub-9,000 games and zero stage-two games. Both fresh-best replays
+independently verify all learned actions and again lose four 2,620-
+point lives. The treatment is negative versus its parent, so neither
+new arm is promoted; complete optimizer/RNG states, evaluations and
+replays are archived, and the protected best remains available.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
