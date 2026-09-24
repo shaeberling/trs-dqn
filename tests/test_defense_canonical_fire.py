@@ -12,10 +12,21 @@ from unittest.mock import patch
 
 import numpy as np
 
-from rl.defense_canonical_fire import COMMAND_MAP, group_logits_numpy
+from rl.defense_canonical_fire import (COMMAND_MAP, balanced_fire_initial_bias,
+                                       group_logits_numpy)
 
 
 class CanonicalFireTests(unittest.TestCase):
+    def test_balanced_fresh_fire_bias_is_direction_neutral(self):
+        offset = balanced_fire_initial_bias()
+        self.assertEqual(offset.shape, (20,))
+        self.assertEqual(offset.dtype, np.float32)
+        self.assertTrue(np.all(offset[:9] == 0))
+        self.assertTrue(np.all(offset[18:] == 0))
+        np.testing.assert_allclose(offset[9:18], -np.log(9), atol=1e-6)
+        np.testing.assert_allclose(group_logits_numpy(offset[None]),
+                                   np.zeros((1, 12), np.float32), atol=1e-6)
+
     def test_grouped_probability_is_sum_of_fire_aliases(self):
         import mlx.core as mx
         from rl.defense_canonical_fire import group_logits_mlx, learning_indices
@@ -62,6 +73,33 @@ class CanonicalFireTests(unittest.TestCase):
                     self.assertRaises(SystemExit) as error:
                 defense_train.main()
             self.assertEqual(error.exception.code, 2)
+
+    def test_balanced_initializer_changes_only_fire_alias_biases(self):
+        import mlx.core as mx
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            base = [sys.executable, '-m', 'rl.defense_train', '--canonical-fire',
+                    '--initialize-only', '--envs', '2', '--rollout', '16',
+                    '--batch-size', '32', '--eval-every', '16', '--eval-games', '2',
+                    '--eval-envs', '2', '--mlx-cache-mb', '64']
+            for name, extra in (('control', []), ('balanced', ['--balanced-canonical-init'])):
+                command = [*base, '--run', str(root/name), '--artifacts',
+                           str(root/(name+'-artifacts')), *extra]
+                result = subprocess.run(command, capture_output=True, text=True, timeout=90)
+                self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
+                config = json.loads((root/name/'latest/state.json').read_text())['config']
+                self.assertEqual(config['balanced_canonical_init'], name == 'balanced')
+                self.assertEqual(config['reward'],
+                                 'visible score difference only, constant scale for optimizer')
+            control = mx.load(str(root/'control/latest/model.safetensors'))
+            balanced = mx.load(str(root/'balanced/latest/model.safetensors'))
+            self.assertEqual(control.keys(), balanced.keys())
+            for key in control:
+                difference = np.array(balanced[key] - control[key])
+                np.testing.assert_allclose(
+                    difference, balanced_fire_initial_bias() if key == 'advantage.bias'
+                    else np.zeros_like(difference), atol=1e-6, err_msg=key)
 
     def test_native_training_evaluation_replay_and_resume(self):
         checkpoint = Path("results/defense/training/ppo-own-loss-107/checkpoint-000008407808")

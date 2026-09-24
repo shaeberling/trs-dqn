@@ -12,6 +12,18 @@ import numpy as np
 COMMAND_MAP = np.array((*range(10), 18, 19), dtype=np.int32)
 
 
+def balanced_fire_initial_bias():
+    """Give each of the twelve physical stage-one choices equal initial mass.
+
+    The nine network fire aliases have a log-sum-exp advantage of log(9)
+    at zero logits. This fixed, direction-neutral offset removes it only at
+    fresh initialization; all twenty actor rows remain trainable afterward.
+    """
+    offset = np.zeros(20, np.float32)
+    offset[9:18] = -np.log(9.)
+    return offset
+
+
 def group_logits_numpy(logits):
     values = np.asarray(logits)
     if values.ndim != 2 or values.shape[1] != 20 or not np.isfinite(values).all():

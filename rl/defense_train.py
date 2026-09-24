@@ -104,6 +104,8 @@ def main():
                         help="direction-neutral initial logit penalty per longer hold; only for fresh duration initialization")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
                         help="train a fixed twelve-choice categorical policy combining nine fire-key aliases")
+    parser.add_argument("--balanced-canonical-init", action=argparse.BooleanOptionalAction, default=False,
+                        help="fresh canonical-fire actor starts with equal mass on twelve physical choices")
     parser.add_argument("--tstates", type=int, default=100_000)
     parser.add_argument("--observation-stride", type=int, default=1,
                         help="policy sees four visible frames spaced this many actions apart")
@@ -156,6 +158,8 @@ def main():
             parser.error("Resume requires a compatible Defense checkpoint")
         if args.allow_enter != config.get("allow_enter", False):
             parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
+        if args.balanced_canonical_init != config.get("balanced_canonical_init", False):
+            parser.error("Changing canonical-fire initializer provenance on resume is invalid")
         if args.repeat_previous_action != config.get("repeat_previous_action", False):
             parser.error("Changing continue-action profile requires fresh initialization")
         if args.learned_durations != config.get("learned_durations", []):
@@ -205,6 +209,11 @@ def main():
     if args.canonical_fire and (args.allow_enter or args.recurrent_hidden or args.sil_updates
                                 or args.policy_bias_noise or args.policy_weight_noise):
         parser.error("canonical fire requires plain twenty-command feedforward PPO without SIL or policy noise")
+    if args.balanced_canonical_init and (not args.canonical_fire or
+            (not prior and (args.initialize_encoder or args.initialize_policy
+                            or args.initialize_repeat_policy or args.initialize_duration_policy
+                            or args.initialize_duration_checkpoint))):
+        parser.error("balanced canonical initialization requires a fresh grouped-fire PPO actor")
     if args.repeat_previous_action and (args.allow_enter or args.recurrent_hidden or args.canonical_fire
                                         or args.sil_updates or args.initialize_encoder or args.initialize_policy):
         parser.error("continue-action learner requires ordinary feedforward PPO without Enter, SIL or other initialization")
@@ -397,6 +406,9 @@ def main():
             head = agent.model.base.advantage if args.recurrent_hidden else agent.model.advantage
             head.weight *= .1
             head.bias *= .1
+            if args.balanced_canonical_init and not prior:
+                from .defense_canonical_fire import balanced_fire_initial_bias
+                head.bias = head.bias + mx.array(balanced_fire_initial_bias())
         agent.compile()
     sil = None
     if args.sil_updates:
@@ -550,6 +562,10 @@ def main():
                       canonical_fire_source_sha256=sha256(Path(__file__).with_name("defense_canonical_fire.py")),
                       canonical_fire_semantics="commands 9..17 grouped by log-sum-exp and emitted as Space; "
                                                "commands 0..8 and 18..19 unchanged on every screen")
+        if args.balanced_canonical_init:
+            config["canonical_fire_initialization"] = (
+                "fresh actor logits offset by -log(9) for each of nine forward-fire aliases; "
+                "twelve distinct physical commands have approximately equal initial mass")
     if args.curriculum_probability:
         config.update(curriculum_archive_saved=False,
                       curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
