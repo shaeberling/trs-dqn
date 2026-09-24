@@ -8081,3 +8081,24 @@ again show four 2,620-point lives near the broad right-opening barrier.
 Byte-exact re-execution of the selected replay found **zero** frozen-policy
 `CONTINUE_PREVIOUS` choices among 2,528 decisions, including all pre-loss
 windows. Coherent training noise did not become a learned escape behavior.
+
+The next [stronger key-factor pilot](results/defense/training/ppo-key-noise-strong-124/README.md)
+changes only training-noise standard deviation **1 → 2**, restarting from
+the same frozen run-121 full state rather than selecting run 123's near-tied
+checkpoint. Its symmetric factors remain direction-neutral; complete-game
+score is still the only reward and the original best replay is protected.
+Eight fixed checks and any fresh comparison are predeclared in the run plan.
+
+Run 124 completed its planned **1,048,576** stronger-noise actions and eight
+ten-game checks (fixed means **9,904 / 10,292 / 10,210 / 10,434 / 10,462 /
+10,478 / 9,736 / 9,984**). Its sixth checkpoint passed the fixed gate,
+but [128 fresh matched games](results/defense/training/ppo-key-noise-strong-124/comparison.json)
+averaged only **10,402.34**, against **10,456.88** for run 121 and
+**10,473.59** for run 123. None of the 384 fresh games reached stage two.
+Its [verified local replay](results/defense/training/ppo-key-noise-strong-124/fresh-selected-replay/replay.html)
+again lost four 2,620-point lives at the recurring barrier, with just 10
+sampled continuation choices in 2,500 actions and none in the pre-loss
+windows. The [full negative run](results/defense/training/ppo-key-noise-strong-124/README.md)
+and [read-only loss frames](results/defense/diagnostics/key-noise-strong-124-losses/README.md)
+are preserved. The run-121 score parent and older global best remain
+protected; stronger exploration noise by itself did not solve this obstacle.
