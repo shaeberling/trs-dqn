@@ -87,6 +87,15 @@ no later stage. This does not test retraining at finer cadence. Neither
 trial changed the original game, reward, protected best replay or no-oracle
 learning boundary.
 
+The [white-flash credit diagnostic](results/defense/diagnostics/white-flash-139/README.md)
+checked whether a screen-visible flash could mark the repeated life loss
+earlier for PPO. It does align 8–17 actions before all 60 non-final
+losses across 20 verified selected replays, but the same full traces have
+556 false early onsets even after a 32-action post-life grace. An older
+24-game own-play collection has 688 such early onsets after the same grace.
+Therefore a raw white-majority screen cannot safely replace the actual
+visible life boundary; no terminal-target change was made.
+
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
