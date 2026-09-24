@@ -52,3 +52,25 @@ evidence of new progress. The smoke is excluded from any best-model
 collector.
 
 The full **478-test** regression suite passed before the production search.
+
+The production [run archive](run/) completed all **100,000** expansions and
+**871,071** new emulator actions. The complete plan log, accepted-node
+ancestry, source hashes, RNG state, final status and exact source code are
+preserved; the archived files were content-checked against the live run.
+The 4,096-cell archive filled and encountered **10,898** distinct coarse
+visible cells over time. It admitted **12,005** new nodes, including chains
+of up to **12** random holds; **6,558** admitted nodes had at least four
+chained holds. The ten physical commands were sampled roughly uniformly.
+These counts show that the mechanism chained beyond the old two-hold probe,
+not that it found a better course path.
+
+The original own-source prefixes already contained a best displayed
+within-life score of **2,640**. New random branches also reached 2,640
+**10,841** times, but **never exceeded it**. The search recorded **53,057**
+visible life losses, **zero** stage-two screens and **zero** mission outcomes.
+The [checked analysis](analysis.json) separates seeded from exploratory
+score, archive diversity and macro depth. This negative result argues
+against simply extending the same unbiased short-hold frontier search;
+it does not prove no screen-conditioned policy can pass the obstacle.
+No weights were trained or promoted, and the original verified best replay
+and confirmed score parent remain unchanged.
