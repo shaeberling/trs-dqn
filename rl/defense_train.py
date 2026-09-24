@@ -31,6 +31,8 @@ def main():
                        help="fresh learner using only an own Defense checkpoint's screen encoder")
     start.add_argument("--initialize-policy", type=Path,
                        help="own feedforward PPO checkpoint for a zero-output recurrent residual base")
+    start.add_argument("--initialize-repeat-policy", type=Path,
+                       help="own ordinary PPO checkpoint for a fresh continue-previous-action learner")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
     parser.add_argument("--initialize-only", action="store_true",
                         help="save initialized weights/optimizer and exit without learning")
@@ -61,6 +63,8 @@ def main():
     parser.add_argument("--life-terminal", action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument("--allow-enter", action=argparse.BooleanOptionalAction, default=False,
                         help="add Enter as a learned action; never automatically skip an intro")
+    parser.add_argument("--repeat-previous-action", action=argparse.BooleanOptionalAction, default=False,
+                        help="learn a twenty-first choice that continues the policy's own last key")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
                         help="train a fixed twelve-choice categorical policy combining nine fire-key aliases")
     parser.add_argument("--tstates", type=int, default=100_000)
@@ -103,7 +107,7 @@ def main():
         prior = json.loads((args.resume/"state.json").read_text())
         explicit = {word.split("=", 1)[0] for word in sys.argv[1:] if word.startswith("--")}
         for key, value in prior["config"].items():
-            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_only")
+            if (hasattr(args, key) and key not in ("run", "resume", "artifacts", "steps", "initialize_encoder", "initialize_policy", "initialize_repeat_policy", "initialize_only")
                     and "--"+key.replace("_", "-") not in explicit
                     and "--no-"+key.replace("_", "-") not in explicit):
                 setattr(args, key, value)
@@ -115,6 +119,8 @@ def main():
             parser.error("Resume requires a compatible Defense checkpoint")
         if args.allow_enter != config.get("allow_enter", False):
             parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
+        if args.repeat_previous_action != config.get("repeat_previous_action", False):
+            parser.error("Changing continue-action profile requires fresh initialization")
         from .recurrent_policy import RECURRENT_ARCHITECTURE
         if (args.recurrent_hidden != config.get('recurrent_hidden', 0)
                 or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else None)):
@@ -142,6 +148,11 @@ def main():
     if args.canonical_fire and (args.allow_enter or args.recurrent_hidden or args.sil_updates
                                 or args.policy_bias_noise or args.policy_weight_noise):
         parser.error("canonical fire requires plain twenty-command feedforward PPO without SIL or policy noise")
+    if args.repeat_previous_action and (args.allow_enter or args.recurrent_hidden or args.canonical_fire
+                                        or args.sil_updates or args.initialize_encoder or args.initialize_policy):
+        parser.error("continue-action learner requires ordinary feedforward PPO without Enter, SIL or other initialization")
+    if args.initialize_repeat_policy and not args.repeat_previous_action:
+        parser.error("--initialize-repeat-policy requires --repeat-previous-action")
     if min(args.steps, args.max_episode_steps, args.eval_max_steps, args.mlx_cache_mb) < 0:
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
@@ -191,8 +202,9 @@ def main():
         agent_class = RecurrentPPO
         extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale,
                           freeze_base=args.freeze_recurrent_base)
+    policy_action_count = len(action_names(args.allow_enter)) + int(args.repeat_previous_action)
     agent = agent_class(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
-                        action_count=len(action_names(args.allow_enter)),
+                        action_count=policy_action_count,
                         value_coefficient=args.value_coefficient, **extra_agent)
     rng = np.random.default_rng(args.seed)
     steps, episodes = 0, 0
@@ -205,7 +217,15 @@ def main():
         rng.bit_generator.state = prior["rng"]
         steps, episodes = prior["steps"], prior["episodes"]
     else:
-        if args.initialize_policy:
+        if args.initialize_repeat_policy:
+            from .defense_repeat_previous import initialize_repeat_policy
+            try:
+                initialization = initialize_repeat_policy(agent.model, args.initialize_repeat_policy,
+                                                          tstates=args.tstates,
+                                                          observation_stride=args.observation_stride)
+            except (OSError, ValueError, KeyError) as error:
+                parser.error(str(error))
+        elif args.initialize_policy:
             from .defense_initialization import initialize_policy
             try:
                 initialization = initialize_policy(agent.model, args.initialize_policy,
@@ -221,7 +241,7 @@ def main():
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
         # Broad initial exploration; no preference for a hand-selected action.
-        if not args.initialize_policy:
+        if not (args.initialize_policy or args.initialize_repeat_policy):
             head = agent.model.base.advantage if args.recurrent_hidden else agent.model.advantage
             head.weight *= .1
             head.bias *= .1
@@ -231,7 +251,7 @@ def main():
         from .sil import SILReplay, TrainingSuffixes, SelfImitation
         sil_replay = SILReplay(args.sil_capacity)
         sil_collector = TrainingSuffixes(sil_replay, args.envs, args.gamma, args.sil_suffix_steps,
-                                         action_count=len(action_names(args.allow_enter)), score_reader=screen_info)
+                                         action_count=policy_action_count, score_reader=screen_info)
         sil = SelfImitation(agent, args.sil_loss_weight, args.sil_value_weight)
         sil_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 941]))
         if prior and "sil_rng" in prior:
@@ -246,11 +266,11 @@ def main():
             noise_rng.bit_generator.state = prior["policy_noise_rng"]
         # Emulator episodes restart on resume, so draw new episode perturbations.
         if args.policy_weight_noise:
-            noise = PolicyWeightNoise(args.envs, len(action_names(args.allow_enter)),
+            noise = PolicyWeightNoise(args.envs, policy_action_count,
                                       agent.model.advantage.weight.shape[1], args.policy_weight_noise, noise_rng)
             noise_argument, noise_kind = "head_weight_noise", "output-weight"
         else:
-            noise = PolicyBiasNoise(args.envs, len(action_names(args.allow_enter)),
+            noise = PolicyBiasNoise(args.envs, policy_action_count,
                                     args.policy_bias_noise, noise_rng)
             noise_argument, noise_kind = "logit_bias", "output-bias"
     args.run.mkdir(parents=True, exist_ok=True)
@@ -265,6 +285,12 @@ def main():
                   reward="visible score difference only, constant scale for optimizer",
                   policy="learned categorical, sampled", mlx=mx.__version__,
                   resume_semantics="optimizer and policy RNG restored; emulator episodes restart from boot")
+    if args.repeat_previous_action:
+        from .defense_repeat_previous import POLICY_ACTION_NAMES, RepeatPreviousActions, RepeatPreviousPolicy
+        config.update(policy_action_names=list(POLICY_ACTION_NAMES),
+                      repeat_previous_source_sha256=sha256(Path(__file__).with_name("defense_repeat_previous.py")),
+                      policy="learned categorical with own-previous-key continuation, sampled",
+                      previous_action_reset="visible life loss or episode boundary; NOOP at boot/resume")
     if args.recurrent_hidden:
         config.update(architecture=RECURRENT_ARCHITECTURE,
                       recurrent_source_sha256=sha256(Path(__file__).with_name('defense_recurrent.py')),
@@ -277,7 +303,8 @@ def main():
             config['frozen_parameter_scope'] = 'base CNN, feature layer, actor and value heads; memory and residual heads trainable'
     if initialization is not None:
         config.update(initialization=initialization,
-                      initialization_source_sha256=sha256(Path(__file__).with_name("defense_initialization.py")))
+                      initialization_source_sha256=sha256(Path(__file__).with_name(
+                          "defense_repeat_previous.py" if args.initialize_repeat_policy else "defense_initialization.py")))
     elif prior and "initialization" in prior["config"]:
         # Keep ancestry without reapplying initialization or requiring its source.
         config["initialization"] = prior["config"]["initialization"]
@@ -357,6 +384,7 @@ def main():
                             max_steps=args.max_episode_steps, allow_enter=args.allow_enter,
                             observation_stride=args.observation_stride, **curriculum)
         obs = workers.observations
+        repeat_actions = RepeatPreviousActions(args.envs) if args.repeat_previous_action else None
         if args.recurrent_hidden:
             agent.reset_memory(args.envs)
             episode_starts = np.ones(args.envs, dtype=bool)
@@ -379,12 +407,16 @@ def main():
                 values_buffer.append(values)
                 next_obs, reward_row, boundary_row = [], [], []
                 noise_boundaries = np.zeros(args.envs, dtype=bool) if noise is not None else None
-                for worker, result in enumerate(workers.step(actions)):
+                physical_actions = repeat_actions.execute(actions) if repeat_actions is not None else actions
+                repeat_boundaries = np.zeros(args.envs, dtype=bool) if repeat_actions is not None else None
+                for worker, result in enumerate(workers.step(physical_actions)):
                     frame, reward, terminal, truncated, info, reset = result
                     reward *= args.reward_scale
                     learning_terminal = terminal or (args.life_terminal and info["life_lost"])
                     if noise is not None:
                         noise_boundaries[worker] = terminal or truncated or info["life_lost"]
+                    if repeat_actions is not None:
+                        repeat_boundaries[worker] = terminal or truncated or info["life_lost"]
                     if sil is not None:
                         # Only this learner's own screens, selected actions and
                         # score returns; never evaluation/replay-file examples.
@@ -421,6 +453,8 @@ def main():
                     agent.reset_done(episode_starts)
                 if noise is not None:
                     noise_rollout.redraw(noise_boundaries)
+                if repeat_actions is not None:
+                    repeat_actions.reset(repeat_boundaries)
                 steps += args.envs
             last_value = (agent.bootstrap_value(obs) if args.recurrent_hidden
                           else agent.predict(mx.array(obs))[1])
@@ -490,7 +524,10 @@ def main():
                 agent.save(directory, state())
                 agent.save(args.run/"latest", state())
                 log(dict(event="validation_start", steps=steps, checkpoint=str(directory)))
-                result = evaluate(agent.policy(), range(args.eval_seed, args.eval_seed+args.eval_games),
+                evaluation_policy = agent.policy()
+                if args.repeat_previous_action:
+                    evaluation_policy = RepeatPreviousPolicy(evaluation_policy)
+                result = evaluate(evaluation_policy, range(args.eval_seed, args.eval_seed+args.eval_games),
                                   tstates=args.tstates, max_steps=args.eval_max_steps, envs=args.eval_envs,
                                   log=log, should_stop=lambda: stop, allow_enter=args.allow_enter,
                                   observation_stride=args.observation_stride)
