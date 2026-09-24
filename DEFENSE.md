@@ -7953,3 +7953,12 @@ score-training parent; it is not a mission solution, and the older native-
 verified global best replay remains preserved. All model/optimizer/RNG
 history, source snapshots and independently verified fresh-best replays
 are archived with the run.
+
+A [read-only loss-screen check](results/defense/diagnostics/long-noise-119-losses/README.md)
+of the new score parent's and older parent's independently verified fresh
+best-effort replays found **2,620 displayed points on every one of eight
+lives**, again around the broad right-opening barrier sequence. Their
+selected seeds differ, and the white flash is not a collision timestamp;
+this does not prove identical physical failure sites. It does show that the
+confirmed mean-score gain has not yet changed the recurring visible
+late-life failure. The panels never enter training or action selection.
