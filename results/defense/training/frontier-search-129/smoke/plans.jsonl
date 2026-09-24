@@ -1,0 +1,100 @@
+{"attempt": 0, "parent": 190, "action": 3, "hold": 4, "length": 4, "score_gain": 20, "life_score": 1120, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 368}
+{"attempt": 1, "parent": 290, "action": 4, "hold": 8, "length": 8, "score_gain": 50, "life_score": 210, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 369}
+{"attempt": 2, "parent": 61, "action": 6, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 370}
+{"attempt": 3, "parent": 52, "action": 0, "hold": 16, "length": 16, "score_gain": 20, "life_score": 350, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 371}
+{"attempt": 4, "parent": 354, "action": 6, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 372}
+{"attempt": 5, "parent": 242, "action": 4, "hold": 16, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 6, "parent": 185, "action": 1, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 373}
+{"attempt": 7, "parent": 253, "action": 0, "hold": 8, "length": 8, "score_gain": 0, "life_score": 1100, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 8, "parent": 322, "action": 5, "hold": 32, "length": 8, "score_gain": 20, "life_score": 2640, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 9, "parent": 184, "action": 4, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 10, "parent": 118, "action": 8, "hold": 32, "length": 16, "score_gain": 20, "life_score": 2570, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 11, "parent": 134, "action": 6, "hold": 32, "length": 14, "score_gain": 0, "life_score": 330, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 12, "parent": 62, "action": 7, "hold": 16, "length": 8, "score_gain": 20, "life_score": 2640, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 13, "parent": 368, "action": 8, "hold": 16, "length": 16, "score_gain": 0, "life_score": 1120, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 374}
+{"attempt": 14, "parent": 267, "action": 1, "hold": 4, "length": 4, "score_gain": 1500, "life_score": 2530, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 375}
+{"attempt": 15, "parent": 356, "action": 3, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 376}
+{"attempt": 16, "parent": 229, "action": 1, "hold": 8, "length": 8, "score_gain": 1500, "life_score": 2550, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 377}
+{"attempt": 17, "parent": 348, "action": 1, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 378}
+{"attempt": 18, "parent": 323, "action": 3, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 379}
+{"attempt": 19, "parent": 293, "action": 6, "hold": 4, "length": 4, "score_gain": 0, "life_score": 210, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 380}
+{"attempt": 20, "parent": 266, "action": 8, "hold": 16, "length": 8, "score_gain": 0, "life_score": 2570, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 21, "parent": 274, "action": 2, "hold": 8, "length": 8, "score_gain": 120, "life_score": 330, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 381}
+{"attempt": 22, "parent": 61, "action": 0, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 23, "parent": 377, "action": 4, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2550, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 382}
+{"attempt": 24, "parent": 357, "action": 9, "hold": 32, "length": 24, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 25, "parent": 142, "action": 0, "hold": 32, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 26, "parent": 368, "action": 4, "hold": 8, "length": 8, "score_gain": 0, "life_score": 1120, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 383}
+{"attempt": 27, "parent": 351, "action": 2, "hold": 16, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 28, "parent": 379, "action": 4, "hold": 32, "length": 25, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 29, "parent": 72, "action": 6, "hold": 32, "length": 31, "score_gain": 1520, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 30, "parent": 311, "action": 4, "hold": 32, "length": 32, "score_gain": 20, "life_score": 280, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 384}
+{"attempt": 31, "parent": 212, "action": 1, "hold": 32, "length": 32, "score_gain": 170, "life_score": 330, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 385}
+{"attempt": 32, "parent": 31, "action": 4, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2570, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 33, "parent": 101, "action": 5, "hold": 32, "length": 27, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 34, "parent": 321, "action": 1, "hold": 32, "length": 18, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 35, "parent": 256, "action": 8, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 386}
+{"attempt": 36, "parent": 51, "action": 6, "hold": 8, "length": 8, "score_gain": 0, "life_score": 330, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 37, "parent": 103, "action": 7, "hold": 16, "length": 8, "score_gain": 20, "life_score": 2640, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 38, "parent": 302, "action": 9, "hold": 32, "length": 32, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 387}
+{"attempt": 39, "parent": 185, "action": 4, "hold": 32, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 40, "parent": 303, "action": 5, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 388}
+{"attempt": 41, "parent": 152, "action": 7, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 389}
+{"attempt": 42, "parent": 0, "action": 5, "hold": 16, "length": 15, "score_gain": 20, "life_score": 140, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 43, "parent": 318, "action": 8, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2550, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 44, "parent": 354, "action": 2, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 45, "parent": 282, "action": 0, "hold": 32, "length": 15, "score_gain": 0, "life_score": 1050, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 46, "parent": 206, "action": 3, "hold": 32, "length": 8, "score_gain": 0, "life_score": 2570, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 47, "parent": 175, "action": 9, "hold": 16, "length": 16, "score_gain": 50, "life_score": 210, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 390}
+{"attempt": 48, "parent": 377, "action": 0, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2550, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 391}
+{"attempt": 49, "parent": 0, "action": 8, "hold": 32, "length": 32, "score_gain": 20, "life_score": 140, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 50, "parent": 301, "action": 9, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 392}
+{"attempt": 51, "parent": 242, "action": 1, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 52, "parent": 349, "action": 0, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 53, "parent": 152, "action": 1, "hold": 32, "length": 18, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 54, "parent": 323, "action": 7, "hold": 32, "length": 32, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 393}
+{"attempt": 55, "parent": 303, "action": 5, "hold": 32, "length": 18, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 56, "parent": 363, "action": 0, "hold": 4, "length": 4, "score_gain": 0, "life_score": 1050, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 57, "parent": 63, "action": 4, "hold": 16, "length": 16, "score_gain": 100, "life_score": 310, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 394}
+{"attempt": 58, "parent": 219, "action": 0, "hold": 32, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 59, "parent": 142, "action": 9, "hold": 32, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 60, "parent": 58, "action": 0, "hold": 32, "length": 32, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 61, "parent": 241, "action": 2, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 62, "parent": 77, "action": 8, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 63, "parent": 254, "action": 1, "hold": 32, "length": 29, "score_gain": 1500, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 64, "parent": 322, "action": 0, "hold": 16, "length": 8, "score_gain": 20, "life_score": 2640, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 65, "parent": 61, "action": 1, "hold": 16, "length": 9, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 66, "parent": 75, "action": 8, "hold": 16, "length": 16, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 395}
+{"attempt": 67, "parent": 357, "action": 3, "hold": 8, "length": 8, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 68, "parent": 61, "action": 5, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 396}
+{"attempt": 69, "parent": 60, "action": 3, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 70, "parent": 370, "action": 8, "hold": 8, "length": 1, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 71, "parent": 370, "action": 8, "hold": 32, "length": 1, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 72, "parent": 379, "action": 1, "hold": 32, "length": 25, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 73, "parent": 248, "action": 0, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 74, "parent": 6, "action": 9, "hold": 32, "length": 32, "score_gain": 100, "life_score": 260, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 75, "parent": 242, "action": 4, "hold": 16, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 76, "parent": 334, "action": 1, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2550, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 397}
+{"attempt": 77, "parent": 301, "action": 6, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 78, "parent": 59, "action": 9, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 398}
+{"attempt": 79, "parent": 351, "action": 0, "hold": 16, "length": 8, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 80, "parent": 98, "action": 3, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 399}
+{"attempt": 81, "parent": 62, "action": 1, "hold": 8, "length": 6, "score_gain": 20, "life_score": 2640, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 82, "parent": 58, "action": 1, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 400}
+{"attempt": 83, "parent": 388, "action": 4, "hold": 4, "length": 2, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 84, "parent": 53, "action": 2, "hold": 4, "length": 4, "score_gain": 20, "life_score": 350, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 401}
+{"attempt": 85, "parent": 256, "action": 1, "hold": 8, "length": 8, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 86, "parent": 395, "action": 8, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 87, "parent": 246, "action": 5, "hold": 8, "length": 8, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 402}
+{"attempt": 88, "parent": 189, "action": 4, "hold": 4, "length": 4, "score_gain": 0, "life_score": 1100, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 403}
+{"attempt": 89, "parent": 357, "action": 1, "hold": 8, "length": 8, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 90, "parent": 247, "action": 3, "hold": 8, "length": 8, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 404}
+{"attempt": 91, "parent": 152, "action": 3, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 405}
+{"attempt": 92, "parent": 167, "action": 4, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2640, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 93, "parent": 246, "action": 5, "hold": 32, "length": 13, "score_gain": 20, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 94, "parent": 373, "action": 8, "hold": 4, "length": 4, "score_gain": 0, "life_score": 2600, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 95, "parent": 178, "action": 5, "hold": 8, "length": 8, "score_gain": 0, "life_score": 330, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 406}
+{"attempt": 96, "parent": 398, "action": 3, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": false}
+{"attempt": 97, "parent": 393, "action": 9, "hold": 16, "length": 6, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
+{"attempt": 98, "parent": 404, "action": 1, "hold": 8, "length": 8, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": false, "mission_completed": false, "admitted": true, "node": 407}
+{"attempt": 99, "parent": 400, "action": 5, "hold": 16, "length": 16, "score_gain": 0, "life_score": 2620, "stage": 1, "life_lost": true, "mission_completed": false, "admitted": false}
