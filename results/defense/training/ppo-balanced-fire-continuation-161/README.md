@@ -74,3 +74,24 @@ The full model/optimizer/RNG state, fixed evaluation and resolved replay
 bundle were copied byte-for-byte into this archive before the run
 continues. This fixed-seed score improvement does not establish a fresh
 generalization gain, a stage-two passage or a new protected global best.
+
+## Third fixed checkpoint: strongest so far
+
+The second fixed check at **10,485,760** actions averaged **9,595**,
+median **10,130**, best **10,380**; all ten complete games stayed in stage
+one. Its higher single-game replay was natively verified but did not beat
+the first checkpoint's fixed mean, so its optimizer state remains in the
+live run pending final selection rather than another remote duplicate.
+
+At **11,534,336** total actions (**3,145,728** new), the third frozen
+[ten-game evaluation](milestone-000011534336/evaluation.json) averaged
+**10,220**, median **10,210**, best **10,390**. All ten original-boot
+games still ended in stage one, with no mission. Its seed-10006
+[10,390-point replay](milestone-replay-000011534336/replay.html) was
+independently reexecuted for all **2,474** learned actions with
+`verified: true`; model SHA-256 is
+`488ac706272025a72080107dc4abd64c2cb5549bafa659111c296610f89ef28b`.
+The complete model/optimizer/RNG checkpoint and resolved replay bundle
+were copied byte-for-byte into this archive. This is the provisional
+stage-then-fixed-mean selection, not a new global-best replay or evidence
+of passage. The run continues to its predeclared target.
