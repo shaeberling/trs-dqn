@@ -59,3 +59,18 @@ local replay for each, and writes a comparison report without promotion.
 Its current state appears in the live run's `comparison-status.json`.
 Four focused fail-closed tests pass. The watcher and disk guard are separate
 processes; neither changes the learner's action, reward or checkpoint.
+
+## First fixed checkpoint
+
+At **9,437,184** total actions (**1,048,576** new), the first frozen
+[ten-game evaluation](milestone-000009437184/evaluation.json) averaged
+**9,904**, median **9,900**, best **9,980**. All ten original-boot games
+ended in stage one; none completed a mission. The seed-10003
+[best-effort replay](milestone-replay-000009437184/replay.html) scored
+9,980 over 2,537 learned decisions and independently verified against
+model SHA-256
+`dcc6f58919ac686215b41c0d4b10eeb1696b7f79a46451825468779e19d9ca6c`.
+The full model/optimizer/RNG state, fixed evaluation and resolved replay
+bundle were copied byte-for-byte into this archive before the run
+continues. This fixed-seed score improvement does not establish a fresh
+generalization gain, a stage-two passage or a new protected global best.
