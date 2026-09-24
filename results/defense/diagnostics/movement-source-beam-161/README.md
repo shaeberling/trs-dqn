@@ -44,3 +44,33 @@ venv/bin/python -u -m rl.defense_screen_beam \
   --output runs/defense-ppo-balanced-fire-160/movement-source-beam-161 \
   --beam 256 --anchor 200 --fine-cadence --history-key --side-fire
 ```
+
+## Completed result
+
+The [completed search](run/report.json) expanded **367,860** original-
+emulator branches over **124** layers and ended at frame **414**, when no
+retained first-life branch remained without visible loss. Maximum displayed
+first-life score was **2,550**, equal to the new source; the last visibly
+alive retained branch was at frame **413**. There was no score above the
+predeclared 2,620 gate, no later stage, no mission, and no frame-428
+survivor. At frame 388, the farthest readable ship glyph among selected
+paths was column **30**. This does not identify an exact collision point
+or show every route the pruned beam might have missed.
+
+The full [layer history](run/layers.jsonl.gz) is compressed to avoid
+retaining a duplicate 12 MiB text file. Decompression was compared
+byte-for-byte with the finished run, and its SHA-256 is
+`c32867115f5214dc0028b6aff9ee6d8fe8bfe2e97df78fb3eb996c65b25d2ea3`,
+matching the report. The frozen source checkpoint hash in the archived
+[configuration](run/config.json) matches the verified replay. The
+[exact source script](run/source.py) and final [status](run/status.json)
+are retained. The process exited normally; no discovered actions were
+exported to a learner.
+
+This negative result shows that swapping the earlier fire-heavy source
+for the new movement-heavy one does **not** make the same score/diversity
+beam find a passage. It does not establish that stage one is impossible;
+beam pruning and the 428-frame horizon remain material limitations. It
+does not justify simply repeating this search topology at larger width
+without a distinct hypothesis. The live matched-control experiment and
+protected best replay remain unchanged.
