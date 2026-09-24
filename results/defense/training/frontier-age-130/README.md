@@ -51,3 +51,23 @@ venv/bin/python -u -m rl.defense_frontier_search \
   --priority age --age-cell-interval 16 --source-life 1 \
   --expansions 100000 --capacity 4096 --source-stride 8 --seed 509
 ```
+
+The bounded [full run](run/) completed all **100,000** expansions and
+**677,998** new emulator actions, filling its 4,096-cell reservoir and
+encountering **7,553** distinct visible screen/age cells. It admitted
+**8,344** new intermediate states and registered 67,208 visible life
+losses. The twelve first-life sources' best displayed score was **2,620**;
+the exploration never exceeded it, never entered stage two and never showed
+mission completion. Full plans, accepted-node ancestry, source hashes, RNG
+state, final report and exact source code are preserved. The independent
+[checked analysis](analysis.json) separates these result metrics from the
+post-hoc comparison to each source's own visible loss age.
+
+The greatest branch that was *still visibly alive* reached 40 actions
+beyond its own source's visible-loss step, but it had earned only **320**
+life points. Among branches at **2,000+** or **2,600+** displayed life
+points, the largest such gain was just **12** actions. This is a negative
+result for the age selector, not a solved path or learned improvement.
+The source loss age was never read by the selector. No policy weights or
+protected replay changed; the fixed gate says not to extend this same
+random-hold selector unchanged.

@@ -1,0 +1,18 @@
+{
+  "index_sha256": "7cf67fe2992b120a415d8aa46ecdbbacf2c01ccf04e4f59acbda894aea21b47d",
+  "files": {
+    "seed-75000-life-1.npz": "05c9e0b63836b094a0fd920fb0ad372cf452a28b3a30fef75c1032712acd3826",
+    "seed-75001-life-1.npz": "958cafd877b3fae45350140a4f1e20b1bbcbe2babfea8891dafc36344b9484dd",
+    "seed-75002-life-1.npz": "74deaec931b4b13f30977050210323a81d3edb1366aa296fe225fc63cbe64d33",
+    "seed-75003-life-1.npz": "ca65624689ae4737188e9c35c05d7496e1cadfa5c406a3950f99c7e8c1983374",
+    "seed-75004-life-1.npz": "27865f1ad3b65d375d4c80f43e3649133eab03714c450c0327756ccb226d9e0a",
+    "seed-75005-life-1.npz": "bdd05c8986dc01c77d79d78a9faaa7e1eebbbbf08e2e272c0c382d27950a97ac",
+    "seed-75006-life-1.npz": "7cb961df54fd11d6100ff0c7ca67f237a295a12cfe4f5c7f474cb7f0fe32770d",
+    "seed-75007-life-1.npz": "bbe91cc17c664f28652b1774e969e6345ac35d183f40c35bc2a4c1824f1ed4b1",
+    "seed-75008-life-1.npz": "454f9c94d3e526d842112d405e64ef0e437402e6ce238ae749b9d07750c44f17",
+    "seed-75009-life-1.npz": "bc9c92a1380ad4a72cb3b24ea6039a0e15f3a1bfacb034ab5daa730f15d82ff1",
+    "seed-75010-life-1.npz": "523981f52d9d4484e4a463ec4bd55408a925a1341b7a0b56e922dd0b7df79aef",
+    "seed-75011-life-1.npz": "87e3cf4a02475ae59c4b689f01c1b9c9c9df50c97b386a751c9ff23ba0acbcf2"
+  },
+  "own_games": 12
+}
