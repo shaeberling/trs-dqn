@@ -91,14 +91,19 @@ class RepeatPreviousPolicy:
                 self.previous.pop(key, None)
 
 
-def initialize_repeat_policy(model, checkpoint, *, tstates, observation_stride):
-    """Copy an own twenty-choice PPO; seed CONTINUE from the mean actor row."""
+def initialize_repeat_policy(model, checkpoint, *, tstates, observation_stride,
+                             bias_offset=0.):
+    """Copy an own PPO; seed CONTINUE from the mean actor row plus a neutral bias."""
     import hashlib
     import json
     from pathlib import Path
 
     import mlx.core as mx
     from mlx.utils import tree_flatten, tree_unflatten
+
+    if (isinstance(bias_offset, bool) or not np.isfinite(bias_offset)
+            or not 0 <= bias_offset <= 10):
+        raise ValueError("Continue bias offset must be finite and in 0..10")
 
     checkpoint = Path(checkpoint)
     state_path, weights_path = checkpoint/"state.json", checkpoint/"model.safetensors"
@@ -124,7 +129,10 @@ def initialize_repeat_policy(model, checkpoint, *, tstates, observation_stride):
             if (value.shape[0] != CONTINUE or wanted.shape[0] != CONTINUE+1
                     or value.shape[1:] != wanted.shape[1:]):
                 raise ValueError("Actor row shape differs")
-            value = mx.concatenate((value, mx.mean(value, axis=0, keepdims=True)), axis=0)
+            continuation = mx.mean(value, axis=0, keepdims=True)
+            if name == "advantage.bias":
+                continuation = continuation + bias_offset
+            value = mx.concatenate((value, continuation), axis=0)
         elif value.shape != wanted.shape:
             raise ValueError("Base parameter shape differs: " + name)
         if value.dtype != wanted.dtype or not bool(mx.all(mx.isfinite(value)).item()):
@@ -134,7 +142,8 @@ def initialize_repeat_policy(model, checkpoint, *, tstates, observation_stride):
         raise ValueError("Initialization source changed while loading")
     model.update(tree_unflatten(copied))
     mx.eval(model.state)
-    return dict(method="own ordinary PPO full policy; new mean-actor CONTINUE row; fresh optimizer/RNG",
+    return dict(method="own ordinary PPO full policy; mean-actor CONTINUE row with direction-neutral bias; fresh optimizer/RNG",
+                continue_initial_bias_offset=float(bias_offset),
                 source_checkpoint=str(checkpoint),
                 source_model_sha256=hashlib.sha256(weights_bytes).hexdigest(),
                 source_state_sha256=hashlib.sha256(state_bytes).hexdigest(),

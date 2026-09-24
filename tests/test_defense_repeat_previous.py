@@ -84,18 +84,22 @@ class RepeatPreviousTests(unittest.TestCase):
             (source/"state.json").write_text(json.dumps(dict(config=config, steps=123)))
             extended = QNetwork(action_count=21)
             metadata = initialize_repeat_policy(extended, source, tstates=100000,
-                                                observation_stride=1)
+                                                observation_stride=1, bias_offset=7)
             observation = mx.array(np.zeros((2, 4, 16, 64), np.uint8))
             before, value_before = original.policy_value(observation)
             after, value_after = extended.policy_value(observation)
             np.testing.assert_allclose(np.array(after[:, :20]), np.array(before), rtol=1e-5, atol=1e-5)
-            np.testing.assert_allclose(np.array(after[:, 20]), np.array(mx.mean(before, axis=1)),
+            np.testing.assert_allclose(np.array(after[:, 20]), np.array(mx.mean(before, axis=1))+7,
                                        rtol=1e-5, atol=1e-5)
             np.testing.assert_allclose(np.array(value_after), np.array(value_before), rtol=1e-5, atol=1e-5)
             self.assertEqual(metadata["source_training_steps"], 123)
+            self.assertEqual(metadata["continue_initial_bias_offset"], 7)
             with self.assertRaises(ValueError):
                 initialize_repeat_policy(QNetwork(21), source, tstates=50000,
                                          observation_stride=1)
+            with self.assertRaises(ValueError):
+                initialize_repeat_policy(QNetwork(21), source, tstates=100000,
+                                         observation_stride=1, bias_offset=float('nan'))
 
 
 if __name__ == "__main__":
