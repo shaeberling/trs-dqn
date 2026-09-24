@@ -8,6 +8,19 @@ new ROM, binary patch or duplicate game asset is needed.
 Status: **Defense training has resumed after the user freed disk space**
 (23 GiB available at restart). The full **414-test** suite passes, including
 the supervisor checks previously blocked by the unchanged 5 GiB safeguard.
+The latest [learned key-duration PPO investigation](results/defense/training/ppo-duration-133/README.md)
+copied the strongest own screen-only PPO and trained its actor only at real
+option starts. A conservative 131,072-action pilot and a direction-neutral
+duration-noise 524,288-action trial both completed; the latter genuinely
+sampled hundreds of 64-action holds, but none of its 80 fixed or 128 fresh
+complete games reached stage two. Its selected checkpoint averaged 9,812
+on 64 untouched games versus 9,560 for its frozen initializer. A
+[separate forensic replay audit](results/defense/diagnostics/duration-133-course-progress/README.md)
+places all eight new visible life losses at original stage-one stream row
+33–34 of 126, matching the historical bottleneck. These hidden row reads
+were diagnostic only, never training inputs or rewards. The protected
+10,480-point global replay and original game's bits are unchanged. The
+current full **489-test** regression suite passes.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
