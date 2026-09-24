@@ -7830,3 +7830,20 @@ per arm remain full-boot and independent evaluation never restores a
 snapshot. Native short training, replay verification, optimizer resume
 and the full **462-test** suite pass. This is action abstraction, not a
 scripted steering rule, hidden-state input, demonstration or new reward.
+
+The [matched grouped-action and ordinary PPO continuations](results/defense/training/ppo-canonical-112/README.md)
+both finished **524,288 new actions** from the same full parent optimizer.
+The grouped arm's four fixed ten-game means were **9,457 / 9,789 /
+8,446 / 8,668**; the [control](results/defense/training/ppo-canonical-control-113/README.md)
+scored **10,438 / 10,428 / 10,139 / 9,314**. All remained stage one.
+Choosing each arm's best checkpoint by those fixed games, then playing
+**128 new matched complete games**, gave grouped / common parent /
+control means **9,825 / 10,173.75 / 10,370.78**. The grouped arm doubled
+sub-9,000 scores from 15 to 30 versus parent, despite improving 72 paired
+seeds; the control reduced them to five, improving 91 paired seeds.
+No fresh game reached stage two. The grouped abstraction is not a
+confirmed successor. The control's +197.03 fresh mean gain makes its
+first checkpoint a stronger **score** parent with full optimizer/RNG
+preserved, but it still hits the repeated barrier. Both complete runs,
+logs and verified local 10,480-point replays are archived; the global
+best remains unchanged.

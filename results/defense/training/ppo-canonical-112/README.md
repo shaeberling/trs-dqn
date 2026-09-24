@@ -2,7 +2,7 @@
 
 The frozen [canonical-fire diagnostic](../../diagnostics/action-group-110/README.md)
 retained the original model's fire-versus-movement probability and
-matched all 64 complete-game scores. This trial now makes the **same
+matched all 64 complete-game scores. This trial made the **same
 fixed twelve-group action distribution trainable**: the screen-only
 network still emits twenty logits, but PPO samples and learns the sum
 of fire-alias probabilities as one group. That group always emits Space;
@@ -15,14 +15,14 @@ including its exact optimizer and policy RNG at 8,407,808 actions. The
 own-loss training curriculum stays unchanged: 128-action lookback,
 first-life-loss restored cuts, twelve eligible practice workers and four
 reserved complete-boot workers. Entropy stays at the parent's 0.002.
-The bounded test adds 524,288 actions and four ten-game complete-boot
+The bounded test added 524,288 actions and four ten-game complete-boot
 evaluations. Its same-parent ungrouped control is run 113. Only later
 stage reach or independently fresh full-game results can establish
 progress; the original global verified replay remains preserved.
 
-The live output will be `runs/defense-ppo-canonical-112/`. Exact
-configuration/source and all full model/optimizer/RNG milestones will be
-archived here.
+The completed live output was `runs/defense-ppo-canonical-112/`; its
+entire model/optimizer/RNG, log and verified local replay history is
+archived in [run/](run/).
 
 The first [full optimizer/RNG milestone](milestone-000008538880/state.json)
 is preserved after **131,072 new actions**. Its ten complete fixed-seed
@@ -30,6 +30,21 @@ games averaged **9,457**, median **10,460**, best **10,480**; none reached
 stage two. This is below the matched control's first mean of 10,438,
 but one ten-game batch cannot establish a reliable ranking. The
 independently verified global replay remains unchanged.
+
+The run finished cleanly after all **524,288 new actions**, adding **63
+complete boot games and 2,272 restored segments**. Fixed ten-game means
+at the four checkpoints were **9,457 / 9,789 / 8,446 / 8,668**, all stage
+one. The selected checkpoint is the second, at [8,669,952 actions](run/step-000008669952/state.json).
+On [128 entirely new matched full-game seeds](fresh-selected-128.json), it
+averaged **9,825** versus **10,173.75** for the [common parent](fresh-parent-128.json):
+**-348.75**. It improved 72 paired seeds, worsened 50 and tied six, but
+below-9,000-point games doubled from 15 to 30. All 256 parent/grouped
+fresh games remained stage one. The [control](../ppo-canonical-control-113/README.md)
+averaged 10,370.78 on these same seeds. The grouped model's verified
+local replay ties the old 10,480 best but does not improve its rank.
+This implementation of grouping is not a confirmed successor; extra
+adaptation from the same grouped optimizer is not justified by these
+complete-game outcomes.
 
 ```bash
 venv/bin/python -u -m rl.defense_train \
