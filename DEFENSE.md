@@ -7902,3 +7902,13 @@ replays are archived in [run 116](results/defense/training/ppo-near-loss-116/REA
 and [run 117](results/defense/training/ppo-long-credit-117/README.md).
 The repeated visible navigation bottleneck and global verified best remain
 unchanged.
+
+The next [per-life parameter-noise PPO test](results/defense/training/ppo-persistent-noise-118/README.md)
+returns to the strongest independently confirmed score checkpoint. Its
+training-only actor-bias perturbation persists for each ship life while
+the learned screen-conditioned policy still chooses every key. The
+existing 128-decision own-loss continuation is the matched ordinary
+control. Four complete-game checks are planned over 524,288 new actions,
+then 128 fresh matched complete games. Only an unperturbed model's native
+stage transition and verified replay can establish progress. The sole
+collector now watches **111** sources; the global best remains protected.
