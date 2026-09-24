@@ -1,0 +1,43 @@
+{
+  "selection_rule": "highest fixed ten-game mean; earliest exact tie",
+  "selected_checkpoint": "run/step-000001048576",
+  "selected_fixed_mean_score": 10472,
+  "fresh_sets": [
+    {
+      "seeds": [602500, 602627],
+      "games_per_policy": 128,
+      "selected_mean_score": 10464.140625,
+      "parent_mean_score": 10434.6875,
+      "selected_minus_parent": 29.453125,
+      "paired_wins": 57,
+      "paired_losses": 15,
+      "paired_ties": 56
+    },
+    {
+      "seeds": [602700, 602827],
+      "games_per_policy": 128,
+      "selected_mean_score": 10445.859375,
+      "parent_mean_score": 10422.34375,
+      "selected_minus_parent": 23.515625,
+      "paired_wins": 57,
+      "paired_losses": 14,
+      "paired_ties": 57
+    }
+  ],
+  "combined_games_per_policy": 256,
+  "combined_selected_mean_score": 10455,
+  "combined_parent_mean_score": 10428.515625,
+  "combined_selected_minus_parent": 26.484375,
+  "combined_paired_wins": 114,
+  "combined_paired_losses": 29,
+  "combined_paired_ties": 113,
+  "combined_selected_below_9000": 3,
+  "combined_parent_below_9000": 3,
+  "combined_selected_exact_10480": 202,
+  "combined_parent_exact_10480": 119,
+  "selected_stage_2_games": 0,
+  "parent_stage_2_games": 0,
+  "selected_mission_games": 0,
+  "parent_mission_games": 0,
+  "decision": "confirmed score-consistency parent, not barrier passage; do not call mission complete"
+}
