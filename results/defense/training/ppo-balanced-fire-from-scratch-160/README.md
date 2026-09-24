@@ -172,3 +172,23 @@ resumable states, metrics, verified replays and evaluation records while
 pruning unselected intermediate optimizer snapshots. This retention
 policy prevents retired runs from again accumulating hundreds of
 unneeded full checkpoints.
+
+The resulting in-process checks are at 3,149,824 / 4,198,400 /
+5,246,976 / 6,295,552 / 7,344,128; its next automatic check would be
+8,392,704, **4,096 beyond the 8,388,608-action stop**. A one-shot
+[`rl.defense_balanced_followup`](../../../../rl/defense_balanced_followup.py)
+monitor therefore evaluates the frozen terminal treatment checkpoint on
+the same ten complete original-boot seeds 10000–10009 and independently
+verifies a local replay. It then launches the predeclared fresh matched
+control only if the treatment ended at its target, its original and final
+configurations still match, the full optimizer checkpoint is present,
+the terminal evaluation is complete and verified, no control exists, and
+free disk is at least **6 GiB**. The control gets its own exact-run
+5.1 GiB disk watchdog. Any early stop, incompatible run, incomplete
+evaluation or existing control fails closed; no policy selection or
+promotion happens automatically. Focused supervisor/watchdog tests pass.
+The one-shot monitor was launched while the treatment was live at about
+4.0 million actions; it records its own current state in
+`runs/defense-ppo-balanced-fire-160/followup-status.json`. Its command is
+`venv/bin/python -u -m rl.defense_balanced_followup`. The trainer and
+original exact-run disk watchdog remain separate live processes.
