@@ -46,3 +46,43 @@ venv/bin/python -u -m rl.defense_train \
   --curriculum-per-bin 1 \
   --steps 2097152 --eval-every 131072
 ```
+
+Before the full trial, the [native smoke](smoke/) completed 49,152 new
+actions, 16 boot games and 42 restored segments. It logged 85 own-loss
+archive events containing 31 distinct screen cells and independently
+verified a 2,546-action local replay; its two-game check stayed in stage
+one. The full **472-test** regression suite had passed before launch.
+
+The production run then completed **1,048,576** new base actions, **114**
+new complete boot games and **5,472** restored segments in about 746
+seconds. Its eight fixed ten-game means were **10,480 / 10,462 / 10,222 /
+10,194 / 10,440 / 10,460 / 10,224 / 10,446**. The first full
+optimizer/RNG checkpoint at counter **1,179,648** was selected. No
+training or validation game reached stage two. The [complete run archive](run/)
+retains every checkpoint, optimizer/RNG state, metrics, local artifacts
+and exact source snapshot.
+
+The log encountered **170 distinct pre-loss screen fingerprints** over
+time. The latest terminal inventory for every worker held **128 cells**,
+the configured maximum; this is actual occupancy, not inferred from
+capacity. Reserved boot-only workers still collected/shareable own states
+but did not restore from the archive. These facts verify that the new reset
+selection was exercised, not that cells corresponded to deeper progress.
+
+On the predeclared [128 fresh matched complete games](comparison.json),
+seeds 604000–604127, selected/confirmed-parent means were **10,402.42 /
+10,475.86**. The selection had **24 paired wins, 14 losses and 90 ties**
+and more exact 10,480s (**114/128** versus **103/128**), but three scores
+below 9,000 versus none for the parent produced a **−73.44-point mean**.
+All **256** fresh games stayed in stage one. Neither the paired-score
+detail nor a fixed-seed ceiling is evidence of passage or a confirmed
+new parent.
+
+The selected [native-verified local replay](fresh-selected-replay/replay.html)
+reproduces **2,563** learned decisions and four 2,620-point lives at the
+same obstacle. [Loss-frame inspection](../../diagnostics/screen-frontier-127-losses/README.md)
+found zero sampled continuation choices across the full frozen game.
+The diverse own-screen archive did not produce a verified escape
+behavior; the run-121 score parent and global verified best remain
+protected. Repeating this exact archive setting longer is not supported
+by its independent stage and score results.
