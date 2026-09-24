@@ -55,6 +55,20 @@ The eleventh check at counter 10,242,816 tied the seventh check's **10,470**
 fixed-game mean; all ten games again ended in stage one. The earlier saved
 checkpoint remains provisional under the tie rule above.
 
+The run finished all sixteen checks without a stage-two training or
+validation game. The earliest 10,470-point checkpoint above remains selected.
+On the first 128 fresh complete games (seeds 601400–601527), it averaged
+10,429.22 versus 10,401.72 for its immediate noise parent and 10,362.97
+for the independently confirmed ordinary-action parent. All 384 games
+stayed in stage one. The selected model improved only 31 paired games
+versus its immediate parent, worsened 58 and tied 39; its mean edge rests
+largely on fewer low-score failures. To avoid treating this ambiguous
+first sample as confirmation, **before any further evaluation** a second
+untouched 128-game matched set is specified: seeds **601600–601727** for
+the same three frozen checkpoints. No checkpoint will be reselected or
+updated from these fresh results. Mission success still requires native
+screen-observed evidence, not a score difference.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-persistent-noise-long-119 \
