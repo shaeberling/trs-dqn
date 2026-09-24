@@ -48,3 +48,33 @@ resumed the same parent for 4,096 actions with interval 32, completed a
 two-game frozen check at 10,480 mean (stage one), and independently verified
 a 2,554-action local replay. Its artifacts are excluded from the shared
 best collector and are not the predeclared production result.
+
+The production run completed **1,048,576** new actions, **114** complete
+boot games and **4,099** restored segments in about 733 seconds. Its
+eight fixed ten-game means were **10,469 / 10,480 / 10,475 / 10,468 /
+10,404 / 10,480 / 10,228 / 10,232**. The second full optimizer/RNG
+checkpoint at counter **1,310,720** was selected by the earliest-tie rule.
+The logged redraw count exceeded **33,000** near the end, confirming that
+the within-life schedule operated. No training or validation game reached
+stage two. The [complete run archive](run/) preserves every checkpoint,
+optimizer/RNG state, metrics and local artifacts; exact trainer,
+environment, noise, PPO, loader and snapshot sources are beside it.
+
+On the predeclared [128 fresh matched complete games](comparison.json),
+seeds 603800–603927, selected / confirmed run-121 parent / per-life-noise
+run-124 selection means were **10,428.05 / 10,445.78 / 10,396.48**.
+Against the score parent, the selected model had **16 paired wins, 22
+losses and 90 ties**; against the per-life-noise arm it had **15 wins, 21
+losses and 92 ties**. All **384** fresh games stayed in stage one. The
+positive mean difference over per-life noise is affected by score tails,
+not accompanied by more paired wins or any new stage. It is not a new
+confirmed parent.
+
+The selected [native-verified local replay](fresh-selected-replay/replay.html)
+reproduces **2,583** learned actions and four 2,620-point lives at the
+same obstacle. [Loss-frame inspection](../../diagnostics/key-noise-windowed-126-losses/README.md)
+found only one sampled continuation choice in the whole frozen game.
+Within-life, symmetric exploration did not create a verified escape
+behavior. The confirmed run-121 score parent and global verified best
+remain unchanged; an identical longer run is not justified by these
+fresh complete-game results.

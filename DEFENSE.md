@@ -8140,3 +8140,19 @@ actions, rather than staying fixed for the whole life, give the learned
 policy more useful coherent exploration. It keeps the original visible-
 score reward, screen-only policy and native evaluation. Full source, tests,
 fixed selection and fresh-game gates are recorded in its run plan.
+
+Run 126 completed all **1,048,576** planned within-life-noise actions and
+eight fixed ten-game checks: **10,469 / 10,480 / 10,475 / 10,468 / 10,404 /
+10,480 / 10,228 / 10,232**. Its 32-action redraw schedule logged over
+33,000 factor draws, but no training or validation game reached stage two.
+The selected second checkpoint's [128 fresh matched games](results/defense/training/ppo-key-noise-windowed-126/comparison.json)
+averaged **10,428.05**, below the run-121 score parent (**10,445.78**)
+and above the per-life-noise run-124 arm (**10,396.48**). Paired outcomes
+did not favor the new policy over either comparator, and all **384** fresh
+games remained in stage one. Its [verified local replay](results/defense/training/ppo-key-noise-windowed-126/fresh-selected-replay/replay.html)
+again has four 2,620-point losses at the familiar obstacle, with just one
+sampled continuation choice among 2,583 neural decisions. The
+[full negative run](results/defense/training/ppo-key-noise-windowed-126/README.md)
+and [loss sheets](results/defense/diagnostics/key-noise-windowed-126-losses/README.md)
+are preserved. Neither this within-life schedule nor its per-life control
+has produced a verified passing policy; the global best remains protected.
