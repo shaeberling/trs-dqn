@@ -7819,3 +7819,14 @@ explains why the naive ten-command mask failed (it discarded learned
 fire mass) and supports a trainable grouped-action PPO test. It does not
 prove identical native trajectories or later-stage command equivalence;
 the verified global best remains unchanged.
+
+A [trainable canonical-fire PPO variant](results/defense/training/ppo-canonical-112/README.md)
+now groups fire-key likelihoods by log-sum-exp in both categorical
+sampling and PPO's actor/entropy loss, then emits canonical Space for
+that fixed group on every screen. It keeps the twenty-logit neural head
+and exact strong parent optimizer. A [same-parent ordinary-action control](results/defense/training/ppo-canonical-control-113/README.md)
+will isolate this change over 524,288 new actions per arm; four workers
+per arm remain full-boot and independent evaluation never restores a
+snapshot. Native short training, replay verification, optimizer resume
+and the full **462-test** suite pass. This is action abstraction, not a
+scripted steering rule, hidden-state input, demonstration or new reward.

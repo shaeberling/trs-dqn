@@ -16,6 +16,8 @@ from .evaluate import (EvaluationCancelled, categorical_policy, evaluate,
 from .env import ENVIRONMENT_VERSION, validate_observation_stride
 from .reference import ReferencePolicy, reference_kl, reference_metadata
 from .vector import VectorEnv
+from .defense_canonical_fire import (COMMAND_MAP, CanonicalFirePolicy, group_logits_mlx,
+                                     group_logits_numpy, learning_indices)
 
 
 def _load_backend():
@@ -60,12 +62,15 @@ def update_selection(result, target_level, best_mean, best_levels, *, game_win=F
 
 class PPO:
     def __init__(self, seed=17, learning_rate=2.5e-4, entropy=0.01, reference_kl_weight=0,
-                 action_count=6, value_coefficient=.5):
+                 action_count=6, value_coefficient=.5, canonical_fire=False):
         if not np.isfinite(reference_kl_weight) or reference_kl_weight < 0:
             raise ValueError("reference KL weight must be finite and nonnegative")
         if (isinstance(value_coefficient, (bool, np.bool_))
                 or not np.isfinite(value_coefficient) or value_coefficient < 0):
             raise ValueError("value coefficient must be finite and nonnegative")
+        if not isinstance(canonical_fire, (bool, np.bool_)) or (canonical_fire and (
+                action_count != 20 or reference_kl_weight)):
+            raise ValueError("canonical fire requires twenty actions and no reference penalty")
         _load_backend()
         mx.random.seed(seed)
         self.model = QNetwork(action_count=action_count)
@@ -74,6 +79,7 @@ class PPO:
         self.entropy = entropy
         self.value_coefficient = value_coefficient
         self.reference_kl_weight = reference_kl_weight
+        self.canonical_fire = bool(canonical_fire)
         self.compile()
 
     def compile(self):
@@ -90,6 +96,9 @@ class PPO:
             logits, values = model.policy_value(obs, head_weight_noise=head_weight_noise)
         if logit_bias is not None:
             logits = logits + mx.stop_gradient(logit_bias)
+        if self.canonical_fire:
+            logits = group_logits_mlx(logits)
+            actions = learning_indices(actions)
         log_probs = logits-mx.logsumexp(logits, axis=-1, keepdims=True)
         logp = mx.take_along_axis(log_probs, actions[:, None], axis=-1)[:, 0]
         logratio = logp-old_logp
@@ -128,12 +137,17 @@ class PPO:
             if logit_bias.shape != logits.shape or not np.isfinite(logit_bias).all():
                 raise ValueError("policy bias noise must match logits and be finite")
             logits = logits + logit_bias
+        if self.canonical_fire:
+            logits = group_logits_numpy(logits)
         logp = logits-np.logaddexp.reduce(logits, axis=-1, keepdims=True)
         probs = np.exp(logp)
-        actions = (rng.random(len(obs))[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
-        return actions.astype(np.int32), logp[np.arange(len(obs)), actions], values
+        choices = (rng.random(len(obs))[:, None] > np.cumsum(probs, axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
+        actions = COMMAND_MAP[choices] if self.canonical_fire else choices
+        return actions.astype(np.int32), logp[np.arange(len(obs)), choices], values
 
     def policy(self, seed=0):
+        if self.canonical_fire:
+            return CanonicalFirePolicy(lambda obs: np.array(self.predict(mx.array(obs))[0]))
         return categorical_policy(lambda obs: np.array(self.predict(mx.array(obs))[0]), seed)
 
     def save(self, directory, state):
