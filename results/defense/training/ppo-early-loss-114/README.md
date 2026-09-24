@@ -31,6 +31,36 @@ one. The matched control averaged **10,430**. This early reused-seed check
 does not select a winner or demonstrate barrier passage; the predeclared
 continuations and fresh comparisons remain necessary.
 
+Both arms finished their planned 524,288 new actions without a stage-two
+training or evaluation game. This longer-lookback arm completed **64 boot
+games and 1,224 restored segments**; its four fixed ten-game means were
+**10,385 / 10,193 / 10,292 / 10,429**, all stage one. The final
+[9,063,168-action checkpoint](run/step-000009063168/state.json) was selected
+by these fixed games *before* the fresh test. The entire full model,
+optimizer, RNG, log, and verified local replay history is archived in
+[run/](run/). The full optimizer/RNG for the selected checkpoint allows
+subsequent experiments; it is not a confirmed successor.
+
+On [128 new complete games](fresh-selected-128.json), seeds 600600–600727,
+the frozen selected model averaged **10,399.69**, median **10,440**, best
+**10,480**, with **zero stage-two reaches**. The same seeds gave the
+[confirmed parent](fresh-parent-128.json) **10,416.48** and the
+[matched 128-action control](../ppo-early-loss-control-115/fresh-selected-128.json)
+**10,291.80**, also all stage one. Against the parent, the longer rewind
+improved **29** paired seeds, worsened **88**, and tied **11**; it had one
+game below 9,000 versus the parent's two, but only three 10,480-point
+games versus the parent's 55. A reduced catastrophic tail does not by
+itself make the model stronger. The longer rewind is **-16.80 mean points**
+versus the parent and did not solve the navigation bottleneck.
+
+The selected model's [fresh best replay](fresh-selected-replay/replay.html)
+re-executes **2,505 learned actions** with neural-action verification. The
+[same-seed parent replay](fresh-parent-replay/replay.html) is separately
+verified over **2,530 actions**. Neither is a mission completion. The
+read-only [first-milestone loss panels](../../diagnostics/early-loss-114-115-first-milestone/README.md)
+show all four lives in each selected replay earning 2,620 points, with the
+familiar barrier still visible. The global verified best is preserved.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-early-loss-114 \
