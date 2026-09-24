@@ -232,12 +232,15 @@ def main():
     if (not np.isfinite(args.policy_key_noise) or args.policy_key_noise < 0
             or (args.policy_key_noise and (args.policy_bias_noise or args.policy_weight_noise
                                            or args.sil_updates or args.allow_enter or args.canonical_fire
-                                           or args.recurrent_hidden))):
+                                           or args.recurrent_hidden
+                                           or (args.learned_durations and not args.policy_duration_noise)))):
         parser.error("policy-key-noise requires ordinary feedforward Defense actions without other noise or SIL")
     if (not np.isfinite(args.policy_duration_noise) or args.policy_duration_noise < 0
             or (args.policy_duration_noise and (not args.learned_durations or args.policy_bias_noise
-                                                or args.policy_weight_noise or args.policy_key_noise
-                                                or args.sil_updates))):
+                                                or args.policy_weight_noise or args.sil_updates
+                                                or args.policy_key_noise_interval
+                                                or args.policy_key_noise_min_interval
+                                                or args.policy_key_noise_max_interval))):
         parser.error("policy-duration-noise requires learned durations without other noise or SIL")
     if args.policy_key_noise_interval < 0 or (args.policy_key_noise_interval and not args.policy_key_noise):
         parser.error("policy-key-noise-interval requires positive key noise and a nonnegative interval")
@@ -339,7 +342,7 @@ def main():
     if (args.policy_bias_noise or args.policy_weight_noise or args.policy_key_noise
             or args.policy_duration_noise):
         from .defense_noise import (PolicyBiasNoise, PolicyWeightNoise, PolicyKeyNoise,
-                                    PolicyDurationNoise, NoiseRollout)
+                                    PolicyDurationNoise, PolicyKeyDurationNoise, NoiseRollout)
         noise_rng = np.random.default_rng(np.random.SeedSequence([args.seed, steps, 1873]))
         if prior and "policy_noise_rng" in prior:
             noise_rng.bit_generator.state = prior["policy_noise_rng"]
@@ -348,6 +351,11 @@ def main():
             noise = PolicyWeightNoise(args.envs, policy_action_count,
                                       agent.model.advantage.weight.shape[1], args.policy_weight_noise, noise_rng)
             noise_argument, noise_kind = "head_weight_noise", "output-weight"
+        elif args.policy_key_noise and args.policy_duration_noise:
+            noise = PolicyKeyDurationNoise(args.envs, len(action_names(False)),
+                                           len(args.learned_durations), args.policy_key_noise,
+                                           args.policy_duration_noise, noise_rng)
+            noise_argument, noise_kind = "logit_bias", "factorized-key-and-duration-output-bias"
         elif args.policy_key_noise:
             noise = PolicyKeyNoise(args.envs, policy_action_count, args.policy_key_noise, noise_rng,
                                    interval=args.policy_key_noise_interval,
@@ -640,6 +648,15 @@ def main():
                                        "rollout_updates": details}}
             if time.monotonic()-last_log >= 10:
                 recent_summary = summarize(list(recent))
+                noise_fields = {}
+                if noise is not None:
+                    noise_fields["policy_noise_draws"] = noise.draws
+                    for kind, strength in (("policy_weight_noise_std", args.policy_weight_noise),
+                                           ("policy_key_noise_std", args.policy_key_noise),
+                                           ("policy_duration_noise_std", args.policy_duration_noise),
+                                           ("policy_bias_noise_std", args.policy_bias_noise)):
+                        if strength:
+                            noise_fields[kind] = strength
                 log(dict(event="progress", steps=steps, episodes=episodes,
                          boot_episodes=boot_episodes, restored_segments=restored_segments,
                          recent_restored=dict(segments=len(recent_restored),
@@ -653,11 +670,7 @@ def main():
                          **({"duration_options": duration_actions.stats()}
                             if duration_actions is not None else {}),
                          mlx_active_bytes=mx.get_active_memory(), mlx_peak_bytes=mx.get_peak_memory(),
-                         **({"policy_weight_noise_std" if args.policy_weight_noise else
-                             "policy_key_noise_std" if args.policy_key_noise else
-                             "policy_duration_noise_std" if args.policy_duration_noise else "policy_bias_noise_std":
-                             noise.std, "policy_noise_draws": noise.draws}
-                            if noise is not None else {}),
+                         **noise_fields,
                          **sil_metrics))
                 last_log = time.monotonic()
             if steps >= next_eval and not stop:

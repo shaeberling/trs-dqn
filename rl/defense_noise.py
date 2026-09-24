@@ -140,6 +140,35 @@ class PolicyKeyNoise:
         return effective
 
 
+class PolicyKeyDurationNoise:
+    """Independent per-life physical-key and hold-length factors.
+
+    The physical-key factor is identical for every duration, and the
+    duration factor is identical for every physical key. Neither factor
+    reads the screen or favors a particular movement direction or time.
+    """
+
+    def __init__(self, envs, action_count, duration_count, key_std, duration_std, rng):
+        if (isinstance(duration_count, bool) or not isinstance(duration_count, int)
+                or duration_count < 2 or not np.isfinite(key_std) or key_std <= 0
+                or not np.isfinite(duration_std) or duration_std <= 0):
+            raise ValueError("joint key-duration noise needs positive factors and multiple durations")
+        self.key = PolicyKeyNoise(envs, action_count, key_std, rng)
+        self.duration = PolicyDurationNoise(envs, action_count, duration_count, duration_std, rng)
+        self.duration_count = duration_count
+        self.values = np.tile(self.key.values, (1, duration_count)) + self.duration.values
+        self.draws = self.key.draws
+
+    def redraw(self, boundaries):
+        changed = self.key.redraw(boundaries)
+        self.duration.redraw(boundaries)
+        if np.any(changed):
+            self.values[changed] = (np.tile(self.key.values[changed], (1, self.duration_count))
+                                    + self.duration.values[changed])
+            self.draws += int(changed.sum())
+        return changed
+
+
 class NoiseRollout:
     """Store each life draw once, with time-major worker IDs for PPO samples."""
 
