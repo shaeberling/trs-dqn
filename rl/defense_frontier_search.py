@@ -15,7 +15,8 @@ import shutil
 
 import numpy as np
 
-from .defense_cells import CELL_ENCODING, screen_cell
+from .defense_cells import (BOTTOM_DETAIL_ENCODING, CELL_ENCODING,
+                            screen_cell, screen_cell_bottom_detail)
 from .defense_learning import sha256, write_json
 from .defense_macro_explore import command_ids
 from .defense_snapshot import capture, restore
@@ -170,6 +171,8 @@ def main():
     parser.add_argument("--capacity", type=int, default=1024)
     parser.add_argument("--source-stride", type=int, default=8)
     parser.add_argument("--priority", choices=("score", "age"), default="score")
+    parser.add_argument("--cell-encoding", choices=("coarse", "bottom-detail"),
+                        default="coarse")
     parser.add_argument("--age-cell-interval", type=int, default=16)
     parser.add_argument("--source-life", type=int, default=0,
                         help="0 uses every own life; 1-4 selects one visible life number")
@@ -180,17 +183,21 @@ def main():
             or args.seed < 0 or args.source_life not in (0, 1, 2, 3, 4)):
         parser.error("fresh output and positive bounded settings required")
     source_archive = args.source_archive.resolve(strict=True)
+    cell_fn = screen_cell_bottom_detail if args.cell_encoding == "bottom-detail" else screen_cell
+    encoding = BOTTOM_DETAIL_ENCODING if args.cell_encoding == "bottom-detail" else CELL_ENCODING
     index = json.loads((source_archive/"index.json").read_text())
     if len(index["files"]) < 1:
         parser.error("no own source states")
     disk_guard(args.output.parent)
     args.output.mkdir(parents=True, exist_ok=False)
     shutil.copy2(Path(__file__), args.output/"source.py")
+    shutil.copy2(Path(__file__).with_name("defense_cells.py"), args.output/"cell_source.py")
     config = dict(source_archive=str(source_archive), source_index_sha256=sha256(source_archive/"index.json"),
                   game_sha256=GAME_SHA256, environment_version=ENVIRONMENT_VERSION,
-                  source_sha256=sha256(Path(__file__)), screen_cell_encoding=CELL_ENCODING,
-                  frontier_cell_encoding=(f"{CELL_ENCODING}+own-life-age/{args.age_cell_interval}"
-                                          if args.priority == "age" else CELL_ENCODING),
+                  source_sha256=sha256(Path(__file__)), screen_cell_encoding=encoding,
+                  cell_source_sha256=sha256(Path(__file__).with_name("defense_cells.py")),
+                  frontier_cell_encoding=(f"{encoding}+own-life-age/{args.age_cell_interval}"
+                                          if args.priority == "age" else encoding),
                   effective_commands=list(command_ids("effective-stage-one")), holds=list(HOLDS),
                   args={k:str(v) if isinstance(v, Path) else v for k,v in vars(args).items()},
                   training_only=True, model_updates=0, policy_inputs_changed=False,
@@ -231,7 +238,7 @@ def main():
                     life_age = env.steps-life_start
                     max_seed_life_score = max(max_seed_life_score, life_score)
                     max_seed_life_age = max(max_seed_life_age, life_age)
-                    key = screen_cell(obs)
+                    key = cell_fn(obs)
                     node_id = len(records)
                     snapshot = capture(env)
                     admitted = (archive.add(key, node_id, life_age, snapshot, rng)
@@ -292,7 +299,7 @@ def main():
                            mission_completed=bool(info["mission_completed"]),
                            admitted=False)
                 if not boundary:
-                    key = screen_cell(obs)
+                    key = cell_fn(obs)
                     node_id = len(records)
                     snapshot = capture(env)
                     admitted = (archive.add(key, node_id, life_age, snapshot, rng)
