@@ -7,6 +7,12 @@ selection rules match. It distinguishes a longer-lookback effect from ordinary
 continuation and training variance. Both arms use learned screen-only actions,
 displayed-score reward, and complete games from boot for evaluation.
 
+The first [full model/optimizer/RNG milestone](milestone-000008669952/state.json)
+is preserved after 131,072 new actions. Ten complete fixed-seed games
+averaged **10,430**, median **10,440**, best **10,480**; all stayed in stage
+one. The longer-lookback arm averaged 10,385. These early small checks are
+not independent confirmation or evidence of barrier passage.
+
 ```bash
 venv/bin/python -u -m rl.defense_train \
   --run runs/defense-ppo-early-loss-control-115 \
