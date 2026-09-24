@@ -11,6 +11,7 @@ import numpy as np
 
 
 CELL_ENCODING = "graphics-9x16x8-v1"
+BOTTOM_DETAIL_ENCODING = "graphics-9x16x8+raw-bottom-three-rows-v1"
 
 
 def screen_cell(frames):
@@ -25,3 +26,15 @@ def screen_cell(frames):
     coarse = np.minimum(7, counts*8//40).astype(np.uint8)
     return hashlib.blake2b(coarse.tobytes(), digest_size=16,
                            person=b"defense-cell-v1").hexdigest()
+
+
+def screen_cell_bottom_detail(frames):
+    """Coarse gameplay plus exact visible bytes in the bottom three rows.
+
+    This is a training-reset fingerprint only. It neither detects an object
+    nor supplies any new policy input, reward or action preference.
+    """
+    frames = np.asarray(frames)
+    coarse = screen_cell(frames)
+    return hashlib.blake2b(bytes.fromhex(coarse)+frames[-1, 13:16].tobytes(),
+                           digest_size=16, person=b"defense-bottom1").hexdigest()

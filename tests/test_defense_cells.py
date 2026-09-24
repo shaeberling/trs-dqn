@@ -4,7 +4,7 @@ import unittest
 
 import numpy as np
 
-from rl.defense_cells import screen_cell
+from rl.defense_cells import screen_cell, screen_cell_bottom_detail
 from rl.defense_curriculum import DefenseCurriculumEnv
 from rl.defense_learning import game_rank
 from rl.defense_snapshot import capture
@@ -12,6 +12,23 @@ from rl.vector import VectorEnv
 
 
 class DefenseCellTests(unittest.TestCase):
+    def test_bottom_detail_distinguishes_small_visible_lower_screen_shifts(self):
+        frames = np.full((4, 16, 64), 128, np.uint8)
+        frames[-1, 14, 22] = 0xa8
+        coarse = screen_cell(frames)
+        detailed = screen_cell_bottom_detail(frames)
+        shifted = frames.copy()
+        shifted[-1, 14, 22] = 128
+        shifted[-1, 14, 23] = 0xa8
+        self.assertEqual(screen_cell(shifted), coarse)
+        self.assertNotEqual(screen_cell_bottom_detail(shifted), detailed)
+        shifted[-1, 0, 4] = ord("7")
+        shifted[0] = 191
+        self.assertEqual(screen_cell_bottom_detail(shifted), screen_cell_bottom_detail(
+            np.stack([frames[0], frames[1], frames[2], shifted[-1]])))
+        shifted[-1, 13, 1] = 191
+        self.assertNotEqual(screen_cell_bottom_detail(shifted), detailed)
+
     def test_fixed_graphics_encoding_ignores_hud_and_prior_frames(self):
         frames = np.full((4, 16, 64), 128, np.uint8)
         expected = hashlib.blake2b(bytes(144), digest_size=16,
