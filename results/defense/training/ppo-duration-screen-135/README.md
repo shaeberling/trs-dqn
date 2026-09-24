@@ -45,3 +45,31 @@ venv/bin/python -u -m rl.defense_train \
   --curriculum-cells screen --curriculum-bins 128 --curriculum-per-bin 1 \
   --steps 1966080 --eval-every 131072 --eval-games 10 --eval-envs 10
 ```
+
+The planned continuation finished all eight checks. Fixed ten-game means
+were **10,456 / 10,230 / 10,480 / 10,480 / 10,225 / 10,223 / 10,480 /
+10,480**; every one of the **80** games remained stage one. The third,
+1,310,720-action [full checkpoint](run/step-000001310720/state.json)
+was selected by the predeclared earliest-tie rule. The archive admitted
+**226 distinct visible-screen fingerprints** over the run, and the last
+reported inventory for each of all 16 workers held exactly **128 cells**.
+This confirms the changed reset distribution was exercised, not that the
+cells represented later course progress.
+
+On [64 untouched complete games](run/fresh-selected-64.json), the selected
+checkpoint averaged **10,319.69** versus **10,472.66** for its frozen
+[input joint model](run/fresh-input-joint-64.json) and **10,412.81** for the
+[ordinary-action parent](run/fresh-ordinary-parent-64.json). It improved
+12 paired games over its input, worsened six and tied 46, but four
+sub-9,000 failures versus zero made its mean **152.97 points lower**.
+All **192** games stayed stage one. Thus the perfect reused-seed checks
+were not a fresh score gain or barrier passage; this continuation is
+negative and is not promoted.
+
+The frozen selection's [separate fresh replay](run/fresh-selected-replay/replay.html)
+independently reproduces **2,508** learned decisions and 10,480 points.
+The [read-only course audit](../../diagnostics/screen-duration-135-course-progress/README.md)
+places its four visible losses at decoded rows **34, 34, 34, 33** of the
+original 126-row first-stage stream. No hidden row was used for training,
+action choice, reward or checkpoint selection. The protected global
+10,480-point best replay remains unchanged.

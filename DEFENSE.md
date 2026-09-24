@@ -32,6 +32,15 @@ wins. A [fresh verified replay](results/defense/diagnostics/joint-134-course-pro
 still loses all four lives at decoded first-stage rows 33–34 of 126. The
 original game, protected best replay and no-oracle training contract remain
 unchanged. The full **491-test** regression suite passes with this joint mode.
+The next [screen-diverse reset continuation](results/defense/training/ppo-duration-screen-135/README.md)
+filled 128 own-visible-screen cells per worker and reached the exact
+10,480 stage-one ceiling on four fixed ten-game checks. All 80 fixed and
+192 fresh games nevertheless stayed stage one. Its selected checkpoint
+averaged **10,319.69** on 64 fresh games versus **10,472.66** for its
+frozen joint input; the apparent fixed-seed improvement did not transfer.
+The [verified fresh replay audit](results/defense/diagnostics/screen-duration-135-course-progress/README.md)
+still loses at original first-stage stream rows 33–34 of 126. The global
+best replay is unchanged.
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
 this improves on their one-option calibrations but remains below the best.
