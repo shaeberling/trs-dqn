@@ -23,6 +23,13 @@ stage-two play or successful mission has been verified; the protected
 [10,480-point best replay](results/defense/learned/best/replay.html) remains
 unchanged.
 
+Next, the balanced arm's late training mean was still rising. The
+[predeclared continuation](results/defense/training/ppo-balanced-fire-continuation-161/README.md)
+resumes its exact optimizer and policy RNG for 8,388,608 more original
+score-reward own actions, with fixed stage-gated checks, a 5.1 GiB disk
+guard and fresh comparison against its frozen parent. This is a test of
+continued learning, not evidence of a stage-two passage.
+
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
 added both distinct stage-one side-fire combinations; **290,508** branches

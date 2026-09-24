@@ -296,7 +296,12 @@ states, all eight [fixed evaluations](control-fixed/), its
 [full compressed training log](control-metrics.jsonl.gz), resolved config
 and terminal status, and the complete fresh comparison. These copies were
 byte-compared against the finished run; the compressed log was
-decompression-compared against the original. Intermediate checkpoints not
-selected for either arm can now be pruned from the ignored live run after
-this archive has been committed, retaining selected and terminal resumable
-states and all evaluations.
+decompression-compared against the original. All seven treatment fixed
+evaluations were additionally copied byte-for-byte into
+[treatment-fixed](treatment-fixed/) before cleanup. After the comparison
+archive was committed and pushed, **14** non-selected live checkpoint
+directories (about **130 MiB**) were deleted. The treatment terminal and
+control selected/terminal full resumable states remain locally and in the
+archive; all fixed evaluations, logs and verified replays remain archived.
+The pruned intermediate optimizer states are not recoverable unless one was
+separately archived (the treatment's first, second and seventh were).
