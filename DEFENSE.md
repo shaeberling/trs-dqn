@@ -8228,3 +8228,20 @@ life points, surviving branches extended at most twelve actions beyond
 their own source's visible-loss age. This bounds the simple archive-aliasing
 explanation; it does not establish that the screen lacks enough information
 for a learned policy or that a different exploration method would fail.
+
+A [stronger learned-continuation PPO pilot](results/defense/training/ppo-continue-strong-cal-132/README.md)
+tested the specific observation that earlier trained policies rarely chose
+their `CONTINUE_PREVIOUS` option near the repeated loss. A neutral +9 extra-
+action bias on the unchanged strong run-119 parent produced a no-learning
+initializer with **10,454.38** mean on 32 fresh complete games and actual
+continuation counts **18 / 10 / 9 / 7** in its four pre-flash approach
+windows. The full 1,048,576-action score-only PPO continuation selected
+its seventh checkpoint (fixed mean 10,456), but on 128 new matched complete
+games averaged **10,319.69**, versus **10,476.56** for the confirmed run-121
+score parent and **10,472.81** for the +7 predecessor. Every game remained
+stage one. Its verified selected replay chose continuation 766 times in
+2,586 actions overall, yet only **4 / 3 / 1 / 5** times in the four pre-
+flash approach windows, again losing at 2,620 points per life. Full model,
+optimizer, RNG, training logs, paired results and verified local replays
+are preserved. This stronger bias is not a successor and cannot replace
+the globally protected best replay.
