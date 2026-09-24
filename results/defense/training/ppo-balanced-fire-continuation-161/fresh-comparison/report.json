@@ -1,0 +1,98 @@
+{
+  "selection": {
+    "selected": {
+      "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000015728640",
+      "steps": 15728640,
+      "checkpoint_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+      "highest_stage": 1,
+      "mission_games": 0,
+      "mean_score": 10258.0
+    },
+    "candidates": [
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000009437184",
+        "steps": 9437184,
+        "checkpoint_sha256": "dcc6f58919ac686215b41c0d4b10eeb1696b7f79a46451825468779e19d9ca6c",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 9904.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000010485760",
+        "steps": 10485760,
+        "checkpoint_sha256": "7971475e289f14e75977e586fd94db6ad3163b36e8e8827cef9540d85e9a1e31",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 9595.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000011534336",
+        "steps": 11534336,
+        "checkpoint_sha256": "488ac706272025a72080107dc4abd64c2cb5549bafa659111c296610f89ef28b",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 10220.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000012582912",
+        "steps": 12582912,
+        "checkpoint_sha256": "d7d8f9244ca7e721775269b3ed05d84131b504200831d1588c2d16f7a84ef78d",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 10006.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000013631488",
+        "steps": 13631488,
+        "checkpoint_sha256": "6368bf9303b08945231e5c4d4072418ae4e164a7b8b64f519c7aad892a34e8ab",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 10043.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000014680064",
+        "steps": 14680064,
+        "checkpoint_sha256": "5bb817026e0c4d873bf57ecf51685faabcc0f710593b2d9f7a359819aeb30acd",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 10156.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000015728640",
+        "steps": 15728640,
+        "checkpoint_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 10258.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-fire-continuation-161/step-000016777216",
+        "steps": 16777216,
+        "checkpoint_sha256": "b9f6a17e2501f793e0ba1f824d2ec16bedeb0a7415797883845a24876ef82b3d",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 9844.0
+      }
+    ]
+  },
+  "fresh_seed": 612000,
+  "fresh_games": 128,
+  "fixed_stage_proof": null,
+  "paired": {
+    "continuation_mean": 9641.71875,
+    "parent_mean": 9314.0625,
+    "continuation_median": 10315.0,
+    "parent_median": 9890.0,
+    "continuation_best": 10480,
+    "parent_best": 10170,
+    "continuation_highest_stage": 1,
+    "parent_highest_stage": 1,
+    "continuation_mission_games": 0,
+    "parent_mission_games": 0,
+    "paired_continuation_wins": 102,
+    "paired_parent_wins": 26,
+    "paired_ties": 0
+  },
+  "promotion_attempted": false,
+  "promotion_decision": "review native-verified evidence first"
+}

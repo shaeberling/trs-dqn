@@ -1,0 +1,19 @@
+{
+  "event": "comparison_complete",
+  "checked_unix": 1790285823.065366,
+  "paired": {
+    "continuation_mean": 9641.71875,
+    "parent_mean": 9314.0625,
+    "continuation_median": 10315.0,
+    "parent_median": 9890.0,
+    "continuation_best": 10480,
+    "parent_best": 10170,
+    "continuation_highest_stage": 1,
+    "parent_highest_stage": 1,
+    "continuation_mission_games": 0,
+    "parent_mission_games": 0,
+    "paired_continuation_wins": 102,
+    "paired_parent_wins": 26,
+    "paired_ties": 0
+  }
+}
