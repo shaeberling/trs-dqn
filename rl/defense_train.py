@@ -33,6 +33,8 @@ def main():
                        help="own feedforward PPO checkpoint for a zero-output recurrent residual base")
     start.add_argument("--initialize-repeat-policy", type=Path,
                        help="own ordinary PPO checkpoint for a fresh continue-previous-action learner")
+    parser.add_argument("--continue-initial-bias-offset", type=float, default=0.,
+                        help="direction-neutral extra-action bias on own-policy initialization; 0 preserves mean row")
     parser.add_argument("--steps", type=int, default=0, help="absolute action limit; 0 = unlimited")
     parser.add_argument("--initialize-only", action="store_true",
                         help="save initialized weights/optimizer and exit without learning")
@@ -121,6 +123,8 @@ def main():
             parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
         if args.repeat_previous_action != config.get("repeat_previous_action", False):
             parser.error("Changing continue-action profile requires fresh initialization")
+        if args.continue_initial_bias_offset != config.get("continue_initial_bias_offset", 0.):
+            parser.error("Continue-action initialization offset cannot change on optimizer resume")
         from .recurrent_policy import RECURRENT_ARCHITECTURE
         if (args.recurrent_hidden != config.get('recurrent_hidden', 0)
                 or config.get('architecture') != (RECURRENT_ARCHITECTURE if args.recurrent_hidden else None)):
@@ -153,6 +157,10 @@ def main():
         parser.error("continue-action learner requires ordinary feedforward PPO without Enter, SIL or other initialization")
     if args.initialize_repeat_policy and not args.repeat_previous_action:
         parser.error("--initialize-repeat-policy requires --repeat-previous-action")
+    if (not np.isfinite(args.continue_initial_bias_offset)
+            or not 0 <= args.continue_initial_bias_offset <= 10
+            or (args.continue_initial_bias_offset and not (args.initialize_repeat_policy or args.resume))):
+        parser.error("Continue-action initial bias must be 0..10 and requires own-policy initialization")
     if min(args.steps, args.max_episode_steps, args.eval_max_steps, args.mlx_cache_mb) < 0:
         parser.error("limits must be nonnegative")
     if not 1 <= args.tstates <= 1_000_000:
@@ -222,7 +230,8 @@ def main():
             try:
                 initialization = initialize_repeat_policy(agent.model, args.initialize_repeat_policy,
                                                           tstates=args.tstates,
-                                                          observation_stride=args.observation_stride)
+                                                          observation_stride=args.observation_stride,
+                                                          bias_offset=args.continue_initial_bias_offset)
             except (OSError, ValueError, KeyError) as error:
                 parser.error(str(error))
         elif args.initialize_policy:
