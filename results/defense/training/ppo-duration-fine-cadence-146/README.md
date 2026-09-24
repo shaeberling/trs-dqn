@@ -126,3 +126,49 @@ venv/bin/python -u -m rl.defense_train \
   --resume results/defense/training/ppo-duration-fine-cadence-146/gate/step-000001310720 \
   --steps 1703936 --eval-every 131072 --eval-games 10 --eval-envs 10
 ```
+
+## Completed full gate and fresh comparison
+
+The [full continuation](full/) stopped normally at absolute action
+**1,703,936**. Its three ten-game fixed-check means at 1,441,792,
+1,572,864 and 1,703,936 were **10,480 / 10,470 / 10,458**;
+all 30 complete games remained stage one. Including the short gate,
+all **40** fixed games remain stage one. The earliest best fixed
+checkpoint is [1,441,792](full/step-000001441792/), selected before
+looking at fresh games.
+
+On fresh complete-game seeds **608400–608463** at the same 50,000/2
+timing, [selected trained policy](fresh-selected-64.json) versus
+[frozen option-credit parent](fresh-source-fine-64.json) averaged
+**10,413.44 versus 10,391.56**. Paired seeds: **9 wins / 6 losses /
+49 ties**; games below 9,000: **1 versus 2**; both arms remained
+stage one for all 64 games. The selected [learned replay](fresh-selected-replay/replay.html)
+was independently reproduced from boot for all **5,014** neural
+actions. A forensic-only original-course pointer audit places its four
+visible losses at **33 / 33 / 33 / 34 of 126** stream rows. This hidden
+pointer is not an input or training signal and does not identify exact
+collision positions. The result is a small score-only gain, not a
+solution to the recurring obstacle or a global-best promotion.
+
+The predeclared no-worse-below-9,000 condition is met, so freeze both
+checkpoints and run a **separate confirmation** on untouched complete
+seeds **608500–608563**, again 64 matched games at 50,000/2 with the
+same learned action sampling. Count score wins/losses/ties, means,
+sub-9,000 tails and reached stages. A score-parent promotion requires
+the trained arm to have a higher confirmation mean and no worse
+sub-9,000 tail. If either fails, archive the result as inconclusive or
+negative and retain the old score parent. Stage-one score alone never
+changes the protected best replay or establishes passage.
+
+The separate confirmation is complete: [selected trained](confirm-selected-64.json)
+mean **10,462.03**, [frozen parent](confirm-source-fine-64.json) mean
+**10,436.56**, a **+25.47** mean difference. Paired seeds: **4 wins /
+5 losses / 55 ties**; below 9,000: **0 versus 1**; all **128**
+confirmation games remain stage one. Across both untouched sets (128
+games per arm), means are **10,437.73 versus 10,414.06**, with
+**1 versus 3** sub-9,000 outcomes. The predeclared *score-training-parent*
+criterion is met, so the fine-cadence checkpoint at 1,441,792 can
+seed a later score-only experiment at its saved timing. The improvement
+is modest and dominated by ties; it provides no evidence of passage
+through the row-33/34 obstacle. The older global-best model and replay
+remain protected and unchanged.

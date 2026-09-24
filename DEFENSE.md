@@ -169,8 +169,17 @@ the original physical screen-history span therefore preserves nearly
 all frozen score consistency while doubling decision opportunities.
 The [selected-replay screen sheets](results/defense/diagnostics/spatial-143-loss-sheets/README.md)
 show the ship still far from the right opening in recent policies.
-A bounded fine-cadence training adaptation is the next stage test;
-neither frozen override is a learned passage or promotion candidate.
+The subsequent bounded **524,288-action** fine-cadence PPO adaptation
+finished normally. Its fixed ten-game means were **10,476 / 10,480 /
+10,470 / 10,458**, all stage one. Its earliest best checkpoint beat
+its frozen same-timing parent by **21.88** then **25.47** mean points
+on two independent matched 64-game sets, with no worse low-score tail;
+it is eligible as a *score-training* parent, not a global-best replay
+or a passage claim. The [verified replay audit](results/defense/diagnostics/fine-cadence-146-course-progress/README.md)
+still finds losses at original stream rows **33 / 33 / 33 / 34 of 126**.
+The same-place failure survives a doubled decision rate: further work
+must address long-horizon exploration and credit at this bottleneck,
+not simply replay the same fixed-seed ceiling.
 
 Matched five-option learned-duration / one-step full continuations (56/55)
 retired after four stage-1-only rounds. Their calibrations averaged 6,266 / 6,365, all stage-1 losses;
