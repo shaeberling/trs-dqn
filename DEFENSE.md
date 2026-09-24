@@ -5,6 +5,19 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
+Latest diagnostic: the [screen-conditioned beam study](results/defense/diagnostics/screen-beam-157/README.md)
+tested **312,190** original-emulator branches from a verified learned
+first life, including an earlier frame-280 start, one-action timing and
+visible-screen-plus-last-action diversity. None exceeded **2,620** points,
+reached stage two, or remained visibly alive at frame 428. At frame 388,
+the farthest retained full-score readable ship glyph was column **39**;
+the next wall's visible opening begins beyond column **50**. This makes
+the shared loss a concrete two-opening navigation/credit bottleneck, not
+merely a coincident final score. The search is diagnostic only, not a
+new learned policy or a proof that passage is impossible. The original-
+boot verified best weights and replay remain protected. The full **525-test**
+regression suite passes.
+
 Current status: the [early two-phase reachability diagnostic](results/defense/diagnostics/early-two-phase-reach-156/README.md)
 tested **3,600** exact original-emulator action combinations from a
 native-verified own first life. All combinations lost by frame 409;

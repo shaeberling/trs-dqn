@@ -1,0 +1,13 @@
+{
+  "layer": 42,
+  "absolute_frame": 408,
+  "duration": 2,
+  "generated": 110,
+  "alive_children": 0,
+  "life_losses": 110,
+  "distinct_screen_cells": 0,
+  "selected": 0,
+  "selected_score_max": null,
+  "selected_ship_bins": [],
+  "layer_max_score": 2620
+}
