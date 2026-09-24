@@ -7962,3 +7962,26 @@ selected seeds differ, and the white flash is not a collision timestamp;
 this does not prove identical physical failure sites. It does show that the
 confirmed mean-score gain has not yet changed the recurring visible
 late-life failure. The panels never enter training or action selection.
+
+The recurring barrier prompted a [frozen screen-history check](results/defense/training/ppo-wide-history-120/README.md)
+of the new score parent on the same 32 fresh complete-game seeds. At its
+trained stride 1 it averaged **10,456.88** points; changing only the spacing
+between its four input frames to strides 2, 4 or 8 yielded **5,202.50**,
+**996.88** and **316.88**, respectively. All remained stage one. This
+measures distribution shift, not whether longer history can be learned or
+whether it would resolve the barrier. A bounded stride-2 PPO adaptation from
+the exact full model/optimizer/RNG parent is therefore planned; the global
+verified best remains protected.
+
+Run 120 completed the planned **524,288** stride-2 adaptation actions. Its
+fixed ten-game means recovered to **10,349 / 10,323 / 10,394 / 10,452**,
+which triggered the predeclared independent check. On 128 new matched
+complete games, the selected stride-2 checkpoint averaged **10,344.77**
+versus **10,455.63** for the unchanged stride-1 score parent: **−110.86**.
+Selected had five sub-9,000 collapses versus zero for the parent, and both
+remained entirely in stage one. The selected policy's 10,480-point local
+best-effort [replay](results/defense/training/ppo-wide-history-120/fresh-selected-replay/replay.html)
+independently verifies 2,539 learned actions, but cannot displace the older
+global best. Full optimizer/RNG, metrics, source and all four checkpoints are
+preserved in the [run archive](results/defense/training/ppo-wide-history-120/README.md).
+The recurring barrier remains unsolved; wider history alone was not a win.
