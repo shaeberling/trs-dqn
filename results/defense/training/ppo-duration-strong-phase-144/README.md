@@ -64,3 +64,34 @@ the stronger noise settings were actually exercised. This is an
 implementation check only, not a stage pass or score-parent claim. The
 full **501-test** suite had passed on this trainer before this parameter-
 only trial; no trainer source changed for the smoke.
+
+## First-gate result: stopped on the predeclared collapse rule
+
+The noise-free fixed ten-game checks at absolute counters **1,310,720**
+and **1,441,792** averaged **2,967** and **3,980**. The best single scores
+were 5,390 and 7,650; all **20 complete games** remained in stage one.
+Both means are below the predeclared 5,000 cutoff, so SIGINT was sent
+to the verified training PID after the second evaluation. The run exited
+normally after finishing its in-flight work at **1,490,944** actions,
+with `stop_requested: true` and a full `latest` model, Adam and RNG
+checkpoint. No third fixed evaluation or full-budget extension was run.
+
+At its last progress report (counter **1,478,656**) it had completed
+**211** new boot games, drawn **7,968** key-factor and **2,258**
+duration-factor perturbations, and started **540** 64-action options.
+The stronger exploration was exercised, but its learned frozen policy
+became much worse at the score task without stage passage. The
+[complete run archive](run/) retains every checkpoint, metric, RNG
+state and both local native-verified replay versions; its latest
+[7,650-point replay](run/artifacts/best/replay.html) reproduced all
+2,337 actions from boot. That local replay does **not** replace the
+protected 10,480-point global best.
+
+The first-gate selection fails both the 10,470 extension threshold and
+the no-sub-9,000-check requirement. The planned 64-game comparison is
+therefore not run: the explicit first-gate rule already rejects this
+candidate. A high-amplitude continuation from the same source is not
+supported by these results. The weaker run-137 exploration was itself
+stage-one-only, so neither amplitude establishes how to pass the two-
+opening barrier. The original source remains the stronger training
+parent; no searched trajectory, hidden pointer, or extra reward was used.
