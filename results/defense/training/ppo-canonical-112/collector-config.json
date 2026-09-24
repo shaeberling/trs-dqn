@@ -105,11 +105,13 @@
     "runs/defense-ppo-own-loss-107/artifacts",
     "runs/defense-ppo-own-loss-108/artifacts",
     "runs/defense-ppo-canonical-112/artifacts",
-    "runs/defense-ppo-canonical-control-113/artifacts"
+    "runs/defense-ppo-canonical-control-113/artifacts",
+    "runs/defense-ppo-early-loss-114/artifacts",
+    "runs/defense-ppo-early-loss-control-115/artifacts"
   ],
   "output": "results/defense/learned",
   "run": "runs/defense-collector",
   "interval": 30,
   "prior_sources_preserved": true,
-  "new_sources": "trainable canonical-fire PPO and matched ordinary-action control"
+  "new_sources": "longer own-loss lookback and matched same-parent control"
 }
