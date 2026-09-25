@@ -140,3 +140,29 @@ two predeclared fresh matched sets, and writes a report. It fails closed
 on an early/incompatible stop, does not train on any diagnostic branch,
 and never automatically promotes the protected best. Its live status is
 `runs/defense-ppo-recurrent-balanced-169-followup/status.json`.
+
+## First fixed checkpoint and post-launch regression correction
+
+At **1,048,576** treatment actions, ten complete original-boot games
+averaged **346** points (median 340, best 380); all ended in stage one.
+The full checkpoint, evaluation and run-specific verified best-effort
+replay remain in the active run/artifacts. This is an early recovery point,
+not a stage-one barrier improvement or a new global best.
+
+A post-launch full-suite run found that a new resume guard accidentally
+rejected the **historically supported feedforward** ordinary-to-grouped
+optimizer continuation. It did not affect fresh training or this live
+treatment, but it was a regression. The guard was narrowed to recurrent
+grouped-policy resumes; both historical canonical-fire and new recurrent
+focused tests then passed. The complete corrected repository suite passed
+**587 tests**. The already-running treatment had loaded trainer source
+SHA-256 `56cfc7061c5bc8abe99159188fbd9bd3253c90392597c06a0eacf59858acf1c2`;
+the later matched fresh control will load corrected trainer source SHA-256
+`a6016adf5e7d72cdbd93a040adb73755b57104e3f8e75e5dad59fdfab791ca39`.
+The only code difference between those two trainer hashes is the scoped
+resume-validation guard. The follow-up explicitly permits **only** this
+known source-hash difference, still requiring every other config field
+except arm paths and memory scale to match. Its original process was
+replaced after verifying its exact PID; the trainer and disk guard were
+not interrupted. The restarted follow-up recognized the live treatment
+at 1,118,208 actions and continues to monitor it.
