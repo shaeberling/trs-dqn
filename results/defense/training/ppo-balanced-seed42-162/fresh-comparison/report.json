@@ -1,0 +1,177 @@
+{
+  "selection": {
+    "selected": {
+      "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000016777216",
+      "steps": 16777216,
+      "checkpoint_sha256": "6ebc238e9ebdfe8a63c15067c94a259605b3ce2b980ac11fddc17064ecbe5aef",
+      "highest_stage": 1,
+      "mission_games": 0,
+      "mean_score": 570.0
+    },
+    "candidates": [
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000001048576",
+        "steps": 1048576,
+        "checkpoint_sha256": "362f2495ab3a673c2f07854674dd71bcb509da8d8ed8b8d5cd8c006c03f04782",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 338.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000002097152",
+        "steps": 2097152,
+        "checkpoint_sha256": "75d5e098b16cae5aa40409fb23a9c2d91a375ec8cdbcd0466c773a56ce617c37",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 312.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000003145728",
+        "steps": 3145728,
+        "checkpoint_sha256": "df3e93f79c4b51329109b82ef8e57bf7d33f6ef97ebffae8e3c90a1954cd139b",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 320.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000004194304",
+        "steps": 4194304,
+        "checkpoint_sha256": "a0605eddd2ea907250a9d9c734c96d938b5a79210e1ed9e6f735c9915ef6c9e6",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 322.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000005242880",
+        "steps": 5242880,
+        "checkpoint_sha256": "74cab73a757231f8a84d73a1f3c09983b033139ac212fbfc2d0acc84dcf07703",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 320.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000006291456",
+        "steps": 6291456,
+        "checkpoint_sha256": "3a280003f06d354f234f08d3c9ca5ec4536dc4b4f1a8a59ed958dcd98f2ca48f",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 320.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000007340032",
+        "steps": 7340032,
+        "checkpoint_sha256": "9af966c39991e14c1b06a0bda93a58d1f8af53517267bac8fa7658c1401815c6",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 318.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000008388608",
+        "steps": 8388608,
+        "checkpoint_sha256": "3a40d34d40e1628180d9463bfc6a2fe2a91e203b2b39c859ca31e633e7ba3eef",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 318.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000009437184",
+        "steps": 9437184,
+        "checkpoint_sha256": "abd2c2755d6a07dffee17e4a3d2abe3cb101fc146cdbcaee6a4df96c687333dd",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 320.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000010485760",
+        "steps": 10485760,
+        "checkpoint_sha256": "30c817311243cbb13bc6e331b7d5136b3ce61187e7262803c91de801d37e0220",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 320.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000011534336",
+        "steps": 11534336,
+        "checkpoint_sha256": "d0cd6461901b2c4f919b466a5f735454b5ac029a8af15e380275e060cf5f2f82",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 322.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000012582912",
+        "steps": 12582912,
+        "checkpoint_sha256": "0ac46e63230bb32d319a26f840342f2455745471ca9876afd6c8bf47ed720ba5",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 328.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000013631488",
+        "steps": 13631488,
+        "checkpoint_sha256": "a179010a890a290f7b5645bb7541777f2e82aae1f4f5336a4f84ed13bc20836d",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 350.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000014680064",
+        "steps": 14680064,
+        "checkpoint_sha256": "72cb290e0bd98f78116d73590e6e9e80f4e7c4f91dc1cd0f266d01fa6145ddc8",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 370.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000015728640",
+        "steps": 15728640,
+        "checkpoint_sha256": "741fb12b4df4a0e7f2bb69e0d346169b990bbe800540533ce380ddd22027db8a",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 370.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-balanced-seed42-162/step-000016777216",
+        "steps": 16777216,
+        "checkpoint_sha256": "6ebc238e9ebdfe8a63c15067c94a259605b3ce2b980ac11fddc17064ecbe5aef",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 570.0
+      }
+    ]
+  },
+  "fixed_stage_proof": null,
+  "fresh_sets": {
+    "614000": {
+      "seed42_mean": 559.6875,
+      "parent_mean": 9491.484375,
+      "seed42_median": 580.0,
+      "parent_median": 10295.0,
+      "seed42_best": 600,
+      "parent_best": 10480,
+      "seed42_highest_stage": 1,
+      "parent_highest_stage": 1,
+      "seed42_mission_games": 0,
+      "parent_mission_games": 0,
+      "paired_seed42_wins": 0,
+      "paired_parent_wins": 128,
+      "paired_ties": 0
+    },
+    "614200": {
+      "seed42_mean": 559.0625,
+      "parent_mean": 9593.59375,
+      "seed42_median": 580.0,
+      "parent_median": 10310.0,
+      "seed42_best": 600,
+      "parent_best": 10480,
+      "seed42_highest_stage": 1,
+      "parent_highest_stage": 1,
+      "seed42_mission_games": 0,
+      "parent_mission_games": 0,
+      "paired_seed42_wins": 0,
+      "paired_parent_wins": 128,
+      "paired_ties": 0
+    }
+  },
+  "promotion_attempted": false,
+  "promotion_decision": "review independently verified stage and fresh evidence first"
+}

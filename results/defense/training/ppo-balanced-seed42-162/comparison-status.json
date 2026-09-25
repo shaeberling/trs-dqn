@@ -1,0 +1,36 @@
+{
+  "event": "comparison_complete",
+  "checked_unix": 1790298553.7022169,
+  "fresh_sets": {
+    "614000": {
+      "seed42_mean": 559.6875,
+      "parent_mean": 9491.484375,
+      "seed42_median": 580.0,
+      "parent_median": 10295.0,
+      "seed42_best": 600,
+      "parent_best": 10480,
+      "seed42_highest_stage": 1,
+      "parent_highest_stage": 1,
+      "seed42_mission_games": 0,
+      "parent_mission_games": 0,
+      "paired_seed42_wins": 0,
+      "paired_parent_wins": 128,
+      "paired_ties": 0
+    },
+    "614200": {
+      "seed42_mean": 559.0625,
+      "parent_mean": 9593.59375,
+      "seed42_median": 580.0,
+      "parent_median": 10310.0,
+      "seed42_best": 600,
+      "parent_best": 10480,
+      "seed42_highest_stage": 1,
+      "parent_highest_stage": 1,
+      "seed42_mission_games": 0,
+      "parent_mission_games": 0,
+      "paired_seed42_wins": 0,
+      "paired_parent_wins": 128,
+      "paired_ties": 0
+    }
+  }
+}
