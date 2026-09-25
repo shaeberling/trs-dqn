@@ -92,6 +92,17 @@ advantage over trial 169. No production run starts until that trial's
 frozen two-arm comparison and fresh-game report are reviewed. The
 protected 10,480-point best model and replay remain unchanged.
 
+After the archive was pushed, all four stopped local source/initial/smoke
+run and artifact directories were removed (**about 47 MiB** by `du`) to
+avoid retaining duplicate model/replay files on the Mac. Their required
+files are in this pushed archive; the source's unused, zero-update Adam
+state was deliberately omitted and is regenerable from the saved seed
+and command. Both the recurrent initializer and smoke retain their full
+optimizer/RNG checkpoints. The small source and recurrent initializer
+logs/status files were also copied and compared byte-for-byte before
+local removal. No active trainer, unique learned model or protected best
+replay was deleted.
+
 The exact commands used for the initializer and smoke (paths may be
 changed for a fresh reproduction) are:
 
