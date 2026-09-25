@@ -73,3 +73,15 @@ reproduced **1,611** actions, rewards and screens. Model SHA-256:
 `e22114747b5cd18611a13ea052ab5476ec1b308738ea9d3208e21b5407e43bf1`.
 This untrained control's weights will not initialize the production run;
 that run restarts independently from the same fresh seed and settings.
+
+## Integration smoke
+
+The separate seed-44 smoke stopped normally at exactly **16,384** own
+actions. Its [checkpoint](smoke/checkpoint) retains model, finite optimizer
+and RNG state; all ten fixed complete original-boot games averaged **316**
+points (median 320, best 340), still stage one. The independently
+[verified replay](smoke/verified-replay/replay.html) reproduced **1,588**
+neural actions, rewards and screens, and every chosen keyboard ID was in
+the nine-action set. Configuration, metrics and status are preserved under
+`smoke/`. All predeclared integration gates passed. Neither the smoke
+weights nor its score will initialize or select production checkpoints.
