@@ -91,7 +91,13 @@ single-action policy. Its fixed physical-command and duration prior is
 direction-neutral, the reward remains visible score only, and its opt-in
 training/evaluation/replay implementation passed the full **557-test** native
 suite. A bounded verified smoke gates a fresh full run; no trial-163 result or
-stage advance is claimed yet.
+stage advance is claimed yet. The smoke passed at exactly 16,384 actions:
+ten complete games averaged 254, a native-verified replay was archived,
+and 134 actual 64-action options started. A fresh 16,777,216-action
+production run is now active with a 5.1-GiB exact-process disk guard and
+fail-closed post-run comparison monitor. Only the archive-backed duplicate
+local smoke directories (about 23 MiB) were deleted; the smoke checkpoint
+and replay remain on the pushed branch.
 
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
