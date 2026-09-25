@@ -18,6 +18,14 @@ negative result for switching between those two experts, not a proof of
 impossibility. More score-only continuation or a learned two-expert gate is
 not justified by the current evidence. The protected 10,480-point model
 and replay remain unchanged; no original mission has been observed.
+A separate [forensic timing audit](results/defense/diagnostics/internal-loss-lag-166/README.md)
+then reexecuted one exact own first life and found the original game's
+private ship counter decremented during action **391**, while the visible
+HUD reported the loss at action **412**. That 21-decision reporting lag
+changes how to interpret late loss-centered diagnostics; the private read
+was report-only and never entered any learner, reward, action or replay
+selection. Earlier interventions at actions 300–360 still preceded the
+internal event, and their negative results are not invalidated.
 
 Earlier outcome: the fresh [grouped key-duration PPO run](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
 completed all **16,777,216** planned own actions and selected its terminal
