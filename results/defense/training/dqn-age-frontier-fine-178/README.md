@@ -7,6 +7,12 @@ ordinary-DQN learning curve shows that using it to reject stage passage
 would underfund the test. The matched efficacy budget and stop criteria below
 were fixed before seeing any calibration evaluation result.
 
+Physical-time interpretation added on 2026-09-25 while both efficacy
+continuations were below 1.2 million total actions and before their first
+fixed evaluation: 8,388,608 fine actions are an intermediate matched budget,
+not automatically enough to reject a policy still learning basic score play.
+This clarification does not change the live trainer settings or any result.
+
 ## Why this is a test, not a continuation of the score plateau
 
 The protected learned best scores 10,480 but repeatedly loses around decoded
@@ -80,14 +86,19 @@ and admission rule are otherwise identical. Actual occupancies need not be.
    seed sets per arm, **618200–618263** and **618400–618463**, and report
    mean, median, best, stage and missions. These ranges are disjoint from
    the smoke and fixed-check seeds and are fixed before efficacy results.
-5. Do not extend **beyond** that matched efficacy budget merely for score
-   gain. A further extension requires observed later-stage play in
-   original-boot games or a concrete, independently replayed change in the
-   repeated early failure mode. A private course-row read may be used only
+5. The 8,388,608-action fine-cadence budget simulates only as much game time
+   as 4,194,304 of the old 100,000-T-state actions; the historical fresh
+   DQN did not reach its high-score competence until about 6.1 million old
+   actions. Accordingly, a low-score, stage-one result at this budget is
+   **inconclusive about passage**, not proof that frontier resets fail.
+   Decide a further matched budget from actual learning competence and
+   independently replayed failure depth, not a short-run score gap. Do not
+   extend merely for score gain after both arms are competent and still
+   fail at the same early barrier. A private course-row read may be used only
    for post-hoc diagnostic interpretation, not learner inputs, reward,
    action selection, checkpoint ranking or replay promotion. If both arms
-   remain at the same barrier after the efficacy budget, stop this mechanism
-   and retain the negative result.
+   reach and remain at the same barrier despite a sufficient matched budget,
+   stop this mechanism and retain the negative result.
 
 The old 10,480-point learned replay remains protected until a new eligible
 policy exceeds it under the repository's stage-first promotion rule. The
