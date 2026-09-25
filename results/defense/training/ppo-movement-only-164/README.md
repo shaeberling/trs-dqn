@@ -239,3 +239,9 @@ available in later stages. The protected [10,480-point global-best learned repla
 and original game remain unchanged. Future work should target the observed
 phase-sensitive fire/movement bottleneck with a different learning mechanism,
 not simply extend this score-improving but stage-one-only action profile.
+
+An independent [screen-derived life-timing check](../../diagnostics/visible-life-timing-164/README.md)
+on 64 further matched fresh games found the extension selected model's first
+visible loss only **1.52 neural actions later on average** than the pilot;
+it lasted longer on 17 seeds, less long on 42, and tied on five. This
+diagnostic is not course-row measurement or a new selection criterion.
