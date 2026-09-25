@@ -213,6 +213,12 @@ the relevant maneuver can start many decisions before a delayed visible
 loss. This is a diagnostic explanation, not proof of impossibility;
 learned value bootstrapping can propagate farther if successful
 trajectories are ever experienced.
+Merely raising gamma/lambda is not an untested fix: the historical
+[run-14 longer-return PPO](../../../../DEFENSE.md#longer-return-ppo-run-14)
+used a roughly 346-decision direct-credit half-life from a strong score
+parent, completed 2,064,384 further actions, and still never reached
+stage two. Any successor needs a genuinely different exploration/credit
+mechanism, not this parameter change alone.
 
 After the frozen two-arm comparison, do not extend this mechanism merely
 for stage-one score. Independently audit stage-one physical reachability
