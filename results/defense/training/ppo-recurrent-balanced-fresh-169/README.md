@@ -319,3 +319,15 @@ over ten complete games (median 560, best 600); all ten were again stage one
 with zero missions. The treatment's third fixed mean was **320**. This is
 an interim fixed-seed score difference, not the frozen selected-checkpoint
 or fresh matched comparison, and says nothing yet about stage passage.
+
+The fourth and fifth restarted-control checks at **4,194,304** and
+**5,242,880** actions averaged **572** and **3,384** points (fifth median
+3,780, best 3,830); all twenty complete fixed games remained in stage one.
+The fifth best-effort neural replay is separately
+[archived and course-audited](../../diagnostics/recurrent-169-control-fifth-course-depth/README.md):
+its four visible losses occurred at decoded original stream rows
+**30 / 29 / 30 / 29 of 126**, versus rows 15–16 in the control's first
+replay. This is real selected-replay depth progress but not passage beyond
+the protected model's row-33/34 region. The treatment's corresponding fourth
+and fifth fixed means were **318** and **412**. No final memory comparison,
+fresh-game result or global-best promotion follows from these interim checks.
