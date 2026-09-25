@@ -89,3 +89,41 @@ forces the *same* first-ship loss at action 389. It does not show survival
 through the next obstacle, a stage transition, a mission, a screen-only
 learned behavior, or a passable full course. Neither diagnostic path nor
 private selector has entered a learner or changed the protected best.
+
+## One wider-beam pruning check
+
+At frame 416 the beam-128 run generated 168 live successors but retained
+only 128. Its zero-survivor result at 417 could therefore be an artifact
+of pruning exactly there. One final width check uses the identical original
+source, all twelve commands, seed, schedule and frame-428 gate with beam
+**512**. A survivor at 428 still requires the same two original-boot
+replays before being recorded; otherwise report the farthest internal-live
+frame and stop this width-only line of investigation. This is a bounded
+physical-feasibility diagnostic, not policy training or permission to
+promote a searched route.
+
+```sh
+venv/bin/python -u -m rl.defense_position_survival \
+  results/defense/learned/best \
+  --output runs/defense-position-survival-172-wide --beam 512
+```
+
+The width check succeeded at its narrow gate. It expanded **577,189**
+original-emulator branches and found a 390-point path with the first ship
+internally alive at action **428**—39 decisions beyond the protected
+replay's first internal loss at 389. The [discovery](wide/discovery.json)
+was reexecuted twice from original boot by the probe, matching every
+source/candidate screen and score reward. A separate process replayed the
+archived action record and confirmed 428 actions, score 390, stage one,
+four visible ships, and four private ships. The [full report](wide/report.json),
+compact [layers](wide/layers.jsonl), exact source/configuration and
+[quarantined action record](wide/diagnostic-discovery.npz) were copied
+byte-for-byte from the stopped run. The saved source and action hashes
+match their records. The path is *not* a neural policy or a training
+demonstration, and it may not enter any learner or best-replay promotion.
+
+This rules out only the claim that the current cadence forces the learned
+first-life collision by frame 428. It does **not** establish stage-one
+passage: the original stream has 126 rows, the path remains in stage one,
+and its low score shows the score/survival tradeoff rather than a mission.
+No further beam-width scaling is planned from this result alone.
