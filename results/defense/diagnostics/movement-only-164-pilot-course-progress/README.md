@@ -16,6 +16,13 @@ bonuses. A longer extension is justified by the predeclared fresh survival
 gate, not by a claim of course passage.
 
 The [report](report.json) pins the game, trace, model and probe hashes.
+The same audit on the frozen no-learning control's separate
+[verified best replay](../../training/ppo-movement-only-164/pilot/fresh-comparison/baseline-620200-replay/replay.html)
+found rows **14 / 15 / 12 / 16** at its four losses; its
+[report](baseline-report.json) is preserved. These are the best-score
+replays from **different seeds**, not a paired course-progress estimate.
+They show at most a modest shift in sampled stream rows despite the
+learner's clear paired score and game-length gain.
 The hidden pointer is read only at visible loss bookkeeping, not the exact
 collision instant, and is never a policy input, reward, curriculum target,
 action source, checkpoint selector or model update. Reproduce with:
