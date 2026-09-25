@@ -1,0 +1,71 @@
+{
+  "experiment": "frozen-neural-expert random-window diagnostic, NOT a learned gate",
+  "smoke": true,
+  "source_bundle": "results/defense/training/ppo-balanced-fire-continuation-161/fresh-comparison/continuation-612000-replay",
+  "source_seed": 612059,
+  "source_trace_sha256": "5c5ab65f1318eec98dd10970d84f4217bf638154f9cdb609ab2c5ba703ed3223",
+  "source_parent_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+  "movement_model_sha256": "347ba5c5662c8df8cec5b1a3a9ce4d457d60c0c885444ad98e7fd833e61c9353",
+  "source_sha256": "c9ddb2b93d488eb6e3c127b7699b5ced78512d759b80c01d45b4bac527f12c09",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "starts": [
+    320
+  ],
+  "lengths": [
+    32
+  ],
+  "repeats": 2,
+  "cap": 520,
+  "exact_parent_prefix_and_suffix_verified": true,
+  "summary": {
+    "branches": 2,
+    "source_first_visible_loss_action": 412,
+    "max_observed_action": 365,
+    "beyond_source_by_20": 0,
+    "stage_two_or_later": 0,
+    "missions": 0,
+    "survived_to_cap": 0
+  },
+  "branches": [
+    {
+      "start": 320,
+      "window": 32,
+      "replicate": 0,
+      "navigation_rng_seed": 4853200,
+      "navigation_actions": 32,
+      "first_visible_loss_action": 362,
+      "last_observed_action": 362,
+      "displayed_score": 1100,
+      "highest_stage": 1,
+      "mission_completed": false,
+      "visible_life_lost": true,
+      "survived_through_cap": false
+    },
+    {
+      "start": 320,
+      "window": 32,
+      "replicate": 1,
+      "navigation_rng_seed": 4853201,
+      "navigation_actions": 32,
+      "first_visible_loss_action": 365,
+      "last_observed_action": 365,
+      "displayed_score": 1080,
+      "highest_stage": 1,
+      "mission_completed": false,
+      "visible_life_lost": true,
+      "survived_through_cap": false
+    }
+  ],
+  "diagnostic_only": true,
+  "hidden_ram_reads": 0,
+  "model_updates": 0,
+  "reward_changes": 0,
+  "branch_actions_as_demonstrations": false,
+  "policy_promotion_eligible": false,
+  "limitations": [
+    "Switch schedule is scripted and cannot be a final policy.",
+    "Only one verified own first-life source state/seed is tested.",
+    "Post-window policy RNG has not consumed the skipped parent draws.",
+    "Action count includes animations and is not exact course depth."
+  ]
+}
