@@ -140,3 +140,6 @@ A separate [forensic replay audit](../../diagnostics/grouped-duration-163-course
 found decoded stage-one stream row 34 at all four visible life losses in
 that 9,930-point game. This hidden read was diagnostic-only after the
 policy/replay had been frozen; it never enters the learner or selector.
+An independent [visible screen/action comparison](../../diagnostics/grouped-duration-163-loss-comparison-6m/README.md)
+also shows both this policy and the protected best approaching the same
+two-offset-opening region without a verified passage.
