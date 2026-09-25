@@ -110,3 +110,17 @@ were byte-compared with the live outputs and preserved before continuing.
 Its model SHA-256 is
 `1d6a086b1567bc520975227ed8a0a27150dc9177b87f842333d9c215b837825b`.
 This is a recovery point, not a promotion over the protected global best.
+
+The fifth fixed check at **5,242,880** actions then jumped to an **8,214**
+mean and **9,880** best across ten complete original-boot games. All ten
+still ended in stage one. The new full
+[checkpoint](milestone-000005242880/checkpoint) and
+[replay](milestone-000005242880/verified-replay/replay.html) were copied and
+byte-compared with the live files. An independent reload reproduced all
+**2,569** actions, rewards and screens of the best game from boot. Its model
+SHA-256 is
+`674bc4b5b958db274c9a5f6c9ee0817d7a0254d45eb64aa8d553ede3c69d335e`.
+This supersedes the earlier trial-163 recovery point on fixed-stage/mean
+selection, but neither checkpoint supersedes the protected global best or
+proves passage. Training continues toward the predeclared 16,777,216-action
+target and untouched matched comparisons.
