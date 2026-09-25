@@ -173,3 +173,29 @@ sources before archival. The protected 10,480-point best was not replaced.
 This calibration passed the predeclared stability and reset-exposure gate.
 The longer matched efficacy phase remains necessary before accepting or
 rejecting the age-frontier mechanism for stage passage.
+
+## Matched efficacy continuation (started 2026-09-25)
+
+The [treatment terminal state](calibration/treatment/terminal/state.json)
+(model SHA-256 `bcc831e166a84aa875eb8878184f38db7f9dcb2d3518ebc1867d79069032b3a4`)
+and [control terminal state](calibration/control/terminal/state.json)
+(model SHA-256 `e3266f97a302fcefd71de6a680b2e25d3b64e573693428ee2f3ffe4903e4440d`)
+now initialize separate live efficacy runs under
+`runs/defense-dqn-age-frontier-fine-178-{treatment,control}-efficacy`.
+Each restores its own online, target, optimizer and RNG state at
+1,048,576 actions / 64,907 updates, then targets 8,388,608 total actions.
+The complete recorded configurations, excluding only run/artifact/resume
+paths and the intended frontier-selector fields, have identical SHA-256
+`9b4c76ceabc814c77ec248a7f06c34cc6a8f45b49c352eeebee84314f4214106`.
+The fixed evaluation seeds remain 618100–618109, at every 1,048,576
+additional actions. Both exact-process disk guards use an 8 GiB free-space
+floor.
+
+On resume, the in-memory prioritized replay and own-state archives start
+empty and refill from new experience. This is an optimizer/RNG continuation,
+not an exact trajectory continuation; no calibration replay, forensic
+route or human action is loaded into training. The calibration archive is
+already pushed. After byte comparison and normal process exit, about
+164 MB of stopped local calibration copies were removed; selected/terminal
+full states, fixed results, logs and verified replay versions are recoverable
+from Git. Only unselected local optimizer snapshots were discarded.
