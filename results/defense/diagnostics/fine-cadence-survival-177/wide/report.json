@@ -1,0 +1,88 @@
+{
+  "config": {
+    "bundle": "/Users/sascha/source/trs-dqn/results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+    "discovery": "/Users/sascha/source/trs-dqn/results/defense/diagnostics/course-feasibility-174/wide",
+    "model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+    "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+    "source_action_record_sha256": "39d36a3bd9d8f814a7debbd0dfa4ccae9497fda80aeaa8fa70e96738b089b630",
+    "source_sha256": "0db411c32b0ff9f08d71b7574f9cfdb9803df0ce87bb5f0078b9e2d86e160df9",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "source_frame": 573,
+    "source_rows": 50,
+    "source_tstates": 100000,
+    "fine_tstates": 50000,
+    "target_rows": 65,
+    "max_fine_actions": 400,
+    "beam": 512,
+    "seed": 177,
+    "commands": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      18,
+      19
+    ],
+    "diagnostic_only": true,
+    "model_updates": 0,
+    "training_data_written": false,
+    "promotion_eligible": false,
+    "hidden_ram_used_by_learner": false
+  },
+  "source_verification": {
+    "verified": true,
+    "original_boot_runs": 2,
+    "actions": 573,
+    "every_screen_and_reward_matched": true,
+    "diagnostic_only": true,
+    "promotion_eligible": false
+  },
+  "final": {
+    "fine_action": 333,
+    "expanded": 2013997,
+    "private_deaths": 166524,
+    "layer_private_deaths": 0,
+    "generated_alive": 4320,
+    "selected": 0,
+    "max_live_rows": 65,
+    "layer_max_rows": 65,
+    "selected_max_score": null,
+    "discovery": true
+  },
+  "expanded": 2013997,
+  "private_deaths": 166524,
+  "discovery": {
+    "outcome": {
+      "fine_actions": 333,
+      "rows": 65,
+      "stage": 1,
+      "score": 550,
+      "position": 46,
+      "first_ship_survived": true,
+      "action_sha256": "aff631f740c5f6510c8a863626bac9d28e5159575509a75f3186b6afa5fe9554"
+    },
+    "verification": {
+      "verified": true,
+      "original_boot_runs": 2,
+      "original_cadence_actions": 573,
+      "fine_actions": 333,
+      "every_screen_and_reward_matched": true,
+      "diagnostic_only": true,
+      "promotion_eligible": false
+    },
+    "diagnostic_trace_sha256": "609d7be0d0e846b60aa681897889150bf9955d87d4b4356ccd2a78ec7def12ee"
+  },
+  "frontier_witness": null,
+  "layers_sha256": "cce380b53fe48542a393e3a1c303aa85c7eed1ef00acfc051e4ec18722ced6b9",
+  "limitations": [
+    "One searched source and a finite beam cannot prove stage reachability or impossibility.",
+    "Decoded stream row is not visible stage passage.",
+    "Private RAM and searched actions remain isolated from learning."
+  ]
+}
