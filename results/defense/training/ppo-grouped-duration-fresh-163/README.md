@@ -149,6 +149,20 @@ This preserves the best individual effort separately from the selected
 sixth checkpoint. Neither meets the passage or protected-best promotion
 gate; training continues to the full target.
 
+The twelfth fixed check at **12,582,912** actions narrowly surpassed the
+sixth checkpoint under the predeclared selector: **9,388** mean versus
+9,355, best **9,910**. All ten complete games still ended in stage one.
+Its [full checkpoint](milestone-000012582912/checkpoint) and independent
+[best-game replay](milestone-000012582912/verified-replay/replay.html)
+were byte-compared with the live sources and archived. A fresh policy
+reload reproduced the fixed check's seed-10000 result exactly, then
+verified all **2,551** actions, rewards and visible screens from boot.
+Model SHA-256:
+`2d5b834768b1b540101bb8a35271f06c33b59f4702f6dce33a76f9062a426eff`.
+The halfway checkpoint still owns the trial's best single replay (9,980),
+and the protected 10,480-point global best remains unchanged. Across the
+first 120 fixed games, no stage-two or mission result has appeared.
+
 A separate [forensic replay audit](../../diagnostics/grouped-duration-163-course-progress-6m/README.md)
 found decoded stage-one stream row 34 at all four visible life losses in
 that 9,930-point game. This hidden read was diagnostic-only after the
