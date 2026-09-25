@@ -119,3 +119,24 @@ and `74c581c3e959f08b8a763bc7175ee118ee9fa4e6338cb59ed3288ba552d7e513`.
 These results pass the predeclared plumbing gate, not a gameplay gate.
 Production must restart fresh; neither smoke checkpoint is eligible for
 selection or promotion. No production model has yet been selected.
+
+The learner and both smoke bundles were committed and pushed before the
+long run. After comparing the archived checkpoints, configurations,
+evaluations, metrics, statuses and verified replay directories against
+the stopped live sources, the redundant local initializer/smoke run
+directories were deleted. The archived smoke files are recoverable from
+the pushed branch; the omitted control initializer binary was byte-
+identical to the retained treatment initializer and is reproducible from
+the saved control config and seed. No active or unique model was removed.
+
+The fresh treatment is live at
+`runs/defense-ppo-recurrent-balanced-169-treatment-full`, with its own
+exact-PID 5.1-GiB disk guard. The tested
+[`rl.defense_recurrent_balanced_followup`](../../../../rl/defense_recurrent_balanced_followup.py)
+monitor verifies a normal treatment stop and all eight fixed checkpoints
+before launching the fresh matched control and its own disk guard. After
+both exact targets it independently checks later-stage claims, runs the
+two predeclared fresh matched sets, and writes a report. It fails closed
+on an early/incompatible stop, does not train on any diagnostic branch,
+and never automatically promotes the protected best. Its live status is
+`runs/defense-ppo-recurrent-balanced-169-followup/status.json`.
