@@ -147,3 +147,23 @@ best-effort replay per arm/set. This checks whether longer no-fire training
 actually improves survival beyond the pilot, rather than trusting a fixed
 seed or transient training curve. The disk guard and archive-before-prune
 rules remain in force.
+
+After verifying and pushing the pilot archive and confirming the trainer,
+disk guard and comparison watcher had exited, its two stopped local
+run/artifact directories were deleted (about **71 MiB** by `du`). The
+selected/terminal full state, all four fixed evaluations, full metrics and
+both fresh replay bundles remain on this branch. The three unselected
+intermediate optimizer snapshots were intentionally pruned and are not
+recoverable; their complete fixed evaluation records remain. The extension
+resumes the archived selected full state, not a local leftover.
+
+The extension is now active at `runs/defense-ppo-movement-only-164-extension`.
+Its resume configuration differs from the archived pilot only in the new
+run/artifact paths, the exact archived resume checkpoint and 4,194,304-action
+target. An exact-PID 5.1-GiB disk guard is active. The tested, fail-closed
+[`rl.defense_movement_extension_compare`](../../../../rl/defense_movement_extension_compare.py)
+watcher waits for a normal exact-target stop, checks all **twelve** extension
+fixed checkpoints and any later-stage claim, then runs both predeclared
+128-game matched sets and four original-boot replay checks. It never changes
+training, promotes weights or prunes data. Its live state is
+`runs/defense-ppo-movement-only-164-extension/comparison-status.json`.
