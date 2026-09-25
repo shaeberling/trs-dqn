@@ -5,6 +5,16 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
+New [forensic first-ship survival evidence](results/defense/diagnostics/position-survival-172/README.md)
+found and independently reexecuted a path on the exact original game that
+keeps the first ship internally alive to action **416**, versus the protected
+learned replay's first internal loss at **389**, at the same 100,000-T-state
+cadence. It scores only **1,120**, remains in stage one, and was selected
+using private RAM strictly within an isolated diagnostic. Its actions are
+quarantined and cannot train or replace a learned policy. A larger bounded
+search still lost every selected branch before action 417; first-stage
+passage and the original mission remain unverified.
+
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
 policy modestly improved displayed score over its shorter pilot on two
