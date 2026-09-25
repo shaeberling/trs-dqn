@@ -249,3 +249,15 @@ so the grouped policy is **not promoted**. The separately protected global
 remain unchanged. This was a useful temporal-control test, not evidence of
 passage; simply extending this mechanism is not justified by its fixed or
 fresh results.
+
+After the complete archive was byte-checked and pushed, and the exact
+trainer, disk guard and comparison watcher had exited, the two stopped local
+directories `runs/defense-ppo-grouped-duration-163` and
+`runs/defense-ppo-grouped-duration-163-artifacts` were deleted (about
+**236 MiB** of regular-file bytes). All archived selected/terminal full
+states, sixteen fixed evaluations, complete compressed metrics, seven
+versioned training replays and four fresh replay bundles remain recoverable
+from this branch. The unselected intermediate optimizer snapshots were
+deliberately pruned and are **not** recoverable; their complete fixed
+evaluation records remain. The 10,080-point fresh replay and the separately
+protected 10,480-point global-best replay remain directly watchable.
