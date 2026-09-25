@@ -33,6 +33,15 @@ class DefenseCourseProgressProbeTests(unittest.TestCase):
         self.assertEqual(report["decoded_row_histogram"],
                          {28: 1, 31: 1, 32: 8, 33: 6, 34: 32})
 
+    def test_fine_cadence_calibration_replays_remain_quarantined_and_reexecutable(self):
+        base = "results/defense/training/dqn-age-frontier-fine-178/calibration"
+        for arm, actions, rows in (("treatment", 3824, [21, 21, 21, 20]),
+                                   ("control", 3477, [16, 16, 15, 16])):
+            with self.subTest(arm=arm):
+                report = probe_bundle(f"{base}/{arm}/recheck", self.boundaries)
+                self.assertEqual(report["verified_neural_actions"], actions)
+                self.assertEqual([loss["decoded_rows"] for loss in report["losses"]], rows)
+
 
 if __name__ == "__main__":
     unittest.main()
