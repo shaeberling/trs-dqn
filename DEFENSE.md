@@ -89,6 +89,7 @@ not an improvement claim. A larger pilot must remain bounded and subject
 to the predeclared progression gate; extending the high-score PPO run
 unchanged is not justified by the observed row-33/34 failure. The protected
 best and mission status remain unchanged.
+
 The paired calibration subsequently stopped normally at **1,048,576**
 fine actions and **64,907** finite updates per arm. Its fourth fixed
 ten-game means were **486** (oldest-four age bins) and **388** (uniform
@@ -100,6 +101,13 @@ segments began from own-life age bin 9 or later—but this short calibration
 cannot establish stage-passage efficacy. The predeclared longer matched
 comparison continues from the two terminal states; neither the protected
 best nor the mission status changes.
+
+An isolated [archived-replay course audit](results/defense/training/dqn-age-frontier-fine-178/calibration/course-audit/report.json)
+reexecuted the selected calibration replays and found visible-loss stream
+rows **21/21/21/20** for the age-frontier arm versus **16/16/15/16** for
+uniform resets. This is selected-replay depth evidence only, not stage
+passage, a representative fresh-game comparison, or a training signal;
+both are well short of the protected model's row-33/34 cluster.
 
 Earlier outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected

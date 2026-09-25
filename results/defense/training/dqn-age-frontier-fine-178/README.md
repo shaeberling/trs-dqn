@@ -185,6 +185,18 @@ This calibration passed the predeclared stability and reset-exposure gate.
 The longer matched efficacy phase remains necessary before accepting or
 rejecting the age-frontier mechanism for stage passage.
 
+An isolated [post-hoc original-course audit](calibration/course-audit/report.json)
+then independently reexecuted the two already-frozen calibration replays.
+The treatment's four visible losses occurred at decoded stream rows
+**21/21/21/20**, the control's at **16/16/15/16**. This is a real difference
+between these two selected replays, but neither reached the protected
+score winner's row-33/34 loss cluster, stage two or the mission. The
+private pointer is sampled only at visible loss bookkeeping and is not an
+exact collision or safe-navigation measurement. It was never used to rank
+checkpoints, choose actions, train weights, populate resets or promote a
+replay. The archived-copy native test reexecuted all **7,301** neural
+actions and checked all eight loss rows; four focused tests passed.
+
 ## Matched efficacy continuation (started 2026-09-25)
 
 The [treatment terminal state](calibration/treatment/terminal/state.json)
