@@ -1,0 +1,67 @@
+{
+  "selection": {
+    "selected": {
+      "checkpoint": "runs/defense-ppo-movement-only-164-pilot/step-000001048576",
+      "steps": 1048576,
+      "checkpoint_sha256": "664ded8ace39fafcc8b3e462bb8d5c93b8283207af1be67388685bd58167e34b",
+      "highest_stage": 1,
+      "mission_games": 0,
+      "mean_score": 368.0
+    },
+    "candidates": [
+      {
+        "checkpoint": "runs/defense-ppo-movement-only-164-pilot/step-000000262144",
+        "steps": 262144,
+        "checkpoint_sha256": "ba311be9d6a8a0f7d46df99f85ebf1a957b3910fdc27c64dac48fd098aab2a42",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 322.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-movement-only-164-pilot/step-000000524288",
+        "steps": 524288,
+        "checkpoint_sha256": "3ea555026cfb9789dd2f8e659af696197c6ca8c1164d032ca1c7d65001721707",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 346.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-movement-only-164-pilot/step-000000786432",
+        "steps": 786432,
+        "checkpoint_sha256": "51503e59c7ffc743a2343b938ca128d6d9547c861a099a9bcbac296ceca7a26d",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 364.0
+      },
+      {
+        "checkpoint": "runs/defense-ppo-movement-only-164-pilot/step-000001048576",
+        "steps": 1048576,
+        "checkpoint_sha256": "664ded8ace39fafcc8b3e462bb8d5c93b8283207af1be67388685bd58167e34b",
+        "highest_stage": 1,
+        "mission_games": 0,
+        "mean_score": 368.0
+      }
+    ]
+  },
+  "fixed_stage_proof": null,
+  "fresh_set": {
+    "movement_mean": 361.71875,
+    "baseline_mean": 286.71875,
+    "movement_median": 360.0,
+    "baseline_median": 280.0,
+    "movement_best": 380,
+    "baseline_best": 340,
+    "movement_mean_steps": 1641.625,
+    "baseline_mean_steps": 1505.9140625,
+    "movement_highest_stage": 1,
+    "baseline_highest_stage": 1,
+    "movement_mission_games": 0,
+    "baseline_mission_games": 0,
+    "paired_movement_wins": 127,
+    "paired_baseline_wins": 0,
+    "paired_ties": 1,
+    "stage_one_extension_gate": true
+  },
+  "promotion_attempted": false,
+  "promotion_decision": "review original-boot stage and fresh-game evidence first"
+}

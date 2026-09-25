@@ -102,3 +102,48 @@ the frozen selected model and no-learning control on the predeclared 128
 fresh matched games with original-boot replay checks. It neither alters
 training nor promotes or prunes a model. Its live status is in the run's
 `comparison-status.json`.
+
+## Bounded pilot result and extension gate
+
+The pilot stopped normally at exactly **1,048,576** own actions and logged
+**640** complete training games. No training game reached stage two. Its
+four fixed ten-game means were **322 / 346 / 364 / 368**, best scores
+**340 / 360 / 380 / 380**; all **40** fixed games ended in stage one. The
+terminal [full checkpoint](pilot/checkpoint) wins the predeclared selector.
+A separate original-boot reload reproduced all ten terminal fixed games
+exactly, and its [replay](pilot/verified-replay/replay.html) verified
+**1,629** neural actions, rewards and screens. Model SHA-256:
+`664ded8ace39fafcc8b3e462bb8d5c93b8283207af1be67388685bd58167e34b`.
+The [pilot archive](pilot/) also retains all four fixed evaluations,
+complete compressed metrics, normal stop and disk-guard statuses.
+
+The fail-closed [fresh report](pilot/fresh-comparison/report.json) compared
+that frozen model with the separately frozen no-learning control on the
+predeclared **128** matched complete original-boot games, seeds
+620200–620327:
+
+| Policy | Mean / median / best displayed score | Mean actions | Highest stage |
+| --- | --- | ---: | ---: |
+| [Movement learner](pilot/fresh-comparison/movement-620200-replay/replay.html) | **361.72 / 360 / 380** | **1,641.63** | 1 |
+| [No-learning control](pilot/fresh-comparison/baseline-620200-replay/replay.html) | 286.72 / 280 / 340 | 1,505.91 | 1 |
+
+The movement learner won **127** paired scores, lost **zero**, and tied
+one. Both best-effort fresh replay bundles passed independent original-boot
+verification. Its +75-point score and +135.71-action length gains exceed
+the predeclared +20/+20 stage-one extension gate, but **no stage passage**
+was observed. The learner therefore earns *more score-only exploration*,
+not promotion over the protected 10,480-point policy.
+
+The extension resumes the archived pilot's exact model, optimizer and
+policy RNG at 1,048,576 actions, with fresh original-game episodes, toward
+**4,194,304 total own actions**. All action, screen, reward and optimizer
+settings remain unchanged; ten complete fixed games are checked every
+262,144 new actions. Freeze the earliest stage/mission-then-mean selected
+checkpoint. Independently verify any later-stage claim from original boot.
+If still stage one, compare the frozen extension selection against the
+frozen pilot selection on **two untouched matched sets of 128 complete
+games**, seeds **620400–620527** and **620600–620727**, with one verified
+best-effort replay per arm/set. This checks whether longer no-fire training
+actually improves survival beyond the pilot, rather than trusting a fixed
+seed or transient training curve. The disk guard and archive-before-prune
+rules remain in force.

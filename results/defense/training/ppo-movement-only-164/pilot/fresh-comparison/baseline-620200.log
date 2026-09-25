@@ -1,0 +1,5 @@
+{'event': 'validation_progress', 'finished': 18, 'active': 16, 'seconds': 10.068714166991413}
+{'event': 'validation_progress', 'finished': 48, 'active': 16, 'seconds': 20.06906070909463}
+{'event': 'validation_progress', 'finished': 75, 'active': 16, 'seconds': 30.140925292042084}
+{'event': 'validation_progress', 'finished': 96, 'active': 16, 'seconds': 40.14227858406957}
+{'complete_games': 128, 'incomplete_games': 0, 'mean_score': 286.71875, 'median_score': 280.0, 'best_score': 340, 'highest_stage': 1, 'mission_games': 0, 'stage_2_games': 0, 'stage_3_games': 0, 'checkpoint_sha256': 'e22114747b5cd18611a13ea052ab5476ec1b308738ea9d3208e21b5407e43bf1', 'policy': 'learned nine-movement categorical, sampled', 'temperature': 1.0, 'evaluation_only': True, 'promotion_eligible': False, 'evaluation_seed': 620200, 'evaluation_tstates': 100000, 'training_tstates': 100000, 'temporal_override': False, 'observation_stride': 1}
