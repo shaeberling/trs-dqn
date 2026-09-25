@@ -103,3 +103,13 @@ replays, and all four verified training best-effort replays. All archived
 copies were byte-compared with their completed-run sources before local
 checkpoint pruning. The original game, reward, global best model and replay
 were not changed.
+
+After the archive was committed and pushed, the stopped trainer, guard and
+watcher were confirmed exited. The **16** local checkpoint directories,
+duplicate comparison/replay bundles and duplicate `latest` were then pruned
+(about **191 MiB** by `du`), leaving only lightweight local config, metrics,
+status and disk-watch records. The selected full state and every fixed
+evaluation are recoverable from this pushed archive; the **15** unselected
+optimizer snapshots were deliberately discarded under the predeclared
+retention rule and are not recoverable as weights. APFS free-space accounting
+may not rise by the nominal `du` amount because archived copies share storage.
