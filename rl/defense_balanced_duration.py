@@ -11,6 +11,15 @@ from .defense_canonical_fire import COMMAND_MAP
 from .defense_repeat import validate_spec
 
 
+def grouped_duration_action_names(durations):
+    """Names of learned (distinct physical key, hold length) choices."""
+    from .defense import action_names
+
+    _, durations = validate_spec(12, durations)
+    names = action_names(False)
+    return tuple(f"{names[key]}@{hold}" for hold in durations for key in COMMAND_MAP)
+
+
 def balanced_duration_initial_bias(durations, duration_weights):
     """Return one actor bias per original key-duration option.
 

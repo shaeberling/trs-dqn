@@ -85,6 +85,14 @@ selected full optimizer state, all fixed evaluations, complete metrics and
 verified replays remain on the pushed branch. The 15 unselected optimizer
 snapshots are not retained.
 
+The next [fresh grouped key-duration PPO experiment](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
+changes temporal action exploration instead of restarting the same
+single-action policy. Its fixed physical-command and duration prior is
+direction-neutral, the reward remains visible score only, and its opt-in
+training/evaluation/replay implementation passed the full **557-test** native
+suite. A bounded verified smoke gates a fresh full run; no trial-163 result or
+stage advance is claimed yet.
+
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
 added both distinct stage-one side-fire combinations; **290,508** branches

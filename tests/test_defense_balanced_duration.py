@@ -5,7 +5,9 @@ import numpy as np
 from rl.defense_balanced_duration import (balanced_duration_initial_bias,
                                           group_duration_logits_numpy,
                                           grouped_duration_physical_actions,
-                                          grouped_duration_log_probs_numpy)
+                                          grouped_duration_log_probs_numpy,
+                                          grouped_duration_action_names)
+from rl.defense_grouped_duration_ppo import GroupedDurationPolicy
 
 
 class BalancedDurationInitialBiasTests(unittest.TestCase):
@@ -46,6 +48,26 @@ class BalancedDurationInitialBiasTests(unittest.TestCase):
                                       np.array((*range(10), 18, 19)))
         with self.assertRaises(ValueError):
             grouped_duration_physical_actions(np.array([12]))
+
+    def test_grouped_option_names_and_visible_boundary_reset(self):
+        names = grouped_duration_action_names((1, 4))
+        self.assertEqual(len(names), 24)
+        self.assertEqual(names[9], "SPACE@1")
+        self.assertEqual(names[21], "SPACE@4")
+        selected = [29]  # raw second-row fire alias -> grouped SPACE@4
+
+        def infer(obs):
+            logits = np.full((len(obs), 40), -1000., np.float32)
+            logits[:, selected[0]] = 1000.
+            return logits
+
+        policy = GroupedDurationPolicy(infer, (1, 4))
+        obs = np.zeros((1, 4, 16, 64), np.uint8)
+        self.assertEqual(int(policy(obs)[0]), 9)
+        selected[0] = 3  # a new choice is deferred while the own hold runs
+        self.assertEqual(int(policy(obs)[0]), 9)
+        policy.observe_boundaries(np.array([True]))
+        self.assertEqual(int(policy(obs)[0]), 3)
 
     def test_mixture_preserves_physical_key_marginal(self):
         logits = np.arange(48, dtype=np.float32).reshape(1, 48) / 13

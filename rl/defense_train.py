@@ -90,6 +90,10 @@ def main():
                         help="learn a twenty-first choice that continues the policy's own last key")
     parser.add_argument("--learned-durations", nargs="*", type=int, default=[],
                         help="learn joint physical keys and option holds, e.g. 1 4 16 64")
+    parser.add_argument("--grouped-duration", action=argparse.BooleanOptionalAction, default=False,
+                        help="fresh twelve-physical-command key-duration PPO with grouped fire aliases")
+    parser.add_argument("--grouped-duration-weights", nargs="*", type=float, default=[],
+                        help="initial direction-neutral hold-length masses for a fresh grouped-duration actor")
     parser.add_argument("--option-actor-gae", action=argparse.BooleanOptionalAction, default=False,
                         help="credit a completed learned hold's whole score return to its option start")
     parser.add_argument("--duration-explore-mix", type=float, default=0.,
@@ -164,6 +168,9 @@ def main():
             parser.error("Changing continue-action profile requires fresh initialization")
         if args.learned_durations != config.get("learned_durations", []):
             parser.error("Changing learned-duration profile requires fresh initialization")
+        if (args.grouped_duration != config.get("grouped_duration", False)
+                or args.grouped_duration_weights != config.get("grouped_duration_weights", [])):
+            parser.error("Changing grouped-duration action profile or initializer requires a fresh run")
         if args.duration_explore_mix != config.get("duration_explore_mix", 0.):
             parser.error("Changing the duration behavior mixture on resume is invalid")
         if ("novelty_beta" in config and args.novelty_beta != config["novelty_beta"]):
@@ -228,10 +235,24 @@ def main():
         if (args.allow_enter or args.recurrent_hidden or args.canonical_fire
                 or args.repeat_previous_action or args.sil_updates or args.initialize_encoder
                 or args.initialize_policy or args.initialize_repeat_policy or not args.life_terminal
-                or not (args.initialize_duration_policy or args.initialize_duration_checkpoint or args.resume)):
+                or not (args.initialize_duration_policy or args.initialize_duration_checkpoint
+                        or args.grouped_duration or args.resume)):
             parser.error("learned durations require own ordinary-policy initialization, life terminals, and plain feedforward PPO")
     elif args.initialize_duration_policy or args.initialize_duration_checkpoint:
         parser.error("duration initialization requires --learned-durations")
+    if args.grouped_duration:
+        if (not args.learned_durations or args.spatial_residual or args.extend_longest_duration
+                or args.initialize_duration_policy or args.initialize_duration_checkpoint
+                or args.policy_bias_noise or args.policy_weight_noise or args.policy_key_noise
+                or args.policy_duration_noise):
+            parser.error("grouped durations require fresh plain score-only option PPO without policy perturbations")
+        from .defense_balanced_duration import balanced_duration_initial_bias
+        try:
+            balanced_duration_initial_bias(args.learned_durations, args.grouped_duration_weights)
+        except ValueError as error:
+            parser.error(str(error))
+    elif args.grouped_duration_weights:
+        parser.error("grouped-duration weights require --grouped-duration")
     if args.spatial_residual and (not args.learned_durations or args.recurrent_hidden
                                   or not (args.initialize_duration_checkpoint or args.resume)):
         parser.error("spatial residual requires own trained duration initialization and feedforward PPO")
@@ -325,7 +346,12 @@ def main():
     agent_class, extra_agent = PPO, dict(canonical_fire=args.canonical_fire)
     if args.learned_durations:
         from .defense_duration_ppo import DurationPPO
-        if args.spatial_residual:
+        if args.grouped_duration:
+            from .defense_grouped_duration_ppo import GroupedDurationPPO
+            agent_class = GroupedDurationPPO
+            extra_agent.update(duration_explore_mix=args.duration_explore_mix,
+                               durations=tuple(args.learned_durations))
+        elif args.spatial_residual:
             from .defense_spatial import SpatialDurationPPO
             agent_class = SpatialDurationPPO
         else:
@@ -409,6 +435,10 @@ def main():
             if args.balanced_canonical_init and not prior:
                 from .defense_canonical_fire import balanced_fire_initial_bias
                 head.bias = head.bias + mx.array(balanced_fire_initial_bias())
+            if args.grouped_duration and not prior:
+                from .defense_balanced_duration import balanced_duration_initial_bias
+                head.bias = head.bias + mx.array(balanced_duration_initial_bias(
+                    args.learned_durations, args.grouped_duration_weights))
         agent.compile()
     sil = None
     if args.sil_updates:
@@ -492,7 +522,12 @@ def main():
                       previous_action_reset="visible life loss or episode boundary; NOOP at boot/resume")
     if args.learned_durations:
         from .defense_duration_ppo import duration_action_names
-        config.update(policy_action_names=list(duration_action_names(args.learned_durations)),
+        if args.grouped_duration:
+            from .defense_balanced_duration import grouped_duration_action_names
+            option_names = grouped_duration_action_names(args.learned_durations)
+        else:
+            option_names = duration_action_names(args.learned_durations)
+        config.update(policy_action_names=list(option_names),
                       duration_source_sha256=sha256(Path(__file__).with_name("defense_duration_ppo.py")),
                       duration_executor_source_sha256=sha256(Path(__file__).with_name("defense_repeat.py")),
                       policy="learned categorical joint physical key-duration options, sampled",
@@ -500,6 +535,14 @@ def main():
                                     if args.option_actor_gae else
                                     "only actual option starts; every base action trains the score-value critic"),
                       duration_reset="visible life loss or episode boundary; pending hold cancelled")
+        if args.grouped_duration:
+            config.update(policy="fresh grouped physical-key-duration categorical PPO, sampled",
+                          grouped_duration_source_sha256=sha256(Path(__file__).with_name("defense_balanced_duration.py")),
+                          grouped_duration_ppo_source_sha256=sha256(Path(__file__).with_name("defense_grouped_duration_ppo.py")),
+                          grouped_duration_semantics="twenty raw logits per hold, nine fire aliases grouped to one Space; "
+                                                     "twelve distinct original keyboard commands per hold",
+                          grouped_duration_initialization="direction-neutral physical key mass for each supplied "
+                                                          "hold length; random encoder and actor; no source policy")
         if args.duration_explore_mix:
             config.update(duration_exploration="training option starts: (1-mix)*joint actor + "
                           "mix*actor key marginal/uniform duration; PPO ratios use exact mixture",
@@ -640,7 +683,8 @@ def main():
         repeat_actions = RepeatPreviousActions(args.envs) if args.repeat_previous_action else None
         if args.learned_durations:
             from .defense_repeat import RepeatedActions
-            duration_actions = RepeatedActions(args.envs, durations=args.learned_durations)
+            duration_actions = RepeatedActions(args.envs, action_count=12 if args.grouped_duration else 20,
+                                               durations=args.learned_durations)
         else:
             duration_actions = None
         if args.recurrent_hidden:
@@ -676,6 +720,9 @@ def main():
                 noise_boundaries = np.zeros(args.envs, dtype=bool) if noise is not None else None
                 physical_actions = (duration_actions.select(actions) if duration_actions is not None else
                                     repeat_actions.execute(actions) if repeat_actions is not None else actions)
+                if args.grouped_duration:
+                    from .defense_balanced_duration import grouped_duration_physical_actions
+                    physical_actions = grouped_duration_physical_actions(physical_actions)
                 repeat_boundaries = np.zeros(args.envs, dtype=bool) if repeat_actions is not None else None
                 duration_boundaries = np.zeros(args.envs, dtype=bool) if duration_actions is not None else None
                 for worker, result in enumerate(workers.step(physical_actions)):
@@ -851,7 +898,7 @@ def main():
                 evaluation_policy = agent.policy()
                 if args.repeat_previous_action:
                     evaluation_policy = RepeatPreviousPolicy(evaluation_policy)
-                if args.learned_durations:
+                if args.learned_durations and not args.grouped_duration:
                     from .defense_duration_ppo import DurationCategoricalPolicy
                     evaluation_policy = DurationCategoricalPolicy(evaluation_policy, args.learned_durations)
                 result = evaluate(evaluation_policy, range(args.eval_seed, args.eval_seed+args.eval_games),
@@ -873,7 +920,9 @@ def main():
         agent.save(args.run/"latest", state())
         if workers is not None:
             workers.close()
-        log(dict(event="stopped", steps=steps, stop_requested=stop))
+        log(dict(event="stopped", steps=steps, stop_requested=stop,
+                 **({"duration_options": duration_actions.stats()}
+                    if duration_actions is not None else {})))
         log_file.close()
 
 
