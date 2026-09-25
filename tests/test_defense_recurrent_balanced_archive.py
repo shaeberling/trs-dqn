@@ -95,6 +95,14 @@ class RecurrentBalancedArchiveTests(unittest.TestCase):
                              archived["bundles"][0]["trace_sha256"])
             self.assertEqual([loss["decoded_rows"] for loss in archived["bundles"][0]["losses"]],
                              rows)
+        treatment_original = read(ROOT / "course-probes/treatment-fifth-original/report.json")
+        treatment_archived = read(ROOT / "course-probes/treatment-fifth-archived/report.json")
+        self.assertEqual(treatment_original["bundles"][0]["model_sha256"],
+                         treatment_archived["bundles"][0]["model_sha256"])
+        self.assertEqual(treatment_original["bundles"][0]["trace_sha256"],
+                         treatment_archived["bundles"][0]["trace_sha256"])
+        self.assertEqual([loss["decoded_rows"] for loss in treatment_archived["bundles"][0]["losses"]],
+                         [16, 15, 15, 16])
 
 
 if __name__ == "__main__":

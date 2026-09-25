@@ -380,6 +380,9 @@ same familiar region as the protected best. Its earlier 4,230-point
 lost at **30 / 29 / 29 / 29**, despite a higher score than the fifth replay.
 These private pointer reads happened only after freezing learned replays;
 they were never training inputs, rewards, or checkpoint-selection values.
+The treatment's separate fifth-check probe was also retained and rerun
+from its archived replay: losses at **16 / 15 / 15 / 16** confirm that
+its intermediate score gain had not produced comparable course depth.
 The separately verified [finer-cadence feasibility study](../../diagnostics/fine-cadence-survival-177/README.md)
 establishes a physical row-65 route but supplies no training data or learned
 passage. A successor needs strict full-20, screen-only play and a different

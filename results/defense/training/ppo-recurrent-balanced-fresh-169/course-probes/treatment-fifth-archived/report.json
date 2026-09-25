@@ -1,0 +1,57 @@
+{
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "original_binary_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "static_audit_source_sha256": "25eba681ae343012e2682653437d4e76c080638667f42475cf03384f0d7356e8",
+  "probe_source_sha256": "da9b1f03d6974fb3405ac7f69d25475fbde706db4e5d52b907a55dfd4d5e26ec",
+  "course_start": "0x76A9",
+  "course_end": "0x7BD8",
+  "total_stage_one_stream_rows": 126,
+  "memory_address_read": "0x819B/0x819C",
+  "bundles": [
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-recurrent-balanced-fresh-169/treatment-best-efforts/step-000005242880-79829d172f2c-seed-10002",
+      "trace_sha256": "f63eee160fd1f30873e4bdb3c574cea2d8f5310b088f3b511bbc85abfe6a0de2",
+      "model_sha256": "79829d172f2c6a6ebc433597b010bb9ea1de3b002ea92fe23c4b4af6107f009a",
+      "verified_neural_actions": 1713,
+      "losses": [
+        {
+          "frame": 198,
+          "displayed_score": 100,
+          "next_stream_byte": "0x76E5",
+          "decoded_rows": 16
+        },
+        {
+          "frame": 720,
+          "displayed_score": 220,
+          "next_stream_byte": "0x76E3",
+          "decoded_rows": 15
+        },
+        {
+          "frame": 1206,
+          "displayed_score": 340,
+          "next_stream_byte": "0x76E3",
+          "decoded_rows": 15
+        },
+        {
+          "frame": 1713,
+          "displayed_score": 460,
+          "next_stream_byte": "0x76E5",
+          "decoded_rows": 16
+        }
+      ]
+    }
+  ],
+  "own_source_archive": null,
+  "diagnostic_only": true,
+  "hidden_ram_never_policy_input": true,
+  "hidden_ram_never_reward_or_curriculum": true,
+  "model_updates": 0,
+  "replay_promotion_eligible": false,
+  "limitations": [
+    "Pointer is sampled at visible ship-loss bookkeeping, not exact collision.",
+    "Decoded rows are stream progress, not rows safely navigated by a ship.",
+    "The original program may render obstacles ahead of or behind this pointer.",
+    "The forensic pointer and row index must never enter training or evaluation selection."
+  ]
+}
