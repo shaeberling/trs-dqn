@@ -113,6 +113,11 @@ found all four visible losses at the original stream's decoded row 34 of
 126. That private pointer was read only after freezing the replay, never
 as a policy observation, reward or checkpoint-selection feature. The
 score gain still does not solve the early passage bottleneck.
+At the eighth, halfway fixed check, the mean fell to **8,628** while the
+best single game reached a new trial-best **9,980**. Its full checkpoint
+and verified replay are archived alongside the stronger-by-mean sixth
+checkpoint. All eighty fixed games so far remain stage one; the protected
+10,480-point best and original game are unchanged.
 
 Two unrelated stopped Defense bootstrap smokes also had a full local
 `latest`, fixed-step checkpoint and replay bundle that matched their
