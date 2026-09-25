@@ -237,3 +237,29 @@ recorded action, score increment and screen, then found visible losses
 at original stream rows **13 / 13 / 16 / 16 of 126**. The lower score
 therefore was not accompanied by deeper course progress in that selected
 game. This is not a fresh-sample result or an early-stop gate.
+
+## Completed treatment and corrected control handoff
+
+The fresh treatment stopped normally at exactly **8,388,608** own actions
+with all eight planned fixed checkpoints. Their ten-game mean scores were
+**346 / 322 / 320 / 318 / 412 / 408 / 516 / 554**; every fixed game
+remained in stage one and no mission occurred. The terminal checkpoint
+is the frozen selector's treatment choice, with best individual score
+**600** and model SHA-256
+`03c5a616a7b5cf26dc095a359bff462d7e5adacf5b12048872caa168f2f3be20`.
+This is below the protected 10,480-point learned best and does not
+justify promotion. Its full optimizer/RNG state, evaluations and local
+replay remain in the treatment run pending the matched comparison.
+
+The unattended follow-up initially failed closed before starting control:
+it incorrectly required `checkpoint_sha256` inside the trainer's fixed
+`evaluation.json`, whereas the trainer writes that file *without* a hash.
+No result was lost and no treatment process was restarted. The corrected
+follow-up now reloads **each of all eight** saved models and reruns the
+same ten complete original-boot games, requiring exact game and summary
+equality and a model-hashed recheck file. All eight treatment rechecks
+matched exactly, including an independently run terminal recheck before
+the monitor correction. The focused follow-up tests passed. The matched
+zero-memory control has now launched from fresh seed 41 with its own
+disk guard; its fixed and two untouched fresh comparisons remain pending.
+No final causal memory conclusion is drawn from the treatment alone.
