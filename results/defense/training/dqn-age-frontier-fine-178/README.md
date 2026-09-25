@@ -7,9 +7,9 @@ ordinary-DQN learning curve shows that using it to reject stage passage
 would underfund the test. The matched efficacy budget and stop criteria below
 were fixed before seeing any calibration evaluation result.
 
-Physical-time interpretation added on 2026-09-25 while both efficacy
-continuations were below 1.2 million total actions and before their first
-fixed evaluation: 8,388,608 fine actions are an intermediate matched budget,
+Physical-time interpretation added on 2026-09-25 before the efficacy
+continuations' first fixed evaluation: 8,388,608 fine actions are an
+intermediate matched budget,
 not automatically enough to reject a policy still learning basic score play.
 This clarification does not change the live trainer settings or any result.
 
