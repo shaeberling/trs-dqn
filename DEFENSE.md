@@ -108,6 +108,11 @@ mission passage or a global-best promotion. The planned full run continues.
 The sixth fixed check then rose to a **9,355** ten-game mean (best **9,930**),
 again all stage one. Its full checkpoint and independently verified replay
 are archived as a new recovery milestone; the goal remains unfulfilled.
+A [forensic audit of its verified replay](results/defense/diagnostics/grouped-duration-163-course-progress-6m/README.md)
+found all four visible losses at the original stream's decoded row 34 of
+126. That private pointer was read only after freezing the replay, never
+as a policy observation, reward or checkpoint-selection feature. The
+score gain still does not solve the early passage bottleneck.
 
 Two unrelated stopped Defense bootstrap smokes also had a full local
 `latest`, fixed-step checkpoint and replay bundle that matched their
