@@ -263,3 +263,39 @@ the monitor correction. The focused follow-up tests passed. The matched
 zero-memory control has now launched from fresh seed 41 with its own
 disk guard; its fixed and two untouched fresh comparisons remain pending.
 No final causal memory conclusion is drawn from the treatment alone.
+
+## Control disk interruption and fresh restart
+
+The first fresh control launch advanced to **249,856** own actions, then its
+exact-process disk guard observed **3.41 GiB** free (below the 5.1-GiB
+floor) and signaled a clean stop. No fixed checkpoint had yet been due;
+the latest full 249,856-action model/optimizer/RNG state, compact metrics,
+configuration, trainer log, disk-watch event and follow-up failure status
+are retained under [control-interrupted-disk-stop](control-interrupted-disk-stop/latest/state.json).
+Its model and optimizer SHA-256 values are
+`0aa6809e843534691e81122e8dad2cfb1d8f35bd801e241deb911bd0ef5a0a04`
+and `28050d7991bda1eddfa8054dea4330394596a08e8e6bd756423467ee113a7562`.
+This partial run is **excluded** from the matched comparison; resuming it
+would restart emulator episodes and would not match the treatment's fresh,
+uninterrupted protocol.
+
+The free-space drop came from two roughly 8-GiB Git packs. An object-index
+comparison proved the older pack had **zero unique objects**; Git's own
+multi-pack-index writer was directed to prefer the superset pack, then
+`git multi-pack-index expire` removed only the unreferenced duplicate.
+The multi-pack index and repository connectivity verified afterward, and
+free space recovered to about **17 GiB**. Automatic Git maintenance was
+disabled in *this local clone only* (`maintenance.auto=false`, `gc.auto=0`)
+to avoid another surprise repack during disk-guarded training. The first
+post-fix full-suite run had one failure solely because its own disk guard
+executed during the 3.4-GiB interval. A clean-space rerun passed **all
+594 native tests**. No original game, learned weights or protected best
+replay was changed by this storage repair.
+
+The interrupted run and its logs were moved aside so the same fail-closed
+follow-up can start a **new seed-41 control from zero** with the original
+frozen configuration and a new exact-run disk guard. Reuse all eight
+hash-bound treatment rechecks; do not incorporate any interrupted-control
+weights, metrics or games in selection or fresh comparison. Only after
+both planned arms and untouched sets finish should a causal memory
+conclusion be reported.

@@ -122,6 +122,14 @@ byte-for-byte from the stopped run. The saved source and action hashes
 match their records. The path is *not* a neural policy or a training
 demonstration, and it may not enter any learner or best-replay promotion.
 
+A further original-boot forensic replay measured the audited obstacle-stream
+pointer: the protected source had decoded **row 33 of 126** when its private
+ship count fell during action 389; the live diagnostic branch had decoded
+**row 37 of 126** at action 428. These private bytes are report-only and
+never enter policy, reward, curriculum or model selection. A decoded row
+is scroll-stream progress, not proof that a ship has safely navigated all
+corresponding on-screen geometry.
+
 This rules out only the claim that the current cadence forces the learned
 first-life collision by frame 428. It does **not** establish stage-one
 passage: the original stream has 126 rows, the path remains in stage one,

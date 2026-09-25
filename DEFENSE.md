@@ -12,7 +12,9 @@ learned replay's first internal loss at **389**, at the same 100,000-T-state
 cadence. It scores only **390**, remains in stage one, and was selected
 using private RAM strictly within an isolated diagnostic. Its actions are
 quarantined and cannot train or replace a learned policy. This establishes
-that the repeated immediate loss is avoidable at this cadence; first-stage
+that the repeated immediate loss is avoidable at this cadence: the original
+course pointer advanced from the learned loss's row **33** to row **37**
+of 126. First-stage
 passage and the original mission remain unverified.
 
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)

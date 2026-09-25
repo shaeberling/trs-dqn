@@ -1,0 +1,6 @@
+{
+  "event": "error",
+  "checked_unix": 1790328945.965861,
+  "monitor_pid": 11039,
+  "error": "RuntimeError('control stopped_early; not continuing automatically')"
+}
