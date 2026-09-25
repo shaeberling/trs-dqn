@@ -181,6 +181,10 @@ game records exactly; a fresh policy reload verified each of the replay's
 `d5953b7361d499daa412903cefcb39d6fca6213f0297468214850c8a54e4beae`.
 The halfway checkpoint still has this trial's best single replay at 9,980,
 and the protected global best remains 10,480. Neither is a passage proof.
+A [post-freeze forensic audit](../../diagnostics/grouped-duration-163-course-progress-14m/README.md)
+reexecuted the selected replay and located its four losses at original
+stage-one stream rows 33 / 34 / 34 / 34 of 126. That hidden read did not
+enter training or checkpoint selection.
 
 For disk retention during this run, a content-hash audit found **289**
 checkpoint directories under stopped Defense runs whose every file matched
