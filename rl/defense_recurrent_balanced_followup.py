@@ -130,11 +130,43 @@ def fixed_selection(run, arm):
     rows = [candidate(run / f"step-{step:012d}", step, config) for step in steps]
     for row in rows:
         evaluation = read_json(Path(row["checkpoint"]) / "evaluation.json")
-        if evaluation.get("checkpoint_sha256") != row["checkpoint_sha256"]:
-            raise RuntimeError(f"{arm} fixed evaluation lacks an exact model hash")
+        # The trainer writes fixed evaluation.json before publish_best and does
+        # not include a model hash. Bind *every* fixed result to its weights by
+        # reloading the checkpoint and repeating all ten original-boot games.
+        # An explicit but wrong hash in a historical file still fails closed.
+        if evaluation.get("checkpoint_sha256") not in (None, row["checkpoint_sha256"]):
+            raise RuntimeError(f"{arm} fixed evaluation has a mismatched model hash")
+        verify_fixed_evaluation(row, arm, evaluation)
     selected = max(rows, key=lambda row: (row["mission_games"], row["highest_stage"],
                                           row["mean_score"], -row["steps"]))
     return dict(selected=selected, candidates=rows)
+
+
+def checked_fixed_confirmation(original, repeated, model_hash):
+    if (not isinstance(original, dict) or not isinstance(repeated, dict)
+            or repeated.get("checkpoint_sha256") != model_hash
+            or repeated.get("complete_games") != 10
+            or repeated.get("incomplete_games") != 0
+            or any(repeated.get(key) != value for key, value in original.items())):
+        raise RuntimeError("fixed original-boot recheck differs from recorded evaluation")
+    return repeated
+
+
+def verify_fixed_evaluation(row, arm, original):
+    step = row["steps"]
+    output = MONITOR / f"{arm}-fixed-{step}-recheck.json"
+    if not output.exists():
+        model = Path(row["checkpoint"]) / "model.safetensors"
+        if digest(model) != row["checkpoint_sha256"]:
+            raise RuntimeError(f"{arm} fixed model changed before recheck")
+        command = [sys.executable, "-u", "-m", "rl.defense_evaluate", str(model),
+                   "--output", str(output), "--games", "10", "--seed", "10000",
+                   "--envs", "10"]
+        with (MONITOR / f"{arm}-fixed-{step}-recheck.log").open("a") as log:
+            result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, check=False)
+        if result.returncode:
+            raise RuntimeError(f"{arm} fixed recheck exited {result.returncode} at {step}")
+    return checked_fixed_confirmation(original, read_json(output), row["checkpoint_sha256"])
 
 
 def wait_for_run(run, arm):

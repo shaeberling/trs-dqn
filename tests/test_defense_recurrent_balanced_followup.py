@@ -89,9 +89,21 @@ class RecurrentBalancedFollowupTests(unittest.TestCase):
                 mean_score=10000 if index == 0 else 100,
                 highest_stage=2 if index in (2, 3) else 1,
                 mission_games=1 if index == 5 else 0))
-        selection = followup.fixed_selection(self.treatment, "treatment")
+        with patch.object(followup, "verify_fixed_evaluation") as verify:
+            selection = followup.fixed_selection(self.treatment, "treatment")
+        self.assertEqual(verify.call_count, 8)
         self.assertEqual(selection["selected"]["steps"], 6 * followup.INTERVAL)
         self.assertEqual(len(selection["candidates"]), 8)
+
+    def test_fixed_confirmation_binds_missing_trainer_hash_to_exact_replay(self):
+        original = dict(complete_games=10, incomplete_games=0, mean_score=500.,
+                        games=[dict(seed=seed, score=500) for seed in range(10000, 10010)])
+        repeated = dict(original, checkpoint_sha256="hash")
+        self.assertEqual(followup.checked_fixed_confirmation(original, repeated, "hash"), repeated)
+        with self.assertRaisesRegex(RuntimeError, "recheck differs"):
+            followup.checked_fixed_confirmation(original, dict(repeated, checkpoint_sha256="wrong"), "hash")
+        with self.assertRaisesRegex(RuntimeError, "recheck differs"):
+            followup.checked_fixed_confirmation(original, dict(repeated, games=[]), "hash")
 
     def test_fresh_later_stage_must_match_verified_replay(self):
         output = self.root / "fresh.json"
