@@ -80,3 +80,20 @@ original-boot games averaged **254**, best **340**, all stage one. The
 are preserved with the full smoke log and status under `smoke/`. All
 predeclared gates passed. The smoke checkpoint is *not* a production
 initialization or a candidate for promotion.
+
+The full fresh production run is now active at
+`runs/defense-ppo-grouped-duration-163`. Its current configuration was
+checked field-for-field against the archived smoke, changing only the run
+and artifact paths, target action count and fixed-evaluation interval. An
+exact-PID 5.1-GiB disk guard is active. The fail-closed
+[`rl.defense_grouped_duration_compare`](../../../../rl/defense_grouped_duration_compare.py)
+monitor waits for a normal exact-target stop, checks all sixteen fixed
+evaluations and full states, independently verifies a later-stage claim if
+one appears, then runs both predeclared matched fresh sets and four replay
+checks. It never alters training or promotes a model. Its status is in the
+live run's `comparison-status.json`.
+
+After byte-comparing the checkpoint, replay bundle, config, metrics,
+status and duplicate `latest` against the pushed smoke archive, the two
+stopped local smoke directories were deleted (about **23 MiB** by `du`).
+Every retained smoke state and replay is recoverable from this branch.
