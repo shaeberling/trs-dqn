@@ -1,0 +1,997 @@
+{
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "probe_source_sha256": "963836bb33740ffcdd55d6d1eb4dd3b810e690b090cbc245cffa247572a2e13f",
+  "audited_private_counter_address": "0x7CEF",
+  "fixed_source_bundles": [
+    "results/defense/learned/best",
+    "results/defense/training/ppo-balanced-fire-continuation-161/fresh-comparison/continuation-612000-replay",
+    "results/defense/training/ppo-grouped-duration-fresh-163/fresh-comparison/grouped-615000-replay",
+    "results/defense/training/ppo-movement-only-164/extension/fresh-comparison/extension-620600-replay"
+  ],
+  "bundles": [
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+      "seed": 10004,
+      "model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+      "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+      "verified_actions": 2580,
+      "displayed_score": 10480,
+      "losses": [
+        {
+          "life": 1,
+          "private_decrement": {
+            "action_number": 389,
+            "requested_tstates_threshold": 15717,
+            "during_base_action": true,
+            "private_ships_before": 4,
+            "private_ships_after": 3,
+            "visible_score_before": 2620,
+            "visible_geometry": [
+              {
+                "frame": 356,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 372,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 380,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 388,
+                "ship_column": 25,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    25
+                  ],
+                  [
+                    28,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 410,
+          "visible_loss_score": 2620,
+          "reporting_lag_actions": 21
+        },
+        {
+          "life": 2,
+          "private_decrement": {
+            "action_number": 1118,
+            "requested_tstates_threshold": 62557,
+            "during_base_action": true,
+            "private_ships_before": 3,
+            "private_ships_after": 2,
+            "visible_score_before": 5240,
+            "visible_geometry": [
+              {
+                "frame": 1085,
+                "ship_column": 24,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1101,
+                "ship_column": 25,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1109,
+                "ship_column": 26,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    50
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1117,
+                "ship_column": 25,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1133,
+          "visible_loss_score": 5240,
+          "reporting_lag_actions": 15
+        },
+        {
+          "life": 3,
+          "private_decrement": {
+            "action_number": 1848,
+            "requested_tstates_threshold": 27403,
+            "during_base_action": true,
+            "private_ships_before": 2,
+            "private_ships_after": 1,
+            "visible_score_before": 7860,
+            "visible_geometry": [
+              {
+                "frame": 1815,
+                "ship_column": 24,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1831,
+                "ship_column": 24,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1839,
+                "ship_column": null,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    50
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1847,
+                "ship_column": 28,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1863,
+          "visible_loss_score": 7860,
+          "reporting_lag_actions": 15
+        },
+        {
+          "life": 4,
+          "private_decrement": {
+            "action_number": 2577,
+            "requested_tstates_threshold": 32002,
+            "during_base_action": true,
+            "private_ships_before": 1,
+            "private_ships_after": 0,
+            "visible_score_before": 10480,
+            "visible_geometry": [
+              {
+                "frame": 2544,
+                "ship_column": 24,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2560,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2568,
+                "ship_column": 25,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    50
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2576,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 2580,
+          "visible_loss_score": 10480,
+          "reporting_lag_actions": 3
+        }
+      ],
+      "lag_min": 3,
+      "lag_max": 21
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-balanced-fire-continuation-161/fresh-comparison/continuation-612000-replay",
+      "seed": 612059,
+      "model_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+      "trace_sha256": "5c5ab65f1318eec98dd10970d84f4217bf638154f9cdb609ab2c5ba703ed3223",
+      "verified_actions": 2525,
+      "displayed_score": 10480,
+      "losses": [
+        {
+          "life": 1,
+          "private_decrement": {
+            "action_number": 391,
+            "requested_tstates_threshold": 34783,
+            "during_base_action": true,
+            "private_ships_before": 4,
+            "private_ships_after": 3,
+            "visible_score_before": 2620,
+            "visible_geometry": [
+              {
+                "frame": 358,
+                "ship_column": 21,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 374,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 382,
+                "ship_column": 25,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 390,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    26
+                  ],
+                  [
+                    28,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 412,
+          "visible_loss_score": 2620,
+          "reporting_lag_actions": 21
+        },
+        {
+          "life": 2,
+          "private_decrement": {
+            "action_number": 1091,
+            "requested_tstates_threshold": 38245,
+            "during_base_action": true,
+            "private_ships_before": 3,
+            "private_ships_after": 2,
+            "visible_score_before": 5240,
+            "visible_geometry": [
+              {
+                "frame": 1058,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1074,
+                "ship_column": 26,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1082,
+                "ship_column": 26,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1090,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    28
+                  ],
+                  [
+                    30,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1112,
+          "visible_loss_score": 5240,
+          "reporting_lag_actions": 21
+        },
+        {
+          "life": 3,
+          "private_decrement": {
+            "action_number": 1818,
+            "requested_tstates_threshold": 73879,
+            "during_base_action": true,
+            "private_ships_before": 2,
+            "private_ships_after": 1,
+            "visible_score_before": 7860,
+            "visible_geometry": [
+              {
+                "frame": 1785,
+                "ship_column": 22,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1801,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1809,
+                "ship_column": 23,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    50
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1817,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    23
+                  ],
+                  [
+                    25,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1836,
+          "visible_loss_score": 7860,
+          "reporting_lag_actions": 18
+        },
+        {
+          "life": 4,
+          "private_decrement": {
+            "action_number": 2522,
+            "requested_tstates_threshold": 64117,
+            "during_base_action": true,
+            "private_ships_before": 1,
+            "private_ships_after": 0,
+            "visible_score_before": 10480,
+            "visible_geometry": [
+              {
+                "frame": 2489,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2505,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2513,
+                "ship_column": 26,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2521,
+                "ship_column": 27,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    27
+                  ],
+                  [
+                    30,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 2525,
+          "visible_loss_score": 10480,
+          "reporting_lag_actions": 3
+        }
+      ],
+      "lag_min": 3,
+      "lag_max": 21
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-grouped-duration-fresh-163/fresh-comparison/grouped-615000-replay",
+      "seed": 615060,
+      "model_sha256": "10628131ab9f0e5a032169fe17cdfb68e90870e5c0dac5aaf62293efde42dfe0",
+      "trace_sha256": "c0649de107d6fce5340b43000f84372c9e401290fa34b23631b5f9e42ce8b341",
+      "verified_actions": 2550,
+      "displayed_score": 10080,
+      "losses": [
+        {
+          "life": 1,
+          "private_decrement": {
+            "action_number": 389,
+            "requested_tstates_threshold": 44402,
+            "during_base_action": true,
+            "private_ships_before": 4,
+            "private_ships_after": 3,
+            "visible_score_before": 2500,
+            "visible_geometry": [
+              {
+                "frame": 356,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 372,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 380,
+                "ship_column": 21,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 388,
+                "ship_column": 21,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    21
+                  ],
+                  [
+                    24,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 410,
+          "visible_loss_score": 2520,
+          "reporting_lag_actions": 21
+        },
+        {
+          "life": 2,
+          "private_decrement": {
+            "action_number": 1112,
+            "requested_tstates_threshold": 12474,
+            "during_base_action": true,
+            "private_ships_before": 3,
+            "private_ships_after": 2,
+            "visible_score_before": 5020,
+            "visible_geometry": [
+              {
+                "frame": 1079,
+                "ship_column": 22,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1095,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1103,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    28,
+                    28
+                  ]
+                ]
+              },
+              {
+                "frame": 1111,
+                "ship_column": null,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    22
+                  ],
+                  [
+                    25,
+                    50
+                  ]
+                ],
+                "wall_runs_row_13": [
+                  [
+                    34,
+                    34
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1123,
+          "visible_loss_score": 5040,
+          "reporting_lag_actions": 11
+        },
+        {
+          "life": 3,
+          "private_decrement": {
+            "action_number": 1841,
+            "requested_tstates_threshold": 53353,
+            "during_base_action": true,
+            "private_ships_before": 2,
+            "private_ships_after": 1,
+            "visible_score_before": 7560,
+            "visible_geometry": [
+              {
+                "frame": 1808,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1824,
+                "ship_column": 20,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1832,
+                "ship_column": 20,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1840,
+                "ship_column": 20,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    23,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1862,
+          "visible_loss_score": 7560,
+          "reporting_lag_actions": 21
+        },
+        {
+          "life": 4,
+          "private_decrement": {
+            "action_number": 2547,
+            "requested_tstates_threshold": 10860,
+            "during_base_action": true,
+            "private_ships_before": 1,
+            "private_ships_after": 0,
+            "visible_score_before": 10080,
+            "visible_geometry": [
+              {
+                "frame": 2514,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2530,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2538,
+                "ship_column": 23,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    50
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 2546,
+                "ship_column": 23,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    50
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 2550,
+          "visible_loss_score": 10080,
+          "reporting_lag_actions": 3
+        }
+      ],
+      "lag_min": 3,
+      "lag_max": 21
+    },
+    {
+      "bundle": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-movement-only-164/extension/fresh-comparison/extension-620600-replay",
+      "seed": 620600,
+      "model_sha256": "347ba5c5662c8df8cec5b1a3a9ce4d457d60c0c885444ad98e7fd833e61c9353",
+      "trace_sha256": "21eb1fa6c85f9e9276dc131b5f370c48514ed0c321c29be1e8486932b4dff77e",
+      "verified_actions": 1706,
+      "displayed_score": 380,
+      "losses": [
+        {
+          "life": 1,
+          "private_decrement": {
+            "action_number": 174,
+            "requested_tstates_threshold": 87842,
+            "during_base_action": true,
+            "private_ships_before": 4,
+            "private_ships_after": 3,
+            "visible_score_before": 80,
+            "visible_geometry": [
+              {
+                "frame": 141,
+                "ship_column": null,
+                "wall_runs_row_12": [
+                  [
+                    21,
+                    41
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 157,
+                "ship_column": 44,
+                "wall_runs_row_12": [
+                  [
+                    31,
+                    32
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 165,
+                "ship_column": 48,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    42,
+                    62
+                  ]
+                ],
+                "wall_runs_row_13": [
+                  [
+                    30,
+                    30
+                  ]
+                ]
+              },
+              {
+                "frame": 173,
+                "ship_column": 47,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    29,
+                    29
+                  ],
+                  [
+                    31,
+                    31
+                  ],
+                  [
+                    42,
+                    62
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 186,
+          "visible_loss_score": 80,
+          "reporting_lag_actions": 12
+        },
+        {
+          "life": 2,
+          "private_decrement": {
+            "action_number": 684,
+            "requested_tstates_threshold": 79463,
+            "during_base_action": true,
+            "private_ships_before": 3,
+            "private_ships_after": 2,
+            "visible_score_before": 180,
+            "visible_geometry": [
+              {
+                "frame": 651,
+                "ship_column": 49,
+                "wall_runs_row_12": [
+                  [
+                    21,
+                    41
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 667,
+                "ship_column": 45,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 675,
+                "ship_column": 47,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    42,
+                    62
+                  ]
+                ],
+                "wall_runs_row_13": [
+                  [
+                    31,
+                    32
+                  ]
+                ]
+              },
+              {
+                "frame": 683,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    31,
+                    32
+                  ],
+                  [
+                    42,
+                    47
+                  ],
+                  [
+                    49,
+                    62
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 699,
+          "visible_loss_score": 180,
+          "reporting_lag_actions": 15
+        },
+        {
+          "life": 3,
+          "private_decrement": {
+            "action_number": 1195,
+            "requested_tstates_threshold": 22166,
+            "during_base_action": true,
+            "private_ships_before": 2,
+            "private_ships_after": 1,
+            "visible_score_before": 280,
+            "visible_geometry": [
+              {
+                "frame": 1162,
+                "ship_column": null,
+                "wall_runs_row_12": [
+                  [
+                    21,
+                    41
+                  ]
+                ],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1178,
+                "ship_column": 51,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1186,
+                "ship_column": 52,
+                "wall_runs_row_12": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    42,
+                    62
+                  ]
+                ],
+                "wall_runs_row_13": [
+                  [
+                    31,
+                    32
+                  ]
+                ]
+              },
+              {
+                "frame": 1194,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    31,
+                    32
+                  ],
+                  [
+                    42,
+                    52
+                  ],
+                  [
+                    54,
+                    62
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1210,
+          "visible_loss_score": 280,
+          "reporting_lag_actions": 15
+        },
+        {
+          "life": 4,
+          "private_decrement": {
+            "action_number": 1703,
+            "requested_tstates_threshold": 33465,
+            "during_base_action": true,
+            "private_ships_before": 1,
+            "private_ships_after": 0,
+            "visible_score_before": 380,
+            "visible_geometry": [
+              {
+                "frame": 1670,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": [
+                  [
+                    51,
+                    51
+                  ]
+                ]
+              },
+              {
+                "frame": 1686,
+                "ship_column": null,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1694,
+                "ship_column": 49,
+                "wall_runs_row_12": [],
+                "wall_runs_row_13": []
+              },
+              {
+                "frame": 1702,
+                "ship_column": 47,
+                "wall_runs_row_12": [
+                  [
+                    31,
+                    32
+                  ]
+                ],
+                "wall_runs_row_13": [
+                  [
+                    1,
+                    20
+                  ],
+                  [
+                    42,
+                    47
+                  ],
+                  [
+                    50,
+                    62
+                  ]
+                ]
+              }
+            ]
+          },
+          "visible_loss_action": 1706,
+          "visible_loss_score": 380,
+          "reporting_lag_actions": 3
+        }
+      ],
+      "lag_min": 3,
+      "lag_max": 15
+    }
+  ],
+  "total_verified_actions": 9361,
+  "loss_events": 16,
+  "lag_min": 3,
+  "lag_max": 21,
+  "lags": [
+    21,
+    15,
+    15,
+    3,
+    21,
+    21,
+    18,
+    3,
+    21,
+    11,
+    21,
+    3,
+    12,
+    15,
+    15,
+    3
+  ],
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "training_data_written": false,
+  "hidden_counter_used_by_policy_or_reward": false,
+  "promotion_eligible": false,
+  "limitations": [
+    "Selected verified replays, not a random sample of policies or seeds.",
+    "The private decrement follows original overlap detection; it is not exact collision time.",
+    "Visible ship glyphs may be occluded and wall codes are rendered geometry only.",
+    "No private-counter value may enter training, evaluation selection or acting."
+  ]
+}

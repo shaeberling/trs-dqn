@@ -26,6 +26,15 @@ changes how to interpret late loss-centered diagnostics; the private read
 was report-only and never entered any learner, reward, action or replay
 selection. Earlier interventions at actions 300–360 still preceded the
 internal event, and their negative results are not invalidated.
+The [four-policy, all-life follow-up](results/defense/diagnostics/internal-loss-lag-multi-167/README.md)
+verified **9,361** original-boot actions and found non-final HUD reporting
+lags of **11–21** decisions across twelve lives; all four final GAME OVER
+losses appeared after three decisions. Readable firing-policy ships were
+still around columns **20–26** eight decisions before internal loss, while
+the movement-only policy occupied columns **47–52** but failed much earlier
+in the course. This separates the two failure modes and argues for an
+earlier combined-control feasibility test, not another long score-only
+continuation. Private counters were forensic-only, never learner inputs.
 
 Earlier outcome: the fresh [grouped key-duration PPO run](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
 completed all **16,777,216** planned own actions and selected its terminal
