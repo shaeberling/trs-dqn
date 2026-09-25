@@ -68,6 +68,18 @@ guard and two untouched 128-game comparisons before any score-parent
 claim. Earlier actor-head ARS searches were already negative, so that
 method is not being redundantly relaunched.
 
+That independent run has now completed its full **16,777,216**-action budget.
+Its selected terminal checkpoint averaged **570** on ten fixed complete
+games, still all stage one. On two untouched sets of 128 complete games,
+seed 42 averaged **559.69 / 559.06** against the frozen seed-41 parent's
+**9,491.48 / 9,593.59**; the parent won all **256** paired seeds, and all
+**512** fresh games remained stage one. Four original-boot replays verified.
+The full selected/terminal state, all 16 fixed evaluations, log and fresh
+comparison are archived. No score-parent or global-best promotion occurred;
+the next experiment must change the learning mechanism, not simply extend
+seed 42. A direction-neutral grouped key-duration action prior has been
+implemented and unit-tested separately, without changing this run's trainer.
+
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
 added both distinct stage-one side-fire combinations; **290,508** branches

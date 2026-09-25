@@ -68,3 +68,38 @@ sets, verifies one local replay per arm and set, and writes a paired
 report without changing model weights or promoting a best replay. Four
 focused tests of the stop, selection, provenance and replay gates pass.
 The live watcher state is `runs/defense-ppo-balanced-seed42-162/comparison-status.json`.
+
+## Completed result and disposition
+
+The independent seed-42 run stopped normally at exactly **16,777,216** own
+actions. All **16** fixed evaluations comprised ten complete original-boot
+games, and all 160 games ended in stage one. Fixed means stayed at 312–370
+through the first fifteen checkpoints; the terminal checkpoint rose to a
+**570** mean (best **600**) and won the predeclared selector. Its model SHA-256
+is `6ebc238e9ebdfe8a63c15067c94a259605b3ce2b980ac11fddc17064ecbe5aef`.
+The late gain is early stage-one scoring, not the passage sought.
+
+The unattended watcher completed both untouched matched comparisons, with
+**128 complete games per policy per set**:
+
+| Fresh seeds | Seed 42 mean / best | Frozen seed-41 parent mean / best | Paired wins, seed 42 / parent | Stage-two games |
+| --- | ---: | ---: | ---: | ---: |
+| 614000–614127 | **559.69 / 600** | **9,491.48 / 10,480** | **0 / 128** | **0** |
+| 614200–614327 | **559.06 / 600** | **9,593.59 / 10,480** | **0 / 128** | **0** |
+
+All **512** fresh games stayed in stage one. Each of the four frozen-arm/set
+replay bundles independently verified its original-boot neural actions and
+model hash. The combined means were **559.38 / 9,542.54**, with the parent
+winning every paired seed. This seed does not qualify as a score-training
+parent and does not replace the protected 10,480-point learned replay. The
+result argues against merely continuing this initialization or assuming the
+balanced action prior reliably recreates seed 41's late score jump.
+
+The archive now contains the single full selected-and-terminal checkpoint
+(model, optimizer, RNG state and final fixed evaluation), all 16 fixed
+evaluation records, the resolved config, exact stop and watcher reports,
+the complete compressed training log, four fresh evaluations and verified
+replays, and all four verified training best-effort replays. All archived
+copies were byte-compared with their completed-run sources before local
+checkpoint pruning. The original game, reward, global best model and replay
+were not changed.
