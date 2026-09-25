@@ -118,6 +118,11 @@ best single game reached a new trial-best **9,980**. Its full checkpoint
 and verified replay are archived alongside the stronger-by-mean sixth
 checkpoint. All eighty fixed games so far remain stage one; the protected
 10,480-point best and original game are unchanged.
+At the twelfth fixed check, the mean edged up to **9,388**, making that
+checkpoint the current trial selection by the frozen stage/mean rule.
+Its full optimizer state and independently reproduced 9,910-point replay
+are archived. All **120** fixed games to date remain stage one; the
+halfway 9,980-point replay is still this trial's best individual effort.
 
 Two unrelated stopped Defense bootstrap smokes also had a full local
 `latest`, fixed-step checkpoint and replay bundle that matched their
