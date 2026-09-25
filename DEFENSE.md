@@ -89,6 +89,17 @@ not an improvement claim. A larger pilot must remain bounded and subject
 to the predeclared progression gate; extending the high-score PPO run
 unchanged is not justified by the observed row-33/34 failure. The protected
 best and mission status remain unchanged.
+The paired calibration subsequently stopped normally at **1,048,576**
+fine actions and **64,907** finite updates per arm. Its fourth fixed
+ten-game means were **486** (oldest-four age bins) and **388** (uniform
+age bins), with all **80** fixed games across four checks still in stage
+one. All archived terminal optimizer states, fixed checks, complete logs
+and independent original-boot replays are preserved. The reset exposure
+was real—390/393 treatment restored segments versus 161/301 control
+segments began from own-life age bin 9 or later—but this short calibration
+cannot establish stage-passage efficacy. The predeclared longer matched
+comparison continues from the two terminal states; neither the protected
+best nor the mission status changes.
 
 Earlier outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
