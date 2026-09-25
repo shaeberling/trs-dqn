@@ -69,3 +69,14 @@ venv/bin/python -u -m rl.defense_train \
 The full **557-test** native suite passed before this smoke. The grouped
 option path is opt-in; it does not change prior Defense trainer behavior or
 the protected best model and replay.
+
+## Smoke outcome
+
+The fresh seed-43 smoke stopped normally at exactly **16,384** base actions.
+All model, optimizer, and RNG checkpoint files exist; every stored optimizer
+array is finite. It started **134** 64-action options. The fixed ten complete
+original-boot games averaged **254**, best **340**, all stage one. The
+[checkpoint](smoke/checkpoint) and [native-verified replay](smoke/verified-replay/replay.html)
+are preserved with the full smoke log and status under `smoke/`. All
+predeclared gates passed. The smoke checkpoint is *not* a production
+initialization or a candidate for promotion.
