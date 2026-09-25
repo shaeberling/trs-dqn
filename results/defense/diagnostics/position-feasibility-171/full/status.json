@@ -1,0 +1,17 @@
+{
+  "layer": 29,
+  "frame": 339,
+  "duration": 1,
+  "expanded": 81780,
+  "private_deaths": 1954,
+  "generated_alive": 2964,
+  "selected": 256,
+  "selected_max_score": 1080,
+  "selected_max_position": 116,
+  "selected_max_position_at_score_target": 52,
+  "generated_max_position_at_score_target": 52,
+  "position_target_count": 1404,
+  "both_targets_count": 0,
+  "source_score": 1080,
+  "source_position": 48
+}
