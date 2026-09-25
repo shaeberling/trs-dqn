@@ -31,6 +31,12 @@ FRESH_SEEDS = (622000, 622200)
 FRESH_GAMES = 64
 MIN_FREE_GIB = 6.0
 POLL_SECONDS = 30
+# A full-suite regression exposed a resume-validation incompatibility after
+# treatment started. The correction changes only CLI resume checking, not
+# fresh training, acting, rewards or model architecture. Freeze both exact
+# source hashes and reject any other treatment/control source difference.
+TREATMENT_TRAINER_SOURCE = "56cfc7061c5bc8abe99159188fbd9bd3253c90392597c06a0eacf59858acf1c2"
+CONTROL_TRAINER_SOURCE = "a6016adf5e7d72cdbd93a040adb73755b57104e3f8e75e5dad59fdfab791ca39"
 EXPECTED = {
     "game": "defense", "algorithm": "ppo", "seed": 41, "steps": TARGET,
     "envs": 16, "rollout": 256, "batch_size": 512, "epochs": 4,
@@ -75,6 +81,8 @@ def checked_config(run, arm):
             or config.get("resume") is not None
             or config.get("initialize_policy") is not None
             or config.get("initialize_encoder") is not None
+            or config.get("trainer_source_sha256") !=
+               (TREATMENT_TRAINER_SOURCE if arm == "treatment" else CONTROL_TRAINER_SOURCE)
             or config.get("memory_scale") != (1. if arm == "treatment" else 0.)
             or any(config.get(key) != value for key, value in EXPECTED.items())):
         raise RuntimeError(f"{arm} configuration differs from the frozen protocol")
@@ -84,7 +92,7 @@ def checked_config(run, arm):
             raise RuntimeError("missing frozen treatment configuration")
         differences = {key for key in config.keys() | treatment.keys()
                        if config.get(key) != treatment.get(key)}
-        if differences != {"run", "artifacts", "memory_scale"}:
+        if differences != {"run", "artifacts", "memory_scale", "trainer_source_sha256"}:
             raise RuntimeError(f"matched configurations differ beyond memory scale: {sorted(differences)}")
     return config
 

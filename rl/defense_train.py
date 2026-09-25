@@ -168,7 +168,11 @@ def main():
             parser.error("Changing movement-only action profile requires a fresh run")
         if args.balanced_canonical_init != config.get("balanced_canonical_init", False):
             parser.error("Changing canonical-fire initializer provenance on resume is invalid")
-        if args.canonical_fire != config.get("canonical_fire", False):
+        # Feedforward PPO historically permits ordinary -> grouped likelihood
+        # continuation with its compatible twenty-logit head and optimizer.
+        # The recurrent grouped sampler is a new architecture/profile pair;
+        # never silently switch its action likelihood on optimizer resume.
+        if args.recurrent_hidden and args.canonical_fire != config.get("canonical_fire", False):
             parser.error("Changing grouped-command profile requires fresh initialization")
         if args.repeat_previous_action != config.get("repeat_previous_action", False):
             parser.error("Changing continue-action profile requires fresh initialization")

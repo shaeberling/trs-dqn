@@ -35,6 +35,9 @@ class RecurrentBalancedFollowupTests(unittest.TestCase):
         run = self.treatment if arm == "treatment" else self.control
         config = dict(followup.EXPECTED, run=str(run),
                       artifacts=str(Path(str(run) + "-artifacts")),
+                      trainer_source_sha256=(followup.TREATMENT_TRAINER_SOURCE
+                                             if arm == "treatment"
+                                             else followup.CONTROL_TRAINER_SOURCE),
                       memory_scale=1. if arm == "treatment" else 0.,
                       resume=None, initialize_policy=None, initialize_encoder=None)
         write_json(run / "config.json", config)
@@ -59,6 +62,12 @@ class RecurrentBalancedFollowupTests(unittest.TestCase):
         config["entropy"] = .02
         write_json(self.control / "config.json", config)
         self.assertEqual(followup.run_condition(self.control, "control"), "incompatible")
+
+    def test_unrecognized_trainer_change_fails_closed(self):
+        config = self.make_run("treatment")
+        config["trainer_source_sha256"] = "0" * 64
+        write_json(self.treatment / "config.json", config)
+        self.assertEqual(followup.run_condition(self.treatment, "treatment"), "incompatible")
 
     def test_early_stop_fails_closed(self):
         self.make_run("treatment", steps=followup.TARGET - followup.INTERVAL)
