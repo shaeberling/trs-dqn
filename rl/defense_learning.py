@@ -47,15 +47,30 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
     from .recurrent_policy import RECURRENT_ARCHITECTURE, OWN_ACTION_RECURRENT_ARCHITECTURE
     from .defense_spatial_spec import SPATIAL_ARCHITECTURE
     architecture = config.get("architecture")
+    if config.get("grouped_duration") and not config.get("learned_durations"):
+        raise ValueError("Grouped duration requires learned hold lengths")
     if config.get("learned_durations"):
         from .defense_duration_ppo import duration_action_names
         durations = config["learned_durations"]
+        grouped = config.get("grouped_duration", False)
+        if grouped:
+            from .defense_balanced_duration import (balanced_duration_initial_bias,
+                                                    grouped_duration_action_names)
+            balanced_duration_initial_bias(durations, config.get("grouped_duration_weights", []))
+            expected_names = grouped_duration_action_names(durations)
+        else:
+            expected_names = duration_action_names(durations)
         if (algorithm != "ppo" or architecture not in (None, SPATIAL_ARCHITECTURE)
                 or config.get("canonical_fire")
                 or config.get("repeat_previous_action") or config.get("allow_enter", False)
-                or config.get("policy_action_names") != list(duration_action_names(durations))
+                or (grouped and architecture is not None)
+                or config.get("policy_action_names") != list(expected_names)
                 or not config.get("life_terminal")):
             raise ValueError("Invalid learned-duration PPO policy profile")
+        if grouped:
+            kind = "learned grouped physical-key-duration options"
+            return (f"{kind}, sampled; holds end at visible life boundaries" if temperature == 1 else
+                    f"{kind}, temperature-scaled; holds end at visible life boundaries")
         kind = "learned spatial-residual categorical key-duration options" if architecture else \
                "learned categorical key-duration options"
         return (f"{kind}, sampled; holds end at visible life boundaries" if temperature == 1 else
@@ -241,6 +256,10 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         predict = mx.compile(model, inputs=model.state)
         return greedy_policy(lambda obs: np.array(predict(mx.array(obs)))), config
     predict = mx.compile(model.policy_value, inputs=model.state)
+    if config.get("grouped_duration"):
+        from .defense_grouped_duration_ppo import GroupedDurationPolicy
+        return GroupedDurationPolicy(lambda obs: np.array(predict(mx.array(obs))[0]),
+                                     config["learned_durations"], temperature), config
     if config.get('canonical_fire'):
         from .defense_canonical_fire import CanonicalFirePolicy
         return CanonicalFirePolicy(lambda obs: np.array(predict(mx.array(obs))[0]), temperature), config
