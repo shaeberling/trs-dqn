@@ -191,5 +191,51 @@ of that selected verified replay found all four visible losses at original
 stage-one stream row **16 of 126**, the same early region as the pilot.
 The pointer was diagnostic-only and did not enter the learner, reward, or
 checkpoint selector. The small fixed-score gain has not yet demonstrated
-course progress; the bounded extension and its predeclared fresh comparison
-remain in force.
+course progress; this interim audit did not alter the bounded extension or
+its predeclared fresh comparison. Their final results follow.
+
+## Final extension result and disposition
+
+The extension stopped normally at exactly **4,194,304 total own actions**.
+Its log contains **1,920 new complete training games**; the resumed status
+counter is **2,560 cumulative games** including the pilot's 640. None
+reached stage two.
+The twelve fixed ten-game means were **354 / 362 / 362 / 374 / 358 / 364 /
+362 / 360 / 368 / 342 / 342 / 344**; all 120 original-boot games remained
+in stage one. The predeclared selector retained the already archived
+**2,097,152-action** checkpoint (ten-game mean **374**, best **380**).
+The [terminal full model/optimizer/RNG checkpoint](extension/terminal-checkpoint)
+averaged only **344**, best **360**, at the final fixed check. The
+[complete run record](extension/final-run-record) preserves configuration,
+normal-stop and disk-guard records, every fixed evaluation and losslessly
+compressed full metrics. The two versioned, verified
+[training best efforts](extension/training-best-efforts/versions) are also
+preserved; the later one scored **400**, still stage one.
+
+The fail-closed [fresh comparison](extension/fresh-comparison/report.json)
+froze that selected extension checkpoint and the pilot checkpoint, then
+played two untouched 128-game matched sets per arm:
+
+| Seeds | Extension mean / median / best | Pilot mean / median / best | Extension wins / pilot wins / ties | Later-stage games |
+| --- | --- | --- | --- | --- |
+| 620400–620527 | **375.47 / 380 / 380** | 364.06 / 360 / 380 | 65 / 11 / 52 | 0 |
+| 620600–620727 | **376.25 / 380 / 380** | 362.34 / 360 / 380 | 74 / 7 / 47 | 0 |
+
+All **512** fresh complete games across both arms ended in stage one. Each
+arm/set has a separately original-boot-verified best-effort replay in the
+comparison archive. The extension selection modestly improved score and
+game length over the pilot on these timing-jittered original-game resets,
+but this is not a mission result or a broad randomized-layout test.
+The [course-progress audit](../../diagnostics/movement-only-164-extension-course-progress/README.md)
+found the selected replay losing at row **16 / 16 / 16 / 16 of 126**. An
+isolated 400-point training-best replay had one life reach row **21**;
+its other three lost at row 15. This does not approach the firing policies'
+row-33/34 failure, let alone finish stage one. The course pointer was
+diagnostic-only, never a policy input, reward or selector.
+
+Longer movement-only training is **not justified as the next mission
+experiment** by these results. Removing fire also excludes a control
+available in later stages. The protected [10,480-point global-best learned replay](../../learned/best/replay.html)
+and original game remain unchanged. Future work should target the observed
+phase-sensitive fire/movement bottleneck with a different learning mechanism,
+not simply extend this score-improving but stage-one-only action profile.
