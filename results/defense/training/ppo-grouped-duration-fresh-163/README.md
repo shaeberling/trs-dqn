@@ -135,3 +135,8 @@ screens. Model SHA-256:
 `94ebfbc0b8836fffe292e5bca79ca69dba7f1f07e346c302fb21356c6f1be18a`.
 This is a stronger recoverable score milestone, not a stage-two result or
 global-best promotion.
+
+A separate [forensic replay audit](../../diagnostics/grouped-duration-163-course-progress-6m/README.md)
+found decoded stage-one stream row 34 at all four visible life losses in
+that 9,930-point game. This hidden read was diagnostic-only after the
+policy/replay had been frozen; it never enters the learner or selector.
