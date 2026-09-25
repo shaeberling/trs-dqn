@@ -285,7 +285,8 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
 
 
 def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
-             should_stop=lambda: False, allow_enter=False, observation_stride=1):
+             should_stop=lambda: False, allow_enter=False, observation_stride=1,
+             record_visible_life_losses=False):
     seeds = list(seeds)
     if not seeds or len(set(seeds)) != len(seeds):
         raise ValueError("Validation requires distinct seeds")
@@ -293,6 +294,7 @@ def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
     workers = VectorEnv(count, seeds[0], game="defense", tstates=tstates, max_steps=max_steps,
                         allow_enter=allow_enter, observation_stride=observation_stride)
     games = [None] * len(seeds)
+    visible_losses = ([[] for _ in seeds] if record_visible_life_losses else None)
     rngs = [np.random.default_rng(s + 1_000_000) for s in seeds]
     pending = iter(range(count, len(seeds)))
     started, last_log = time.monotonic(), time.monotonic()
@@ -312,8 +314,14 @@ def evaluate(policy, seeds, *, tstates=100_000, max_steps=0, envs=10, log=None,
                     for _, _, t, u, info, _ in results], dtype=bool), [rngs[j] for j in jobs])
             for worker, job, result in zip(indices, jobs, results, strict=True):
                 obs, _, terminal, truncated, info, _ = result
+                if visible_losses is not None and info["life_lost"]:
+                    visible_losses[job].append(dict(action=info["steps"],
+                        displayed_score=info["score"], visible_lives=info["lives"],
+                        highest_stage=info["highest_stage"]))
                 if terminal or truncated:
                     games[job] = dict(seed=seeds[job], **info)
+                    if visible_losses is not None:
+                        games[job]["visible_life_losses"] = visible_losses[job]
                     replacement = next(pending, None)
                     if replacement is None:
                         del active[worker]
