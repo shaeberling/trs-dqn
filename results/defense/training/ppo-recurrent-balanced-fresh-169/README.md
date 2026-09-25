@@ -304,3 +304,12 @@ hash-bound treatment rechecks; do not incorporate any interrupted-control
 weights, metrics or games in selection or fresh comparison. Only after
 both planned arms and untouched sets finish should a causal memory
 conclusion be reported.
+
+At the restarted control's first two fixed checkpoints, **1,048,576** and
+**2,097,152** own actions, the ten complete original-boot games averaged
+**384** and **468** points (best **420** and **540**). All twenty games still
+ended in stage one with zero missions. The trainer, exact-PID disk guard and
+fail-closed follow-up remain live; neither early check is a matched final
+memory result. The completed treatment's corresponding fixed means were
+**346** and **322**, but no causal conclusion is drawn before the full
+predeclared budget and untouched paired sets finish.
