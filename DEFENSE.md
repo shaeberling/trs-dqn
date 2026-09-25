@@ -99,6 +99,15 @@ fail-closed post-run comparison monitor. Only the archive-backed duplicate
 local smoke directories (about 23 MiB) were deleted; the smoke checkpoint
 and replay remain on the pushed branch.
 
+Two unrelated stopped Defense bootstrap smokes also had a full local
+`latest`, fixed-step checkpoint and replay bundle that matched their
+already tracked archives byte-for-byte. Their six redundant local
+directories (about **426 MiB** by `du`) were deleted after verification;
+the archived model, optimizer, evaluation and replay files are still
+available. APFS reported roughly 14 GiB free both before and after,
+consistent with shared storage extents, so the live guard continues to
+watch actual free space rather than nominal directory sizes.
+
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
 added both distinct stage-one side-fire combinations; **290,508** branches
