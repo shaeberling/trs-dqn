@@ -85,3 +85,20 @@ neural actions, rewards and screens, and every chosen keyboard ID was in
 the nine-action set. Configuration, metrics and status are preserved under
 `smoke/`. All predeclared integration gates passed. Neither the smoke
 weights nor its score will initialize or select production checkpoints.
+
+After byte-comparing the initializer and smoke state, replay bundles,
+configurations, metrics and statuses with this pushed archive, their three
+stopped local run/artifact directories were deleted (about **36 MiB** by
+`du`). The archived baseline and smoke remain recoverable from this branch.
+
+The fresh seed-44 production pilot is active at
+`runs/defense-ppo-movement-only-164-pilot`; its settings match the archived
+smoke field-for-field except the run/artifact paths, target action count
+and fixed-evaluation interval. An exact-run 5.1-GiB disk guard is active.
+The fail-closed [`rl.defense_movement_compare`](../../../../rl/defense_movement_compare.py)
+watcher checks the normal exact-target stop and all four full fixed
+checkpoints, independently verifies a claimed later stage, then evaluates
+the frozen selected model and no-learning control on the predeclared 128
+fresh matched games with original-boot replay checks. It neither alters
+training nor promotes or prunes a model. Its live status is in the run's
+`comparison-status.json`.
