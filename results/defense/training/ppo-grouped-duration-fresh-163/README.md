@@ -191,3 +191,10 @@ run, unique checkpoint, metric log, or replay was deleted. APFS-reported
 free space rose from about **13 GiB to 15 GiB**. The exact-run disk guard
 remains active at 5.1 GiB, and final trial-163 checkpoint pruning waits for
 the predeclared comparison and archive.
+
+A second content-hash pass applied the same stopped-run and Git-tracked-copy
+requirements to `latest/` snapshots. It removed **181** duplicate local
+directories (**1,979,499,819** nominal bytes), leaving every unmatched
+snapshot and the active trial-163 `latest/` untouched. Reported free space
+rose to about **17 GiB**. These copies remain recoverable from the tracked
+training archives.
