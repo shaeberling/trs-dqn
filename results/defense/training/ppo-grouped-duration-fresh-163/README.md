@@ -124,3 +124,14 @@ This supersedes the earlier trial-163 recovery point on fixed-stage/mean
 selection, but neither checkpoint supersedes the protected global best or
 proves passage. Training continues toward the predeclared 16,777,216-action
 target and untouched matched comparisons.
+
+The sixth fixed check at **6,291,456** actions improved again to a
+**9,355** ten-game mean and **9,930** best; all ten complete games remained
+in stage one. The new selected [full checkpoint](milestone-000006291456/checkpoint)
+and [native-verified replay](milestone-000006291456/verified-replay/replay.html)
+were byte-compared against the live sources and preserved. The independent
+replay reproduced **2,598** original-boot neural actions, rewards and
+screens. Model SHA-256:
+`94ebfbc0b8836fffe292e5bca79ca69dba7f1f07e346c302fb21356c6f1be18a`.
+This is a stronger recoverable score milestone, not a stage-two result or
+global-best promotion.
