@@ -185,3 +185,11 @@ screens. Model SHA-256:
 `347ba5c5662c8df8cec5b1a3a9ce4d457d60c0c885444ad98e7fd833e61c9353`.
 This is a recoverable survival-score milestone, not a later-stage result;
 training and the frozen fresh-comparison plan continue.
+
+A [post-freeze forensic audit](../../diagnostics/movement-only-164-extension-course-progress/README.md)
+of that selected verified replay found all four visible losses at original
+stage-one stream row **16 of 126**, the same early region as the pilot.
+The pointer was diagnostic-only and did not enter the learner, reward, or
+checkpoint selector. The small fixed-score gain has not yet demonstrated
+course progress; the bounded extension and its predeclared fresh comparison
+remain in force.
