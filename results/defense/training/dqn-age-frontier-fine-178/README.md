@@ -123,3 +123,53 @@ replay bundles. The rechecks verify **3,339** and **3,146** neural actions,
 respectively. Their directories and the fixed evaluations were byte-compared
 with the stopped local outputs. The smoke optimizer snapshots are not pilot
 parents and need not be retained after the archived record is pushed.
+
+## Completed 1,048,576-action calibration (2026-09-25)
+
+Both fresh arms stopped normally at exactly **1,048,576** fine actions and
+**64,907** finite optimizer updates. Their exact-process disk guards logged
+only `trainer_stopped`, never a low-space signal; free disk remained about
+16 GiB. Four fixed ten-game checks per arm finished with no incomplete game.
+
+| Total actions | Oldest-four mean / best | Uniform-bin mean / best | Later-stage games |
+| ---: | ---: | ---: | ---: |
+| 262,144 | 336 / 360 | 236 / 280 | 0 / 0 |
+| 524,288 | 328 / 360 | 378 / 380 | 0 / 0 |
+| 786,432 | 348 / 400 | 374 / 400 | 0 / 0 |
+| 1,048,576 | 486 / 540 | 388 / 420 | 0 / 0 |
+
+The score lead changed across checks, and **all 80 fixed games remained in
+stage one**. This does not test passage of the row-33/34 barrier. The
+treatment completed 226 boot games and 393 restored segments; the control
+completed 191 and 301. Every completed restored segment's source action
+matched an actual own-play archive event. **390/393** treatment sources
+versus **161/301** control sources came from own-life age bin 9 or later;
+early archive fill accounts for the few treatment lower-bin sources. This
+verifies that the reset selectors supplied different practice states, not
+that older states led to better from-boot play. No training episode showed
+a later-stage event. The maximum saved own-life age was 922/923 fine
+actions (treatment/control), an action count rather than a course pointer.
+
+The terminal [treatment](calibration/treatment/terminal/state.json) and
+[control](calibration/control/terminal/state.json) checkpoints each retain
+online, target, optimizer and policy RNG state. Each `latest` copy was
+byte-identical to its terminal step checkpoint for those four files. After
+removing paths and the intended frontier-selector fields, the two recorded
+configs had the same SHA-256
+`ce15d8070aa91a5b2b0764bd0cfc0aa4fd6c48245e59dc7eb125ab8fce5e0445`.
+All eight [fixed evaluations](calibration/treatment/fixed-checks/step-000001048576.json)
+([control terminal](calibration/control/fixed-checks/step-000001048576.json)),
+complete metrics, status and guard logs are retained in the two calibration
+directories. All versioned local best-effort replay bundles are retained.
+
+Separate frozen-weight [treatment](calibration/treatment/recheck/replay.html)
+and [control](calibration/control/recheck/replay.html) rechecks replayed
+**3,824** and **3,477** neural actions from original boot at the checkpoint's
+50,000-T-state timing, confirming 540 and 420 points, both stage one.
+Terminal checkpoints, replay-version trees, recheck bundles, metrics, guard
+logs and each fixed evaluation were byte-compared with their stopped local
+sources before archival. The protected 10,480-point best was not replaced.
+
+This calibration passed the predeclared stability and reset-exposure gate.
+The longer matched efficacy phase remains necessary before accepting or
+rejecting the age-frontier mechanism for stage passage.
