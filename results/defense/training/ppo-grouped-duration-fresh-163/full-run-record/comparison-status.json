@@ -1,0 +1,36 @@
+{
+  "event": "comparison_complete",
+  "checked_unix": 1790310995.950351,
+  "fresh_sets": {
+    "615000": {
+      "grouped_mean": 9518.984375,
+      "parent_mean": 9601.484375,
+      "grouped_median": 9930.0,
+      "parent_median": 10260.0,
+      "grouped_best": 10080,
+      "parent_best": 10480,
+      "grouped_highest_stage": 1,
+      "parent_highest_stage": 1,
+      "grouped_mission_games": 0,
+      "parent_mission_games": 0,
+      "paired_grouped_wins": 30,
+      "paired_parent_wins": 98,
+      "paired_ties": 0
+    },
+    "615200": {
+      "grouped_mean": 9272.578125,
+      "parent_mean": 9647.34375,
+      "grouped_median": 9910.0,
+      "parent_median": 10330.0,
+      "grouped_best": 10080,
+      "parent_best": 10480,
+      "grouped_highest_stage": 1,
+      "parent_highest_stage": 1,
+      "grouped_mission_games": 0,
+      "parent_mission_games": 0,
+      "paired_grouped_wins": 29,
+      "paired_parent_wins": 99,
+      "paired_ties": 0
+    }
+  }
+}

@@ -202,3 +202,50 @@ directories (**1,979,499,819** nominal bytes), leaving every unmatched
 snapshot and the active trial-163 `latest/` untouched. Reported free space
 rose to about **17 GiB**. These copies remain recoverable from the tracked
 training archives.
+
+## Final run and disposition
+
+The trainer stopped normally at exactly **16,777,216** own base actions,
+with **8,054** complete training games. No training, fixed-validation or
+fresh-comparison game reached stage two or completed a mission. The full
+[run record](full-run-record/) preserves the exact configuration and normal
+stop status, all **16** fixed ten-game evaluations, complete compressed
+metrics and disk-guard status. The guard observed the normal trainer stop;
+it did not request an early stop.
+
+Fixed ten-game means across the sixteen checkpoints were **346 / 334 / 488 /
+546 / 8,214 / 9,355 / 8,930 / 8,628 / 9,201 / 8,476 / 8,996 / 9,388 /
+8,623 / 9,481 / 8,378 / 9,551**. All **160** fixed games remained stage
+one. The terminal [full model/optimizer/RNG checkpoint](milestone-000016777216/checkpoint)
+won the predeclared stage-then-mean selection at **9,551** mean and **10,030**
+best. A separate original-boot evaluation reproduced all ten fixed game
+records exactly, and the terminal [replay](milestone-000016777216/verified-replay/replay.html)
+verified all **2,543** neural actions, rewards and screens after reloading
+the frozen model. Its SHA-256 is
+`10628131ab9f0e5a032169fe17cdfb68e90870e5c0dac5aaf62293efde42dfe0`.
+All seven versioned training best-effort replays are also preserved in
+[training-best-efforts](training-best-efforts/versions/); the final one
+scored 10,030. The higher-scoring fresh replay below is this trial's best
+verified individual effort.
+
+The fail-closed [comparison report](fresh-comparison/report.json) selected
+from exactly those sixteen checks and evaluated the frozen terminal model
+against the frozen seed-41 [score parent](../ppo-balanced-fire-continuation-161/README.md)
+on two untouched sets of 128 matched complete original-boot games:
+
+| Seeds | Grouped-duration mean / median / best | Parent mean / median / best | Paired grouped wins / losses | Later-stage games |
+| --- | --- | --- | --- | --- |
+| 615000–615127 | 9,518.98 / 9,930 / 10,080 | 9,601.48 / 10,260 / 10,480 | 30 / 98 | 0 |
+| 615200–615327 | 9,272.58 / 9,910 / 10,080 | 9,647.34 / 10,330 / 10,480 | 29 / 99 | 0 |
+
+The [grouped first-set replay](fresh-comparison/grouped-615000-replay/replay.html),
+[grouped second-set replay](fresh-comparison/grouped-615200-replay/replay.html),
+and both parent replay bundles all passed native original-boot action,
+reward and screen verification. The grouped first-set 10,080-point replay
+is this trial's strongest independently verified effort, but still loses
+in stage one. The parent wins both fresh means and 197 of 256 paired games,
+so the grouped policy is **not promoted**. The separately protected global
+[10,480-point replay](../../learned/best/replay.html) and original game
+remain unchanged. This was a useful temporal-control test, not evidence of
+passage; simply extending this mechanism is not justified by its fixed or
+fresh results.
