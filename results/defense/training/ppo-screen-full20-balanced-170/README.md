@@ -32,6 +32,17 @@ screen-only memory solves the repeated course barrier. The historical
 screen-only recurrent transfers and long-return PPO continuation were
 negative; merely repeating those settings is not a new passage theory.
 
+A later isolated [forensic route-likelihood audit](../../diagnostics/route-likelihood-173/README.md)
+found that the protected high-score policy gives the physical commands
+of one independently verified, lower-score row-37 survivor extremely
+little probability, including on its own screens. This is a post-hoc
+diagnosis of exploration suppression, **not** a demonstration or a route
+to import. It strengthens the requirement that any larger eligible
+full-20-action trial articulate a new score-only, screen-observed way to
+explore temporally coherent low-score detours and retain stage-first
+original-boot gates; a longer copy of this integration smoke alone is
+not a justified successor.
+
 ## Frozen gate
 
 Use seed **41**, 100,000 T states per action, screen stride **1**, score

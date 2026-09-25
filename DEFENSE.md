@@ -16,6 +16,10 @@ that the repeated immediate loss is avoidable at this cadence: the original
 course pointer advanced from the learned loss's row **33** to row **37**
 of 126. First-stage
 passage and the original mission remain unverified.
+The separate [frozen-policy likelihood audit](results/defense/diagnostics/route-likelihood-173/README.md)
+shows that this exact low-score route's physical actions are heavily
+suppressed by the 10,480-point model; this is an exploration diagnosis,
+not a chance-of-passage estimate or a training demonstration.
 
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
