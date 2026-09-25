@@ -1,5 +1,12 @@
 # Fine-cadence DQN age-frontier test (predeclared plan)
 
+Plan amendment on 2026-09-25, while both fresh calibrations were below
+100,000 actions and before their first fixed evaluation: the 1,048,576-action
+limit is a stability/calibration gate, not an efficacy gate. The earlier
+ordinary-DQN learning curve shows that using it to reject stage passage
+would underfund the test. The matched efficacy budget and stop criteria below
+were fixed before seeing any calibration evaluation result.
+
 ## Why this is a test, not a continuation of the score plateau
 
 The protected learned best scores 10,480 but repeatedly loses around decoded
@@ -45,25 +52,40 @@ and admission rule are otherwise identical. Actual occupancies need not be.
    original-boot verification of both replay bundles, and healthy disk
    headroom. A smoke score is not evidence of stage progress. If either arm
    fails plumbing, stop and repair; do not launch production.
-3. If both pass, run a bounded **fresh** 1,048,576-action pilot per arm with
+3. If both pass, run a bounded **fresh** 1,048,576-action calibration per arm with
    compact replay capacity 200,000 and warmup 10,000. The smoke capacity
    holds only about two to three fine-cadence complete games; using it for
    the longer trial would erase nearly all older experience. The larger
    common capacity is predeclared before either pilot arm starts, and
    neither smoke model, optimizer nor experience initializes the pilot.
-   Run fixed
-   ten-game original-boot checks every 262,144 actions. Select by visible
-   stage reached first, then fixed-check mean score. Preserve the full
-   selected/terminal optimizer states, all fixed results and independently
-   verified self-contained replays. Use two untouched matched 64-game seed
-   sets only after selection; report mean, median, best, stage and missions.
-4. Do not automatically extend to a multi-day budget merely for score gain.
-   An extension requires observed later-stage play in original-boot games,
-   or a concrete, independently replayed change in the repeated early
-   failure mode. A private course-row read may be used only for post-hoc
-   diagnostic interpretation, not learner inputs, reward, action selection,
-   checkpoint ranking, or replay promotion. If both arms remain at the same
-   barrier, stop this mechanism and retain the negative result.
+   Run fixed ten-game original-boot checks every 262,144 actions. This
+   phase tests stable learning, real reset exposure, disk behavior and the
+   paired configuration; it is **too short to test stage passage**. The
+   earlier fresh ordinary DQN was still near a 354-point mean at one million
+   100,000-T-state actions and did not pass 1,000 mean until 1.6 million;
+   these fine actions simulate only half that physical time. Do not call
+   a stage-one calibration outcome a negative efficacy result.
+4. If both calibrations are stable and exercise their intended reset modes,
+   continue both from their own terminal online/target/optimizer/RNG states
+   to **8,388,608 total fine actions** each, retaining the same 200,000-slot
+   replay and age-archive settings. A trainer restart necessarily refills
+   transient replay and own-state archives; record that discontinuity, do
+   not claim exact trajectory continuation. Fixed ten-game original-boot
+   checks every 1,048,576 new actions use the same seeds in both arms.
+   Stop early for non-finite learning, invalid provenance, repeated disk
+   guard signal or another concrete safety failure—not a short-run score.
+   Select by visible stage first, then fixed-check mean score. Preserve
+   selected/terminal full optimizer states, every fixed result and independently
+   verified self-contained replays. Then use two untouched matched 64-game
+   seed sets per arm and report mean, median, best, stage and missions.
+5. Do not extend **beyond** that matched efficacy budget merely for score
+   gain. A further extension requires observed later-stage play in
+   original-boot games or a concrete, independently replayed change in the
+   repeated early failure mode. A private course-row read may be used only
+   for post-hoc diagnostic interpretation, not learner inputs, reward,
+   action selection, checkpoint ranking or replay promotion. If both arms
+   remain at the same barrier after the efficacy budget, stop this mechanism
+   and retain the negative result.
 
 The old 10,480-point learned replay remains protected until a new eligible
 policy exceeds it under the repository's stage-first promotion rule. The
