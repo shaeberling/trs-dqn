@@ -19,7 +19,8 @@ class DefenseCurriculumEnv(DefenseEnv):
                  curriculum_per_bin=4, curriculum_bins=16, curriculum_share=False,
                  worker_id=None, curriculum_reset=True, curriculum_lookback=0,
                  curriculum_cells="score", curriculum_screen_interval=32,
-                 curriculum_age_interval=32, curriculum_trigger="progress",
+                 curriculum_age_interval=32, curriculum_frontier_bins=0,
+                 curriculum_trigger="progress",
                  curriculum_restored_life_only=False, **config):
         if not np.isfinite(curriculum_probability) or not 0 <= curriculum_probability <= 1:
             raise ValueError("invalid curriculum probability")
@@ -40,6 +41,9 @@ class DefenseCurriculumEnv(DefenseEnv):
         self.cells = curriculum_cells
         self.screen_interval = positive_integer(curriculum_screen_interval, "screen cell interval")
         self.age_interval = positive_integer(curriculum_age_interval, "life age interval")
+        self.frontier_bins = positive_integer(curriculum_frontier_bins, "frontier bins", allow_zero=True)
+        if self.frontier_bins and (self.cells != "age" or self.frontier_bins > self.bins):
+            raise ValueError("frontier resets require age cells and at most the archive bin limit")
         if worker_id is not None:
             worker_id = positive_integer(worker_id, "worker ID", allow_zero=True)
         if curriculum_share and (not curriculum_probability or worker_id is None):
@@ -99,6 +103,10 @@ class DefenseCurriculumEnv(DefenseEnv):
                 and self.curriculum_rng.random() < self.curriculum_probability):
             stage = int(self.curriculum_rng.choice(sorted({k[0] for k in self.archive})))
             keys = sorted(k for k in self.archive if k[0] == stage)
+            if self.frontier_bins:
+                # Training resets only: spend practice on the oldest actually
+                # reached own-life cells. No age is passed to the neural policy.
+                keys = keys[-self.frontier_bins:]
             bank = self.archive[keys[int(self.curriculum_rng.integers(len(keys)))]]
             saved = bank[int(self.curriculum_rng.integers(len(bank)))]
             obs = restore(self, saved)

@@ -8,6 +8,8 @@ class DefenseDiskWatchTests(unittest.TestCase):
         run = 'runs/defense-ppo-balanced-fire-160/treatment'
         valid = f'venv/bin/python -u -m rl.defense_train --run {run} --steps 8388608'
         self.assertTrue(expected_training_command(valid, run))
+        self.assertTrue(expected_training_command(valid.replace('rl.defense_train',
+                                                        'rl.defense_dqn'), run))
         self.assertFalse(expected_training_command(valid, run+'-other'))
         self.assertFalse(expected_training_command(valid.replace('rl.defense_train',
                                                                  'rl.defense_collect'), run))

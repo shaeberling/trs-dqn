@@ -76,6 +76,20 @@ and the treatment explicitly receives its own previous action, so neither
 is promoted as a strict full-game screen-only successor. The protected
 10,480-point learned best remains unchanged.
 
+The next [fine-cadence DQN age-frontier test](results/defense/training/dqn-age-frontier-fine-178/README.md)
+is explicitly gated against repeating the score plateau. It compares
+training resets from the oldest four own-life-age bins with otherwise
+identical uniform age-bin resets, using 50,000-T-state commands and
+four visible frames at stride two. The full **615-test** regression suite
+passed; matched 65,536-action plumbing smokes completed with actual boot
+games and restored segments, and each frozen replay was independently
+verified from original boot. Their ten-game means were 332 and 302,
+respectively, with **no stage-two game**. These low-data smoke scores are
+not an improvement claim. A larger pilot must remain bounded and subject
+to the predeclared progression gate; extending the high-score PPO run
+unchanged is not justified by the observed row-33/34 failure. The protected
+best and mission status remain unchanged.
+
 Earlier outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
 policy modestly improved displayed score over its shorter pilot on two

@@ -17,7 +17,8 @@ import time
 
 def expected_training_command(command, run):
     words = command.split()
-    return ("rl.defense_train" in words and "--run" in words
+    return (any(module in words for module in ("rl.defense_train", "rl.defense_dqn"))
+            and "--run" in words
             and words.index("--run") + 1 < len(words)
             and words[words.index("--run") + 1] == str(run))
 
