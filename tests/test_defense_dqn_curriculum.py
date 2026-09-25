@@ -22,6 +22,11 @@ class DefenseDQNCurriculumTests(unittest.TestCase):
                       ['--curriculum-lookback','-1'],['--curriculum-share'],
                       ['--curriculum-bins','0'],['--curriculum-per-bin','0'],
                       ['--curriculum-score-interval','-1'],['--curriculum-screen-interval','0'],
+                      ['--curriculum-age-interval','0'],['--curriculum-frontier-bins','-1'],
+                      ['--curriculum-frontier-bins','2'],
+                      ['--curriculum-probability','.5','--curriculum-frontier-bins','2'],
+                      ['--curriculum-probability','.5','--curriculum-cells','age',
+                       '--curriculum-bins','1','--curriculum-frontier-bins','2'],
                       ['--curriculum-cells','invalid'],
                       ['--curriculum-boot-envs','1'],
                       ['--curriculum-probability','.5','--curriculum-share','--curriculum-boot-envs','8'],
@@ -169,6 +174,38 @@ class DefenseDQNCurriculumTests(unittest.TestCase):
                         'curriculum_score_interval','curriculum_screen_interval']:
                 self.assertEqual(after['config'][key],state['config'][key])
             self.assertEqual(after['restored_segments'],state['restored_segments'])
+
+    def test_fine_cadence_age_frontier_integrates_with_score_only_dqn(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp)
+            args=[sys.executable,'-m','rl.defense_dqn','--run',str(p/'run'),
+                  '--artifacts',str(p/'artifacts'),'--envs','2','--capacity','4096',
+                  '--compact-replay','--warmup','32','--batch-size','4','--train-every','256',
+                  '--steps','4096','--eval-every','10000','--max-episode-steps','512',
+                  '--mlx-cache-mb','64','--exploration-max-repeat','64','--epsilon-final','1',
+                  '--tstates','50000','--observation-stride','2',
+                  '--curriculum-probability','1','--curriculum-share','--curriculum-boot-envs','1',
+                  '--curriculum-lookback','8','--curriculum-cells','age',
+                  '--curriculum-bins','8','--curriculum-per-bin','1',
+                  '--curriculum-age-interval','16','--curriculum-frontier-bins','2']
+            result=subprocess.run(args,capture_output=True,text=True,timeout=90)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            rows=[json.loads(x) for x in (p/'run/metrics.jsonl').read_text().splitlines()]
+            archives=[row for row in rows if row['event']=='curriculum_archive']
+            self.assertTrue(archives)
+            self.assertTrue(all(row['entry_kind']=='life_age' for row in archives))
+            self.assertTrue(all(row['lookback_actions']==8 for row in archives))
+            self.assertTrue(all(row['life_age_bin']==row['life_steps']//16 for row in archives))
+            state=json.loads((p/'run/latest/state.json').read_text())
+            self.assertEqual(state['steps'],4096)
+            self.assertGreater(state['updates'],0)
+            self.assertEqual(state['config']['curriculum_cells'],'age')
+            self.assertEqual(state['config']['curriculum_frontier_bins'],2)
+            self.assertEqual(state['config']['tstates'],50000)
+            self.assertEqual(state['config']['observation_stride'],2)
+            self.assertEqual(state['config']['reward'],
+                             'visible score difference only, constant scale for optimizer')
+            self.assertFalse(state['config']['curriculum_archive_saved'])
 
 
 if __name__=='__main__':unittest.main()

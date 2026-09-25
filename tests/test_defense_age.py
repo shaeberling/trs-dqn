@@ -13,6 +13,36 @@ from rl.vector import VectorEnv
 
 
 class DefenseAgeTests(unittest.TestCase):
+    def test_frontier_resets_use_only_latest_reached_age_bins(self):
+        env = DefenseCurriculumEnv(curriculum_cells="age", curriculum_age_interval=8,
+                                   curriculum_frontier_bins=2, curriculum_probability=1,
+                                   curriculum_bins=4, curriculum_per_bin=1)
+        try:
+            env.reset(12)
+            for _ in range(32):
+                env.step(0)
+            self.assertEqual(sorted(key[1] for key in env.archive), [1, 2, 3, 4])
+            sampled = set()
+            for _ in range(64):
+                env.reset()
+                self.assertFalse(env.full_game)
+                sampled.add(env.life_steps//8)
+            self.assertEqual(sampled, {3, 4})
+            prior_score = env.score
+            _, reward, _, _, _ = env.step(0)
+            self.assertEqual(reward, env.score-prior_score)
+        finally:
+            env.close()
+
+    def test_frontier_mode_rejects_non_age_or_out_of_capacity_settings(self):
+        for extra in ({"curriculum_cells": "score", "curriculum_frontier_bins": 1},
+                      {"curriculum_cells": "screen", "curriculum_frontier_bins": 1},
+                      {"curriculum_cells": "age", "curriculum_frontier_bins": 5,
+                       "curriculum_bins": 4},
+                      {"curriculum_cells": "age", "curriculum_frontier_bins": -1}):
+            with self.subTest(extra=extra), self.assertRaises(ValueError):
+                DefenseCurriculumEnv(**extra)
+
     def test_exact_lagged_age_states_bounded_later_bins_and_visible_life_resets(self):
         env = DefenseCurriculumEnv(curriculum_cells="age", curriculum_age_interval=32,
                                    curriculum_lookback=128, curriculum_probability=1,
