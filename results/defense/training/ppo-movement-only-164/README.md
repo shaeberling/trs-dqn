@@ -172,3 +172,16 @@ fixed checkpoints and any later-stage claim, then runs both predeclared
 128-game matched sets and four original-boot replay checks. It never changes
 training, promotes weights or prunes data. Its live state is
 `runs/defense-ppo-movement-only-164-extension/comparison-status.json`.
+
+At **2,097,152 total actions**, the fourth extension fixed check averaged
+**374** over ten complete original-boot games (best **380**), surpassing
+the pilot's 368 fixed mean. The first four extension means were
+**354 / 362 / 362 / 374**; all forty games stayed in stage one. The new
+current selection's [full model/optimizer/RNG checkpoint](extension/milestone-000002097152/checkpoint)
+and [verified replay](extension/milestone-000002097152/verified-replay/replay.html)
+were byte-compared with the live files. A fresh reload reproduced all ten
+fixed game records and all **1,695** replay actions, rewards and visible
+screens. Model SHA-256:
+`347ba5c5662c8df8cec5b1a3a9ce4d457d60c0c885444ad98e7fd833e61c9353`.
+This is a recoverable survival-score milestone, not a later-stage result;
+training and the frozen fresh-comparison plan continue.
