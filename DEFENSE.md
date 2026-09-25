@@ -5,6 +5,19 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
+Latest outcome: the fresh [grouped key-duration PPO run](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
+completed all **16,777,216** planned own actions and selected its terminal
+checkpoint on a **9,551** ten-game fixed mean. All **160** fixed and **512**
+fresh matched comparison games (grouped and parent combined) ended in stage
+one. Across two untouched 128-game matched sets, the grouped policy scored
+**9,518.98 / 9,272.58** on average versus **9,601.48 / 9,647.34** for
+the frozen score parent. Its best independently verified fresh replay scored
+**10,080**; the protected global best remains **10,480** and no original
+mission has been observed. Full selected state, all fixed results, complete
+metrics, seven training best-effort versions and four verified fresh replays
+are archived. The new policy is not promoted, and another mechanism is
+needed before spending more compute on the repeated early barrier.
+
 Current learned-policy experiment: the [fresh balanced-control PPO
 comparison](results/defense/training/ppo-balanced-fire-from-scratch-160/README.md)
 completed **8,388,608** own score-only, screen-only actions per arm. The
@@ -94,7 +107,7 @@ suite. A bounded verified smoke gates a fresh full run; no trial-163 result or
 stage advance is claimed yet. The smoke passed at exactly 16,384 actions:
 ten complete games averaged 254, a native-verified replay was archived,
 and 134 actual 64-action options started. A fresh 16,777,216-action
-production run is now active with a 5.1-GiB exact-process disk guard and
+production run used a 5.1-GiB exact-process disk guard and
 fail-closed post-run comparison monitor. Only the archive-backed duplicate
 local smoke directories (about 23 MiB) were deleted; the smoke checkpoint
 and replay remain on the pushed branch.
