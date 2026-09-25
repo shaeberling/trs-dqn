@@ -136,6 +136,19 @@ screens. Model SHA-256:
 This is a stronger recoverable score milestone, not a stage-two result or
 global-best promotion.
 
+At the halfway eighth check (**8,388,608** actions), ten complete games
+averaged **8,628**, below the sixth checkpoint's 9,355 and therefore not a
+new fixed-mean selection. One game reached a new trial-best **9,980**,
+still stage one. The [halfway full checkpoint](milestone-000008388608/checkpoint)
+and [best-effort replay](milestone-000008388608/verified-replay/replay.html)
+were byte-compared with live outputs and archived. Independent original-boot
+reload reproduced all **2,497** neural actions, rewards and visible screens.
+Model SHA-256:
+`9365d3fd994aa6e58e9ee29128e22aee0a32e2c04f4f28c651b926002ef30899`.
+This preserves the best individual effort separately from the selected
+sixth checkpoint. Neither meets the passage or protected-best promotion
+gate; training continues to the full target.
+
 A separate [forensic replay audit](../../diagnostics/grouped-duration-163-course-progress-6m/README.md)
 found decoded stage-one stream row 34 at all four visible life losses in
 that 9,930-point game. This hidden read was diagnostic-only after the
