@@ -97,3 +97,16 @@ After byte-comparing the checkpoint, replay bundle, config, metrics,
 status and duplicate `latest` against the pushed smoke archive, the two
 stopped local smoke directories were deleted (about **23 MiB** by `du`).
 Every retained smoke state and replay is recoverable from this branch.
+
+## First production milestone
+
+The first three ten-game fixed evaluations at 1,048,576, 2,097,152 and
+3,145,728 own base actions averaged **346 / 334 / 488**, with best scores
+**360 / 360 / 540**. All thirty complete original-boot games stayed in
+stage one. The third checkpoint is the current fixed-check selection; its
+full [model/optimizer/RNG state](milestone-000003145728/checkpoint) and
+[independently verified replay](milestone-000003145728/verified-replay/replay.html)
+were byte-compared with the live outputs and preserved before continuing.
+Its model SHA-256 is
+`1d6a086b1567bc520975227ed8a0a27150dc9177b87f842333d9c215b837825b`.
+This is a recovery point, not a promotion over the protected global best.
