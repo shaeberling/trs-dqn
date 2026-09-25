@@ -105,6 +105,9 @@ over its first four checks. Its 5,242,880-action full optimizer checkpoint
 and native-verified 2,569-action replay are archived in the trial folder.
 All fifty fixed games so far remain stage one; this is score learning, not
 mission passage or a global-best promotion. The planned full run continues.
+The sixth fixed check then rose to a **9,355** ten-game mean (best **9,930**),
+again all stage one. Its full checkpoint and independently verified replay
+are archived as a new recovery milestone; the goal remains unfulfilled.
 
 Two unrelated stopped Defense bootstrap smokes also had a full local
 `latest`, fixed-step checkpoint and replay bundle that matched their
