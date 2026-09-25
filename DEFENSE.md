@@ -79,6 +79,11 @@ comparison are archived. No score-parent or global-best promotion occurred;
 the next experiment must change the learning mechanism, not simply extend
 seed 42. A direction-neutral grouped key-duration action prior has been
 implemented and unit-tested separately, without changing this run's trainer.
+After pushing the full archive, **16** stopped-run checkpoint directories
+and local duplicate bundles were pruned (about **191 MiB** by `du`); the
+selected full optimizer state, all fixed evaluations, complete metrics and
+verified replays remain on the pushed branch. The 15 unselected optimizer
+snapshots are not retained.
 
 Two follow-up diagnostics closed control-profile and earlier-approach gaps.
 The [twelve-command side-fire beam](results/defense/diagnostics/screen-beam-side-fire-158/README.md)
