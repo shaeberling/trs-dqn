@@ -1,0 +1,2926 @@
+{
+  "checkpoint": "/Users/sascha/source/trs-dqn/results/defense/training/ppo-balanced-fire-continuation-161/milestone-000015728640/model.safetensors",
+  "checkpoint_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+  "source_sha256": "28c33f39e00e9687af76ca97a0e555e1d1ef7363a527479b7f25df4d71da5bb2",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "environment_version": "obstacle-run-screen-v1",
+  "fixed_action_tstates": 100000,
+  "observation_stride": 1,
+  "evaluation_seed": 621200,
+  "complete_games": 64,
+  "timing": {
+    "first_visible_loss_actions": {
+      "mean": 387.921875,
+      "median": 408.5,
+      "minimum": 77,
+      "maximum": 415
+    },
+    "mean_actions_between_visible_losses": [
+      387.921875,
+      694.328125,
+      706.515625,
+      682.265625
+    ],
+    "caveat": "Counts include original animations; they are not course-row or collision timestamps."
+  },
+  "evaluation": {
+    "complete_games": 64,
+    "incomplete_games": 0,
+    "mean_score": 9918.59375,
+    "median_score": 10300.0,
+    "best_score": 10460,
+    "highest_stage": 1,
+    "mission_games": 0,
+    "stage_2_games": 0,
+    "stage_3_games": 0,
+    "games": [
+      {
+        "seed": 621200,
+        "score": 10430,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2558,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10430.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 157624,
+        "visible_life_losses": [
+          {
+            "action": 408,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1117,
+            "displayed_score": 5190,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1844,
+            "displayed_score": 7810,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2558,
+            "displayed_score": 10430,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621201,
+        "score": 7830,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2190,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7830.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 93629,
+        "visible_life_losses": [
+          {
+            "action": 77,
+            "displayed_score": 20,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 773,
+            "displayed_score": 2640,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1481,
+            "displayed_score": 5210,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2190,
+            "displayed_score": 7830,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621202,
+        "score": 7750,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2257,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7750.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 118235,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 888,
+            "displayed_score": 2680,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1599,
+            "displayed_score": 5250,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2257,
+            "displayed_score": 7750,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621203,
+        "score": 10220,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2502,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10220.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 39288,
+        "visible_life_losses": [
+          {
+            "action": 375,
+            "displayed_score": 2500,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1087,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1786,
+            "displayed_score": 7700,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2502,
+            "displayed_score": 10220,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621204,
+        "score": 10290,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2515,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10290.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 148802,
+        "visible_life_losses": [
+          {
+            "action": 375,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1107,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1800,
+            "displayed_score": 7670,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2515,
+            "displayed_score": 10290,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621205,
+        "score": 10290,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2545,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10290.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 118923,
+        "visible_life_losses": [
+          {
+            "action": 415,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1144,
+            "displayed_score": 5240,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1834,
+            "displayed_score": 7770,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2545,
+            "displayed_score": 10290,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621206,
+        "score": 10360,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2562,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10360.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 123070,
+        "visible_life_losses": [
+          {
+            "action": 410,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1117,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1847,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2562,
+            "displayed_score": 10360,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621207,
+        "score": 10440,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2517,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10440.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 82291,
+        "visible_life_losses": [
+          {
+            "action": 407,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1109,
+            "displayed_score": 5240,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1835,
+            "displayed_score": 7860,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2517,
+            "displayed_score": 10440,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621208,
+        "score": 10360,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2499,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10360.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 107347,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1075,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1814,
+            "displayed_score": 7740,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2499,
+            "displayed_score": 10360,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621209,
+        "score": 10350,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2508,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10350.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 165908,
+        "visible_life_losses": [
+          {
+            "action": 411,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1101,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1797,
+            "displayed_score": 7750,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2508,
+            "displayed_score": 10350,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621210,
+        "score": 10360,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2490,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10360.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 56814,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1079,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1768,
+            "displayed_score": 7720,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2490,
+            "displayed_score": 10360,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621211,
+        "score": 10280,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2501,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10280.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 75961,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1103,
+            "displayed_score": 5140,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1820,
+            "displayed_score": 7760,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2501,
+            "displayed_score": 10280,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621212,
+        "score": 10310,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2495,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10310.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 140004,
+        "visible_life_losses": [
+          {
+            "action": 375,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1111,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1811,
+            "displayed_score": 7740,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2495,
+            "displayed_score": 10310,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621213,
+        "score": 10240,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2516,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10240.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 132657,
+        "visible_life_losses": [
+          {
+            "action": 408,
+            "displayed_score": 2500,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1094,
+            "displayed_score": 5070,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1799,
+            "displayed_score": 7670,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2516,
+            "displayed_score": 10240,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621214,
+        "score": 10210,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2509,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10210.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 25821,
+        "visible_life_losses": [
+          {
+            "action": 408,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1116,
+            "displayed_score": 5090,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1832,
+            "displayed_score": 7710,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2509,
+            "displayed_score": 10210,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621215,
+        "score": 10340,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2470,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10340.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 163230,
+        "visible_life_losses": [
+          {
+            "action": 398,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1106,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1782,
+            "displayed_score": 7720,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2470,
+            "displayed_score": 10340,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621216,
+        "score": 10340,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2496,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10340.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 105751,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1105,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1794,
+            "displayed_score": 7720,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2496,
+            "displayed_score": 10340,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621217,
+        "score": 10410,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2555,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10410.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 103187,
+        "visible_life_losses": [
+          {
+            "action": 407,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1138,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1841,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2555,
+            "displayed_score": 10410,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621218,
+        "score": 10170,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2424,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10170.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 97018,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1114,
+            "displayed_score": 5040,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1779,
+            "displayed_score": 7640,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2424,
+            "displayed_score": 10170,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621219,
+        "score": 10330,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2555,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10330.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 96513,
+        "visible_life_losses": [
+          {
+            "action": 411,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1137,
+            "displayed_score": 5140,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1867,
+            "displayed_score": 7760,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2555,
+            "displayed_score": 10330,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621220,
+        "score": 10380,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2552,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10380.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 67032,
+        "visible_life_losses": [
+          {
+            "action": 406,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1095,
+            "displayed_score": 5140,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1839,
+            "displayed_score": 7760,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2552,
+            "displayed_score": 10380,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621221,
+        "score": 10390,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2492,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10390.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 13851,
+        "visible_life_losses": [
+          {
+            "action": 377,
+            "displayed_score": 2550,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1109,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1806,
+            "displayed_score": 7770,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2492,
+            "displayed_score": 10390,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621222,
+        "score": 9590,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2426,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 9590.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 177838,
+        "visible_life_losses": [
+          {
+            "action": 375,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1107,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1772,
+            "displayed_score": 7020,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2426,
+            "displayed_score": 9590,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621223,
+        "score": 8910,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2484,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 8910.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 129570,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1073,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1810,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2484,
+            "displayed_score": 8910,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621224,
+        "score": 10260,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2553,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10260.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 184079,
+        "visible_life_losses": [
+          {
+            "action": 395,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1107,
+            "displayed_score": 5040,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1844,
+            "displayed_score": 7660,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2553,
+            "displayed_score": 10260,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621225,
+        "score": 10460,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2555,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10460.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 188322,
+        "visible_life_losses": [
+          {
+            "action": 411,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1126,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1869,
+            "displayed_score": 7840,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2555,
+            "displayed_score": 10460,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621226,
+        "score": 10340,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2470,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10340.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 93889,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1079,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1789,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2470,
+            "displayed_score": 10340,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621227,
+        "score": 10410,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2517,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10410.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 56301,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1106,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1832,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2517,
+            "displayed_score": 10410,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621228,
+        "score": 10290,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2459,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10290.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 133000,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1105,
+            "displayed_score": 5070,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1802,
+            "displayed_score": 7670,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2459,
+            "displayed_score": 10290,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621229,
+        "score": 10370,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2480,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10370.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 143076,
+        "visible_life_losses": [
+          {
+            "action": 398,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1115,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1779,
+            "displayed_score": 7770,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2480,
+            "displayed_score": 10370,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621230,
+        "score": 10320,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2471,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10320.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 171762,
+        "visible_life_losses": [
+          {
+            "action": 377,
+            "displayed_score": 2500,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1070,
+            "displayed_score": 5100,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1777,
+            "displayed_score": 7700,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2471,
+            "displayed_score": 10320,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621231,
+        "score": 10390,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2498,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10390.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 8791,
+        "visible_life_losses": [
+          {
+            "action": 411,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1111,
+            "displayed_score": 5240,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1844,
+            "displayed_score": 7840,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2498,
+            "displayed_score": 10390,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621232,
+        "score": 10270,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2499,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10270.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 147775,
+        "visible_life_losses": [
+          {
+            "action": 375,
+            "displayed_score": 2530,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1110,
+            "displayed_score": 5030,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1813,
+            "displayed_score": 7650,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2499,
+            "displayed_score": 10270,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621233,
+        "score": 7770,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2289,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7770.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 15282,
+        "visible_life_losses": [
+          {
+            "action": 410,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1105,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1796,
+            "displayed_score": 7670,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2289,
+            "displayed_score": 7770,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621234,
+        "score": 10140,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2495,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10140.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 97388,
+        "visible_life_losses": [
+          {
+            "action": 373,
+            "displayed_score": 2500,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1070,
+            "displayed_score": 5000,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1808,
+            "displayed_score": 7620,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2495,
+            "displayed_score": 10140,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621235,
+        "score": 7840,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2338,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7840.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 652000,
+        "start_tstates": 176112,
+        "visible_life_losses": [
+          {
+            "action": 413,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1138,
+            "displayed_score": 5120,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1869,
+            "displayed_score": 7740,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2338,
+            "displayed_score": 7840,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621236,
+        "score": 10440,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2502,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10440.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 118341,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1118,
+            "displayed_score": 5240,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1822,
+            "displayed_score": 7860,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2502,
+            "displayed_score": 10440,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621237,
+        "score": 10220,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2446,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10220.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 94534,
+        "visible_life_losses": [
+          {
+            "action": 413,
+            "displayed_score": 2500,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1107,
+            "displayed_score": 5050,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1795,
+            "displayed_score": 7600,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2446,
+            "displayed_score": 10220,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621238,
+        "score": 7780,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2167,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7780.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 145616,
+        "visible_life_losses": [
+          {
+            "action": 396,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 795,
+            "displayed_score": 2640,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1514,
+            "displayed_score": 5160,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2167,
+            "displayed_score": 7780,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621239,
+        "score": 10400,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2427,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10400.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 39372,
+        "visible_life_losses": [
+          {
+            "action": 375,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1075,
+            "displayed_score": 5180,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1771,
+            "displayed_score": 7800,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2427,
+            "displayed_score": 10400,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621240,
+        "score": 10150,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2493,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10150.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 186575,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2500,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1115,
+            "displayed_score": 5050,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1842,
+            "displayed_score": 7650,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2493,
+            "displayed_score": 10150,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621241,
+        "score": 10390,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2528,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10390.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 1071,
+        "visible_life_losses": [
+          {
+            "action": 379,
+            "displayed_score": 2580,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1084,
+            "displayed_score": 5130,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1819,
+            "displayed_score": 7750,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2528,
+            "displayed_score": 10390,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621242,
+        "score": 10260,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2495,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10260.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 142057,
+        "visible_life_losses": [
+          {
+            "action": 407,
+            "displayed_score": 2470,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1108,
+            "displayed_score": 5090,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1802,
+            "displayed_score": 7690,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2495,
+            "displayed_score": 10260,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621243,
+        "score": 10410,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2466,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10410.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 78515,
+        "visible_life_losses": [
+          {
+            "action": 407,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1108,
+            "displayed_score": 5190,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1776,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2466,
+            "displayed_score": 10410,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621244,
+        "score": 10240,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2491,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10240.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 14669,
+        "visible_life_losses": [
+          {
+            "action": 372,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1046,
+            "displayed_score": 5100,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1779,
+            "displayed_score": 7620,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2491,
+            "displayed_score": 10240,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621245,
+        "score": 10320,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2441,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10320.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 63648,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1077,
+            "displayed_score": 5150,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1777,
+            "displayed_score": 7750,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2441,
+            "displayed_score": 10320,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621246,
+        "score": 8910,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2524,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 8910.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 38942,
+        "visible_life_losses": [
+          {
+            "action": 413,
+            "displayed_score": 1070,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1141,
+            "displayed_score": 3690,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1842,
+            "displayed_score": 6310,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2524,
+            "displayed_score": 8910,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621247,
+        "score": 10310,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2553,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10310.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 24546,
+        "visible_life_losses": [
+          {
+            "action": 413,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1143,
+            "displayed_score": 5140,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1845,
+            "displayed_score": 7690,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2553,
+            "displayed_score": 10310,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621248,
+        "score": 10140,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2526,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10140.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 143773,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2470,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1114,
+            "displayed_score": 5070,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1810,
+            "displayed_score": 7620,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2526,
+            "displayed_score": 10140,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621249,
+        "score": 10390,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2489,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10390.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 73396,
+        "visible_life_losses": [
+          {
+            "action": 374,
+            "displayed_score": 2550,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1071,
+            "displayed_score": 5150,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1806,
+            "displayed_score": 7770,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2489,
+            "displayed_score": 10390,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621250,
+        "score": 10340,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2477,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10340.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 110530,
+        "visible_life_losses": [
+          {
+            "action": 411,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1108,
+            "displayed_score": 5200,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1810,
+            "displayed_score": 7720,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2477,
+            "displayed_score": 10340,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621251,
+        "score": 10240,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2475,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10240.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 15753,
+        "visible_life_losses": [
+          {
+            "action": 413,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1117,
+            "displayed_score": 5190,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1783,
+            "displayed_score": 7720,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2475,
+            "displayed_score": 10240,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621252,
+        "score": 9640,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2542,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 9640.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 15103,
+        "visible_life_losses": [
+          {
+            "action": 410,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1102,
+            "displayed_score": 4420,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1829,
+            "displayed_score": 7020,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2542,
+            "displayed_score": 9640,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621253,
+        "score": 10330,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2583,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10330.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 91401,
+        "visible_life_losses": [
+          {
+            "action": 412,
+            "displayed_score": 2520,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1142,
+            "displayed_score": 5140,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1868,
+            "displayed_score": 7760,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2583,
+            "displayed_score": 10330,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621254,
+        "score": 7770,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2313,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7770.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 198456,
+        "visible_life_losses": [
+          {
+            "action": 180,
+            "displayed_score": 80,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 922,
+            "displayed_score": 2650,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1593,
+            "displayed_score": 5250,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2313,
+            "displayed_score": 7770,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621255,
+        "score": 7850,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2203,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7850.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 174516,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 840,
+            "displayed_score": 2660,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1550,
+            "displayed_score": 5250,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2203,
+            "displayed_score": 7850,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621256,
+        "score": 7820,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2251,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 7820.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 352000,
+        "start_tstates": 134091,
+        "visible_life_losses": [
+          {
+            "action": 159,
+            "displayed_score": 80,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 872,
+            "displayed_score": 2700,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1537,
+            "displayed_score": 5200,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2251,
+            "displayed_score": 7820,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621257,
+        "score": 10270,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2523,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10270.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 150984,
+        "visible_life_losses": [
+          {
+            "action": 373,
+            "displayed_score": 2530,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1106,
+            "displayed_score": 5050,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1802,
+            "displayed_score": 7650,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2523,
+            "displayed_score": 10270,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621258,
+        "score": 10410,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2518,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10410.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 122463,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2570,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1139,
+            "displayed_score": 5190,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1837,
+            "displayed_score": 7790,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2518,
+            "displayed_score": 10410,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621259,
+        "score": 10370,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2424,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10370.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 61678,
+        "visible_life_losses": [
+          {
+            "action": 374,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1107,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1775,
+            "displayed_score": 7820,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2424,
+            "displayed_score": 10370,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621260,
+        "score": 10460,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2521,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10460.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1802000,
+        "start_tstates": 121577,
+        "visible_life_losses": [
+          {
+            "action": 373,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1103,
+            "displayed_score": 5220,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1832,
+            "displayed_score": 7840,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2521,
+            "displayed_score": 10460,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621261,
+        "score": 10270,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2507,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10270.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1202000,
+        "start_tstates": 158442,
+        "visible_life_losses": [
+          {
+            "action": 407,
+            "displayed_score": 2600,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1139,
+            "displayed_score": 5170,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1831,
+            "displayed_score": 7670,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2507,
+            "displayed_score": 10270,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621262,
+        "score": 10430,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2557,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 10430.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 1502000,
+        "start_tstates": 126450,
+        "visible_life_losses": [
+          {
+            "action": 409,
+            "displayed_score": 2620,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1115,
+            "displayed_score": 5190,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1847,
+            "displayed_score": 7810,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2557,
+            "displayed_score": 10430,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      },
+      {
+        "seed": 621263,
+        "score": 8790,
+        "lives": 0,
+        "stage": 1,
+        "game_over": true,
+        "mission_complete": false,
+        "highest_stage": 1,
+        "missions_completed": 0,
+        "mission_completed": false,
+        "life_lost": true,
+        "steps": 2462,
+        "terminated": true,
+        "truncated": false,
+        "episode_reward": 8790.0,
+        "hud_settle_tstates": 0,
+        "terminal_settle_tstates": 952000,
+        "start_tstates": 44699,
+        "visible_life_losses": [
+          {
+            "action": 389,
+            "displayed_score": 2480,
+            "visible_lives": 3,
+            "highest_stage": 1
+          },
+          {
+            "action": 1103,
+            "displayed_score": 5100,
+            "visible_lives": 2,
+            "highest_stage": 1
+          },
+          {
+            "action": 1808,
+            "displayed_score": 6170,
+            "visible_lives": 1,
+            "highest_stage": 1
+          },
+          {
+            "action": 2462,
+            "displayed_score": 8790,
+            "visible_lives": 0,
+            "highest_stage": 1
+          }
+        ]
+      }
+    ]
+  },
+  "diagnostic_only": true,
+  "hidden_ram_reads": 0,
+  "model_updates": 0,
+  "reward_changes": 0,
+  "action_override": false,
+  "checkpoint_selection_eligible": false,
+  "replay_promotion_eligible": false
+}
