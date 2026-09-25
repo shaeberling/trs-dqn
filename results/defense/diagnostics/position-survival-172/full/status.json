@@ -1,0 +1,17 @@
+{
+  "layer": 87,
+  "frame": 417,
+  "duration": 1,
+  "expanded": 130728,
+  "private_deaths": 19319,
+  "layer_private_deaths": 1536,
+  "generated_alive": 0,
+  "max_live_frame": 416,
+  "generated_max_score": null,
+  "generated_max_position": null,
+  "generated_max_position_at_score_target": null,
+  "discovery": false,
+  "selected": 0,
+  "selected_max_score": null,
+  "selected_max_position": null
+}

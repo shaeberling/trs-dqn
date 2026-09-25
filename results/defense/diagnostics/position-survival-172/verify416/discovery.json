@@ -1,0 +1,19 @@
+{
+  "outcome": {
+    "score": 1120,
+    "stage": 1,
+    "private_position": 90,
+    "first_ship_survived": true,
+    "frame": 416,
+    "action_sha256": "167a4617133f655606f25deb8cf401cf73e8aae77f7c72535e537457802f96c2"
+  },
+  "verification": {
+    "verified": true,
+    "original_boot_actions": 416,
+    "repeated_original_boot_runs": 2,
+    "all_screens_and_rewards_matched": true,
+    "diagnostic_only": true,
+    "promotion_eligible": false
+  },
+  "diagnostic_trace_sha256": "0a7ada99655615142627799d3d09a48a2b437f52ee524e8b5768e4ede308d56a"
+}
