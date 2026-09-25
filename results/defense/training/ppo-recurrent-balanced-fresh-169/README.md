@@ -313,3 +313,9 @@ fail-closed follow-up remain live; neither early check is a matched final
 memory result. The completed treatment's corresponding fixed means were
 **346** and **322**, but no causal conclusion is drawn before the full
 predeclared budget and untouched paired sets finish.
+
+The third control fixed checkpoint at **3,145,728** actions averaged **564**
+over ten complete games (median 560, best 600); all ten were again stage one
+with zero missions. The treatment's third fixed mean was **320**. This is
+an interim fixed-seed score difference, not the frozen selected-checkpoint
+or fresh matched comparison, and says nothing yet about stage passage.

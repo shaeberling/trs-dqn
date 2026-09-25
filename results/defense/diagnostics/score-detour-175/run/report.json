@@ -1,0 +1,45 @@
+{
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "source_sha256": "0698fb8229fac91fbda5f61310186269f6496feb5ebafa58198ccd2eaf59190c",
+  "protected_model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+  "protected_trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+  "forensic_action_record_sha256": "39d36a3bd9d8f814a7debbd0dfa4ccae9497fda80aeaa8fa70e96738b089b630",
+  "original_boot_reexecuted": true,
+  "diagnostic_only": true,
+  "policy_updates": 0,
+  "training_data_written": false,
+  "promotion_eligible": false,
+  "fork_action": 280,
+  "fork_displayed_score": 210.0,
+  "source_visible_first_loss_action": 410,
+  "source_post_fork_displayed_score": 2410.0,
+  "branch_alive_through_action": 573,
+  "branch_post_fork_displayed_score": 240.0,
+  "return_comparisons": [
+    {
+      "discount": 1.0,
+      "source_known_return": 2410.0,
+      "branch_known_return": 240.0,
+      "return_gap": 2170.0,
+      "hypothetical_next_action": 574,
+      "next_reward_to_tie": 2170.0
+    },
+    {
+      "discount": 0.999,
+      "source_known_return": 2265.269857732238,
+      "branch_known_return": 221.68993413971924,
+      "return_gap": 2043.5799235925188,
+      "hypothetical_next_action": 574,
+      "next_reward_to_tie": 2739.703580165668
+    },
+    {
+      "discount": 0.997,
+      "source_known_return": 2003.0325012815047,
+      "branch_known_return": 193.5184302948096,
+      "return_gap": 1809.514070986695,
+      "hypothetical_next_action": 574,
+      "next_reward_to_tie": 4363.958171880323
+    }
+  ],
+  "interpretation": "A single hypothetical score increment on the next action would tie known discounted first-life returns from the fork. No such increment is observed or assumed. This is not PPO GAE, a full-game return, a stage-clear probability or a training target."
+}
