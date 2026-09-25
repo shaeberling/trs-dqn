@@ -223,3 +223,11 @@ strictly screen-observed learner with a longer-horizon credit mechanism
 and original-boot stage/mission gates. If action cadence makes passage
 unreachable, correct that environment interface and restart controlled
 learning; never relabel a diagnostic intervention as a learned win.
+
+The third fixed check at **3,145,728** actions averaged **320** (best
+320), all stage one. A separate [native forensic reexecution](../../diagnostics/recurrent-169-first-course-progress/README.md)
+of the first checkpoint's verified 380-point replay matched every
+recorded action, score increment and screen, then found visible losses
+at original stream rows **13 / 13 / 16 / 16 of 126**. The lower score
+therefore was not accompanied by deeper course progress in that selected
+game. This is not a fresh-sample result or an early-stop gate.
