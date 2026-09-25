@@ -1,0 +1,15 @@
+{
+  "frame": 574,
+  "expanded": 12,
+  "private_deaths": 0,
+  "layer_private_deaths": 0,
+  "generated_alive": 12,
+  "selected": 4,
+  "max_live_frame": 574,
+  "max_live_rows": 50,
+  "layer_max_rows": 50,
+  "selected_max_score": 450,
+  "selected_min_position": 106,
+  "selected_max_position": 110,
+  "discovery": false
+}

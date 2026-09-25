@@ -37,6 +37,16 @@ about 4,364 points to tie the learned life’s known discounted return.
 This is not an observed reward, PPO advantage, stage-clear estimate or
 training target; it illustrates why score-only local optimization can
 strongly suppress a lower-scoring detour despite longer survival.
+A further [bounded first-ship continuation](results/defense/diagnostics/course-continuation-176/README.md)
+from the verified row-50 path retained a survivor through decoded row
+**60 of 126**, but all next commands from its 324 retained frontier states
+lost that ship at action 685. Its 684-action frontier witness was replayed
+twice from original boot and checked again from the archived copy; the
+post-hoc witness recording did not change any search layer. Earlier beam
+pruning and the single starting route prevent an impossibility inference.
+This source-route search is stopped;
+full-stage reachability at the current cadence remains unproved, and none
+of its private-guided actions entered learning.
 
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected

@@ -1,0 +1,20 @@
+{
+  "outcome": {
+    "frame": 574,
+    "rows": 50,
+    "stage": 1,
+    "score": 450,
+    "position": 110,
+    "first_ship_survived": true,
+    "action_sha256": "307d7da7054c470877d2baf0b5f49897ade84b26a32980ca17090ae7b69544be"
+  },
+  "verification": {
+    "verified": true,
+    "original_boot_runs": 2,
+    "actions": 574,
+    "every_screen_and_reward_matched": true,
+    "diagnostic_only": true,
+    "promotion_eligible": false
+  },
+  "diagnostic_trace_sha256": "d3917cea3a931f0a11fe8c5edb8f4255d848ba609a84f9e8dd4fc734a3dd51ca"
+}
