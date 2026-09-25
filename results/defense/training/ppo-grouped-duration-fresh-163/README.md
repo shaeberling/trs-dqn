@@ -170,3 +170,24 @@ policy/replay had been frozen; it never enters the learner or selector.
 An independent [visible screen/action comparison](../../diagnostics/grouped-duration-163-loss-comparison-6m/README.md)
 also shows both this policy and the protected best approaching the same
 two-offset-opening region without a verified passage.
+
+The fourteenth fixed check at **14,680,064** actions improved the selected
+ten-game mean to **9,481** (best **9,930**), still stage one in every game.
+Its [full checkpoint](milestone-000014680064/checkpoint) and
+[verified replay](milestone-000014680064/verified-replay/replay.html) are
+preserved. A separate original-boot evaluation reproduced all ten fixed
+game records exactly; a fresh policy reload verified each of the replay's
+**2,525** neural actions, rewards and visible screens. The model SHA-256 is
+`d5953b7361d499daa412903cefcb39d6fca6213f0297468214850c8a54e4beae`.
+The halfway checkpoint still has this trial's best single replay at 9,980,
+and the protected global best remains 10,480. Neither is a passage proof.
+
+For disk retention during this run, a content-hash audit found **289**
+checkpoint directories under stopped Defense runs whose every file matched
+a Git-tracked training archive file of the same name and size. Only those
+verified duplicate directories were removed, totaling **2,927,428,432**
+nominal bytes; the archived copies remain recoverable from Git. No active
+run, unique checkpoint, metric log, or replay was deleted. APFS-reported
+free space rose from about **13 GiB to 15 GiB**. The exact-run disk guard
+remains active at 5.1 GiB, and final trial-163 checkpoint pruning waits for
+the predeclared comparison and archive.
