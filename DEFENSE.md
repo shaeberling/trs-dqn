@@ -60,7 +60,23 @@ decision counts do not establish that the old cadence is impossible or
 that any stage can be cleared. Both searched routes remain strictly
 quarantined from training and the best learned replay.
 
-Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
+The completed [fresh balanced recurrent-memory comparison](results/defense/training/ppo-recurrent-balanced-fresh-169/README.md)
+trained matched seed-41 treatment and zero-memory-control arms for
+**8,388,608** own actions each. Every fixed evaluation and two untouched
+64-game sets per arm remained in stage one. The selected zero-memory arm
+averaged **9,457.97 / 9,641.56** on the two fresh sets versus the
+own-action-memory arm's **537.81 / 536.88**, winning all **128** matched
+seeds. All four fresh replay bundles were independently reexecuted from
+their archived weights. The control's 10,330-point terminal replay lost
+at course rows **33/34/34/34**, not beyond the protected best's familiar
+barrier. This single matched run argues against extending this recurrent
+mechanism for score alone; it does not establish recurrence is generally
+harmful or solve the mission. Both arms use stage-one grouped commands,
+and the treatment explicitly receives its own previous action, so neither
+is promoted as a strict full-game screen-only successor. The protected
+10,480-point learned best remains unchanged.
+
+Earlier outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
 policy modestly improved displayed score over its shorter pilot on two
 fresh 128-game matched sets, but all **512** games remained in stage one;
