@@ -250,6 +250,11 @@ is the frozen selector's treatment choice, with best individual score
 This is below the protected 10,480-point learned best and does not
 justify promotion. Its full optimizer/RNG state, evaluations and local
 replay remain in the treatment run pending the matched comparison.
+An independent [course-depth audit](../../diagnostics/recurrent-169-course-depth-initial/README.md)
+of the archived terminal replay found all four visible losses at decoded
+stream row **21 of 126**, up from rows 13–16 in the treatment's first
+replay, but still before the protected score winner's row-33/34 barrier.
+This is selected-replay progress, not a fresh-game or causal memory result.
 
 The unattended follow-up initially failed closed before starting control:
 it incorrectly required `checkpoint_sha256` inside the trainer's fixed
