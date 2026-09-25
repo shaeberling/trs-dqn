@@ -20,6 +20,14 @@ The separate [frozen-policy likelihood audit](results/defense/diagnostics/route-
 shows that this exact low-score route's physical actions are heavily
 suppressed by the 10,480-point model; this is an exploration diagnosis,
 not a chance-of-passage estimate or a training demonstration.
+One bounded [forensic course continuation](results/defense/diagnostics/course-feasibility-174/README.md)
+from that row-37 state kept the same first ship alive to decoded original
+stream row **50 of 126** at action 573. The 450-point path was reexecuted
+twice from original boot, with an additional independent endpoint check.
+The narrower beam failed at row 44 but a width-only check survived it.
+This is stronger evidence that the current control cadence permits lower-
+scoring detours, not a learned policy, stage clear or full-course proof;
+private search actions remain quarantined from training and promotion.
 
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected

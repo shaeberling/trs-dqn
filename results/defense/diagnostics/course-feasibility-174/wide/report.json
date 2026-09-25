@@ -1,0 +1,80 @@
+{
+  "config": {
+    "bundle": "/Users/sascha/source/trs-dqn/results/defense/learned/versions/step-000008342272-125346536cb1-seed-10004",
+    "discovery": "/Users/sascha/source/trs-dqn/results/defense/diagnostics/position-survival-172/wide",
+    "model_sha256": "125346536cb1570a04dd65c34680d904c4d4e2b8924517cc5112bfc2a8bbb171",
+    "trace_sha256": "d83408861feaa23f75b56b8fad55faeaeedc25bf6717cde42307612beedd4a4d",
+    "discovery_sha256": "a5e84e1edfa6f9e1dab79e2737473f02681e5ed2e8852f1085d8826551f914d6",
+    "source_sha256": "c2998503fa3ad0580934f9d3a96253db36281e77d7e3d3a9791fb06112716f7b",
+    "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+    "source_frame": 428,
+    "source_rows": 37,
+    "target_rows": 50,
+    "max_frame": 600,
+    "beam": 512,
+    "seed": 174,
+    "commands": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      18,
+      19
+    ],
+    "diagnostic_only": true,
+    "model_updates": 0,
+    "training_data_written": false,
+    "promotion_eligible": false,
+    "hidden_ram_used_by_learner": false
+  },
+  "final": {
+    "frame": 573,
+    "expanded": 859069,
+    "private_deaths": 87744,
+    "layer_private_deaths": 0,
+    "generated_alive": 0,
+    "selected": 512,
+    "max_live_frame": 573,
+    "max_live_rows": 50,
+    "layer_max_rows": 50,
+    "selected_max_score": 450,
+    "selected_min_position": 56,
+    "selected_max_position": 108,
+    "discovery": true
+  },
+  "expanded": 859069,
+  "private_deaths": 87744,
+  "discovery": {
+    "outcome": {
+      "frame": 573,
+      "rows": 50,
+      "stage": 1,
+      "score": 450,
+      "position": 108,
+      "first_ship_survived": true,
+      "action_sha256": "d4a14891e0e4898aaa140545adce1eaf0a387ba1e2d876cfc1ae22472a96ceb5"
+    },
+    "verification": {
+      "verified": true,
+      "original_boot_runs": 2,
+      "actions": 573,
+      "every_screen_and_reward_matched": true,
+      "diagnostic_only": true,
+      "promotion_eligible": false
+    },
+    "diagnostic_trace_sha256": "39d36a3bd9d8f814a7debbd0dfa4ccae9497fda80aeaa8fa70e96738b089b630"
+  },
+  "layers_sha256": "f866a5c3a66587a4f24846468d0d97bf55216c0b188b5304c0121d1ef012d26a",
+  "original_boot_source_verified": true,
+  "limitations": [
+    "Finite beam from one private-RAM-selected source can miss a route.",
+    "Decoded stream row is not proof of safely traversing that obstacle.",
+    "All searched actions are forensic only, never learned play or training data."
+  ]
+}
