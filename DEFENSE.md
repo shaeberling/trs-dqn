@@ -35,6 +35,14 @@ the movement-only policy occupied columns **47–52** but failed much earlier
 in the course. This separates the two failure modes and argues for an
 earlier combined-control feasibility test, not another long score-only
 continuation. Private counters were forensic-only, never learner inputs.
+That [early frozen-policy handoff grid](results/defense/diagnostics/early-hybrid-168/README.md)
+then tested **280** fixed earlier switches on one verified first life. It
+failed its predeclared passage gate: the latest visible loss was action
+**415** versus source **412**, no stage advance or score above 2,620, and
+the farthest readable ship at action 380 was column **30**. Long no-fire
+windows often died at the earlier obstacle, while short windows recovered
+the firing score but not the route. A learned gate between these two frozen
+experts is not justified; neither diagnostic changes the protected best.
 
 Earlier outcome: the fresh [grouped key-duration PPO run](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
 completed all **16,777,216** planned own actions and selected its terminal

@@ -1,0 +1,170 @@
+{
+  "experiment": "early frozen-neural handoff diagnostic, NOT a learned controller",
+  "smoke": true,
+  "source_bundle": "results/defense/training/ppo-balanced-fire-continuation-161/fresh-comparison/continuation-612000-replay",
+  "source_seed": 612059,
+  "source_trace_sha256": "5c5ab65f1318eec98dd10970d84f4217bf638154f9cdb609ab2c5ba703ed3223",
+  "source_parent_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+  "movement_model_sha256": "347ba5c5662c8df8cec5b1a3a9ce4d457d60c0c885444ad98e7fd833e61c9353",
+  "probe_source_sha256": "bcf7ef30bc5dc675d8a38c077f412339c6bbeae4ffb524fdac60258df645baae",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "starts": [
+    80
+  ],
+  "lengths": [
+    64
+  ],
+  "repeats": 2,
+  "cap": 520,
+  "milestones": [
+    160,
+    200,
+    240,
+    300,
+    340,
+    380,
+    390
+  ],
+  "exact_parent_prefix_and_suffix_verified": true,
+  "summary": {
+    "branches": 2,
+    "source_first_visible_loss_action": 412,
+    "max_observed_action": 410,
+    "max_displayed_first_life_score": 2620,
+    "beyond_source_by_20": 0,
+    "score_above_source": 0,
+    "stage_two_or_later": 0,
+    "missions": 0,
+    "survived_to_cap": 0,
+    "readable_ship_col_40_or_more_at_380": 0
+  },
+  "independently_verified_discoveries": [],
+  "smoke_branch_confirmations": [
+    {
+      "start": 80,
+      "window": 64,
+      "replicate": 0,
+      "verified": true,
+      "original_boot_prefix_actions": 80,
+      "branch_actions": 330,
+      "branch_action_reward_screen_sha256": "2c699446c39780dbdb9cb13d87741e4d43084522e32482dce591f19ed3f5dd44"
+    },
+    {
+      "start": 80,
+      "window": 64,
+      "replicate": 1,
+      "verified": true,
+      "original_boot_prefix_actions": 80,
+      "branch_actions": 294,
+      "branch_action_reward_screen_sha256": "c05b10906a4de01a035faa08a439c9be32bcc5055a57e7143dac874df5521543"
+    }
+  ],
+  "branches": [
+    {
+      "start": 80,
+      "window": 64,
+      "replicate": 0,
+      "navigation_rng_seed": 2486400,
+      "navigation_actions": 64,
+      "last_observed_action": 410,
+      "first_visible_loss_action": 410,
+      "displayed_score": 2620,
+      "highest_stage": 1,
+      "mission_completed": false,
+      "visible_life_lost": true,
+      "survived_through_cap": false,
+      "landmarks": {
+        "160": {
+          "displayed_score": 80,
+          "ship_column": null,
+          "visible_lives": 4
+        },
+        "200": {
+          "displayed_score": 120,
+          "ship_column": 28,
+          "visible_lives": 4
+        },
+        "240": {
+          "displayed_score": 140,
+          "ship_column": 26,
+          "visible_lives": 4
+        },
+        "300": {
+          "displayed_score": 310,
+          "ship_column": null,
+          "visible_lives": 4
+        },
+        "340": {
+          "displayed_score": 1080,
+          "ship_column": 23,
+          "visible_lives": 4
+        },
+        "380": {
+          "displayed_score": 2600,
+          "ship_column": 26,
+          "visible_lives": 4
+        },
+        "390": {
+          "displayed_score": 2620,
+          "ship_column": 25,
+          "visible_lives": 4
+        }
+      },
+      "branch_action_reward_screen_sha256": "2c699446c39780dbdb9cb13d87741e4d43084522e32482dce591f19ed3f5dd44"
+    },
+    {
+      "start": 80,
+      "window": 64,
+      "replicate": 1,
+      "navigation_rng_seed": 2486401,
+      "navigation_actions": 64,
+      "last_observed_action": 374,
+      "first_visible_loss_action": 374,
+      "displayed_score": 2600,
+      "highest_stage": 1,
+      "mission_completed": false,
+      "visible_life_lost": true,
+      "survived_through_cap": false,
+      "landmarks": {
+        "160": {
+          "displayed_score": 80,
+          "ship_column": null,
+          "visible_lives": 4
+        },
+        "200": {
+          "displayed_score": 120,
+          "ship_column": 28,
+          "visible_lives": 4
+        },
+        "240": {
+          "displayed_score": 140,
+          "ship_column": 26,
+          "visible_lives": 4
+        },
+        "300": {
+          "displayed_score": 310,
+          "ship_column": null,
+          "visible_lives": 4
+        },
+        "340": {
+          "displayed_score": 1080,
+          "ship_column": null,
+          "visible_lives": 4
+        }
+      },
+      "branch_action_reward_screen_sha256": "c05b10906a4de01a035faa08a439c9be32bcc5055a57e7143dac874df5521543"
+    }
+  ],
+  "diagnostic_only": true,
+  "hidden_ram_reads": 0,
+  "model_updates": 0,
+  "reward_changes": 0,
+  "training_data_written": false,
+  "policy_promotion_eligible": false,
+  "limitations": [
+    "Switch times are scripted and cannot be a final learned policy.",
+    "Only one own first-life seed is tested.",
+    "The frozen parent RNG does not consume skipped-window draws.",
+    "Ship glyph can be occluded; action count is not exact course depth."
+  ]
+}
