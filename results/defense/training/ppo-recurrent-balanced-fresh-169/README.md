@@ -29,6 +29,20 @@ proof. It is one distinct score-only learner test while that engineering
 question remains open, not permission for repeated longer PPO tuning if
 both arms end at the same stage-one barrier.
 
+This is a **stage-one discovery test, not yet a full-game-eligible policy**.
+The fixed grouping emits canonical Space for all nine forward-fire aliases.
+That preserves their stage-one physical equivalence, but the original
+stage-two/three routines allow movement while firing, so the grouping
+removes potentially necessary later-stage commands. Also, the treatment
+GRU explicitly receives its own previous physical key. This is not hidden
+game state or an oracle, but it is not literally a screen-only model input
+under the strict wording of `GOALS.md`. Until that interpretation is
+resolved, any passage is a diagnostic discovery, not proof that the
+specified screen-only learner has completed the game. A full-game
+successor should retain all twenty original controls, avoiding this
+unproven restriction, and by default receive only screen observations
+and its learned recurrent state.
+
 ## Frozen protocol, before looking at outcomes
 
 Use fresh seed **41**, 16 original-emulator workers, 256-action rollouts,
@@ -166,3 +180,46 @@ except arm paths and memory scale to match. Its original process was
 replaced after verifying its exact PID; the trainer and disk guard were
 not interrupted. The restarted follow-up recognized the live treatment
 at 1,118,208 actions and continues to monitor it.
+
+## Strategy audit while production is live
+
+At the second fixed check (**2,097,152** treatment actions), the ten
+complete original-boot games averaged **322** points (median 320, best
+340); all ended in stage one. The first checkpoint's independently
+verified 1,611-action replay scored 380. A read-only ablation on the
+*same recorded screens and preceding actions*, using that frozen model,
+found mean total-variation distance **0.261** between grouped action
+distributions with and without its recurrent residual; the greedy choice
+changed on **57.2%** of screens. Memory therefore affects action
+probabilities, but this off-policy ablation does not establish a gameplay
+gain. The matched zero-memory control remains the causal comparison.
+
+That replay chose a firing command in **186/1,611 (11.5%)** decisions;
+the protected 10,480-point stage-one best chose one in **952/2,580
+(36.9%)**. This is an early training snapshot, not a matched policy
+comparison or evidence that firing alone solves passage. Earlier fresh
+balanced learning improved sharply only after five million actions, so
+the predeclared bounded run continues rather than stopping on the low
+early score. No stage-two claim follows from a memory-effect or score
+increase alone.
+
+The broader evidence still points to route discovery and long-range
+credit as the bottleneck: the protected replay loses four 2,620-point
+lives around original course rows 33–34 of 126, and earlier bounded
+searches and score-only continuations did not cross. With this trial's
+gamma 0.997 and GAE lambda 0.95, direct advantage credit is multiplied
+by about **0.947 per decision** (roughly a 13-decision half-life), while
+the relevant maneuver can start many decisions before a delayed visible
+loss. This is a diagnostic explanation, not proof of impossibility;
+learned value bootstrapping can propagate farther if successful
+trajectories are ever experienced.
+
+After the frozen two-arm comparison, do not extend this mechanism merely
+for stage-one score. Independently audit stage-one physical reachability
+at the current and finer action cadence, using original-emulator mechanics
+only for **forensics**, never as demonstrations, policy inputs or reward.
+If a passable route is established, prioritize a full-twenty-command,
+strictly screen-observed learner with a longer-horizon credit mechanism
+and original-boot stage/mission gates. If action cadence makes passage
+unreachable, correct that environment interface and restart controlled
+learning; never relabel a diagnostic intervention as a learned win.
