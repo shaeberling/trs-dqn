@@ -5,7 +5,21 @@ It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,
 new ROM, binary patch or duplicate game asset is needed.
 
-Latest outcome: the fresh [grouped key-duration PPO run](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
+Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
+finished at **4,194,304** own actions without reaching stage two. Its selected
+policy modestly improved displayed score over its shorter pilot on two
+fresh 128-game matched sets, but all **512** games remained in stage one;
+the selected replay lost near course row **16 of 126** on all four lives.
+The stronger firing policy still loses near row **33–34**. A subsequent
+[256-branch frozen-policy movement-window diagnostic](results/defense/diagnostics/hybrid-window-165/README.md)
+from one independently verified firing-policy first life extended visible
+survival by at most **one action** and never reached stage two. This is a
+negative result for switching between those two experts, not a proof of
+impossibility. More score-only continuation or a learned two-expert gate is
+not justified by the current evidence. The protected 10,480-point model
+and replay remain unchanged; no original mission has been observed.
+
+Earlier outcome: the fresh [grouped key-duration PPO run](results/defense/training/ppo-grouped-duration-fresh-163/README.md)
 completed all **16,777,216** planned own actions and selected its terminal
 checkpoint on a **9,551** ten-game fixed mean. All **160** fixed and **512**
 fresh matched comparison games (grouped and parent combined) ended in stage
@@ -17,12 +31,10 @@ mission has been observed. Full selected state, all fixed results, complete
 metrics, seven training best-effort versions and four verified fresh replays
 are archived. The new policy is not promoted, and another mechanism is
 needed before spending more compute on the repeated early barrier.
-The next [movement-only pilot](results/defense/training/ppo-movement-only-164/README.md)
-tests whether removing fire actions from a fresh, stage-agnostic learned
-action profile helps score-only reinforcement learning discover longer
-survival. Its original-game reward and screen observation are unchanged;
-this is a bounded test with a frozen no-learning control, not a claimed
-stage clear or a replacement for the protected best.
+The subsequent movement-only trial (summarized above) retained the original
+game's displayed-score reward and screen observation. It was a bounded test
+with a frozen no-learning control, not a stage clear or replacement for the
+protected best.
 
 Current learned-policy experiment: the [fresh balanced-control PPO
 comparison](results/defense/training/ppo-balanced-fire-from-scratch-160/README.md)
