@@ -7,7 +7,11 @@ import numpy as np
 
 from .model import QNetwork
 from .ppo import PPO, _load_backend
-from .recurrent_policy import OwnActionRecurrentPolicy, RecurrentPolicy
+from .defense_canonical_fire import (COMMAND_MAP, group_logits_mlx,
+                                     group_logits_numpy, learning_indices)
+from .recurrent_policy import (CanonicalRecurrentPolicy,
+                               OwnActionCanonicalRecurrentPolicy,
+                               OwnActionRecurrentPolicy, RecurrentPolicy)
 
 
 class ResidualRecurrentNetwork(nn.Module):
@@ -72,12 +76,14 @@ class ResidualRecurrentNetwork(nn.Module):
 class RecurrentPPO(PPO):
     def __init__(self, seed=41, learning_rate=2.5e-4, entropy=.002, action_count=20,
                  value_coefficient=.5, hidden_size=128, memory_scale=1., freeze_base=False,
-                 own_action_input=False):
+                 own_action_input=False, canonical_fire=False):
         if (isinstance(value_coefficient, (bool, np.bool_))
                 or not np.isfinite(value_coefficient) or value_coefficient < 0):
             raise ValueError("value coefficient must be finite and nonnegative")
         if not isinstance(freeze_base, bool):
             raise ValueError("freeze_base must be boolean")
+        if not isinstance(canonical_fire, bool) or (canonical_fire and action_count != 20):
+            raise ValueError("canonical recurrent fire requires twenty original actions")
         _load_backend()  # inherited save() uses the ordinary PPO backend globals.
         mx.random.seed(seed)
         self.model = ResidualRecurrentNetwork(action_count, hidden_size, memory_scale,
@@ -91,6 +97,7 @@ class RecurrentPPO(PPO):
         self.entropy, self.value_coefficient = entropy, value_coefficient
         self.hidden_size, self.memory = hidden_size, None
         self.own_action_input, self.action_count = own_action_input, action_count
+        self.canonical_fire = canonical_fire
         self.previous_actions = None
         self.compile()
 
@@ -122,11 +129,14 @@ class RecurrentPPO(PPO):
         else:
             logits, values, hidden = self.predict(mx.array(obs), mx.array(self.memory))
         logits, values, self.memory = np.array(logits), np.array(values), np.array(hidden)
+        if self.canonical_fire:
+            logits = group_logits_numpy(logits)
         logp = logits - np.logaddexp.reduce(logits, axis=-1, keepdims=True)
-        actions = (rng.random(len(obs))[:, None] > np.cumsum(np.exp(logp), axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
+        choices = (rng.random(len(obs))[:, None] > np.cumsum(np.exp(logp), axis=1)).sum(axis=1).clip(0, logits.shape[1]-1)
+        actions = COMMAND_MAP[choices] if self.canonical_fire else choices
         if self.own_action_input:
             self.previous_actions = actions.astype(np.int32).copy()
-        return actions.astype(np.int32), logp[np.arange(len(obs)), actions], values
+        return actions.astype(np.int32), logp[np.arange(len(obs)), choices], values
 
     def bootstrap_value(self, obs, indices=None):
         memory = self.memory if indices is None else self.memory[indices]
@@ -140,6 +150,10 @@ class RecurrentPPO(PPO):
               starts, previous_actions=None):
         logits, values, _ = model.sequence(obs, mx.stop_gradient(initial_hidden), starts,
                                            previous_actions)
+        if self.canonical_fire:
+            logits = group_logits_mlx(logits.reshape(-1, 20)).reshape(
+                logits.shape[0], logits.shape[1], len(COMMAND_MAP))
+            actions = learning_indices(actions)
         log_probs = logits - mx.logsumexp(logits, axis=-1, keepdims=True)
         logp = mx.take_along_axis(log_probs, actions[..., None], axis=-1)[..., 0]
         logratio = logp - old_logp
@@ -162,9 +176,12 @@ class RecurrentPPO(PPO):
                 logits, _, updated = self.predict(
                     mx.array(obs), mx.array(hidden), mx.array(previous))
                 return np.array(logits), np.array(updated)
-            return OwnActionRecurrentPolicy(infer, self.hidden_size, self.action_count,
-                                            seed=seed)
+            policy_class = (OwnActionCanonicalRecurrentPolicy if self.canonical_fire
+                            else OwnActionRecurrentPolicy)
+            return policy_class(infer, self.hidden_size, self.action_count,
+                                seed=seed)
         def infer(obs, hidden):
             logits, _, updated = self.predict(mx.array(obs), mx.array(hidden))
             return np.array(logits), np.array(updated)
-        return RecurrentPolicy(infer, self.hidden_size, seed=seed)
+        policy_class = CanonicalRecurrentPolicy if self.canonical_fire else RecurrentPolicy
+        return policy_class(infer, self.hidden_size, seed=seed)

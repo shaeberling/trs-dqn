@@ -2,6 +2,8 @@
 
 import numpy as np
 
+from .defense_canonical_fire import COMMAND_MAP, group_logits_numpy
+
 RECURRENT_ARCHITECTURE = "screen-cnn-residual-gru-v1"
 OWN_ACTION_RECURRENT_ARCHITECTURE = "screen-own-action-residual-gru-v1"
 
@@ -117,3 +119,42 @@ class OwnActionRecurrentPolicy(RecurrentPolicy):
             self.memories[rng] = memory.copy()
             self.previous_actions[rng] = int(action)
         return actions
+
+
+def canonical_fire_actions(logits, uniforms, temperature):
+    """Sample fixed physical commands from grouped raw recurrent logits."""
+    grouped = group_logits_numpy(logits) / temperature
+    probs = np.exp(grouped - np.logaddexp.reduce(grouped, axis=-1, keepdims=True))
+    choices = (uniforms[:, None] > np.cumsum(probs, axis=1)).sum(axis=1)
+    return COMMAND_MAP[choices.clip(0, len(COMMAND_MAP)-1)].astype(np.int32)
+
+
+class CanonicalRecurrentPolicy(RecurrentPolicy):
+    """Screen-history recurrent policy over twelve fixed physical commands."""
+
+    def choose(self, obs, hidden, uniforms):
+        logits, next_hidden = self.infer(obs, hidden)
+        next_hidden = np.asarray(next_hidden)
+        if next_hidden.shape != (len(obs), self.hidden_size) or not np.isfinite(next_hidden).all():
+            raise ValueError("invalid recurrent policy memory")
+        return canonical_fire_actions(logits, uniforms, self.temperature), next_hidden.copy()
+
+
+class OwnActionCanonicalRecurrentPolicy(OwnActionRecurrentPolicy):
+    """Grouped policy whose recurrent input carries its own physical key."""
+
+    def __init__(self, infer, hidden_size, action_count=20, seed=0, temperature=1.):
+        if action_count != 20:
+            raise ValueError("canonical fire requires twenty original keyboard IDs")
+        super().__init__(infer, hidden_size, action_count, seed=seed, temperature=temperature)
+
+    def choose(self, obs, hidden, previous, uniforms):
+        previous = np.asarray(previous)
+        if (previous.shape != (len(obs),) or not np.issubdtype(previous.dtype, np.integer)
+                or np.any(previous < 0) or np.any(previous > self.action_count)):
+            raise ValueError("one own physical command or reset sentinel per screen")
+        logits, next_hidden = self.infer(obs, hidden, previous)
+        next_hidden = np.asarray(next_hidden)
+        if next_hidden.shape != (len(obs), self.hidden_size) or not np.isfinite(next_hidden).all():
+            raise ValueError("invalid recurrent policy memory")
+        return canonical_fire_actions(logits, uniforms, self.temperature), next_hidden.copy()

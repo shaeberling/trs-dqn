@@ -168,6 +168,8 @@ def main():
             parser.error("Changing movement-only action profile requires a fresh run")
         if args.balanced_canonical_init != config.get("balanced_canonical_init", False):
             parser.error("Changing canonical-fire initializer provenance on resume is invalid")
+        if args.canonical_fire != config.get("canonical_fire", False):
+            parser.error("Changing grouped-command profile requires fresh initialization")
         if args.repeat_previous_action != config.get("repeat_previous_action", False):
             parser.error("Changing continue-action profile requires fresh initialization")
         if args.learned_durations != config.get("learned_durations", []):
@@ -226,9 +228,9 @@ def main():
                                or args.policy_weight_noise or args.policy_key_noise
                                or args.policy_duration_noise):
         parser.error("movement-only requires a fresh plain feedforward PPO actor or exact resume")
-    if args.canonical_fire and (args.allow_enter or args.recurrent_hidden or args.sil_updates
+    if args.canonical_fire and (args.allow_enter or args.sil_updates
                                 or args.policy_bias_noise or args.policy_weight_noise):
-        parser.error("canonical fire requires plain twenty-command feedforward PPO without SIL or policy noise")
+        parser.error("canonical fire requires twenty original commands without SIL or policy noise")
     if args.balanced_canonical_init and (not args.canonical_fire or
             (not prior and (args.initialize_encoder or args.initialize_policy
                             or args.initialize_repeat_policy or args.initialize_duration_policy
@@ -377,7 +379,8 @@ def main():
         agent_class = RecurrentPPO
         extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale,
                           freeze_base=args.freeze_recurrent_base,
-                          own_action_input=args.recurrent_own_action)
+                          own_action_input=args.recurrent_own_action,
+                          canonical_fire=args.canonical_fire)
     policy_action_count = (9 if args.movement_only else
                            len(action_names(False))*len(args.learned_durations)
                            if args.learned_durations else
@@ -614,7 +617,9 @@ def main():
                       model_source_sha256=sha256(Path(__file__).with_name("model.py")),
                       policy_noise_reset=reset_rule)
     if args.canonical_fire:
-        config.update(policy="learned categorical over fixed twelve command groups, sampled",
+        config.update(policy=("learned recurrent categorical over fixed twelve command groups, sampled"
+                              if args.recurrent_hidden else
+                              "learned categorical over fixed twelve command groups, sampled"),
                       evaluation_policy="same fixed grouped categorical policy, sampled",
                       canonical_fire_source_sha256=sha256(Path(__file__).with_name("defense_canonical_fire.py")),
                       canonical_fire_semantics="commands 9..17 grouped by log-sum-exp and emitted as Space; "

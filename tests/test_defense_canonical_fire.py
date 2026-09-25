@@ -64,8 +64,7 @@ class CanonicalFireTests(unittest.TestCase):
     def test_invalid_combinations_rejected_before_emulator_launch(self):
         from rl import defense_train
 
-        for extra in (["--allow-enter"], ["--recurrent-hidden", "32"],
-                      ["--sil-updates", "1"], ["--policy-bias-noise", ".5"],
+        for extra in (["--allow-enter"], ["--sil-updates", "1"], ["--policy-bias-noise", ".5"],
                       ["--policy-weight-noise", ".005"]):
             with self.subTest(extra=extra), patch.object(sys, "argv", [
                     "defense_train", "--run", "/nonexistent/canonical-fire-test",

@@ -87,9 +87,11 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             raise ValueError("Invalid own-previous-action policy profile")
         return ("learned categorical with own-previous-key continuation, sampled" if temperature == 1 else
                 "learned categorical with own-previous-key continuation, temperature-scaled")
-    if config.get("canonical_fire") and (algorithm != "ppo" or architecture is not None
-                                         or config.get("allow_enter", False)):
-        raise ValueError("Canonical fire requires standard feedforward Defense PPO")
+    if config.get("canonical_fire") and (
+            algorithm != "ppo" or architecture not in (
+                None, RECURRENT_ARCHITECTURE, OWN_ACTION_RECURRENT_ARCHITECTURE)
+            or config.get("allow_enter", False)):
+        raise ValueError("Canonical fire requires ordinary or recurrent twenty-action Defense PPO")
     if config.get("movement_only"):
         if (algorithm != "ppo" or architecture is not None or config.get("allow_enter", False)
                 or config.get("canonical_fire") or config.get("repeat_previous_action")
@@ -110,6 +112,12 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
                 or bool(config.get('recurrent_own_action', False))
                    != (architecture == OWN_ACTION_RECURRENT_ARCHITECTURE)):
             raise ValueError("Unsupported Defense policy architecture")
+        if config.get("canonical_fire"):
+            memory = ("screen and own-previous-key memory"
+                      if architecture == OWN_ACTION_RECURRENT_ARCHITECTURE else "screen-history memory")
+            return (f"learned recurrent fixed twelve-group categorical, sampled; {memory}"
+                    if temperature == 1 else
+                    f"learned recurrent fixed twelve-group categorical, temperature-scaled; {memory}")
         if architecture == OWN_ACTION_RECURRENT_ARCHITECTURE:
             return ("learned recurrent categorical, sampled; screen and own-previous-key memory"
                     if temperature == 1 else
@@ -210,7 +218,9 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
     if config.get("architecture") in (RECURRENT_ARCHITECTURE,
                                        OWN_ACTION_RECURRENT_ARCHITECTURE):
         from .defense_recurrent import ResidualRecurrentNetwork
-        from .recurrent_policy import OwnActionRecurrentPolicy, RecurrentPolicy
+        from .recurrent_policy import (CanonicalRecurrentPolicy,
+                                       OwnActionCanonicalRecurrentPolicy,
+                                       OwnActionRecurrentPolicy, RecurrentPolicy)
         own_action = config["architecture"] == OWN_ACTION_RECURRENT_ARCHITECTURE
         model = ResidualRecurrentNetwork(len(names), config['recurrent_hidden'],
                                          config['memory_scale'], own_action_input=own_action)
@@ -221,12 +231,15 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
             def infer(obs, hidden, previous):
                 logits, _, updated = predict(mx.array(obs), mx.array(hidden), mx.array(previous))
                 return np.array(logits), np.array(updated)
-            return OwnActionRecurrentPolicy(infer, config['recurrent_hidden'], len(names),
-                                            temperature=temperature), config
+            policy_class = (OwnActionCanonicalRecurrentPolicy if config.get("canonical_fire")
+                            else OwnActionRecurrentPolicy)
+            return policy_class(infer, config['recurrent_hidden'], len(names),
+                                temperature=temperature), config
         def infer(obs, hidden):
             logits, _, updated = predict(mx.array(obs), mx.array(hidden))
             return np.array(logits), np.array(updated)
-        return RecurrentPolicy(infer, config['recurrent_hidden'], temperature=temperature), config
+        policy_class = CanonicalRecurrentPolicy if config.get("canonical_fire") else RecurrentPolicy
+        return policy_class(infer, config['recurrent_hidden'], temperature=temperature), config
     if config.get("architecture") == SPATIAL_ARCHITECTURE:
         from .defense_spatial import SpatialDurationNetwork
         model = SpatialDurationNetwork(action_count=len(names)*len(config["learned_durations"]))
