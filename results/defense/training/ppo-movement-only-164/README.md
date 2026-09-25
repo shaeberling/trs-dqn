@@ -133,6 +133,11 @@ verification. Its +75-point score and +135.71-action length gains exceed
 the predeclared +20/+20 stage-one extension gate, but **no stage passage**
 was observed. The learner therefore earns *more score-only exploration*,
 not promotion over the protected 10,480-point policy.
+A separate [post-freeze course audit](../../diagnostics/movement-only-164-pilot-course-progress/README.md)
+located that verified 380-point replay's four visible losses at original
+stream rows **15 / 15 / 16 / 16 of 126**. It has not yet approached the
+firing policies' row-33/34 barrier. The private pointer was diagnostic-only
+and did not enter learning or selection.
 
 The extension resumes the archived pilot's exact model, optimizer and
 policy RNG at 1,048,576 actions, with fresh original-game episodes, toward
