@@ -62,6 +62,7 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
             expected_names = duration_action_names(durations)
         if (algorithm != "ppo" or architecture not in (None, SPATIAL_ARCHITECTURE)
                 or config.get("canonical_fire")
+                or config.get("movement_only")
                 or config.get("repeat_previous_action") or config.get("allow_enter", False)
                 or (grouped and architecture is not None)
                 or config.get("policy_action_names") != list(expected_names)
@@ -80,6 +81,7 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
     if config.get("repeat_previous_action"):
         from .defense_repeat_previous import POLICY_ACTION_NAMES
         if (algorithm != "ppo" or architecture is not None or config.get("canonical_fire")
+                or config.get("movement_only")
                 or config.get("allow_enter", False)
                 or config.get("policy_action_names") != list(POLICY_ACTION_NAMES)):
             raise ValueError("Invalid own-previous-action policy profile")
@@ -88,6 +90,14 @@ def policy_description(config, temperature=1.0, *, quantile_power=None):
     if config.get("canonical_fire") and (algorithm != "ppo" or architecture is not None
                                          or config.get("allow_enter", False)):
         raise ValueError("Canonical fire requires standard feedforward Defense PPO")
+    if config.get("movement_only"):
+        if (algorithm != "ppo" or architecture is not None or config.get("allow_enter", False)
+                or config.get("canonical_fire") or config.get("repeat_previous_action")
+                or config.get("learned_durations")
+                or config.get("policy_action_names") != list(action_names(False)[:9])):
+            raise ValueError("Invalid stage-agnostic movement-only PPO policy profile")
+        return ("learned nine-movement categorical, sampled" if temperature == 1 else
+                "learned nine-movement categorical, temperature-scaled sampling")
     if algorithm == IMAGINATION_ALGORITHM:
         if (architecture != 'screen-rssm-imagined-actor-v1' or config.get('allow_enter', False)
                 or config.get('world_hidden') != 128 or config.get('world_stochastic') != 32):
@@ -229,7 +239,8 @@ def load_policy(checkpoint, *, temperature=1.0, quantile_power=None):
         from .defense_quantile import QuantileQ
         model = QuantileQ(len(names), config["quantiles"])
     else:
-        model = QNetwork(action_count=(len(names)*len(config["learned_durations"])
+        model = QNetwork(action_count=(9 if config.get("movement_only") else
+                       len(names)*len(config["learned_durations"])
                        if config.get("learned_durations") else
                        len(names) + int(config.get("repeat_previous_action", False))))
     model.load_weights(str(checkpoint))

@@ -17,6 +17,12 @@ mission has been observed. Full selected state, all fixed results, complete
 metrics, seven training best-effort versions and four verified fresh replays
 are archived. The new policy is not promoted, and another mechanism is
 needed before spending more compute on the repeated early barrier.
+The next [movement-only pilot](results/defense/training/ppo-movement-only-164/README.md)
+tests whether removing fire actions from a fresh, stage-agnostic learned
+action profile helps score-only reinforcement learning discover longer
+survival. Its original-game reward and screen observation are unchanged;
+this is a bounded test with a frozen no-learning control, not a claimed
+stage clear or a replacement for the protected best.
 
 Current learned-policy experiment: the [fresh balanced-control PPO
 comparison](results/defense/training/ppo-balanced-fire-from-scratch-160/README.md)
