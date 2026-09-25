@@ -47,6 +47,18 @@ pruning and the single starting route prevent an impossibility inference.
 This source-route search is stopped;
 full-stage reachability at the current cadence remains unproved, and none
 of its private-guided actions entered learning.
+A separate [bounded finer-cadence feasibility check](results/defense/diagnostics/fine-cadence-survival-177/README.md)
+continued the same verified row-50 forensic route with 50,000-T-state
+actions. A 256-state beam stopped at row 60; one width-only 512-state check
+reached decoded row **65** with its first ship alive, score **550**, still
+stage one. Its 906-action mixed-cadence route was reexecuted twice from
+original boot and again from the archived copy. A matched-source,
+seed-177, 512-state **100,000-T-state** comparator stopped at row 60;
+its archived 684-action witness was also reexecuted. This supports testing
+finer control in an eligible learned policy, but finite beams and different
+decision counts do not establish that the old cadence is impossible or
+that any stage can be cleared. Both searched routes remain strictly
+quarantined from training and the best learned replay.
 
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
