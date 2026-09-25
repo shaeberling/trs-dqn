@@ -1,0 +1,35 @@
+{
+  "source_bundle": "results/defense/training/ppo-balanced-fire-continuation-161/fresh-comparison/continuation-612000-replay",
+  "source_seed": 612059,
+  "source_model_sha256": "51945f630ef3c0ad3b92033321c03f22c8b08e11d31efbe9615a57de85fadc28",
+  "source_trace_sha256": "5c5ab65f1318eec98dd10970d84f4217bf638154f9cdb609ab2c5ba703ed3223",
+  "probe_source_sha256": "3b967707456715d6547b40f6f2c4121ff3966d4ebae078244fc55913ea9bd351",
+  "game_sha256": "9b887e46223eb2ce9d2ada2a7588435a90be51f9e5326a592193faeafa322644",
+  "audited_private_counter_address": "0x7CEF",
+  "scan_from_action": 280,
+  "internal_decrement": {
+    "action_number": 391,
+    "action_index": 390,
+    "requested_tstates_threshold": 34783,
+    "interval_tstates": 100000,
+    "during_base_action": true,
+    "internal_ships_before": 4,
+    "internal_ships_after": 3,
+    "visible_hud_ships_before": 4,
+    "visible_score_before": 2620
+  },
+  "first_visible_loss_action": 412,
+  "visible_lag_actions": 21,
+  "exact_original_boot_actions_rewards_screens_verified": 412,
+  "diagnostic_only": true,
+  "model_updates": 0,
+  "training_data_written": false,
+  "hidden_counter_used_by_policy_or_reward": false,
+  "promotion_eligible": false,
+  "limitations": [
+    "One frozen original-boot first life, not a distribution.",
+    "The counter decrement is the original game's loss bookkeeping; the overlap test can precede it.",
+    "Requested T-state bisection resolves an instruction interval, not a pixel-accurate collision moment.",
+    "No internal counter value may enter training or acting."
+  ]
+}
