@@ -108,6 +108,8 @@ def main():
                         help="direction-neutral initial logit penalty per longer hold; only for fresh duration initialization")
     parser.add_argument("--canonical-fire", action=argparse.BooleanOptionalAction, default=False,
                         help="train a fixed twelve-choice categorical policy combining nine fire-key aliases")
+    parser.add_argument("--movement-only", action=argparse.BooleanOptionalAction, default=False,
+                        help="fresh stage-agnostic nine-direction PPO; no firing commands at any stage")
     parser.add_argument("--balanced-canonical-init", action=argparse.BooleanOptionalAction, default=False,
                         help="fresh canonical-fire actor starts with equal mass on twelve physical choices")
     parser.add_argument("--tstates", type=int, default=100_000)
@@ -162,6 +164,8 @@ def main():
             parser.error("Resume requires a compatible Defense checkpoint")
         if args.allow_enter != config.get("allow_enter", False):
             parser.error("Changing action profile requires a fresh run, not an incompatible optimizer resume")
+        if args.movement_only != config.get("movement_only", False):
+            parser.error("Changing movement-only action profile requires a fresh run")
         if args.balanced_canonical_init != config.get("balanced_canonical_init", False):
             parser.error("Changing canonical-fire initializer provenance on resume is invalid")
         if args.repeat_previous_action != config.get("repeat_previous_action", False):
@@ -213,6 +217,15 @@ def main():
     if args.freeze_recurrent_base and (not args.recurrent_hidden or args.memory_scale == 0
                                       or not (args.initialize_policy or args.resume)):
         parser.error("frozen recurrent base requires own full-policy initialization and enabled memory")
+    if args.movement_only and (args.allow_enter or args.canonical_fire or args.balanced_canonical_init
+                               or args.repeat_previous_action or args.learned_durations
+                               or args.recurrent_hidden or args.spatial_residual or args.sil_updates
+                               or args.initialize_encoder or args.initialize_policy
+                               or args.initialize_repeat_policy or args.initialize_duration_policy
+                               or args.initialize_duration_checkpoint or args.policy_bias_noise
+                               or args.policy_weight_noise or args.policy_key_noise
+                               or args.policy_duration_noise):
+        parser.error("movement-only requires a fresh plain feedforward PPO actor or exact resume")
     if args.canonical_fire and (args.allow_enter or args.recurrent_hidden or args.sil_updates
                                 or args.policy_bias_noise or args.policy_weight_noise):
         parser.error("canonical fire requires plain twenty-command feedforward PPO without SIL or policy noise")
@@ -365,7 +378,8 @@ def main():
         extra_agent = dict(hidden_size=args.recurrent_hidden, memory_scale=args.memory_scale,
                           freeze_base=args.freeze_recurrent_base,
                           own_action_input=args.recurrent_own_action)
-    policy_action_count = (len(action_names(False))*len(args.learned_durations)
+    policy_action_count = (9 if args.movement_only else
+                           len(action_names(False))*len(args.learned_durations)
                            if args.learned_durations else
                            len(action_names(args.allow_enter)) + int(args.repeat_previous_action))
     agent = agent_class(seed=args.seed, learning_rate=args.learning_rate, entropy=args.entropy,
@@ -609,6 +623,11 @@ def main():
             config["canonical_fire_initialization"] = (
                 "fresh actor logits offset by -log(9) for each of nine forward-fire aliases; "
                 "twelve distinct physical commands have approximately equal initial mass")
+    if args.movement_only:
+        config.update(policy="fresh learned categorical over the nine original movement/no-op commands, sampled",
+                      policy_action_names=list(action_names(False)[:9]),
+                      movement_only_semantics="fixed stage-agnostic action profile; original keyboard IDs 0..8 only; "
+                                              "no firing command in training or evaluation; no action override")
     if args.curriculum_probability:
         config.update(curriculum_archive_saved=False,
                       curriculum_source_sha256=sha256(Path(__file__).with_name("defense_curriculum.py")),
