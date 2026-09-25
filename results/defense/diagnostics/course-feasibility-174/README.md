@@ -51,7 +51,7 @@ original-emulator branches. It retained a first-ship survivor through
 frame **508**, with the original pointer at decoded row **44**, but all
 **3,072** successors of its 256 retained states died internally at frame
 509. It did not reach row 50 or stage two. Its compact layer log and report
-remain at `runs/defense-course-feasibility-174` pending archival.
+are preserved in the [full archive](full/report.json).
 
 At frame 508, **444** generated branches were still internally alive but
 the beam retained only 256. Thus the immediate zero-survivor result may be
@@ -96,3 +96,7 @@ The wider beam's success also shows the 256-state frame-509 stop was not a
 hard physical impossibility. No further width increase from this same
 source is planned; any next search should answer a new feasibility question
 or change the learning mechanism. The protected learned best is unchanged.
+After byte comparison and push, the three stopped local run directories
+(about **164 KiB** total) were removed. Their complete contents are in this
+pushed archive and recoverable from Git; no active run or unique model was
+removed.
