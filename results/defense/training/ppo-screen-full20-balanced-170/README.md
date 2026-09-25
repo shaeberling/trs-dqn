@@ -43,6 +43,17 @@ explore temporally coherent low-score detours and retain stage-first
 original-boot gates; a longer copy of this integration smoke alone is
 not a justified successor.
 
+The later [forensic row-50 continuation](../../diagnostics/course-feasibility-174/README.md)
+found a first-ship survivor farther into the original course at the same
+control cadence, still with only 450 displayed points. Its separate
+[return audit](../../diagnostics/score-detour-175/README.md) shows how
+strongly the current discount penalizes this *particular* delayed,
+lower-scoring route versus the protected 2,620-point first life. Neither
+private-guided route nor its calculated return is learner data or a new
+reward. This is evidence for a different exploration/credit mechanism,
+not a rationale to launch the already-passed smoke for millions of identical
+PPO actions.
+
 ## Frozen gate
 
 Use seed **41**, 100,000 T states per action, screen stride **1**, score

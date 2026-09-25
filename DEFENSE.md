@@ -28,6 +28,15 @@ The narrower beam failed at row 44 but a width-only check survived it.
 This is stronger evidence that the current control cadence permits lower-
 scoring detours, not a learned policy, stage clear or full-course proof;
 private search actions remain quarantined from training and promotion.
+The separate [score-return audit](results/defense/diagnostics/score-detour-175/README.md)
+quantifies the tradeoff from the shared action-280 fork: the learned first
+life gained 2,410 displayed points before loss, whereas the row-50
+forensic route gained only 240 by action 573. Under the current 0.997
+discount, one hypothetical reward immediately after that route would need
+about 4,364 points to tie the learned life’s known discounted return.
+This is not an observed reward, PPO advantage, stage-clear estimate or
+training target; it illustrates why score-only local optimization can
+strongly suppress a lower-scoring detour despite longer survival.
 
 Latest outcome: the [movement-only PPO pilot and extension](results/defense/training/ppo-movement-only-164/README.md)
 finished at **4,194,304** own actions without reaching stage two. Its selected
