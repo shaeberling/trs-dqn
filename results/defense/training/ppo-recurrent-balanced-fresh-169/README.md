@@ -331,3 +331,80 @@ replay. This is real selected-replay depth progress but not passage beyond
 the protected model's row-33/34 region. The treatment's corresponding fourth
 and fifth fixed means were **318** and **412**. No final memory comparison,
 fresh-game result or global-best promotion follows from these interim checks.
+
+## Completed matched memory comparison
+
+Both fresh seed-41 arms stopped normally at exactly **8,388,608** own actions;
+the interrupted 249,856-action control was excluded. The follow-up reloaded
+and repeated **all sixteen** fixed ten-game original-boot evaluations,
+requiring exact game and summary equality. The frozen selector chose each
+arm's terminal checkpoint, so its selected and terminal full model,
+optimizer and RNG state is one byte-identical directory per arm:
+[treatment](treatment-selected-terminal/state.json) and
+[control](control-selected-terminal/state.json). The fixed ten-game means
+at successive million-action checks were:
+
+| Arm | Fixed mean scores, checks 1–8 | Final fixed best | Verified later stages |
+| --- | --- | ---: | ---: |
+| Own-action recurrent memory | 346 / 322 / 320 / 318 / 412 / 408 / 516 / **554** | 600 | 0 |
+| Same network, recurrent residual disabled | 384 / 468 / 564 / 572 / 3,384 / 3,702 / 3,623 / **9,519** | 10,330 | 0 |
+
+The [predeclared fresh comparison](comparison/report.json) then played
+two **untouched matched sets of 64 complete original-boot games per arm**.
+All **256** games ended in stage one without a mission:
+
+| Fresh seeds | Memory mean / median / best | Zero-memory mean / median / best | Paired zero-memory wins | Games reaching stage two |
+| --- | --- | --- | ---: | ---: |
+| 622000–622063 | 537.81 / 540 / 600 | 9,457.97 / 9,870 / 10,410 | 64/64 | 0 |
+| 622200–622263 | 536.88 / 540 / 600 | 9,641.56 / 10,240 / 10,380 | 64/64 | 0 |
+
+Across the 128 paired games per arm, mean scores were **537.34 versus
+9,549.77**; the memory arm scored below 9,000 in all 128, versus 50/128
+for zero-memory. Within this one controlled seed/configuration comparison,
+the explicit GRU residual was strongly detrimental to **score**. This is
+not a claim that all recurrence is harmful: a single initialization,
+training trajectory and action-grouped architecture do not establish that.
+More importantly, neither arm solved the stage-one passage bottleneck.
+The zero-memory arm is not promoted over the stronger protected 10,480-point
+learned best, and the grouped architecture lacks potentially necessary
+later-stage movement-plus-fire commands. The treatment also explicitly
+receives its own prior action, so it is not the strict final-game policy
+specified by `GOALS.md`. Do **not** extend this pair merely because its
+stage-one score improved.
+
+The [terminal zero-memory replay](control-best-efforts/step-000008388608-d529bb832768-seed-10007/replay.html)
+scored 10,330, but an [independent course audit](course-probes/archived-eighth/report.json)
+found four visible losses at decoded rows **33 / 34 / 34 / 34 of 126**, the
+same familiar region as the protected best. Its earlier 4,230-point
+[seventh replay](control-best-efforts/step-000007340032-b900b07f68a0-seed-10001/replay.html)
+lost at **30 / 29 / 29 / 29**, despite a higher score than the fifth replay.
+These private pointer reads happened only after freezing learned replays;
+they were never training inputs, rewards, or checkpoint-selection values.
+The separately verified [finer-cadence feasibility study](../../diagnostics/fine-cadence-survival-177/README.md)
+establishes a physical row-65 route but supplies no training data or learned
+passage. A successor needs strict full-20, screen-only play and a different
+exploration/credit mechanism, with visible stage/mission outcomes first.
+
+## Archive and retention
+
+The stopped run's compact [metrics and configuration](control-run/),
+[all eight fixed evaluations](control-fixed/), selected/terminal full state,
+six versioned local best-effort model/replay bundles, and both fresh
+evaluations/replays are archived for the control. The corresponding
+[treatment metrics](treatment-run/), [fixed evaluations](treatment-fixed/),
+selected/terminal state, four best-effort bundles and fresh results are
+also retained. The [comparison directory](comparison/) includes the
+selection, every fixed hash-bound recheck, all four complete 64-game
+records, the verified fresh replay bundles, and the completed report.
+The archive copies were compared byte-for-byte with their stopped sources.
+All four archived fresh replays were independently reexecuted **again**
+from original boot with their archived frozen weights: **9,020 total
+neural actions**, every screen, reward and final result matched. The
+seventh and terminal course audits were also rerun on the archived
+best-effort bundles, reproducing their original loss rows and hashes.
+
+The protected [10,480-point model and replay](../../learned/best/replay.html)
+remain unchanged. After this archive is committed and pushed, only
+redundant stopped-run copies and unselected local optimizer checkpoints
+may be pruned; the selected/terminal states, all fixed/fresh records,
+verified replays and complete metrics must remain recoverable from Git.

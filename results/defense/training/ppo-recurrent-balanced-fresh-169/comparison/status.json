@@ -1,0 +1,41 @@
+{
+  "event": "comparison_complete",
+  "checked_unix": 1790336788.2191172,
+  "monitor_pid": 23485,
+  "fresh_sets": {
+    "622000": {
+      "treatment_mean": 537.8125,
+      "control_mean": 9457.96875,
+      "treatment_median": 540.0,
+      "control_median": 9870.0,
+      "treatment_best": 600,
+      "control_best": 10410,
+      "treatment_below_9000": 64,
+      "control_below_9000": 28,
+      "treatment_highest_stage": 1,
+      "control_highest_stage": 1,
+      "treatment_mission_games": 0,
+      "control_mission_games": 0,
+      "paired_treatment_wins": 0,
+      "paired_control_wins": 64,
+      "paired_ties": 0
+    },
+    "622200": {
+      "treatment_mean": 536.875,
+      "control_mean": 9641.5625,
+      "treatment_median": 540.0,
+      "control_median": 10240.0,
+      "treatment_best": 600,
+      "control_best": 10380,
+      "treatment_below_9000": 64,
+      "control_below_9000": 22,
+      "treatment_highest_stage": 1,
+      "control_highest_stage": 1,
+      "treatment_mission_games": 0,
+      "control_mission_games": 0,
+      "paired_treatment_wins": 0,
+      "paired_control_wins": 64,
+      "paired_ties": 0
+    }
+  }
+}
