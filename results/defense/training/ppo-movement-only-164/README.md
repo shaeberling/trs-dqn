@@ -58,3 +58,18 @@ Selected and terminal full states, all fixed evaluations, compressed metrics
 and verified replays must be archived and pushed before deleting unselected
 local checkpoints. The protected 10,480-point global replay is never
 overwritten by a lower-score or unverified outcome.
+
+## Frozen no-learning control
+
+The full **563-test** native regression suite passed with the opt-in action
+profile. The seed-44 initializer stopped at **zero** training actions with
+its complete [model/optimizer/RNG state](baseline/checkpoint) preserved.
+Across the predeclared **64** complete original-boot games at seeds
+620000–620063, its [evaluation](baseline/baseline-64.json) averaged
+**290.94** displayed points (median 290, best 340) and **1,510.59**
+neural actions per game; all games ended in stage one. Its
+[best-effort replay](baseline/verified-replay/replay.html) independently
+reproduced **1,611** actions, rewards and screens. Model SHA-256:
+`e22114747b5cd18611a13ea052ab5476ec1b308738ea9d3208e21b5407e43bf1`.
+This untrained control's weights will not initialize the production run;
+that run restarts independently from the same fresh seed and settings.
