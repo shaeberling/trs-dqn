@@ -10,6 +10,14 @@ rows 15 / 15 / 16 / 16. These are different replay seeds and not a paired
 course-progress estimate; together they provide no evidence that more
 movement-only PPO has escaped the early barrier.
 
+The separately preserved [400-point training best effort](../../training/ppo-movement-only-164/extension/training-best-efforts/versions/step-000003407872-b67a70a980b5-seed-10005/replay.html)
+is a useful caveat: its [forensic report](training-best-report.json) found
+one life at row **21**, with the other three at 15 / 15 / 15. Its
+[screen sheet](training-best-losses.png) shows that isolated effort. This
+is some within-stage movement beyond the usual no-fire row-16 loss, not a
+selected policy improvement, a repeatable course-depth estimate, or passage
+of the stronger firing policies' row-33/34 bottleneck.
+
 The [course report](report.json) pins the original game, replay trace, model,
 and source hashes. The private stream pointer was read only after visible
 loss bookkeeping while reexecuting every one of the verified replay's 1,695

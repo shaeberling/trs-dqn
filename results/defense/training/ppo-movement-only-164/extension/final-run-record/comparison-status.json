@@ -1,0 +1,40 @@
+{
+  "event": "comparison_complete",
+  "checked_unix": 1790315939.3856032,
+  "fresh_sets": {
+    "620400": {
+      "extension_mean": 375.46875,
+      "pilot_mean": 364.0625,
+      "extension_median": 380.0,
+      "pilot_median": 360.0,
+      "extension_best": 380,
+      "pilot_best": 380,
+      "extension_mean_steps": 1663.7890625,
+      "pilot_mean_steps": 1648.4296875,
+      "extension_highest_stage": 1,
+      "pilot_highest_stage": 1,
+      "extension_mission_games": 0,
+      "pilot_mission_games": 0,
+      "paired_extension_wins": 65,
+      "paired_pilot_wins": 11,
+      "paired_ties": 52
+    },
+    "620600": {
+      "extension_mean": 376.25,
+      "pilot_mean": 362.34375,
+      "extension_median": 380.0,
+      "pilot_median": 360.0,
+      "extension_best": 380,
+      "pilot_best": 380,
+      "extension_mean_steps": 1668.1640625,
+      "pilot_mean_steps": 1642.9765625,
+      "extension_highest_stage": 1,
+      "pilot_highest_stage": 1,
+      "extension_mission_games": 0,
+      "pilot_mission_games": 0,
+      "paired_extension_wins": 74,
+      "paired_pilot_wins": 7,
+      "paired_ties": 47
+    }
+  }
+}
