@@ -77,7 +77,9 @@ and admission rule are otherwise identical. Actual occupancies need not be.
    Select by visible stage first, then fixed-check mean score. Preserve
    selected/terminal full optimizer states, every fixed result and independently
    verified self-contained replays. Then use two untouched matched 64-game
-   seed sets per arm and report mean, median, best, stage and missions.
+   seed sets per arm, **618200–618263** and **618400–618463**, and report
+   mean, median, best, stage and missions. These ranges are disjoint from
+   the smoke and fixed-check seeds and are fixed before efficacy results.
 5. Do not extend **beyond** that matched efficacy budget merely for score
    gain. A further extension requires observed later-stage play in
    original-boot games or a concrete, independently replayed change in the
