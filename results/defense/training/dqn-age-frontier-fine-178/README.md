@@ -222,3 +222,75 @@ already pushed. After byte comparison and normal process exit, about
 164 MB of stopped local calibration copies were removed; selected/terminal
 full states, fixed results, logs and verified replay versions are recoverable
 from Git. Only unselected local optimizer snapshots were discarded.
+
+## Completed efficacy comparison (2026-09-28)
+
+Both arms stopped normally at **8,388,608** aggregate fine actions and
+**523,030** finite updates; both exact-process disk guards reported only
+`trainer_stopped`. The terminal fixed ten-game original-boot check favored
+oldest-four age resets **7,221 mean / 8,460 best** over uniform-bin resets
+**494 mean / 600 best**. The treatment's fixed mean rose from 496 at
+5,242,880 actions to 1,596, 3,770, then 7,221 at successive checks;
+the control remained under 500 mean until its 494 terminal check. All
+140 efficacy fixed games were complete and in stage one.
+
+The terminal checkpoint was selected by the predeclared visible-stage-first,
+then fixed-mean rule. Two untouched 64-game original-boot sets per arm,
+using the predeclared seeds, gave:
+
+| Arm | Seeds | Mean | Median | Best | Stage 2 / mission |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Oldest four | 618200–618263 | 6,916.875 | 7,030 | 9,110 | 0 / 0 |
+| Oldest four | 618400–618463 | 7,075.15625 | 6,940 | 9,360 | 0 / 0 |
+| Uniform bins | 618200–618263 | 501.5625 | 520 | 600 | 0 / 0 |
+| Uniform bins | 618400–618463 | 501.25 | 520 | 560 | 0 / 0 |
+
+All **256** fresh games completed. This is strong evidence that the age-frontier
+selector improves score competence at this cadence, but **not** evidence of
+stage passage. The selected treatment checkpoint is still below the protected
+10,480-point learned best, which remains unchanged.
+
+The [terminal checkpoints](efficacy/treatment/terminal/state.json)
+([control](efficacy/control/terminal/state.json)) retain online, target,
+optimizer and RNG state. Each arm's complete efficacy metrics, status and
+guard logs, seven fixed evaluations, versioned self-contained verified replay
+bundles, and both fresh evaluations and verified best-of-set replay bundles
+are in [efficacy](efficacy). The stopped local source trees and copied terminal
+checkpoints, metrics, versioned replay trees and fresh bundles were byte-compared.
+
+The isolated [fixed replay course audit](efficacy/fixed-course-audit/report.json)
+reexecuted the final treatment and control replay actions from original boot;
+visible losses were at decoded original stream rows **31/32/32/33** versus
+**21/21/21/21**. The independent [fresh replay audit](efficacy/fresh-course-audit/report.json)
+found treatment losses at **31/32/32/31** and **31/33/31/31**; control losses
+were **21/21/21/21** and **21/19/21/21**. The private pointer is forensic-only:
+it was never policy input, reward, reset criterion or checkpoint selector.
+The treatment now reaches the old learned replay's row-33/34 barrier, but
+has not passed it. Its large late learning gain and the old-cadence-equivalent
+budget of only 4.19 million actions warrant a more targeted continuation,
+not a mission-completion claim.
+
+## Post-efficacy exposure test (plan fixed before starting)
+
+The treatment's 50%-random training workers mostly produce short, low-score
+games even though its greedy policy reaches the row-31–33 failure cluster.
+This suggests the prioritized replay and own-loss snapshots may receive
+too little near-barrier experience. Resume **two** independent arms from the
+same efficacy treatment terminal full state. Keep age-frontier resets,
+model, optimizer, score-only reward, game, action cadence and all other
+settings identical. The reference keeps `--epsilon-final .5` and
+`--curriculum-boot-epsilon .5`; the exposure arm changes only those two
+training exploration rates to `.05`. Both start empty transient replay and
+own-state archives after restart. Their original-boot evaluation policy is
+the same greedy network architecture and receives no exploration override.
+
+Run each to **12,582,912 total actions** (4,194,304 new actions) with four
+ten-game fixed checks at every 1,048,576 new actions, common untouched
+fixed seeds 618500–618509. Select by visible stage then mean fixed-check
+score; preserve full terminal optimizer states and verified replays. The
+course pointer may be read post-hoc on already-selected frozen replays only,
+never to rank or steer the arms. If either arm shows stage 2, independently
+reexecute the checkpoint and then test it on fresh complete games. If both
+remain at the same early barrier, stop this exposure mechanism and rethink
+exploration rather than extending for score alone. Maintain an 8 GiB disk
+floor and do not overwrite the protected best replay.
