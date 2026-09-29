@@ -4,6 +4,17 @@ __pycache__
 runs/
 logs.csv
 runs-*.out
+# Research runs are local archives, not source-controlled releases.
+results/defense/training/
+results/defense/diagnostics/
+results/defense/sampling-probes/
+results/defense/validation/
+results/defense/temporal-probes/
+results/defense/learned/versions/
+results/level10/logs/
+results/level10/best/versions/
+results/level10/best-effort/versions/
+results/cosmic/
 # Separate checkout used to publish the replay through Sites.
 replay-site/
 results/defense/learned/.collector.lock

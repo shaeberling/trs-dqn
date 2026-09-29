@@ -7,6 +7,8 @@ classic games, drivable both interactively and programmatically.
 
 The reinforcement-learning implementation, training/evaluation commands, and
 watch mode are documented in [TRAINING.md](TRAINING.md).
+The [artifact policy](ARTIFACTS.md) keeps bulk training outputs out of Git;
+stable best replays and frozen models remain in the source checkout.
 
 For **Cosmic Fighter** (`--game cosmic`), see [COSMIC.md](COSMIC.md). Its
 original executable already boots in the emulator. A separate screen-only,

@@ -1,5 +1,10 @@
 # Obstacle Run / Missile Defense: integration and training feasibility
 
+Historical links into `results/defense/training` and
+`results/defense/diagnostics` refer to local-only research archives. Their
+compact README conclusions remain in a fresh source checkout, but raw
+checkpoints, traces and diagnostic replays do not; see [ARTIFACTS.md](ARTIFACTS.md).
+
 The user-confirmed new game is the executable in `Missile_Defense.zip`.
 It identifies itself as **Obstacle Run**, by Arno Puder (1983/84), and is
 already present as `var/defense.cmd`. No emulator rebuild, disk controller,

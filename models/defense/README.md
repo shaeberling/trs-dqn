@@ -15,8 +15,9 @@ Stable local artifacts (updated only after exact frozen-policy re-execution):
 - [Neural-action verification](../../results/defense/learned/best/verification.json)
 - [Version and checksums](../../results/defense/learned/best/manifest.json)
 
-These links refer to one atomically selected, versioned bundle. All previous
-promotions remain under `results/defense/learned/versions/`. A best individual
+These links refer to one atomically selected, versioned bundle. Previous
+promotions are local-only research archives, not all part of a fresh source
+checkout. A best individual
 effort is not a fresh-test success rate; use the accompanying full evaluation
 to understand consistency. No successful mission has yet been verified.
 

@@ -75,9 +75,11 @@ bundle. Truncated evaluations cannot publish a best.
    complete game. A separate 64-game set, seeds 80000–80063, is reserved for
    the frozen validation-selected model after the pilot, not checkpoint
    selection.
-3. Protect each exact run with the 8 GiB disk watcher. Archive and push
-   selected/terminal optimizer states, evaluations, logs and verified replays
-   before deleting any stopped local duplicates. Do not let score alone imply
+3. Protect each exact run with the 8 GiB disk watcher. Keep optimizer states,
+   logs and intermediate replays in ignored local run directories, and back up
+   any checkpoint needed for resumption outside Git before pruning it. Publish
+   only a deliberately selected frozen model, evaluation and verified replay
+   under the repository's artifact policy. Do not let score alone imply
    a victory screen or unseen-map generalization: the start seed changes the
    original timing, not the programmed enemies.
 
