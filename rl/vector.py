@@ -17,7 +17,12 @@ def worker(pipe, seed, config):
         config = dict(config)
         curriculum = config.pop("curriculum", False)
         game = config.pop("game", "breakdown")
-        if game == "defense":
+        if game == "cosmic":
+            if curriculum:
+                raise ValueError("Cosmic Fighter has no own-state curriculum")
+            from .cosmic import CosmicEnv
+            env = CosmicEnv(seed=seed, **config)
+        elif game == "defense":
             if curriculum:
                 from .defense_curriculum import DefenseCurriculumEnv
                 env = DefenseCurriculumEnv(seed=seed, **config)

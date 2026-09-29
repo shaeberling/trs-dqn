@@ -1,4 +1,4 @@
-"""Stop one exact Defense learner gracefully before disk space becomes unsafe.
+"""Stop one exact Defense or Cosmic learner before disk space becomes unsafe.
 
 This is a process/storage watchdog, not part of learning or action selection.
 It only signals the PID recorded by an already-running training directory,
@@ -17,7 +17,8 @@ import time
 
 def expected_training_command(command, run):
     words = command.split()
-    return (any(module in words for module in ("rl.defense_train", "rl.defense_dqn"))
+    return (any(module in words for module in ("rl.defense_train", "rl.defense_dqn",
+                                               "rl.cosmic_dqn"))
             and "--run" in words
             and words.index("--run") + 1 < len(words)
             and words[words.index("--run") + 1] == str(run))

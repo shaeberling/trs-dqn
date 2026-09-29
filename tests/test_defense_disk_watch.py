@@ -10,6 +10,9 @@ class DefenseDiskWatchTests(unittest.TestCase):
         self.assertTrue(expected_training_command(valid, run))
         self.assertTrue(expected_training_command(valid.replace('rl.defense_train',
                                                         'rl.defense_dqn'), run))
+        cosmic_run = 'runs/cosmic-dqn-pilot-01'
+        self.assertTrue(expected_training_command(
+            f'venv/bin/python -m rl.cosmic_dqn --run {cosmic_run} --steps 1048576', cosmic_run))
         self.assertFalse(expected_training_command(valid, run+'-other'))
         self.assertFalse(expected_training_command(valid.replace('rl.defense_train',
                                                                  'rl.defense_collect'), run))

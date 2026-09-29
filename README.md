@@ -8,6 +8,11 @@ classic games, drivable both interactively and programmatically.
 The reinforcement-learning implementation, training/evaluation commands, and
 watch mode are documented in [TRAINING.md](TRAINING.md).
 
+For **Cosmic Fighter** (`--game cosmic`), see [COSMIC.md](COSMIC.md). Its
+original executable already boots in the emulator. A separate screen-only,
+score-only DQN environment, trainer, frozen evaluator and verified HTML replay
+path are prepared; **Cosmic training has not been started** pending approval.
+
 For **Obstacle Run / Missile Defense** (the existing `--game defense`), see
 [DEFENSE.md](DEFENSE.md): controls, binary audit, a separate screen-only
 environment, complete-game diagnostic results and portable replays. A fresh

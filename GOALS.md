@@ -1,20 +1,32 @@
 # GOALS
 
-## Active extension: Defense / Obstacle Run
+## Prepared extension: Cosmic Fighter
 
-The user has additionally requested autonomous training of the game in
+The user has selected the already-configured original Cosmic Fighter image
+`var/cosmic.cmd` as the next game. Prepare a separate screen-only,
+displayed-score-only, no-demonstration learner with complete-game evaluation,
+verified replays and resumable model weights. Do not start training until the
+user explicitly approves a launch. See [COSMIC.md](COSMIC.md) for its controls,
+visible outcome evidence and bounded first-run plan. The original instruction
+text says to play until all ships are exhausted; no finite victory condition
+has been established, so score performance is the initial objective rather
+than an invented level-clear claim. Do not alter the game binary or overwrite
+Breakdown/Defense artifacts.
+
+## Paused extension: Defense / Obstacle Run
+
+The user previously requested autonomous training of the game in
 `Missile_Defense.zip`, confirmed to be the existing `var/defense.cmd` (its
-on-screen name is **Obstacle Run**). Investigate the original level structure,
-keep improving a learned screen-only policy until successful game completion
-is observed, and preserve intermediate results, model weights and a verified
-best replay. Commit meaningful milestones and push when authorized by the
-repository's permission controls. Do not alter the original game or overwrite
-Breakdown's completed results.
+on-screen name is **Obstacle Run**). That work investigated the original level
+structure and preserved intermediate results, model weights and verified replays.
+Training was stopped at the user's request on 2026-09-28 and this objective
+remains unresolved. Do not restart it while preparing Cosmic Fighter. Do not
+alter the original game or overwrite Breakdown's completed results.
 
 The same learning, screen-only, score-reward and no-demonstration rules below
 apply. Defense's controls and outcomes differ: see [DEFENSE.md](DEFENSE.md).
 Static inspection finds a three-stage cycle, not a finite numbered last level.
-The active target therefore requires observing the original successful mission
+Its completion target still requires observing the original successful mission
 sequence and verifying its subsequent behavior; ordinary loss GAME OVER is
 not success. Static evidence alone does not satisfy the gameplay goal.
 

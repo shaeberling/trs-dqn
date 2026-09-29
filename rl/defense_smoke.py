@@ -49,6 +49,10 @@ def write_replay(path, frames, actions, metadata):
     stream = io.BytesIO()
     atlas.save(stream, format="PNG")
     template = Path(__file__).with_name("defense_replay.html").read_text()
+    if metadata.get("game") == "Cosmic Fighter":
+        template = template.replace("Obstacle Run — diagnostic replay",
+                                    "Cosmic Fighter — diagnostic replay")
+        template = template.replace("Obstacle Run / Missile Defense", "Cosmic Fighter")
     if metadata.get("trained_model"):
         template = template.replace("diagnostic replay", "learned-policy replay").replace(
             "Emulator integration test — random/no-op actions, <strong>not a trained agent</strong>.",
@@ -59,9 +63,12 @@ def write_replay(path, frames, actions, metadata):
         temperature = float(metadata["temperature"])
         if not np.isfinite(temperature) or temperature <= 0:
             raise ValueError("invalid replay sampling temperature")
+        note = ("Frozen-checkpoint recheck; original weights unchanged. "
+                "Not a new training milestone." if metadata.get("game") == "Cosmic Fighter" else
+                f"Evaluation-only sampling probe, temperature {temperature:g}; "
+                "original weights unchanged. Not a new training milestone.")
         template = template.replace("No scripted gameplay controller.",
-            f"No scripted gameplay controller. Evaluation-only sampling probe, temperature {temperature:g}; "
-            "original weights unchanged. Not a new training milestone.")
+                                    f"No scripted gameplay controller. {note}")
     path.write_text(template.replace("__META__", json.dumps(metadata).replace("</", "<\\/"))
                     .replace("__FRAMES__", base64.b64encode(payload).decode())
                     .replace("__ATLAS__", base64.b64encode(stream.getvalue()).decode())
