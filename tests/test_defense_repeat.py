@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 from unittest.mock import patch
 
 import numpy as np
@@ -22,6 +23,7 @@ class Sink:
         self.rows.append(copy.deepcopy(row))
 
 
+@requires_defense_archive
 class DefenseRepeatTests(unittest.TestCase):
     def test_spec_and_action_duration_mapping(self):
         for invalid in [(), (2,), (1, 1), (1, 0), (1, 257), (1, 2.5), (True, 4)]:

@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_course_feasibility import (
     SOURCE_ANCHOR, SOURCE_FRAME, SOURCE_POSITION, SOURCE_ROWS, SOURCE_SCORE,
@@ -13,6 +14,7 @@ BUNDLE = Path("results/defense/learned/best")
 DISCOVERY = Path("results/defense/diagnostics/position-survival-172/wide")
 
 
+@requires_defense_archive
 class CourseFeasibilityTests(unittest.TestCase):
     def test_verified_input_archive_is_bound_to_expected_endpoint(self):
         report, frames, prefix, rewards, metadata, route = load_source(BUNDLE, DISCOVERY)

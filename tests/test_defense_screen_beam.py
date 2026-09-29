@@ -4,6 +4,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -16,6 +17,7 @@ SOURCE = Path('results/defense/training/ppo-duration-credit-136/run/fresh-select
 NEW_SOURCE = Path('results/defense/training/ppo-balanced-fire-from-scratch-160/milestone-replay-000007344128')
 
 
+@requires_defense_archive
 class DefenseScreenBeamTests(unittest.TestCase):
     def test_schedule_and_effective_commands(self):
         self.assertEqual(HORIZON, ANCHOR + sum(SCHEDULE))

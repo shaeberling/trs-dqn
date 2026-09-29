@@ -1,4 +1,5 @@
 import unittest
+from tests.archive_support import requires_defense_archive
 import tempfile
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from rl.defense_ars_boot_search import (candidate_scales, context_key_directions
 from rl.defense_ars_plan_probe import trial_head
 
 
+@requires_defense_archive
 class CompleteBootSearchTests(unittest.TestCase):
     def test_shared_seeds_and_complete_score_matrix(self):
         jobs = shared_seed_jobs(4, 3, 100000)

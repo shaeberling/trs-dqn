@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -9,6 +10,7 @@ from rl.defense_spr_probe import path_starts, probe, summarize, trajectory_predi
 from rl.defense_learning import sha256
 
 
+@requires_defense_archive
 class SprProbeTests(unittest.TestCase):
     def test_dropout_path_matches_actual_auxiliary_loss(self):
         import mlx.core as mx

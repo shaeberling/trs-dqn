@@ -1,5 +1,6 @@
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_barrier_atlas import collect
 
@@ -8,6 +9,7 @@ ARCHIVE = (Path(__file__).resolve().parents[1]
            /'results/defense/training/ars-score-gated-69/run/own-loss-states')
 
 
+@requires_defense_archive
 class BarrierAtlasTests(unittest.TestCase):
     def test_own_visible_sources_and_score_band(self):
         index, entries = collect(ARCHIVE)

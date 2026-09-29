@@ -3,6 +3,7 @@
 import json
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_learning import sha256
 from rl.defense_recurrent_balanced_followup import (
@@ -18,6 +19,7 @@ def read(path):
     return json.loads(path.read_text())
 
 
+@requires_defense_archive
 class RecurrentBalancedArchiveTests(unittest.TestCase):
     def test_selected_states_and_all_fixed_rechecks(self):
         report = read(ROOT / "comparison/report.json")

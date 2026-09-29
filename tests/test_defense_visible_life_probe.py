@@ -4,10 +4,12 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_visible_life_probe import life_summary
 
 
+@requires_defense_archive
 class VisibleLifeProbeTests(unittest.TestCase):
     def test_summary_requires_four_consistent_visible_losses(self):
         game = dict(game_over=True, lives=0, steps=40, score=400,

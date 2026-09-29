@@ -4,6 +4,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -15,6 +16,7 @@ from rl.defense_phase_grid import grid
 SOURCE = Path('results/defense/training/ppo-duration-credit-136/run/fresh-selected-replay')
 
 
+@requires_defense_archive
 class DefenseEarlyPhaseReachTests(unittest.TestCase):
     def test_fixed_grid_and_early_two_phase_right_suffix(self):
         choices = list(grid(DELAYS, HOLDS, COMMANDS))

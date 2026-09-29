@@ -3,6 +3,7 @@ import json
 import multiprocessing as mp
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -25,6 +26,7 @@ def peer_continuation(pipe, saved, actions):
         pipe.close()
 
 
+@requires_defense_archive
 class DefenseSnapshotTests(unittest.TestCase):
     def test_exact_learned_trace_continuation_in_same_and_peer_process(self):
         # Existing learned actions are an emulator regression fixture only,

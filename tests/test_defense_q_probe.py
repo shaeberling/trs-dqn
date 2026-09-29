@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -9,6 +10,7 @@ from rl.defense_learning import sha256
 from rl.defense_q_probe import comparison, discounted_returns, distribution_summary, probe
 
 
+@requires_defense_archive
 class QProbeTests(unittest.TestCase):
     def test_flash_on_terminal_screen_has_no_post_flash_action(self):
         source = Path('results/defense/training/trace-cut-split-calibration-01/replay')

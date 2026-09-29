@@ -17,8 +17,8 @@ and every scheduled checkpoint do not belong in Git.
 Historical Defense experiment README files remain as compact research notes.
 Some of their links point to local-only archival inputs or outputs and will
 not resolve in a fresh source clone. Tests that require these archives are
-archival integration tests; ordinary environment and training-code tests do
-not require the old runs. Do not use archival traces as demonstrations or
+archival integration tests and skip in fresh clones; ordinary environment and
+training-code tests do not require the old runs. Do not use archival traces as demonstrations or
 reward labels for new games.
 
 The current Breakdown best and best-effort archive versions remain for their

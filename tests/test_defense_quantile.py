@@ -6,6 +6,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 from unittest.mock import patch
 
 import mlx.core as mx
@@ -23,6 +24,7 @@ def arrays(tree):
     return {k: np.array(v) for k, v in tree_flatten(tree)}
 
 
+@requires_defense_archive
 class DefenseQuantileTests(unittest.TestCase):
     def test_scalar_transfer_preserves_encoder_and_tiles_heads_with_fresh_adam(self):
         scalar = Learner(seed=17, action_count=20)

@@ -1,5 +1,6 @@
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import mlx.core as mx
 import numpy as np
@@ -18,6 +19,7 @@ EARLY_ARCHIVE = ROOT/'results/defense/training/ars-early-source-89'
 BOTTLENECK_ARCHIVE = ROOT/'results/defense/training/ars-bottleneck-source-92'
 
 
+@requires_defense_archive
 class VisibleContextTests(unittest.TestCase):
     def test_affine_contrast_centers_early_and_scales_later(self):
         early = np.array([[0, 0], [2, 0]], np.float32)

@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -9,6 +10,7 @@ from rl.defense_inverse_probe import classification_metrics, probe, summarize
 from rl.defense_learning import sha256
 
 
+@requires_defense_archive
 class InverseProbeTests(unittest.TestCase):
     def test_frozen_calibration_determinism_and_provenance(self):
         root=Path('results/defense/training/inverse-split-calibration-01').resolve()

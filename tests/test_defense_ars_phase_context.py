@@ -1,4 +1,5 @@
 import unittest
+from tests.archive_support import requires_defense_archive
 from pathlib import Path
 
 import numpy as np
@@ -7,6 +8,7 @@ from rl.defense_ars_phase_context import phase_basis, visible_phase_subspace
 from rl.model import QNetwork
 
 
+@requires_defense_archive
 class PhaseContextTests(unittest.TestCase):
     def test_two_own_screen_phase_changes_are_independent_and_centered(self):
         rng = np.random.default_rng(12)

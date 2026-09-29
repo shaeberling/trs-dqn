@@ -1,10 +1,12 @@
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
 from rl.defense_td_probe import probe, td_summary
 
 
+@requires_defense_archive
 class DefenseTDProbeTests(unittest.TestCase):
     def test_huber_scale_groups_and_degenerate_loss(self):
         report = td_summary([0., 2., 0.], [0., 0., 4.], [0., 0., 4.])

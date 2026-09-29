@@ -1,8 +1,10 @@
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_repeat_probe import duration_summary, probe
 
 
+@requires_defense_archive
 class DefenseRepeatProbeTests(unittest.TestCase):
     def test_window_counts_do_not_invent_a_start_at_window_edge(self):
         result = duration_summary([1, 1, 0, 1], [False, False, True, True], (1, 4))

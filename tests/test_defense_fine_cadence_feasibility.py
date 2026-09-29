@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -21,6 +22,7 @@ BUNDLE = Path("results/defense/learned/best")
 SOURCE = Path("results/defense/diagnostics/course-feasibility-174/wide")
 
 
+@requires_defense_archive
 class FineCadenceFeasibilityTests(unittest.TestCase):
     def test_source_is_protected_and_original_cadence(self):
         report, _, _, _, _, actions = load_source(BUNDLE, SOURCE)

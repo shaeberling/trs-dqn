@@ -1,8 +1,10 @@
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_survival_probe import probe, summarize
 
 
+@requires_defense_archive
 class DefenseSurvivalProbeTests(unittest.TestCase):
     def test_counts_and_censoring(self):
         result = summarize([5, 64, 100, 320], [True, True, True, False], 64, [1, 1, 1, 2])

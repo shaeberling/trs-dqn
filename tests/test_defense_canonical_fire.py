@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from tests.archive_support import requires_defense_archive
 from unittest.mock import patch
 
 import numpy as np
@@ -16,6 +17,7 @@ from rl.defense_canonical_fire import (COMMAND_MAP, balanced_fire_initial_bias,
                                        group_logits_numpy)
 
 
+@requires_defense_archive
 class CanonicalFireTests(unittest.TestCase):
     def test_balanced_fresh_fire_bias_is_direction_neutral(self):
         offset = balanced_fire_initial_bias()

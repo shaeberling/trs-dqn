@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
@@ -18,6 +19,7 @@ BUNDLE = Path("results/defense/learned/best")
 DISCOVERY = Path("results/defense/diagnostics/course-feasibility-174/wide")
 
 
+@requires_defense_archive
 class CourseContinuationTests(unittest.TestCase):
     def test_row50_source_is_bound_to_protected_prefix(self):
         report, frames, prefix, rewards, metadata, actions = load_source(BUNDLE, DISCOVERY)

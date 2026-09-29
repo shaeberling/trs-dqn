@@ -1,8 +1,10 @@
 import unittest
+from tests.archive_support import requires_defense_archive
 
 from rl.defense_course_progress_probe import course_rows, probe_bundle, probe_sources
 
 
+@requires_defense_archive
 class DefenseCourseProgressProbeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

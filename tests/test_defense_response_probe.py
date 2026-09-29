@@ -1,12 +1,14 @@
 import copy
 from pathlib import Path
 import unittest
+from tests.archive_support import requires_defense_archive
 
 import numpy as np
 
 from rl.defense_response_probe import probe, screen_diversity
 
 
+@requires_defense_archive
 class DefenseResponseProbeTests(unittest.TestCase):
     def test_gameplay_diversity_ignores_hud_and_non_graphics_text(self):
         frame=np.full((16,64),128,np.uint8)
