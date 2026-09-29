@@ -30,6 +30,7 @@ class CosmicTests(unittest.TestCase):
         self.assertIn((Key.SPACE,), ACTIONS)
         self.assertIn((Key.RIGHT, Key.SPACE), ACTIONS)
         self.assertIn((Key.D,), ACTIONS)
+        self.assertTrue(all("tap" in ACTION_NAMES[index] for index in (3, 4, 5)))
         self.assertTrue(all(not set(keys) & {Key.CLEAR, Key.BREAK, Key.ENTER, Key._1}
                             for keys in ACTIONS))
 
@@ -48,7 +49,7 @@ class CosmicTests(unittest.TestCase):
         self.assertEqual(screen_info(terminal)["reserves"], 0)
 
     def test_score_only_complete_games_and_exact_reexecution(self):
-        for action, expected_score in ((0, 0), (3, 50)):
+        for action in (0, 3):
             env = CosmicEnv(max_steps=3_000)
             try:
                 first = env.reset(7)
@@ -64,7 +65,10 @@ class CosmicTests(unittest.TestCase):
                         break
                 self.assertTrue(done)
                 self.assertFalse(truncated)
-                self.assertEqual(info["score"], expected_score)
+                if action == 0:
+                    self.assertEqual(info["score"], 0)
+                else:
+                    self.assertGreaterEqual(info["score"], 50)
                 self.assertEqual(sum(rewards), info["score"])
                 self.assertEqual(info["reserves"], 0)
                 self.assertTrue(screen_info(frames[-1])["game_over"])
@@ -76,6 +80,24 @@ class CosmicTests(unittest.TestCase):
                     self.assertEqual(ended, index+2 == len(frames))
             finally:
                 env.close()
+
+    def test_consecutive_fire_actions_register_new_presses(self):
+        env = CosmicEnv(tstates=100_000, max_steps=0)
+        try:
+            env.reset(140)
+            rng = np.random.default_rng(3140)
+            total = 0
+            while True:
+                _, reward, done, truncated, info = env.step(int(rng.choice((4, 5))))
+                total += reward
+                if done or truncated:
+                    break
+            self.assertTrue(done)
+            self.assertFalse(truncated)
+            self.assertGreater(info["score"], 50)
+            self.assertEqual(total, info["score"])
+        finally:
+            env.close()
 
     def test_blinking_startup_hud_settles_from_visible_screen(self):
         env = CosmicEnv()

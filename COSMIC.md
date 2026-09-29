@@ -20,7 +20,11 @@ Space and F both fire, and NOOP/held Space games reach the visible
 checked state. D is retained as its own learnable choice for the documented
 docking/refueling behavior; it was not used to script a dock. The seven
 learnable commands are NOOP, LEFT, RIGHT, Space, LEFT+Space, RIGHT+Space and
-D. No menu, abort or reset key is available to the playing policy.
+D. No menu, abort or reset key is available to the playing policy. A fire
+command is a real key tap within the configured action duration: at the
+default 100,000 T-states, Space is released for 40,000 and pressed for 60,000.
+Other commands hold their keys for the full 100,000 T-states. This changes
+neither the original game nor the screen-only policy input.
 
 The top video-memory row visibly displays the score and reserve-ship `[` icons;
 the second row displays the fuel meter. Both score and icons blink, so
@@ -39,6 +43,27 @@ These are integration baselines, **not trained-policy results**. The native
 program's instructions do not identify a finite final level or victory
 screen; the initial objective is therefore improved complete-game score,
 not a fabricated win threshold.
+
+Before the first training run, further non-learning control checks found a
+keyboard edge bottleneck. On seeds 120–139, choosing only the three old held
+fire actions scored exactly 50 in every game; mixing in non-fire actions
+restored scoring without docking. On seeds 140–149, random LEFT+Space/RIGHT+Space
+commands likewise scored exactly 50 in every game without a CPU-visible
+release; inserting a 40,000-T-state release before each command raised every
+game above 50. The environment now performs that release inside
+the existing action duration (`cosmic-fighter-screen-v2-fire-tap`), keeping
+the seven-action profile and total decision cadence unchanged. This is
+ordinary keyboard input, not a learned policy, demonstration, hidden-state
+signal or reward change. The earlier 775-point baseline used the v1 held-key
+interface and is not directly comparable to v2 training results.
+
+On a separate, already-used 100-seed v2 control set (300–399), uniform random
+actions scored **755.7 mean / 600 median / 2,650 best**. A fixed fire-biased
+random mix scored **709 mean / 550 median / 2,400 best**; its paired mean
+difference was -46.7 points, with a 95% bootstrap interval from -169.2 to
+73.8. The smaller diagnostic set had favored the biased mix, but the larger
+check does not support changing DQN's uniform exploration. These are
+non-learning controls, not trained-policy results or fresh model tests.
 
 ## Learner and result protocol
 

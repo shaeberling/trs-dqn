@@ -16,11 +16,14 @@ from .env import validate_observation_stride
 
 VIDEO = 0x3C00
 GAME_SHA256 = "4999f2d853dddc0ee58198a03b597fd848d5011068037b1ed8f2926d218190e7"
-ENVIRONMENT_VERSION = "cosmic-fighter-screen-v1"
+ENVIRONMENT_VERSION = "cosmic-fighter-screen-v2-fire-tap"
 GAME_OVER_TEXT = b"Game Over Player 1"
 ACTIONS = ((), (Key.LEFT,), (Key.RIGHT,), (Key.SPACE,),
            (Key.LEFT, Key.SPACE), (Key.RIGHT, Key.SPACE), (Key.D,))
-ACTION_NAMES = tuple("+".join(key.name for key in keys) or "NOOP" for keys in ACTIONS)
+ACTION_NAMES = tuple(("+".join(key.name for key in keys) or "NOOP") +
+                     (" (tap)" if Key.SPACE in keys else "") for keys in ACTIONS)
+FIRE_RELEASE_NUMERATOR = 2
+FIRE_RELEASE_DENOMINATOR = 5
 TEXT_TABLE = bytes(c if 32 <= c < 127 else 32 for c in range(256))
 HUD = re.compile(rb" *([0-9]{1,7}) (\[{0,9}) *")
 
@@ -97,9 +100,20 @@ class CosmicEnv:
         if not 0 <= action < len(ACTIONS):
             raise ValueError(action)
         self.trs.keyboard.all_keys_up()
+        # The original program only recognizes a new shot after it has polled
+        # a released fire key. A zero-cycle release between two SPACE actions
+        # is invisible to the emulated CPU and effectively holds fire forever.
+        # Keep every decision at the configured duration: fire actions spend
+        # 2/5 released and 3/5 pressed, other actions use the full duration.
+        pressed_tstates = self.tstates
+        if Key.SPACE in ACTIONS[action]:
+            released_tstates = self.tstates*FIRE_RELEASE_NUMERATOR//FIRE_RELEASE_DENOMINATOR
+            if released_tstates:
+                self.trs.run_for_tstates(released_tstates)
+                pressed_tstates -= released_tstates
         for key in ACTIONS[action]:
             self.trs.keyboard.key_down(key)
-        self.trs.run_for_tstates(self.tstates)
+        self.trs.run_for_tstates(pressed_tstates)
         frame = self.video.copy()
         info = screen_info(frame)
         settle = 0
