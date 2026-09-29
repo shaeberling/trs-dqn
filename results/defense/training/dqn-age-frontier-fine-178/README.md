@@ -294,3 +294,36 @@ reexecute the checkpoint and then test it on fresh complete games. If both
 remain at the same early barrier, stop this exposure mechanism and rethink
 exploration rather than extending for score alone. Maintain an 8 GiB disk
 floor and do not overwrite the protected best replay.
+
+## Exposure comparison stopped at user request (2026-09-28)
+
+The user requested stopping Defense training to work on a different game.
+Both arms received SIGTERM only after their exact process commands were
+checked, stopped gracefully, and wrote full online/target/optimizer/RNG
+`latest` states. Their disk guards subsequently logged `trainer_stopped`;
+neither logged a disk-floor signal. The low-exploration arm stopped at
+**11,036,960** total actions / **687,923** updates; the reference stopped
+at **11,018,912** / **686,795**. The predeclared 12,582,912-action comparison
+was **not completed**. No further Defense training is active.
+
+The two completed scheduled ten-game original-boot checks were:
+
+| Total actions | Low-exploration mean / best | Reference mean / best | Stage 2 / mission |
+| ---: | ---: | ---: | ---: |
+| 9,437,184 | 9,255 / 10,020 | 7,230 / 9,270 | 0 / 0 |
+| 10,485,760 | 9,662 / 10,040 | 6,928 / 8,280 | 0 / 0 |
+
+An explicitly labeled **post-stop** frozen-model ten-game audit on the same
+618500–618509 seeds gave low-exploration **9,655 mean / 10,290 best** and
+reference **5,651 mean / 8,360 best**, still stage one. These checks are
+not the missing predeclared final evaluation or fresh-set test. The global
+protected 10,480-point best is unchanged.
+
+The [interrupted-run archive](exposure-179) contains each arm's selected
+scheduled full checkpoint, stopped full terminal state, all scheduled fixed
+evaluations, complete metrics/status/guard logs, versioned verified replay
+bundles, and the separate verified post-stop replay bundle. All copied files
+and replay-version trees were byte-compared with the stopped local sources.
+The terminal states permit later resumption, but the transient prioritized
+replay and own-state archive would refill after a restart. The user-supplied
+`DEFENSE_TRAINING_REVIEW.md` is separate and was not changed or staged.
