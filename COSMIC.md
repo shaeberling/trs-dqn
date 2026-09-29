@@ -95,11 +95,12 @@ bundle. Truncated evaluations cannot publish a best.
    pilot: eight emulator workers, 100,000 T-states/action, four visible frames,
    100,000 replay slots, 10,000 warmup, batch 64, one update per 16 aggregate
    actions, five-step return, gamma 0.997, epsilon 1.0→0.1 over 500,000
-   aggregate actions, 5,000-action per-game cap. Fixed ten-game checks at
-   262,144-action intervals use seeds 70000–70009. The cap never counts as a
-   complete game. A separate 64-game set, seeds 80000–80063, is reserved for
-   the frozen validation-selected model after the pilot, not checkpoint
-   selection.
+   aggregate actions, and no artificial per-game cap. Fixed ten-game checks at
+   262,144-action intervals use seeds 70000–70009 and must reach the original
+   GAME OVER. An optional positive safety cap marks a game truncated and never
+   counts it as complete. A separate 64-game set, seeds 80000–80063, is
+   reserved for the frozen validation-selected model after the pilot, not
+   checkpoint selection.
 3. Protect each exact run with the 8 GiB disk watcher. Keep optimizer states,
    logs and intermediate replays in ignored local run directories, and back up
    any checkpoint needed for resumption outside Git before pruning it. Publish

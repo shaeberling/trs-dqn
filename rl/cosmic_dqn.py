@@ -59,12 +59,14 @@ def main():
     parser.add_argument("--epsilon-final", type=float, default=.1)
     parser.add_argument("--tstates", type=int, default=100_000)
     parser.add_argument("--observation-stride", type=int, default=1)
-    parser.add_argument("--max-episode-steps", type=int, default=5_000)
+    parser.add_argument("--max-episode-steps", type=int, default=0,
+                        help="training-game action cap; 0 plays to original GAME OVER")
     parser.add_argument("--eval-every", type=int, default=262_144)
     parser.add_argument("--eval-games", type=int, default=10)
     parser.add_argument("--eval-envs", type=int, default=8)
     parser.add_argument("--eval-seed", type=int, default=70_000)
-    parser.add_argument("--eval-max-steps", type=int, default=5_000)
+    parser.add_argument("--eval-max-steps", type=int, default=0,
+                        help="evaluation-game action cap; 0 plays to original GAME OVER")
     parser.add_argument("--mlx-cache-mb", type=int, default=512)
     args = parser.parse_args()
     prior = None
@@ -88,8 +90,8 @@ def main():
             args.eval_every, args.eval_games, args.eval_envs, args.mlx_cache_mb) < 1
             or not 0 <= args.epsilon_final <= 1 or not 0 < args.gamma <= 1
             or not 0 < args.reward_scale <= 1 or not 1 <= args.tstates <= 1_000_000
-            or args.observation_stride < 1 or args.max_episode_steps < 1
-            or args.eval_max_steps < 1 or args.capacity < args.warmup
+            or args.observation_stride < 1 or args.max_episode_steps < 0
+            or args.eval_max_steps < 0 or args.capacity < args.warmup
             or args.steps % args.envs):
         parser.error("invalid Cosmic DQN configuration")
     if args.run.exists():
